@@ -1,0 +1,70 @@
+name: daily digest
+
+on:
+  schedule:
+    # 06:15 UTC = 08:15 Brussels in summer, 07:15 in winter.
+    - cron: "15 6 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Scan and report only - send no email, save no state"
+        type: boolean
+        default: false
+
+# The run commits the updated state file back to the repo.
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-digest
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -e .
+
+      - name: Scan and email
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: |
+          house-alert -v run \
+            ${{ inputs.dry_run && '--dry-run' || '' }} \
+            --out digest.html
+
+      - name: Upload the rendered digest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: digest-${{ github.run_number }}
+          path: digest.html
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Commit updated state
+        if: ${{ !inputs.dry_run }}
+        run: |
+          if git diff --quiet -- state/; then
+            echo "state unchanged"
+            exit 0
+          fi
+          git config user.name  "house-alert[bot]"
+          git config user.email "house-alert@users.noreply.github.com"
+          git add state/
+          git commit -m "chore(state): record listings seen on $(date -u +%F)"
+          git push

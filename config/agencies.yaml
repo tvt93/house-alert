@@ -1,0 +1,111 @@
+# Registry of estate agencies to scan.
+#
+#   name:     display name, shown in the email as the listing source
+#   url:      site root (no trailing slash)
+#   region:   free-form tag, used only for grouping/filtering (gent | kortrijk)
+#   platform: which scraper to use. "auto" = the generic sitemap + JSON-LD
+#             scraper. Run `house-alert detect` to fill this in with a concrete
+#             platform (whise / sweepbright / omnicasa / skarabee) where one is
+#             recognised - those expose real APIs and are far more reliable
+#             than HTML scraping.
+#   enabled:  set false to skip an agency without deleting the entry
+#
+# Seeded from sprokkel.be (Gent city, Gent region, Kortrijk region), Aug 2026.
+# Adding an agency is one entry here - no code change needed.
+
+defaults:
+  platform: auto
+  enabled: true
+
+agencies:
+  # ---------------------------------------------------------------- Gent city
+  - { name: Van Welden Vastgoed,      url: "https://vanweldenvastgoed.be",       region: gent }
+  - { name: Flame Estate,             url: "https://www.flame-estate.be",        region: gent }
+  - { name: Wijs Vastgoed,            url: "https://www.wijsvastgoed.be",        region: gent }
+  - { name: Agence Rosseel,           url: "https://rosseel.be",                 region: gent }
+  - { name: Arcade Vastgoed,          url: "https://www.arcade-vastgoed.be",     region: gent }
+  - { name: Axel Lenaerts Makelaars,  url: "https://www.axellenaerts.be",        region: gent }
+  - { name: CDF Vastgoedmakelaars,    url: "https://www.cdf.be",                 region: gent }
+  - { name: Debaenst Vastgoed,        url: "https://www.vastgoeddebaenst.be",    region: gent }
+  - { name: De Fooz,                  url: "https://www.defooz.com",             region: gent }
+  - { name: Immo Boss,                url: "https://immoboss.be",                region: gent }
+  - { name: Immobilien Crevits,       url: "https://crevits.be",                 region: gent }
+  - { name: Kensington,               url: "https://www.kensington.be",          region: gent }
+  - { name: Reximmo,                  url: "https://reximmo.be",                 region: gent }
+  - { name: Urbis,                    url: "https://www.urbis.be",               region: gent }
+  - { name: Landbergh,                url: "https://www.landbergh.be",           region: gent }
+  - { name: DW Immo,                  url: "https://dwimmo.be",                  region: gent }
+  - { name: LD-Vastgoed,              url: "https://www.ld-vastgoed.be",         region: gent }
+  - { name: Pattymo,                  url: "https://www.pattymo.be",             region: gent }
+  - { name: Cannoodt,                 url: "https://www.cannoodt.be",            region: gent }
+  - { name: Sofimmo,                  url: "https://www.sofimmo.be",             region: gent }
+  - { name: Entree,                   url: "https://entree.be",                  region: gent }
+
+  # -------------------------------------------------------------- Gent region
+  - { name: Immo Zone,                url: "https://www.immo-zone.be",           region: gent }
+  - { name: Immo Vercruysse,          url: "https://www.immovercruysse.be",      region: gent }
+  - { name: Annaart Vastgoed,         url: "https://www.annaart.be",             region: gent }
+  - { name: Danimmo,                  url: "https://www.danimmo.be",             region: gent }
+  - { name: Vastgoed De Vos,          url: "https://vastgoeddevos.be",           region: gent }
+  - { name: Concept-Home,             url: "https://concept-home.be",            region: gent }
+  - { name: Aclea Vastgoed,           url: "https://aclea-vastgoed.be",          region: gent }
+  - { name: Marius Vastgoed,          url: "https://marius-vastgoed.be",         region: gent }
+  - { name: De Leefboom,              url: "https://deleefboom.be",              region: gent }
+  - { name: Lo Immo,                  url: "https://www.lo-immo.be",             region: gent }
+  - { name: The House Friend,         url: "https://www.thehousefriend.be",      region: gent }
+  - { name: Maximm,                   url: "https://www.maximm.be",              region: gent }
+  - { name: De Moor Vastgoed,         url: "https://www.demoorvastgoed.be",      region: gent }
+  - { name: Oximo,                    url: "https://www.oximo.be",               region: gent }
+  - { name: Bordes Vastgoed,          url: "https://www.bordes.be",              region: gent }
+  - { name: Immo T,                   url: "https://immo-t.be",                  region: gent }
+  - { name: Casteels Vastgoed,        url: "https://casteelsvastgoed.be",        region: gent }
+  - { name: Kleyo,                    url: "https://kleyo.be",                   region: gent }
+  - { name: Cornelis Goeman,          url: "https://www.cornelis-goeman.be",     region: gent }
+  - { name: Immo Fratti,              url: "https://www.immofratti.be",          region: gent }
+
+  # ----------------------------------------------------------- Kortrijk region
+  - { name: Fleximmo,                 url: "https://www.fleximmo.be",            region: kortrijk }
+  - { name: Home-Vision,              url: "https://www.home-vision.eu",         region: kortrijk }
+  - { name: Huizinge Vastgoed,        url: "https://www.huizinge.be",            region: kortrijk }
+  - { name: Immo Goethals,            url: "https://www.immogoethals.be",        region: kortrijk }
+  - { name: Immo LVB Vandenbulcke,    url: "https://immo-lvb.be",                region: kortrijk }
+  - { name: Immo Marescaux,           url: "https://www.marescaux.be",           region: kortrijk }
+  - { name: Nele Tassaert Immobilien, url: "https://www.neletassaert.be",        region: kortrijk }
+  - { name: Immotion,                 url: "https://www.immotion.be",            region: kortrijk }
+  - { name: Maribrik,                 url: "https://www.maribrik.be",            region: kortrijk }
+  - { name: Panorama Vastgoed,        url: "https://panorama.immo",              region: kortrijk }
+  - { name: Vastgoed Glorieux,        url: "https://www.vastgoedglorieux.be",    region: kortrijk }
+  - { name: Vastgoed Vandamme,        url: "https://www.vastgoedvandamme.be",    region: kortrijk }
+  - { name: Immo Francois,            url: "https://www.immofrancois.be",        region: kortrijk }
+  - { name: Immo Emeraude,            url: "https://www.immo-emeraude.com",      region: kortrijk }
+  - { name: Immostad,                 url: "https://www.immostad.com",           region: kortrijk }
+  - { name: M Vastgoed,               url: "https://www.mvastgoed.be",           region: kortrijk }
+  - { name: Bastjon Vastgoed,         url: "https://www.bastjon.be",             region: kortrijk }
+  - { name: Immo Debo,                url: "https://www.immodebo.be",            region: kortrijk }
+  - { name: Maes Concept Immo,        url: "https://www.maesconceptimmo.be",     region: kortrijk }
+  - { name: Immo Van Parijs,          url: "https://www.immovanparijs.be",       region: kortrijk }
+  - { name: Realimmo,                 url: "https://www.real-immo.be",           region: kortrijk }
+  - { name: Immo Taelman,             url: "https://www.immotaelman.be",         region: kortrijk }
+  - { name: Coventa,                  url: "https://coventa.be",                 region: kortrijk }
+  - { name: De Huiskamer,             url: "https://dehuiskamer.immo",           region: kortrijk }
+  - { name: Fundament,                url: "https://www.fundament.be",           region: kortrijk }
+  - { name: Immo Casa,                url: "https://immo-casa.be",               region: kortrijk }
+  - { name: Immo Yes Vastgoed,        url: "https://www.immoyes.be",             region: kortrijk }
+  - { name: Immo Rosa,                url: "https://immorosa.be",                region: kortrijk }
+  - { name: Expertimmo,               url: "https://www.expertimmo.be",          region: kortrijk }
+  - { name: Immo Lys,                 url: "https://www.immo-lys.be",            region: kortrijk }
+  - { name: Immo Lietaer,             url: "https://immolietaer.be",             region: kortrijk }
+  - { name: Maximmo Vastgoed,         url: "https://maximmovastgoed.be",         region: kortrijk }
+  - { name: Immo Dejaegher,           url: "https://www.immodejaegher.be",       region: kortrijk }
+  - { name: Immo Francis Demeester,   url: "https://www.demeester.be",           region: kortrijk }
+  - { name: Immo Dochy,               url: "https://www.dochy.be",               region: kortrijk }
+  - { name: Immo Termote,             url: "https://immo-termote.be",            region: kortrijk }
+  - { name: Optimmo,                  url: "https://opt-immo.be",                region: kortrijk }
+  - { name: Immo Beguin,              url: "https://www.immobeguin.be",          region: kortrijk }
+  - { name: Exact Immo,               url: "https://exactimmo.be",               region: kortrijk }
+  - { name: Immo Habitat,             url: "https://www.mijnhabitat.be",         region: kortrijk }
+  - { name: Vastgoedkantoor Devriese, url: "https://www.vastgoedkantoordevriese.be", region: kortrijk }
+  - { name: Titeca en Geelen,         url: "https://www.tgvastgoed.be",          region: kortrijk }
+  - { name: Smart Houses,             url: "https://www.smarthouses.be",         region: kortrijk }
+  - { name: Resida,                   url: "https://www.resida.be",              region: kortrijk }
+  - { name: Yvimat,                   url: "https://www.yvimat.be",              region: kortrijk }

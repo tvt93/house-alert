@@ -1,0 +1,73 @@
+# What counts as a match. Everything here is optional: leave a field blank
+# (or delete it) and that check is skipped entirely.
+#
+# You said you'd fill this in later - the values below are placeholders that
+# deliberately match almost nothing except by property type, so a first run
+# stays quiet until you set real numbers. `house-alert run --dry-run` prints
+# what matched and what was filtered out, and why.
+
+property_types:          # matched against the listing's detected type
+  - house
+  # - apartment
+  # - land
+  # - commercial
+
+price:
+  min:                   # e.g. 200000
+  max:                   # e.g. 450000
+  # Listings with no detectable price ("prijs op aanvraag") are controlled by:
+  include_unknown: true
+
+bedrooms:
+  min:                   # e.g. 3
+  max:
+  include_unknown: true
+
+living_area_m2:          # habitable surface
+  min:                   # e.g. 120
+  max:
+  include_unknown: true
+
+plot_area_m2:            # total land area
+  min:
+  max:
+  include_unknown: true
+
+epc:
+  # Max EPC score in kWh/m2/yr. Lower is better. Flanders labels: A <=100,
+  # B <=200, C <=300, D <=400, E <=500, F >500.
+  max_kwh:
+  include_unknown: true
+
+# Municipality filter. Case-insensitive substring match against the listing's
+# address/city. Leave the list empty to accept the whole scan area.
+municipalities:
+  include: []
+    # - Gent
+    # - Gentbrugge
+    # - Sint-Amandsberg
+    # - Drongen
+    # - Merelbeke
+    # - Deinze
+    # - Kortrijk
+    # - Kuurne
+    # - Harelbeke
+    # - Zwevegem
+  exclude: []
+
+# Words that, if present in the title or description, reject the listing
+# outright. Useful for filtering out categories the type detection misses.
+exclude_keywords:
+  - garagebox
+  - staanplaats
+  - parkeerplaats
+  - opbrengsteigendom
+  - nieuwbouwproject
+  - handelspand
+
+# Words that, if present, keep the listing even when other soft checks are
+# borderline. Purely additive - never overrides price/type filters.
+highlight_keywords:
+  - tuin
+  - zuidgericht
+  - te renoveren

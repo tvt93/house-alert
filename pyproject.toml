@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "house-alert"
+version = "0.1.0"
+description = "Daily email digest of new house listings from Ghent- and Kortrijk-area estate agencies"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.2",
+    "PyYAML>=6.0",
+    "Jinja2>=3.1",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+house-alert = "house_alert.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/house_alert"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

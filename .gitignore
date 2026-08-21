@@ -1,0 +1,9 @@
+.env
+preview.html
+*.egg-info/
+__pycache__/
+.venv/
+venv/
+.pytest_cache/
+dist/
+build/

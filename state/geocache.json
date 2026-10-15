@@ -39,6 +39,10 @@
    "lat": 50.778223,
    "lon": 3.2303316
   },
+  "bevrijdingslaan 70|9000|gent": {
+   "lat": 51.0613203,
+   "lon": 3.7014741
+  },
   "biebuyckstraat 13|9850|nevele": {
    "lat": 51.0380268,
    "lon": 3.5482211
@@ -707,6 +711,7 @@
    "lat": 50.9333445,
    "lon": 3.1234263
   },
+  "uitstekend gelegen sint jansstraat 149|8790|waregem": null,
   "vaartstraat 1|8770|ingelmunster": {
    "lat": 50.9148969,
    "lon": 3.2627486

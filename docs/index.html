@@ -8,6 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232f5d3a' d='M12 3 2 12h3v8h5v-5h4v5h5v-8h3z'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.min.css">
 <style>
 :root {
   --bg: #f4f4f1;
@@ -122,7 +123,8 @@ main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height:
 .toolbar select { padding: 5px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); }
 .grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
-  padding: 0 16px 24px; overflow-y: auto;
+  grid-auto-rows: max-content; align-content: start;
+  padding: 0 16px 24px; overflow-y: auto; flex: 1; min-height: 0;
 }
 .card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
@@ -136,7 +138,7 @@ main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height:
   font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; letter-spacing: .3px;
 }
 .badge.soft { background: var(--surface); color: var(--text); }
-.card .body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.card .inner { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
 .price { font-size: 18px; font-weight: 700; }
 .title { font-weight: 600; line-height: 1.3; }
 .title a { text-decoration: none; }
@@ -153,6 +155,7 @@ main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height:
 
 /* ------------------------------------------------------------------- map */
 #mapEl { flex: 1; min-height: 0; }
+#mapEl.dark-tiles .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.85) contrast(.9) saturate(.6); }
 .leaflet-container { background: var(--surface-2); font: inherit; }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
 .leaflet-popup-content { margin: 0; width: 240px !important; }
@@ -162,8 +165,8 @@ main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height:
 .pop .price { font-size: 15px; }
 .pop .where { margin-top: 2px; }
 .pop a.go { display: inline-block; margin-top: 8px; font-weight: 600; color: var(--accent); text-decoration: none; }
-.marker-cluster { background: color-mix(in srgb, var(--accent) 30%, transparent); }
-.marker-cluster div { background: var(--accent); color: var(--accent-text); font-weight: 700; font-family: var(--font); }
+.marker-cluster, .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+.marker-cluster div, .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div { background: var(--accent); color: var(--accent-text); font-weight: 700; font-family: var(--font); }
 .leaflet-bar a { background: var(--surface); color: var(--text); border-bottom-color: var(--border); }
 .legend {
   position: absolute; right: 12px; bottom: 24px; z-index: 500; background: var(--surface);
@@ -430,6 +433,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       });
       var types = [].map.call(document.querySelectorAll('#types input:checked'), function (i) { return i.value; });
       if (types.join(',') !== 'house,unknown') p.set('types', types.join(','));
+      if ($('view-map').classList.contains('active')) p.set('view', 'map');
       var s = p.toString();
       history.replaceState(null, '', s ? '#' + s : location.pathname + location.search);
     },
@@ -445,6 +449,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
         var want = p.get('types').split(',');
         document.querySelectorAll('#types input').forEach(function (i) { i.checked = want.indexOf(i.value) >= 0; });
       }
+      if (p.get('view') === 'map') document.querySelector('.seg button[data-view=map]').click();
     },
     reset: function () {
       F.ids.forEach(function (id) {
@@ -504,7 +509,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       : l.geo === 'city' ? '<span class="approx" title="Alleen de gemeente is gekend">± gemeente</span>' : '';
     return '<article class="card">' +
       '<a class="photo" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + photo + badge + '</a>' +
-      '<div class="body">' +
+      '<div class="inner">' +
         '<div class="price">' + euro(l.price) + '</div>' +
         '<div class="title"><a href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.title || l.url) + '</a></div>' +
         '<div class="where">' + esc(where(l)) + approx + '</div>' +
@@ -536,11 +541,15 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
     return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   }
   function setTiles() {
-    if (tiles) map.removeLayer(tiles);
-    tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/' + (isDark() ? 'dark_all' : 'light_all') + '/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19, subdomains: 'abcd',
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-    }).addTo(map);
+    // Standard OpenStreetMap tiles: no key needed. Dark mode is a CSS filter
+    // on the tile pane (see .leaflet-tile-pane rule), not a second tile set.
+    if (!tiles) {
+      tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+    }
+    document.getElementById('mapEl').classList.toggle('dark-tiles', isDark());
   }
   function ensureMap() {
     if (map) return;
@@ -589,6 +598,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       document.querySelectorAll('.view').forEach(function (v) { v.classList.toggle('active', v.id === 'view-' + b.dataset.view); });
       if (b.dataset.view === 'map') renderMap();
       try { localStorage.setItem('view', b.dataset.view); } catch (e) {}
+      if (all.length) F.toHash();
     });
   });
 

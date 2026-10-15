@@ -347,7 +347,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       <div class="field"><label for="subName">Naam</label><input type="text" id="subName" value="Mijn filter" autocomplete="off"></div>
       <div class="field"><label for="subTo">Ontvanger</label><input type="text" id="subTo" value="$MAIL_TO" autocomplete="off"></div>
     </div>
-    <p class="note"><b>$MAIL_TO</b> leest het adres uit de GitHub-secret met die naam, zodat je adres niet in de publieke repo staat. Een andere secret (bv. <b>$MAIL_TO_PARTNER</b>) werkt ook zodra je ze aanmaakt onder Settings → Secrets. Een letterlijk e-mailadres mag, maar is dan publiek zichtbaar.</p>
+    <p class="note"><b>$MAIL_TO</b> leest het adres uit de GitHub-secret met die naam, zodat je adres niet in de publieke repo staat. <b>$MAIL_TO_PARTNER</b>, <b>$MAIL_TO_2</b> en <b>$MAIL_TO_3</b> werken ook zodra je zo'n secret aanmaakt onder Settings → Secrets. Een letterlijk e-mailadres mag, maar is dan publiek zichtbaar.</p>
     <div class="summary" id="subSummary"></div>
     <textarea id="subYaml" readonly spellcheck="false"></textarea>
     <div class="df">

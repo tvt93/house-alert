@@ -75,9 +75,10 @@ Two things worth knowing:
 
 - **Recipients are `$NAME` references.** This repository is public (GitHub Pages on a
   free plan requires it), so addresses live in Actions secrets, not in files. The workflow
-  hands every secret to the run, so a new subscription can reference `$MAIL_TO_PARTNER`
-  as soon as a secret of that name exists. A literal address also works if you don't mind
-  it being visible.
+  maps `MAIL_TO`, `MAIL_TO_PARTNER`, `MAIL_TO_2` and `MAIL_TO_3` into the run; create a
+  secret with one of those names and a subscription can reference it. (Another name needs
+  one extra line in `daily.yml`.) A literal address also works if you don't mind it being
+  visible.
 - **`include_unknown`** decides what happens when a field can't be read off the page. Not
   every agency publishes the EPC or the plot size, and `true` keeps those listings rather
   than silently dropping them. Set it to `false` for anything non-negotiable. The
@@ -153,7 +154,7 @@ One-time setup on GitHub:
 | `SMTP_USER` | your Gmail address |
 | `SMTP_PASSWORD` | the app password |
 | `MAIL_TO` | where the default digest goes |
-| `MAIL_TO_<NAME>` | any other recipient a subscription refers to |
+| `MAIL_TO_PARTNER`, `MAIL_TO_2`, `MAIL_TO_3` | other recipients a subscription refers to (optional) |
 | `SMTP_HOST`, `SMTP_PORT`, `MAIL_FROM` | optional; sensible defaults |
 
 3. Run the workflow once by hand from the Actions tab. The first run seeds the state and

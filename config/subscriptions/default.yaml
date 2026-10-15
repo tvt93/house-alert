@@ -10,7 +10,8 @@ name: Standaard
 
 # Recipients. "$NAME" reads the address from an environment variable or a
 # GitHub Actions secret of that name, so the address itself never sits in the
-# repository. A plain address also works, but remember this repo is public.
+# repository. The workflow knows MAIL_TO, MAIL_TO_PARTNER, MAIL_TO_2 and
+# MAIL_TO_3. A plain address also works, but remember this repo is public.
 to:
   - $MAIL_TO
 

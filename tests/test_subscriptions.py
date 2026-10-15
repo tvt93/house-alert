@@ -1,5 +1,3 @@
-import json
-
 import pytest
 
 from house_alert.config import ConfigError, Criteria, load_subscriptions, resolve_recipient
@@ -18,7 +16,8 @@ def test_recipient_resolution(monkeypatch):
 
 def test_load_subscriptions(tmp_path, monkeypatch):
     monkeypatch.setenv("MAIL_TO", "a@example.com, b@example.com")
-    monkeypatch.setenv("HOUSE_ALERT_SECRETS", json.dumps({"MAIL_TO_PARTNER": "p@example.com"}))
+    monkeypatch.setenv("MAIL_TO_PARTNER", "p@example.com")
+    monkeypatch.setenv("MAIL_TO_UNSET", "")          # listed in the workflow but no secret set
     (tmp_path / "default.yaml").write_text(
         "name: Standaard\nto: [$MAIL_TO]\nprice: {max: 400000}\npostcodes: [9000, '90']\n",
         encoding="utf-8")

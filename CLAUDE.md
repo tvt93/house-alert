@@ -49,7 +49,9 @@ subscription. Python, no services, no database; the state is JSON files in git.
 - **Mail covers the queue, not the run.** `Listing.mailed` is set by a mailing run; the
   midnight and noon runs pass `--no-email` and leave new listings queued for the morning.
 - **Email addresses never go in files.** The repo is public (Pages on a free plan).
-  Subscriptions say `$MAIL_TO`; the workflow passes all secrets as `HOUSE_ALERT_SECRETS`.
+  Subscriptions say `$MAIL_TO`; the workflow maps each recipient secret to an env var by
+  name. Never pass `toJSON(secrets)`: GitHub's workflow protections hold such runs for
+  manual approval, which silently kills the schedule.
 - **Every real-world parsing trap gets a regression test** using the markup shape that
   actually caused it. See `tests/test_location.py`, `tests/test_index_pages.py`,
   `tests/test_street.py` and the price-then-postcode case in `tests/test_extract.py`.

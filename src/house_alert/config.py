@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import logging
 import os
 import re
@@ -143,24 +142,13 @@ def resolve_recipient(raw: str, secrets: dict[str, str] | None = None) -> str | 
     return value.strip() or None
 
 
-def _secrets_from_env() -> dict[str, str]:
-    """GitHub Actions can hand over every secret at once as JSON, so a
-    subscription can name any secret without the workflow listing each one."""
-    raw = os.environ.get("HOUSE_ALERT_SECRETS", "")
-    if not raw:
-        return {}
-    try:
-        data = json.loads(raw)
-    except json.JSONDecodeError:
-        return {}
-    return {k: str(v) for k, v in data.items() if isinstance(data, dict)}
-
-
-def load_subscriptions(directory: Path | None = None) -> list[Subscription]:
+def load_subscriptions(directory: Path | None = None,
+                       secrets: dict[str, str] | None = None) -> list[Subscription]:
+    """Every subscription file. `$NAME` recipients resolve from the environment
+    (the workflow maps each recipient secret to a variable of the same name)."""
     directory = directory or CONFIG_DIR / "subscriptions"
     if not directory.is_dir():
         raise ConfigError(f"subscriptions directory not found: {directory}")
-    secrets = _secrets_from_env()
     subs: list[Subscription] = []
     for path in sorted(list(directory.glob("*.yaml")) + list(directory.glob("*.yml"))):
         raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}

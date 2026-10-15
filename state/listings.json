@@ -365,7 +365,7 @@
    "lon": 3.3385,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "fd01645be94850f2"
   },
@@ -1204,7 +1204,7 @@
    "lon": 3.2196735,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "f45f86c2fba587ad"
   },
@@ -1944,7 +1944,7 @@
    "lon": 3.2649,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "eaf889256d666f81"
   },
@@ -2078,7 +2078,7 @@
    "lon": 3.2062267,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "e8f378c73636493e"
   },
@@ -2264,7 +2264,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "e55a7534040d64ff"
   },
@@ -2802,7 +2802,7 @@
    "lon": 3.2649,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "e129e81cecb387a7"
   },
@@ -5056,7 +5056,7 @@
    "lon": 3.2002842,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "c8c8757d6b02ec67"
   },
@@ -5983,7 +5983,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "bf2ae748eca3fbe3"
   },
@@ -8285,6 +8285,32 @@
    "id": "a7623d3aefa9fdb7"
   },
   {
+   "url": "https://www.landbergh.be/te-koop/woning-in-meulebeke-4482503",
+   "source": "Landbergh",
+   "region": "gent",
+   "title": "Woning in Meulebeke | Landbergh",
+   "city": "Meulebeke",
+   "postal_code": "8760",
+   "street": "Eeckbosstraat 2",
+   "price": 1200000,
+   "property_type": "commercial",
+   "bedrooms": 4,
+   "living_area_m2": 319,
+   "plot_area_m2": 319,
+   "epc_kwh": 290,
+   "image_url": "https://www.landbergh.be/imager/unitimages/4482503/561887/be399182c7543eb788366fe318b69deeec51ad132a4ed2b71afb1eacb9722717_a6c5141cc54bf13eb3cff9f60a7e5c1b.jpg?mtime=1792068013",
+   "description": "Landbergh is een vastgoedkantoor in Gentbrugge, gespecialiseerd in de verkoop en verhuur van bestaand en nieuwbouwvastgoed. Ontdek ons aanbod en…",
+   "matched_keywords": [],
+   "first_seen": "2026-10-15",
+   "lat": 50.9492597,
+   "lon": 3.3261902,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-10-15",
+   "mailed": false,
+   "id": "a75425a1dac61119"
+  },
+  {
    "url": "https://fundament.be/nl/aanbod/4451324/woning-te-koop-in-8530-harelbeke",
    "source": "Fundament",
    "region": "kortrijk",
@@ -8910,7 +8936,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "a1ccea0cd05e63af"
   },
@@ -8988,7 +9014,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "a18c099d666bc9c9"
   },
@@ -9406,7 +9432,7 @@
    "lon": 3.0444054,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "9dfd9efe17453d79"
   },
@@ -9902,7 +9928,7 @@
    "lon": 3.205398,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "98c7e4a055d0d5c4"
   },
@@ -9928,7 +9954,7 @@
    "lon": 3.3157396,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "9894e3e281dd9575"
   },
@@ -10247,7 +10273,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "95a200e302c52f01"
   },
@@ -11838,7 +11864,7 @@
    "lon": 3.2036449,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "8356a66660c7c872"
   },
@@ -12736,7 +12762,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "79a279672def7374"
   },
@@ -12998,7 +13024,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "77e635e8f2a0ca49"
   },
@@ -13684,7 +13710,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "70e0796b193b6862"
   },
@@ -13944,7 +13970,7 @@
    "lon": 3.2375,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "6d7f9fee6f7bb9e2"
   },
@@ -14522,7 +14548,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "6873b46f6f4d3b09"
   },
@@ -15707,7 +15733,7 @@
    "lon": 3.2134065,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "5db25be1c81d505e"
   },
@@ -16426,6 +16452,32 @@
    "id": "58bce5eb3f64ff41"
   },
   {
+   "url": "https://dwimmo.be/nl/woning/te-koop/ledeberg/4410829/",
+   "source": "DW Immo",
+   "region": "gent",
+   "title": "Ruime herenwoning van 275 m² met 4 slaapkamers en praktijkruimte",
+   "city": "Ledeberg",
+   "postal_code": "9050",
+   "street": "Brusselsesteenweg 89",
+   "price": 499000,
+   "property_type": "commercial",
+   "bedrooms": 4,
+   "living_area_m2": 275,
+   "plot_area_m2": 275,
+   "epc_kwh": 453,
+   "image_url": "https://dwimmo.be/fortissimmo/images/4410829/e726984f2dbe621f6b6180533f6638e2f36d385e18ee5c7ab3cc08842ac2de5f.jpg",
+   "description": "Op wandelafstand van het centrum van Ledeberg vindt u deze ruime herenwoning met een bewoonbare oppervlakte van 275 m². Dankzij de praktische indeling en de ...",
+   "matched_keywords": [],
+   "first_seen": "2026-10-15",
+   "lat": 51.0403792,
+   "lon": 3.7440323,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-10-15",
+   "mailed": false,
+   "id": "583b0397f9f1b858"
+  },
+  {
    "url": "https://www.landbergh.be/te-koop/appartement-in-eke-4470494",
    "source": "Landbergh",
    "region": "gent",
@@ -16951,7 +17003,7 @@
    "lon": 3.0385,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "5356c84614e6671a"
   },
@@ -18165,7 +18217,7 @@
    "lon": 3.230591,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "480721d33aa840f3"
   },
@@ -19204,7 +19256,7 @@
    "lon": 3.2139009,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "3dd953def235174b"
   },
@@ -20416,7 +20468,7 @@
    "lon": 3.2097069,
    "geo": "address",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "31aa2e5466b520dd"
   },
@@ -21455,6 +21507,32 @@
    "id": "27b3be5399bba4d5"
   },
   {
+   "url": "https://dwimmo.be/nl/restaurant/te-koop/hamme-(9220)/4360892/",
+   "source": "DW Immo",
+   "region": "gent",
+   "title": "Uniek restaurant met woonst te koop op toplocatie in het groen te Hamme",
+   "city": "Hamme",
+   "postal_code": "9220",
+   "street": "",
+   "price": null,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": 560,
+   "plot_area_m2": 3774,
+   "epc_kwh": null,
+   "image_url": "https://dwimmo.be/fortissimmo/images/4360892/d71b9677eece869fbb926d7f8984dc50a1a46321bfad31b72443058c7499a163.jpg",
+   "description": "Op de rand van het prachtige natuurgebied ‘Bunt’ bevindt zich deze uitzonderlijke horecazaak, die na maar liefst 26 jaar succesvolle uitbating op zoek is naa...",
+   "matched_keywords": [],
+   "first_seen": "2026-10-15",
+   "lat": 51.0691,
+   "lon": 4.1614,
+   "geo": "postcode",
+   "status": "available",
+   "checked": "2026-10-15",
+   "mailed": false,
+   "id": "27298bc5f8752d0d"
+  },
+  {
    "url": "https://www.landbergh.be/te-koop/appartement-in-deinze-4401637",
    "source": "Landbergh",
    "region": "gent",
@@ -21741,7 +21819,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "2499be02b20be1de"
   },
@@ -21925,7 +22003,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "2194f9d872947a05"
   },
@@ -22269,7 +22347,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "1b2a7f1ce4350f9a"
   },
@@ -22295,7 +22373,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "1aa7783db11493dd"
   },
@@ -23981,7 +24059,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "",
+   "checked": "2026-10-15",
    "mailed": true,
    "id": "0a191138102ebef6"
   },

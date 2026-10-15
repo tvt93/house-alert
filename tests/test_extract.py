@@ -14,6 +14,15 @@ def test_num_handles_belgian_formatting():
     assert _num("op aanvraag") is None
 
 
+def test_price_followed_by_postcode_is_not_swallowed():
+    # "€ 295.000 9000 Gent": the postcode must not become a thousands group.
+    html = "<html><body><h1>Woning</h1><p>Vraagprijs: € 295.000 9000 Gent</p></body></html>"
+    listing = extract_listing("https://x.be/te-koop/1", html, source="X")
+    assert listing is not None
+    assert listing.price == 295000
+    assert listing.postal_code == "9000"
+
+
 def test_listing_url_detection():
     assert looks_like_listing_url("https://x.be/te-koop/woning-gent-123")
     assert looks_like_listing_url("https://x.be/nl/pand/456")

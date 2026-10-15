@@ -8,6 +8,7 @@ individual site still sees roughly one request per second.
 from __future__ import annotations
 
 import logging
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
@@ -96,7 +97,26 @@ def scan_agency(
             continue
         result.listings.append(listing)
 
+    strip_shared_street(result.listings)
     return result
+
+
+def strip_shared_street(listings: list[Listing]) -> int:
+    """Blank a street that most of an agency's listings share.
+
+    One house has one address; if the same street and number turns up on
+    nearly every page of a site it is the office, printed somewhere the chrome
+    detector did not look. Returns how many listings were cleared.
+    """
+    counts = Counter(l.street.lower() for l in listings if l.street)
+    cleared = 0
+    for street, n in counts.items():
+        if n >= 3 and n >= 0.4 * len(listings):
+            for l in listings:
+                if l.street.lower() == street:
+                    l.street = ""
+                    cleared += 1
+    return cleared
 
 
 def scan(

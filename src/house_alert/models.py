@@ -44,6 +44,7 @@ class Listing:
     title: str = ""
     city: str = ""
     postal_code: str = ""
+    street: str = ""                 # "Kerkstraat 12" - only when read with confidence
     price: int | None = None
     property_type: PropertyType = "unknown"
     bedrooms: int | None = None
@@ -54,6 +55,10 @@ class Listing:
     description: str = ""
     # Filled in by the pipeline, not the scrapers.
     matched_keywords: list[str] = field(default_factory=list)
+    first_seen: str = ""             # ISO date the listing first appeared in a scan
+    lat: float | None = None
+    lon: float | None = None
+    geo: str = ""                    # "address" | "postcode" | "" (not located)
 
     @property
     def id(self) -> str:
@@ -68,7 +73,10 @@ class Listing:
     @property
     def location_display(self) -> str:
         bits = [b for b in (self.postal_code, self.city) if b]
-        return " ".join(bits)
+        place = " ".join(bits)
+        if self.street and place:
+            return f"{self.street}, {place}"
+        return self.street or place
 
     def facts(self) -> list[tuple[str, str]]:
         """Key/value pairs to show on the email card, skipping unknowns."""
@@ -87,3 +95,8 @@ class Listing:
         d = asdict(self)
         d["id"] = self.id
         return d
+
+    @classmethod
+    def from_dict(cls, raw: dict[str, Any]) -> "Listing":
+        known = {f for f in cls.__dataclass_fields__}
+        return cls(**{k: v for k, v in raw.items() if k in known})

@@ -34,7 +34,7 @@ class MailSettings:
     recipients: list[str]
 
     @classmethod
-    def from_env(cls) -> "MailSettings":
+    def from_env(cls, require_recipients: bool = True) -> "MailSettings":
         user = os.environ.get("SMTP_USER", "").strip()
         password = os.environ.get("SMTP_PASSWORD", "").strip()
         recipients = [
@@ -44,7 +44,7 @@ class MailSettings:
             name for name, value in (
                 ("SMTP_USER", user),
                 ("SMTP_PASSWORD", password),
-                ("MAIL_TO", recipients),
+                ("MAIL_TO", recipients if require_recipients else True),
             ) if not value
         ]
         if missing:
@@ -62,20 +62,25 @@ class MailSettings:
         )
 
 
-def build_message(subject: str, html: str, text: str, settings: MailSettings) -> EmailMessage:
+def build_message(subject: str, html: str, text: str, settings: MailSettings,
+                  recipients: list[str] | None = None) -> EmailMessage:
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = formataddr(("house-alert", settings.sender))
-    msg["To"] = ", ".join(settings.recipients)
+    msg["To"] = ", ".join(recipients or settings.recipients)
     msg["Date"] = formatdate(localtime=True)
     msg.set_content(text)
     msg.add_alternative(html, subtype="html")
     return msg
 
 
-def send(subject: str, html: str, text: str, settings: MailSettings | None = None) -> None:
-    settings = settings or MailSettings.from_env()
-    msg = build_message(subject, html, text, settings)
+def send(subject: str, html: str, text: str, settings: MailSettings | None = None,
+         recipients: list[str] | None = None) -> None:
+    """Deliver one digest. `recipients` overrides MAIL_TO; subscriptions use it."""
+    settings = settings or MailSettings.from_env(require_recipients=not recipients)
+    if not (recipients or settings.recipients):
+        raise MailConfigError("no recipients")
+    msg = build_message(subject, html, text, settings, recipients)
 
     if settings.port == 465:
         with smtplib.SMTP_SSL(settings.host, settings.port, timeout=30) as smtp:

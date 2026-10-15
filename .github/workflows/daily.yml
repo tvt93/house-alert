@@ -11,7 +11,8 @@ on:
         type: boolean
         default: false
 
-# The run commits the updated state file back to the repo.
+# The run commits the updated state and the site data back to the repo;
+# GitHub Pages then redeploys docs/ on its own.
 permissions:
   contents: write
 
@@ -22,7 +23,7 @@ concurrency:
 jobs:
   digest:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +35,7 @@ jobs:
 
       - run: pip install -e .
 
-      - name: Scan and email
+      - name: Scan, locate, email, export
         env:
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
@@ -42,6 +43,10 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           MAIL_FROM: ${{ secrets.MAIL_FROM }}
           MAIL_TO: ${{ secrets.MAIL_TO }}
+          # Every secret, so a subscription can name any "$MAIL_TO_..." secret
+          # without this file having to list it.
+          HOUSE_ALERT_SECRETS: ${{ toJSON(secrets) }}
+          HOUSE_ALERT_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
         run: |
           house-alert -v run \
             ${{ inputs.dry_run && '--dry-run' || '' }} \
@@ -56,15 +61,16 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
-      - name: Commit updated state
+      - name: Commit updated state and site data
         if: ${{ !inputs.dry_run }}
         run: |
-          if git diff --quiet -- state/; then
-            echo "state unchanged"
+          if git diff --quiet -- state/ docs/listings.json; then
+            echo "nothing changed"
             exit 0
           fi
           git config user.name  "house-alert[bot]"
           git config user.email "house-alert@users.noreply.github.com"
-          git add state/
-          git commit -m "chore(state): record listings seen on $(date -u +%F)"
+          git add state/ docs/listings.json
+          git commit -m "chore(state): listings seen on $(date -u +%F)"
+          git pull --rebase
           git push

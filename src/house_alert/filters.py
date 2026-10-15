@@ -45,6 +45,12 @@ def evaluate(listing: Listing, criteria: Criteria) -> Verdict:
             shown = "unknown" if value is None else value
             return Verdict(listing, False, f"{label} {shown} outside range")
 
+    if criteria.postcodes:
+        if not listing.postal_code:
+            return Verdict(listing, False, "postcode unknown")
+        if not any(listing.postal_code.startswith(p) for p in criteria.postcodes):
+            return Verdict(listing, False, f"postcode {listing.postal_code} not wanted")
+
     where = f"{listing.city} {listing.postal_code} {listing.title}".lower()
     if criteria.include_municipalities:
         if not any(m in where for m in criteria.include_municipalities):

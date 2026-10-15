@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import json
+import logging
 import os
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -10,6 +13,8 @@ from typing import Any
 import yaml
 
 from .models import Agency
+
+log = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_DIR = Path(os.environ.get("HOUSE_ALERT_CONFIG_DIR", REPO_ROOT / "config"))
@@ -53,6 +58,8 @@ class Criteria:
     exclude_municipalities: list[str] = field(default_factory=list)
     exclude_keywords: list[str] = field(default_factory=list)
     highlight_keywords: list[str] = field(default_factory=list)
+    # Exact postcodes ("9000") or prefixes ("90" = 9000-9099). Empty = any.
+    postcodes: list[str] = field(default_factory=list)
 
     @property
     def epc(self) -> Range:
@@ -77,12 +84,7 @@ def _str_list(raw: Any) -> list[str]:
     return [str(x) for x in raw if x is not None]
 
 
-def load_criteria(path: Path | None = None) -> Criteria:
-    path = path or CONFIG_DIR / "criteria.yaml"
-    if not path.exists():
-        raise ConfigError(f"criteria file not found: {path}")
-    raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-
+def criteria_from_dict(raw: dict[str, Any]) -> Criteria:
     epc = raw.get("epc") or {}
     muni = raw.get("municipalities") or {}
     return Criteria(
@@ -97,7 +99,93 @@ def load_criteria(path: Path | None = None) -> Criteria:
         exclude_municipalities=[m.lower() for m in _str_list(muni.get("exclude"))],
         exclude_keywords=[k.lower() for k in _str_list(raw.get("exclude_keywords"))],
         highlight_keywords=[k.lower() for k in _str_list(raw.get("highlight_keywords"))],
+        postcodes=[str(p).strip() for p in _str_list(raw.get("postcodes"))],
     )
+
+
+def load_criteria(path: Path | None = None) -> Criteria:
+    """Criteria from one YAML file. Subscription files also work here: the
+    `name` and `to` keys are simply ignored."""
+    path = path or CONFIG_DIR / "subscriptions" / "default.yaml"
+    if not path.exists():
+        raise ConfigError(f"criteria file not found: {path}")
+    raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    return criteria_from_dict(raw)
+
+
+# ----------------------------------------------------------- subscriptions
+
+@dataclass
+class Subscription:
+    """One daily email: who gets it and what they want to see in it."""
+
+    name: str
+    recipients: list[str]
+    criteria: Criteria
+    path: Path | None = None
+    unresolved: list[str] = field(default_factory=list)   # "$SECRET" names with no value
+
+    @property
+    def deliverable(self) -> bool:
+        return bool(self.recipients)
+
+
+def resolve_recipient(raw: str, secrets: dict[str, str] | None = None) -> str | None:
+    """A recipient is an address, or `$NAME` for an environment variable or
+    Actions secret of that name - which is how an address stays out of a
+    public repository."""
+    raw = raw.strip()
+    m = re.fullmatch(r"\$\{?([A-Z][A-Z0-9_]*)\}?", raw)
+    if not m:
+        return raw or None
+    name = m.group(1)
+    value = os.environ.get(name) or (secrets or {}).get(name) or ""
+    return value.strip() or None
+
+
+def _secrets_from_env() -> dict[str, str]:
+    """GitHub Actions can hand over every secret at once as JSON, so a
+    subscription can name any secret without the workflow listing each one."""
+    raw = os.environ.get("HOUSE_ALERT_SECRETS", "")
+    if not raw:
+        return {}
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        return {}
+    return {k: str(v) for k, v in data.items() if isinstance(data, dict)}
+
+
+def load_subscriptions(directory: Path | None = None) -> list[Subscription]:
+    directory = directory or CONFIG_DIR / "subscriptions"
+    if not directory.is_dir():
+        raise ConfigError(f"subscriptions directory not found: {directory}")
+    secrets = _secrets_from_env()
+    subs: list[Subscription] = []
+    for path in sorted(list(directory.glob("*.yaml")) + list(directory.glob("*.yml"))):
+        raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        if not isinstance(raw, dict):
+            raise ConfigError(f"{path.name}: expected a mapping at the top level")
+        if not raw.get("enabled", True):
+            continue
+        recipients: list[str] = []
+        unresolved: list[str] = []
+        for entry in _str_list(raw.get("to")):
+            value = resolve_recipient(entry, secrets)
+            if value:
+                for addr in value.split(","):
+                    if addr.strip():
+                        recipients.append(addr.strip())
+            else:
+                unresolved.append(entry)
+        subs.append(Subscription(
+            name=str(raw.get("name") or path.stem),
+            recipients=recipients,
+            criteria=criteria_from_dict(raw),
+            path=path,
+            unresolved=unresolved,
+        ))
+    return subs
 
 
 def load_agencies(

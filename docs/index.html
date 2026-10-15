@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huizen te koop</title>
+<meta name="description" content="Nieuwe woningen bij vastgoedkantoren rond Gent en Kortrijk, in lijst en op kaart, met filters en een dagelijkse mail.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232f5d3a' d='M12 3 2 12h3v8h5v-5h4v5h5v-8h3z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
+<style>
+:root {
+  --bg: #f4f4f1;
+  --surface: #ffffff;
+  --surface-2: #ecece8;
+  --border: #dedcd6;
+  --text: #1c1c1a;
+  --muted: #6b6b66;
+  --faint: #9a9a94;
+  --accent: #2f5d3a;
+  --accent-text: #ffffff;
+  --accent-soft: #e4efe6;
+  --warn-soft: #f6ecd9;
+  --warn-text: #7a5a1c;
+  --shadow: 0 1px 2px rgba(0,0,0,.06), 0 6px 20px rgba(0,0,0,.05);
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15161a; --surface: #1e2025; --surface-2: #272a30; --border: #34373e;
+    --text: #ecebe6; --muted: #a2a39c; --faint: #6f706a;
+    --accent: #7fbf8f; --accent-text: #0f1a12; --accent-soft: #223328;
+    --warn-soft: #3a3020; --warn-text: #e5c686;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15161a; --surface: #1e2025; --surface-2: #272a30; --border: #34373e;
+  --text: #ecebe6; --muted: #a2a39c; --faint: #6f706a;
+  --accent: #7fbf8f; --accent-text: #0f1a12; --accent-soft: #223328;
+  --warn-soft: #3a3020; --warn-text: #e5c686;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text); font-family: var(--font);
+  font-size: 15px; line-height: 1.45; display: flex; flex-direction: column;
+}
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+/* ---------------------------------------------------------------- header */
+.top {
+  display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 20;
+}
+.brand { font-weight: 700; font-size: 17px; letter-spacing: -.2px; white-space: nowrap; }
+.brand small { font-weight: 500; color: var(--muted); font-size: 13px; margin-left: 8px; }
+.spacer { flex: 1; }
+.seg { display: inline-flex; background: var(--surface-2); border-radius: 999px; padding: 3px; }
+.seg button {
+  border: 0; background: transparent; padding: 6px 14px; border-radius: 999px;
+  color: var(--muted); font-weight: 600; font-size: 14px;
+}
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+.btn {
+  border: 1px solid var(--border); background: var(--surface); border-radius: 999px;
+  padding: 7px 14px; font-weight: 600; font-size: 14px; white-space: nowrap;
+}
+.btn.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--muted); }
+.btn.icon { padding: 7px 10px; }
+
+/* ---------------------------------------------------------------- layout */
+.body { display: flex; flex: 1; min-height: 0; }
+.filters {
+  width: 280px; flex: none; padding: 16px; overflow-y: auto;
+  background: var(--surface); border-right: 1px solid var(--border);
+}
+main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+.view { display: none; flex: 1; min-height: 0; }
+.view.active { display: flex; flex-direction: column; }
+
+/* --------------------------------------------------------------- filters */
+.filters h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--faint); margin: 18px 0 8px; }
+.filters h2:first-child { margin-top: 0; }
+.row { display: flex; gap: 8px; }
+.row > * { flex: 1; min-width: 0; }
+.field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.filters input[type=number], .filters input[type=text], .filters select, dialog input, dialog select {
+  width: 100%; padding: 7px 9px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg);
+}
+.filters input:focus, dialog input:focus, dialog select:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.chip span {
+  display: inline-block; padding: 5px 11px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+}
+.chip input:checked + span { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.chip input:focus-visible + span { outline: 2px solid var(--accent); }
+.check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); margin-top: 10px; }
+.check input { width: 16px; height: 16px; accent-color: var(--accent); }
+.filters .actions { display: flex; gap: 8px; margin-top: 18px; }
+.hint { font-size: 12px; color: var(--faint); margin: 6px 0 0; }
+
+/* ------------------------------------------------------------------ list */
+.toolbar {
+  display: flex; align-items: center; gap: 12px; padding: 10px 16px; font-size: 13px; color: var(--muted);
+}
+.toolbar select { padding: 5px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); }
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+  padding: 0 16px 24px; overflow-y: auto;
+}
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow);
+}
+.card .photo { aspect-ratio: 3 / 2; background: var(--surface-2); display: block; position: relative; }
+.card .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card .photo .nophoto { position: absolute; inset: 0; display: grid; place-items: center; color: var(--faint); font-size: 13px; }
+.badge {
+  position: absolute; top: 10px; left: 10px; background: var(--accent); color: var(--accent-text);
+  font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; letter-spacing: .3px;
+}
+.badge.soft { background: var(--surface); color: var(--text); }
+.card .body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.price { font-size: 18px; font-weight: 700; }
+.title { font-weight: 600; line-height: 1.3; }
+.title a { text-decoration: none; }
+.title a:hover { text-decoration: underline; }
+.where { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.approx { color: var(--warn-text); background: var(--warn-soft); border-radius: 999px; padding: 1px 7px; font-size: 11px; font-weight: 600; }
+.facts { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; font-size: 13px; }
+.facts b { font-weight: 600; }
+.facts span { color: var(--muted); }
+.meta { margin-top: auto; padding-top: 10px; font-size: 12px; color: var(--faint); display: flex; justify-content: space-between; gap: 8px; }
+.meta a { color: var(--muted); }
+.more { margin: 0 16px 24px; align-self: center; }
+.empty { padding: 48px 16px; text-align: center; color: var(--muted); }
+
+/* ------------------------------------------------------------------- map */
+#mapEl { flex: 1; min-height: 0; }
+.leaflet-container { background: var(--surface-2); font: inherit; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+.leaflet-popup-content { margin: 0; width: 240px !important; }
+.pop { font-size: 13px; }
+.pop img { width: 100%; aspect-ratio: 3/2; object-fit: cover; display: block; border-radius: 10px 10px 0 0; }
+.pop .pb { padding: 10px 12px 12px; }
+.pop .price { font-size: 15px; }
+.pop .where { margin-top: 2px; }
+.pop a.go { display: inline-block; margin-top: 8px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.marker-cluster { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+.marker-cluster div { background: var(--accent); color: var(--accent-text); font-weight: 700; font-family: var(--font); }
+.leaflet-bar a { background: var(--surface); color: var(--text); border-bottom-color: var(--border); }
+.legend {
+  position: absolute; right: 12px; bottom: 24px; z-index: 500; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; font-size: 12px; color: var(--muted);
+  display: flex; flex-direction: column; gap: 4px; box-shadow: var(--shadow);
+}
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; background: var(--accent); }
+.legend i.ap { background: transparent; border: 2px dashed var(--accent); }
+.mapwrap { position: relative; flex: 1; display: flex; min-height: 0; }
+
+/* ---------------------------------------------------------------- dialog */
+dialog {
+  border: 1px solid var(--border); border-radius: 16px; background: var(--surface); color: var(--text);
+  padding: 0; width: min(560px, calc(100vw - 32px)); box-shadow: var(--shadow);
+}
+dialog::backdrop { background: rgba(0,0,0,.4); }
+dialog .dh { padding: 18px 20px 0; }
+dialog h3 { margin: 0 0 4px; font-size: 18px; }
+dialog p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+dialog .db { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 12px; }
+dialog textarea {
+  width: 100%; min-height: 200px; font-family: var(--mono); font-size: 12px; padding: 10px;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--bg); resize: vertical;
+}
+dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.summary { font-size: 13px; background: var(--accent-soft); color: var(--accent); border-radius: 8px; padding: 8px 10px; }
+.note { font-size: 12px; color: var(--faint); }
+
+/* ---------------------------------------------------------------- mobile */
+.only-mobile { display: none; }
+@media (max-width: 760px) {
+  .top { padding: 8px 12px; gap: 8px; }
+  .brand small { display: none; }
+  .only-mobile { display: inline-flex; }
+  .filters {
+    position: fixed; inset: 49px 0 0 0; width: auto; z-index: 15; transform: translateY(-110%);
+    transition: transform .2s ease; border-right: 0;
+  }
+  .filters.open { transform: none; }
+  .grid { grid-template-columns: 1fr; padding: 0 16px 24px; }
+  .legend { bottom: 12px; }
+  #mailBtn span { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Huizen <small id="stats">laden…</small></div>
+  <div class="spacer"></div>
+  <div class="seg" role="group" aria-label="Weergave">
+    <button type="button" data-view="list" aria-pressed="true">Lijst</button>
+    <button type="button" data-view="map" aria-pressed="false">Kaart</button>
+  </div>
+  <button type="button" class="btn only-mobile" id="filterToggle">Filters</button>
+  <button type="button" class="btn primary" id="mailBtn">✉ <span>Dagelijkse mail</span></button>
+  <button type="button" class="btn ghost icon" id="themeBtn" title="Licht/donker">◐</button>
+</header>
+
+<div class="body">
+  <aside class="filters" id="filters">
+    <h2>Prijs (€)</h2>
+    <div class="row">
+      <div class="field"><label for="priceMin">min</label><input type="number" id="priceMin" min="0" step="10000" placeholder="0"></div>
+      <div class="field"><label for="priceMax">max</label><input type="number" id="priceMax" min="0" step="10000" placeholder="∞"></div>
+    </div>
+
+    <h2>Postcode</h2>
+    <div class="field"><input type="text" id="postcodes" placeholder="9000, 9030, 85…" autocomplete="off"></div>
+    <p class="hint">Komma-gescheiden. Een prefix zoals <b>85</b> dekt 8500 tot 8599.</p>
+
+    <h2>Type</h2>
+    <div class="chips" id="types">
+      <label class="chip"><input type="checkbox" value="house" checked><span>Woning</span></label>
+      <label class="chip"><input type="checkbox" value="apartment"><span>Appartement</span></label>
+      <label class="chip"><input type="checkbox" value="land"><span>Grond</span></label>
+      <label class="chip"><input type="checkbox" value="commercial"><span>Handel</span></label>
+      <label class="chip"><input type="checkbox" value="unknown" checked><span>Onbekend</span></label>
+    </div>
+
+    <h2>Grondoppervlakte (m²)</h2>
+    <div class="row">
+      <div class="field"><label for="plotMin">min</label><input type="number" id="plotMin" min="0" step="50" placeholder="0"></div>
+      <div class="field"><label for="plotMax">max</label><input type="number" id="plotMax" min="0" step="50" placeholder="∞"></div>
+    </div>
+
+    <h2>Bewoonbare oppervlakte (m²)</h2>
+    <div class="row">
+      <div class="field"><label for="livingMin">min</label><input type="number" id="livingMin" min="0" step="10" placeholder="0"></div>
+      <div class="field"><label for="livingMax">max</label><input type="number" id="livingMax" min="0" step="10" placeholder="∞"></div>
+    </div>
+
+    <h2>Slaapkamers</h2>
+    <div class="row">
+      <div class="field"><label for="bedMin">min</label><input type="number" id="bedMin" min="0" step="1" placeholder="0"></div>
+      <div class="field"><label for="bedMax">max</label><input type="number" id="bedMax" min="0" step="1" placeholder="∞"></div>
+    </div>
+
+    <h2>Nieuw sinds</h2>
+    <div class="field">
+      <select id="days">
+        <option value="">Alles</option>
+        <option value="1">Vandaag en gisteren</option>
+        <option value="3">Laatste 3 dagen</option>
+        <option value="7">Laatste 7 dagen</option>
+        <option value="30">Laatste 30 dagen</option>
+      </select>
+    </div>
+
+    <h2>Regio en kantoor</h2>
+    <div class="row">
+      <div class="field">
+        <select id="region">
+          <option value="">Alle regio's</option>
+          <option value="gent">Gent</option>
+          <option value="kortrijk">Kortrijk</option>
+        </select>
+      </div>
+      <div class="field"><input type="text" id="agency" placeholder="kantoor…" autocomplete="off"></div>
+    </div>
+
+    <label class="check"><input type="checkbox" id="unknown" checked> Ook woningen tonen waarvan een waarde ontbreekt</label>
+
+    <div class="actions">
+      <button type="button" class="btn" id="reset">Wis filters</button>
+      <button type="button" class="btn primary only-mobile" id="apply">Toon</button>
+    </div>
+  </aside>
+
+  <main>
+    <section class="view active" id="view-list">
+      <div class="toolbar">
+        <span id="count"></span>
+        <span class="spacer"></span>
+        <label>Sorteer
+          <select id="sort">
+            <option value="new">nieuwste eerst</option>
+            <option value="price-asc">prijs ↑</option>
+            <option value="price-desc">prijs ↓</option>
+            <option value="living">bewoonbaar ↓</option>
+            <option value="plot">grond ↓</option>
+          </select>
+        </label>
+      </div>
+      <div class="grid" id="grid"></div>
+      <button type="button" class="btn more" id="more" hidden>Toon meer</button>
+    </section>
+
+    <section class="view" id="view-map">
+      <div class="mapwrap">
+        <div id="mapEl" role="region" aria-label="Kaart"></div>
+        <div class="legend"><span><i></i>exact adres</span><span><i class="ap"></i>bij benadering (postcode of gemeente)</span></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="mailDialog">
+  <div class="dh">
+    <h3>Dagelijkse mail instellen</h3>
+    <p>Elke ochtend één mail met de nieuwe woningen die door de filters hieronder komen. De instelling is een klein bestand in de repository; GitHub opent het al ingevuld, jij klikt enkel op <b>Commit</b>.</p>
+  </div>
+  <div class="db">
+    <div class="row">
+      <div class="field"><label for="subName">Naam</label><input type="text" id="subName" value="Mijn filter" autocomplete="off"></div>
+      <div class="field"><label for="subTo">Ontvanger</label><input type="text" id="subTo" value="$MAIL_TO" autocomplete="off"></div>
+    </div>
+    <p class="note"><b>$MAIL_TO</b> leest het adres uit de GitHub-secret met die naam, zodat je adres niet in de publieke repo staat. Een andere secret (bv. <b>$MAIL_TO_PARTNER</b>) werkt ook zodra je ze aanmaakt onder Settings → Secrets. Een letterlijk e-mailadres mag, maar is dan publiek zichtbaar.</p>
+    <div class="summary" id="subSummary"></div>
+    <textarea id="subYaml" readonly spellcheck="false"></textarea>
+    <div class="df">
+      <button type="button" class="btn" id="subClose">Sluiten</button>
+      <button type="button" class="btn" id="subCopy">Kopieer YAML</button>
+      <a class="btn primary" id="subCreate" href="#" target="_blank" rel="noopener">Maak aan op GitHub →</a>
+    </div>
+  </div>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ------------------------------------------------------------ constants
+  var REPO_FALLBACK = { owner: 'tvt93', repo: 'house-alert' };
+  var TYPE_LABEL = { house: 'Woning', apartment: 'Appartement', land: 'Grond', commercial: 'Handel', unknown: 'Onbekend' };
+  var PAGE = 48;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var all = [];          // every listing from listings.json
+  var shown = [];        // after filters + sort
+  var rendered = 0;
+  var map = null, cluster = null, mapDirty = true;
+
+  // --------------------------------------------------------------- theme
+  var root = document.documentElement;
+  try { var t = localStorage.getItem('theme'); if (t) root.setAttribute('data-theme', t); } catch (e) {}
+  $('themeBtn').addEventListener('click', function () {
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    if (map) setTiles();
+  });
+
+  // ------------------------------------------------------------- helpers
+  function num(v) { var n = parseFloat(v); return isNaN(n) ? null : n; }
+  function euro(v) { return v == null ? 'Prijs op aanvraag' : '€ ' + Math.round(v).toLocaleString('nl-BE'); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function daysSince(iso) {
+    if (!iso) return null;
+    var d = new Date(iso + 'T00:00:00'), now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return Math.round((now - d) / 86400000);
+  }
+  function ago(iso) {
+    var d = daysSince(iso);
+    if (d == null) return '';
+    if (d <= 0) return 'vandaag';
+    if (d === 1) return 'gisteren';
+    if (d < 30) return d + ' dagen geleden';
+    return new Date(iso).toLocaleDateString('nl-BE');
+  }
+  function where(l) {
+    var place = [l.postal_code, l.city].filter(Boolean).join(' ');
+    return l.street && place ? l.street + ', ' + place : (l.street || place);
+  }
+  function facts(l) {
+    var out = [];
+    if (l.bedrooms != null) out.push('<b>' + l.bedrooms + '</b> <span>slk</span>');
+    if (l.living_area_m2 != null) out.push('<b>' + l.living_area_m2 + ' m²</b> <span>bewoonbaar</span>');
+    if (l.plot_area_m2 != null) out.push('<b>' + l.plot_area_m2 + ' m²</b> <span>grond</span>');
+    if (l.epc_kwh != null) out.push('<b>' + l.epc_kwh + '</b> <span>kWh/m²</span>');
+    return out.join('');
+  }
+
+  // ------------------------------------------------------------- filters
+  var F = {
+    ids: ['priceMin', 'priceMax', 'postcodes', 'plotMin', 'plotMax', 'livingMin', 'livingMax',
+          'bedMin', 'bedMax', 'days', 'region', 'agency', 'unknown', 'sort'],
+    read: function () {
+      var types = {};
+      document.querySelectorAll('#types input:checked').forEach(function (i) { types[i.value] = true; });
+      return {
+        priceMin: num($('priceMin').value), priceMax: num($('priceMax').value),
+        postcodes: $('postcodes').value.split(/[,\s;]+/).map(function (s) { return s.trim(); }).filter(function (s) { return /^\d{1,4}$/.test(s); }),
+        types: types, typeCount: Object.keys(types).length,
+        plotMin: num($('plotMin').value), plotMax: num($('plotMax').value),
+        livingMin: num($('livingMin').value), livingMax: num($('livingMax').value),
+        bedMin: num($('bedMin').value), bedMax: num($('bedMax').value),
+        days: num($('days').value), region: $('region').value,
+        agency: $('agency').value.trim().toLowerCase(),
+        unknown: $('unknown').checked, sort: $('sort').value
+      };
+    },
+    toHash: function () {
+      var p = new URLSearchParams();
+      F.ids.forEach(function (id) {
+        var el = $(id), v = el.type === 'checkbox' ? (el.checked ? '' : '0') : el.value;
+        if (v !== '' && !(id === 'sort' && v === 'new')) p.set(id, v);
+      });
+      var types = [].map.call(document.querySelectorAll('#types input:checked'), function (i) { return i.value; });
+      if (types.join(',') !== 'house,unknown') p.set('types', types.join(','));
+      var s = p.toString();
+      history.replaceState(null, '', s ? '#' + s : location.pathname + location.search);
+    },
+    fromHash: function () {
+      if (!location.hash) return;
+      var p = new URLSearchParams(location.hash.slice(1));
+      F.ids.forEach(function (id) {
+        if (!p.has(id)) return;
+        var el = $(id);
+        if (el.type === 'checkbox') el.checked = p.get(id) !== '0'; else el.value = p.get(id);
+      });
+      if (p.has('types')) {
+        var want = p.get('types').split(',');
+        document.querySelectorAll('#types input').forEach(function (i) { i.checked = want.indexOf(i.value) >= 0; });
+      }
+    },
+    reset: function () {
+      F.ids.forEach(function (id) {
+        var el = $(id);
+        if (el.type === 'checkbox') el.checked = true; else el.value = id === 'sort' ? 'new' : '';
+      });
+      document.querySelectorAll('#types input').forEach(function (i) { i.checked = i.value === 'house' || i.value === 'unknown'; });
+    }
+  };
+
+  function inRange(v, min, max, unk) {
+    if (v == null) return unk;
+    return (min == null || v >= min) && (max == null || v <= max);
+  }
+  function passes(l, f) {
+    var unk = f.unknown;
+    if (!inRange(l.price, f.priceMin, f.priceMax, unk)) return false;
+    if (!inRange(l.plot_area_m2, f.plotMin, f.plotMax, unk)) return false;
+    if (!inRange(l.living_area_m2, f.livingMin, f.livingMax, unk)) return false;
+    if (!inRange(l.bedrooms, f.bedMin, f.bedMax, unk)) return false;
+    if (f.typeCount && !f.types[l.property_type || 'unknown']) return false;
+    if (f.postcodes.length) {
+      if (!l.postal_code) { if (!unk) return false; }
+      else if (!f.postcodes.some(function (p) { return l.postal_code.indexOf(p) === 0; })) return false;
+    }
+    if (f.region && l.region !== f.region) return false;
+    if (f.agency && (l.source || '').toLowerCase().indexOf(f.agency) < 0) return false;
+    if (f.days != null) { var d = daysSince(l.first_seen); if (d == null || d > f.days) return false; }
+    return true;
+  }
+  var SORTS = {
+    'new': function (a, b) { return (b.first_seen || '').localeCompare(a.first_seen || '') || a.id.localeCompare(b.id); },
+    'price-asc': function (a, b) { return (a.price == null) - (b.price == null) || a.price - b.price; },
+    'price-desc': function (a, b) { return (a.price == null) - (b.price == null) || b.price - a.price; },
+    'living': function (a, b) { return (a.living_area_m2 == null) - (b.living_area_m2 == null) || b.living_area_m2 - a.living_area_m2; },
+    'plot': function (a, b) { return (a.plot_area_m2 == null) - (b.plot_area_m2 == null) || b.plot_area_m2 - a.plot_area_m2; }
+  };
+
+  function applyFilters() {
+    var f = F.read();
+    shown = all.filter(function (l) { return passes(l, f); }).sort(SORTS[f.sort] || SORTS['new']);
+    F.toHash();
+    $('count').textContent = shown.length + ' van ' + all.length + ' woningen';
+    renderList(true);
+    mapDirty = true;
+    if ($('view-map').classList.contains('active')) renderMap();
+  }
+
+  // ---------------------------------------------------------------- list
+  function card(l) {
+    var fresh = daysSince(l.first_seen);
+    var badge = fresh != null && fresh <= 1 ? '<span class="badge">Nieuw</span>' : '';
+    var photo = l.image_url
+      ? '<img loading="lazy" src="' + esc(l.image_url) + '" alt="" referrerpolicy="no-referrer">'
+      : '<div class="nophoto">geen foto</div>';
+    var approx = l.geo === 'postcode' ? '<span class="approx" title="Straat niet gekend; ligging is het centrum van de postcode">± postcode</span>'
+      : l.geo === 'city' ? '<span class="approx" title="Alleen de gemeente is gekend">± gemeente</span>' : '';
+    return '<article class="card">' +
+      '<a class="photo" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + photo + badge + '</a>' +
+      '<div class="body">' +
+        '<div class="price">' + euro(l.price) + '</div>' +
+        '<div class="title"><a href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.title || l.url) + '</a></div>' +
+        '<div class="where">' + esc(where(l)) + approx + '</div>' +
+        '<div class="facts">' + facts(l) + '</div>' +
+        '<div class="meta"><span>' + esc(l.source) + ' · ' + esc(TYPE_LABEL[l.property_type] || 'Onbekend') + '</span><span>' + ago(l.first_seen) + '</span></div>' +
+      '</div></article>';
+  }
+  function renderList(reset) {
+    var grid = $('grid');
+    if (reset) { grid.innerHTML = ''; rendered = 0; }
+    if (!shown.length) {
+      grid.innerHTML = '<div class="empty">Geen woningen binnen deze filters.' +
+        (all.length ? '' : ' De eerste scan moet nog lopen.') + '</div>';
+      $('more').hidden = true;
+      return;
+    }
+    var slice = shown.slice(rendered, rendered + PAGE);
+    grid.insertAdjacentHTML('beforeend', slice.map(card).join(''));
+    rendered += slice.length;
+    $('more').hidden = rendered >= shown.length;
+    $('more').textContent = 'Toon meer (' + (shown.length - rendered) + ')';
+  }
+  $('more').addEventListener('click', function () { renderList(false); });
+
+  // ----------------------------------------------------------------- map
+  var tiles = null;
+  function isDark() {
+    var t = root.getAttribute('data-theme');
+    return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function setTiles() {
+    if (tiles) map.removeLayer(tiles);
+    tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/' + (isDark() ? 'dark_all' : 'light_all') + '/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19, subdomains: 'abcd',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    }).addTo(map);
+  }
+  function ensureMap() {
+    if (map) return;
+    map = L.map('mapEl', { zoomControl: true, attributionControl: true }).setView([50.95, 3.5], 10);
+    setTiles();
+    cluster = L.markerClusterGroup({ maxClusterRadius: 50, spiderfyOnMaxZoom: true, showCoverageOnHover: false });
+    map.addLayer(cluster);
+  }
+  function popup(l) {
+    var img = l.image_url ? '<img src="' + esc(l.image_url) + '" alt="" referrerpolicy="no-referrer">' : '';
+    var approx = l.geo === 'postcode' ? ' <span class="approx">± postcode</span>' : l.geo === 'city' ? ' <span class="approx">± gemeente</span>' : '';
+    return '<div class="pop">' + img + '<div class="pb">' +
+      '<div class="price">' + euro(l.price) + '</div>' +
+      '<div><b>' + esc(l.title || '') + '</b></div>' +
+      '<div class="where">' + esc(where(l)) + approx + '</div>' +
+      '<div class="facts">' + facts(l) + '</div>' +
+      '<a class="go" href="' + esc(l.url) + '" target="_blank" rel="noopener">Bekijk bij ' + esc(l.source) + ' →</a>' +
+      '</div></div>';
+  }
+  function renderMap() {
+    ensureMap();
+    if (!mapDirty) { map.invalidateSize(); return; }
+    cluster.clearLayers();
+    var accent = getComputedStyle(root).getPropertyValue('--accent').trim() || '#2f5d3a';
+    var pts = [];
+    shown.forEach(function (l) {
+      if (l.lat == null || l.lon == null) return;
+      var exact = l.geo === 'address';
+      var m = L.circleMarker([l.lat, l.lon], {
+        radius: exact ? 8 : 7, color: accent, weight: 2, fillColor: accent,
+        fillOpacity: exact ? 0.85 : 0.25, dashArray: exact ? null : '3 3'
+      });
+      m.bindPopup(popup(l), { maxWidth: 260, closeButton: true });
+      cluster.addLayer(m);
+      pts.push([l.lat, l.lon]);
+    });
+    mapDirty = false;
+    map.invalidateSize();
+    if (pts.length) map.fitBounds(pts, { padding: [30, 30], maxZoom: 14 });
+  }
+
+  // ------------------------------------------------------------- views
+  document.querySelectorAll('.seg button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.seg button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      document.querySelectorAll('.view').forEach(function (v) { v.classList.toggle('active', v.id === 'view-' + b.dataset.view); });
+      if (b.dataset.view === 'map') renderMap();
+      try { localStorage.setItem('view', b.dataset.view); } catch (e) {}
+    });
+  });
+
+  // ------------------------------------------------------- filter events
+  var timer = null;
+  function debounced() { clearTimeout(timer); timer = setTimeout(applyFilters, 180); }
+  $('filters').addEventListener('input', debounced);
+  $('filters').addEventListener('change', debounced);
+  $('sort').addEventListener('change', applyFilters);
+  $('reset').addEventListener('click', function () { F.reset(); applyFilters(); });
+  $('filterToggle').addEventListener('click', function () { $('filters').classList.toggle('open'); });
+  $('apply').addEventListener('click', function () { $('filters').classList.remove('open'); });
+
+  // ---------------------------------------------------------- daily mail
+  function repoInfo() {
+    var host = location.hostname, m = /^([^.]+)\.github\.io$/i.exec(host);
+    var seg = location.pathname.split('/').filter(Boolean)[0];
+    if (m && seg) return { owner: m[1], repo: seg };
+    return REPO_FALLBACK;
+  }
+  function slug(s) {
+    return (s || 'filter').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'filter';
+  }
+  function yq(s) { return "'" + String(s).replace(/'/g, "''") + "'"; }
+  function rangeYaml(key, min, max, unk) {
+    return key + ':\n  min: ' + (min == null ? '' : min) + '\n  max: ' + (max == null ? '' : max) + '\n  include_unknown: ' + (unk ? 'true' : 'false') + '\n';
+  }
+  function buildYaml() {
+    var f = F.read(), name = $('subName').value.trim() || 'Mijn filter', to = $('subTo').value.trim() || '$MAIL_TO';
+    var types = Object.keys(f.types).filter(function (t) { return t !== 'unknown'; });
+    var y = '# Dagelijkse mail, aangemaakt vanuit de overzichtspagina.\n' +
+      '# Elke ochtend: de nieuwe woningen die door deze filters komen.\n\n' +
+      'name: ' + yq(name) + '\n' +
+      'to:\n  - ' + yq(to) + '\n' +
+      'enabled: true\n\n' +
+      'property_types:' + (types.length ? '\n' + types.map(function (t) { return '  - ' + t; }).join('\n') : ' []') + '\n\n' +
+      rangeYaml('price', f.priceMin, f.priceMax, f.unknown) + '\n' +
+      rangeYaml('bedrooms', f.bedMin, f.bedMax, f.unknown) + '\n' +
+      rangeYaml('living_area_m2', f.livingMin, f.livingMax, f.unknown) + '\n' +
+      rangeYaml('plot_area_m2', f.plotMin, f.plotMax, f.unknown) + '\n' +
+      'postcodes:' + (f.postcodes.length ? '\n' + f.postcodes.map(function (p) { return '  - ' + yq(p); }).join('\n') : ' []') + '\n\n' +
+      'municipalities:\n  include: []\n  exclude: []\n\n' +
+      'exclude_keywords:\n  - garagebox\n  - staanplaats\n  - parkeerplaats\n  - opbrengsteigendom\n  - nieuwbouwproject\n  - handelspand\n\n' +
+      'highlight_keywords:\n  - tuin\n  - zuidgericht\n  - te renoveren\n';
+    if (f.region || f.agency) y += '\n# Regio en kantoor zijn alleen filters op de pagina, niet in de mail.\n';
+    return { yaml: y, name: name, f: f, types: types };
+  }
+  function summarize(b) {
+    var f = b.f, bits = [];
+    if (f.priceMin != null || f.priceMax != null) bits.push('prijs ' + (f.priceMin != null ? '≥ ' + euro(f.priceMin) : '') + (f.priceMax != null ? ' ≤ ' + euro(f.priceMax) : ''));
+    if (b.types.length && b.types.length < 4) bits.push(b.types.map(function (t) { return TYPE_LABEL[t].toLowerCase(); }).join('/'));
+    if (f.postcodes.length) bits.push('postcode ' + f.postcodes.join(', '));
+    if (f.plotMin != null || f.plotMax != null) bits.push('grond ' + (f.plotMin || 0) + (f.plotMax != null ? '–' + f.plotMax : '+') + ' m²');
+    if (f.livingMin != null || f.livingMax != null) bits.push('bewoonbaar ' + (f.livingMin || 0) + (f.livingMax != null ? '–' + f.livingMax : '+') + ' m²');
+    if (f.bedMin != null || f.bedMax != null) bits.push((f.bedMin || 0) + (f.bedMax != null ? '–' + f.bedMax : '+') + ' slaapkamers');
+    return bits.length ? 'Mail bevat: ' + bits.join(' · ') : 'Mail bevat: alle nieuwe woningen (geen filters gezet)';
+  }
+  function refreshDialog() {
+    var b = buildYaml(), r = repoInfo();
+    $('subYaml').value = b.yaml;
+    $('subSummary').textContent = summarize(b);
+    $('subCreate').href = 'https://github.com/' + r.owner + '/' + r.repo + '/new/main?filename=' +
+      encodeURIComponent('config/subscriptions/' + slug(b.name) + '.yaml') + '&value=' + encodeURIComponent(b.yaml);
+  }
+  $('mailBtn').addEventListener('click', function () { refreshDialog(); $('mailDialog').showModal(); });
+  $('subClose').addEventListener('click', function () { $('mailDialog').close(); });
+  $('subName').addEventListener('input', refreshDialog);
+  $('subTo').addEventListener('input', refreshDialog);
+  $('subCopy').addEventListener('click', function () {
+    var ta = $('subYaml');
+    var done = function () { $('subCopy').textContent = 'Gekopieerd ✓'; setTimeout(function () { $('subCopy').textContent = 'Kopieer YAML'; }, 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(done, function () { ta.select(); document.execCommand('copy'); done(); });
+    else { ta.select(); document.execCommand('copy'); done(); }
+  });
+
+  // ---------------------------------------------------------------- load
+  F.fromHash();
+  try { if (localStorage.getItem('view') === 'map' && !location.hash) document.querySelector('.seg button[data-view=map]').click(); } catch (e) {}
+
+  fetch('listings.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      all = data.listings || [];
+      var when = data.generated ? new Date(data.generated) : null;
+      $('stats').textContent = all.length + ' woningen' + (data.agencies ? ' · ' + data.agencies + ' kantoren' : '') +
+        (when ? ' · bijgewerkt ' + when.toLocaleDateString('nl-BE') + ' ' + when.toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit' }) : '');
+      applyFilters();
+      if ($('view-map').classList.contains('active')) renderMap();
+    })
+    .catch(function (err) {
+      $('stats').textContent = 'nog geen gegevens';
+      $('grid').innerHTML = '<div class="empty">Kon listings.json niet laden (' + esc(err.message) + '). De eerste dagelijkse run maakt dit bestand aan.</div>';
+    });
+})();
+</script>
+</body>
+</html>

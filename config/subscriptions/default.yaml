@@ -1,10 +1,20 @@
-# What counts as a match. Everything here is optional: leave a field blank
-# (or delete it) and that check is skipped entirely.
+# One file here = one daily email. Copy this file to add another recipient
+# with different filters; delete it to stop that mail. The overview page can
+# write these files for you: see the "Dagelijkse mail" button.
 #
-# You said you'd fill this in later - the values below are placeholders that
-# deliberately match almost nothing except by property type, so a first run
-# stays quiet until you set real numbers. `house-alert run --dry-run` prints
-# what matched and what was filtered out, and why.
+# Every filter is optional: leave a field blank (or delete it) and that check
+# is skipped entirely. `house-alert run --dry-run -v` prints what matched and
+# what was filtered out, and why.
+
+name: Standaard
+
+# Recipients. "$NAME" reads the address from an environment variable or a
+# GitHub Actions secret of that name, so the address itself never sits in the
+# repository. A plain address also works, but remember this repo is public.
+to:
+  - $MAIL_TO
+
+enabled: true
 
 property_types:          # matched against the listing's detected type
   - house
@@ -23,12 +33,12 @@ bedrooms:
   max:
   include_unknown: true
 
-living_area_m2:          # habitable surface
+living_area_m2:          # habitable surface (bewoonbare oppervlakte)
   min:                   # e.g. 120
   max:
   include_unknown: true
 
-plot_area_m2:            # total land area
+plot_area_m2:            # total land area (grondoppervlakte)
   min:
   max:
   include_unknown: true
@@ -38,6 +48,14 @@ epc:
   # B <=200, C <=300, D <=400, E <=500, F >500.
   max_kwh:
   include_unknown: true
+
+# Postcodes: exact ("9000") or a prefix ("90" = everything from 9000 to
+# 9099). Empty = any. A listing whose postcode could not be read is rejected
+# by this filter, so leave it empty if that worries you and use municipalities.
+postcodes: []
+  # - "9000"
+  # - "9030"
+  # - "85"
 
 # Municipality filter. Case-insensitive substring match against the listing's
 # address/city. Leave the list empty to accept the whole scan area.
@@ -65,8 +83,8 @@ exclude_keywords:
   - nieuwbouwproject
   - handelspand
 
-# Words that, if present, keep the listing even when other soft checks are
-# borderline. Purely additive - never overrides price/type filters.
+# Words that, if present, are shown as a tag on the card in the email.
+# Purely additive - never overrides price/type filters.
 highlight_keywords:
   - tuin
   - zuidgericht

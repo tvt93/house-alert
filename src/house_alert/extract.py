@@ -75,8 +75,9 @@ PRICE_CEILING = 5_000_000
 
 # A Belgian-formatted amount: 395.000 / 395 000 / 395000. Crucially it must not
 # match across a separator into the next number on the page, so whitespace and
-# dots are only allowed when followed by exactly three digits.
-AMOUNT = r"(\d{1,3}(?:[.   ]\d{3})+|\d{4,8})"
+# dots are only allowed when followed by exactly three digits - and not by a
+# fourth, or "EUR 295.000 9000 Gent" would read as 295.000900.
+AMOUNT = r"(\d{1,3}(?:[.   ]\d{3})+(?!\d)|\d{4,8})"
 
 # 9000 Gent / 8500 Kortrijk / 9040 Sint-Amandsberg / 9840 De Pinte
 POSTAL_CITY = (
@@ -106,6 +107,49 @@ CITY_LEADS_TITLE = r"^([A-Z][a-zà-ÿ]{2,}(?:[-\s][A-Z][a-zà-ÿ]+)*)\s+[-–|]\
 CITY_IN_URL_WITH_POSTCODE = r"/([1-9]\d{3})-([A-Za-z][A-Za-z-]{2,30})(?:/|$)"
 CITY_IN_URL_SLUG = r"/[\w-]*te-koop-([a-z][a-z-]{2,30})(?:/|$)"
 CITY_IN_URL_IN = r"/[\w-]*?-in-([a-z][a-z-]{2,30})(?:/|$)"
+
+# A Flemish street is one to four words, the first capitalised, the last ending
+# in a street suffix, followed by a house number: "Kerkstraat 12",
+# "Grote Markt 5", "Steenweg op Deinze 140", "Sint-Pietersnieuwstraat 25A".
+STREET_SUFFIX = (
+    "straat|steenweg|laan|weg|plein|dreef|dreve|baan|lei|kaai|markt|dries|hof|"
+    "wegel|plaats|vest|kouter|pad|park|kade|dijk|ring|singel|veld|akker|berg|"
+    "bos|heide|dam|gracht|poort|beek|molen|hoek|wal|zoom|erf|gaarde|dorp|wijk|"
+    "rede|reep|straatje|wegje|baantje|meers|brug"
+)
+_STREET_WORD = r"[A-Z][\w'’.-]*"
+_STREET_CONNECTOR = r"(?:op|ter|ten|de|den|der|van|aan|'t|het|en)"
+STREET = re.compile(
+    rf"(?<![\w-])({_STREET_WORD}(?:\s(?:{_STREET_WORD}|{_STREET_CONNECTOR})){{0,3}})"
+    rf"\s(\d{{1,4}}(?:\s?[A-Za-z](?![\w-])|\s?bus\s?\d+[A-Za-z]?)?)(?![\d.,]?\d)"
+)
+_STREET_ENDS = re.compile(rf"(?:{STREET_SUFFIX})$", re.IGNORECASE)
+
+# Capitalised words that precede a street on agency pages but are not part of
+# its name: labels, property types, and the municipality.
+STREET_LABELS = {
+    "adres", "ligging", "locatie", "straat", "te", "koop", "woning", "huis",
+    "appartement", "villa", "gelegen", "ref", "vraagprijs", "aan", "in", "op",
+    "rijwoning", "nieuwbouw", "bouwgrond", "hoeve", "herenhuis", "bungalow",
+}
+
+# Page regions whose addresses belong to the agency, not the property. Matched
+# per class token, and "header" only in its site-wide spellings: a listing's
+# own hero is routinely a <header class="detail-header">.
+CHROME_CLASS = re.compile(
+    r"^(?:(?:site|page|main|global|top|sticky)[-_]?)?(?:footer|header|nav|navbar|topbar|menu)$"
+    r"|footer|contact|kantoor|office|agency",
+    re.IGNORECASE,
+)
+
+# Property-type words that URL slugs put in front of the municipality:
+# /te-koop-woning-wippelgem/ is Wippelgem, not "Woning-Wippelgem".
+SLUG_TYPE_WORDS = {
+    "woning", "woningen", "huis", "huizen", "appartement", "appartementen", "villa",
+    "landhuis", "herenhuis", "rijwoning", "bouwgrond", "grond", "hoeve", "bungalow",
+    "studio", "penthouse", "duplex", "handelspand", "kantoor", "loft", "nieuwbouw",
+    "project", "garage", "assistentiewoning", "fermette", "bel-etage", "chalet",
+}
 
 
 # -------------------------------------------------------------------- helpers
@@ -194,7 +238,10 @@ def jsonld_objects(soup: BeautifulSoup) -> list[dict[str, Any]]:
     return out
 
 
-def _from_jsonld(objects: list[dict[str, Any]], listing: Listing) -> None:
+def _from_jsonld(objects: list[dict[str, Any]], listing: Listing) -> set[str]:
+    """Fill the listing from structured data. Returns the agency's own street
+    addresses, found in Organization blocks, so the text pass can ignore them."""
+    office: set[str] = set()
     for obj in objects:
         types = obj.get("@type") or ""
         types = " ".join(types) if isinstance(types, list) else str(types)
@@ -241,12 +288,37 @@ def _from_jsonld(objects: list[dict[str, Any]], listing: Listing) -> None:
             "webpage", "breadcrumblist",
         ))
 
-        addr = obj.get("address") if is_property else None
-        if isinstance(addr, dict):
+        is_office = any(t in types for t in (
+            "organization", "localbusiness", "realestateagent",
+        ))
+
+        addr = obj.get("address")
+        if isinstance(addr, dict) and is_property:
             if not listing.city and addr.get("addressLocality"):
                 listing.city = str(addr["addressLocality"]).strip()
             if not listing.postal_code and addr.get("postalCode"):
                 listing.postal_code = str(addr["postalCode"]).strip()
+            if not listing.street and addr.get("streetAddress"):
+                listing.street = _clean_ws(str(addr["streetAddress"]))
+        elif isinstance(addr, dict) and is_office and addr.get("streetAddress"):
+            # Only an explicit organisation block is the office. Other objects
+            # carrying an address (wijsvastgoed.be hangs one off GeoCoordinates)
+            # describe the property.
+            office.add(_clean_ws(str(addr["streetAddress"])).lower())
+
+        # Coordinates straight from the page beat any lookup. Only trusted off
+        # the property itself, or off a GeoCoordinates block whose address
+        # agrees with the property's postcode - an office has one too.
+        geo = obj.get("geo") if is_property else None
+        if not isinstance(geo, dict) and "geocoordinates" in types and not is_office:
+            geo_addr = obj.get("address") if isinstance(obj.get("address"), dict) else {}
+            geo_postcode = str(geo_addr.get("postalCode") or "").strip()
+            if geo_postcode and (not listing.postal_code or geo_postcode == listing.postal_code):
+                geo = obj
+        if isinstance(geo, dict) and listing.lat is None:
+            lat, lon = _num(str(geo.get("latitude") or "")), _num(str(geo.get("longitude") or ""))
+            if lat is not None and lon is not None and 49.4 < lat < 51.6 and 2.4 < lon < 6.5:
+                listing.lat, listing.lon, listing.geo = lat, lon, "address"
 
         img = obj.get("image")
         if img and not listing.image_url:
@@ -256,6 +328,92 @@ def _from_jsonld(objects: list[dict[str, Any]], listing: Listing) -> None:
                 img = img.get("url")
             if isinstance(img, str):
                 listing.image_url = img
+    return office
+
+
+# -------------------------------------------------------------------- street
+
+def _clean_ws(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip(" ,")
+
+
+def _normal_number(number: str) -> str:
+    return number if "bus" in number.lower() else re.sub(r"\s+", "", number)
+
+
+def _clean_street_name(name: str, city: str) -> str | None:
+    """Trim label words off the front and insist on a street suffix."""
+    words = name.split()
+    while len(words) > 1 and (
+        words[0].lower().strip(":") in STREET_LABELS
+        or (city and words[0].lower() == city.lower())
+    ):
+        words.pop(0)
+    # "Kerkstraat", "Grote Markt" - or "Steenweg op Deinze", "Hof ter Linden",
+    # where the suffix leads and a connector follows it.
+    suffix_last = bool(_STREET_ENDS.search(words[-1]))
+    suffix_first = (len(words) >= 3 and bool(_STREET_ENDS.search(words[0]))
+                    and words[1].lower() in ("op", "ter", "ten", "van", "aan", "de", "der", "den"))
+    if not (suffix_last or suffix_first):
+        return None
+    return " ".join(words)
+
+
+def find_street(
+    text: str,
+    city: str = "",
+    postcode: str = "",
+    exclude: set[str] | frozenset[str] = frozenset(),
+    near_place: bool = False,
+) -> str | None:
+    """First credible street + number in `text`, or None.
+
+    With `near_place`, the street must be followed closely by the listing's
+    postcode or city, as in "Kerkstraat 12, 9000 Gent" - the shape of a real
+    address line, as opposed to a street name mentioned in running prose.
+    """
+    for m in STREET.finditer(text):
+        name = _clean_street_name(m.group(1), city)
+        if not name:
+            continue
+        number = _normal_number(m.group(2))
+        digits = re.match(r"\d+", number).group()  # type: ignore[union-attr]
+        tail = text[m.end(): m.end() + 40]
+        # "Kerkstraat 9000 Gent" - that is a postcode, not a house number.
+        if len(digits) == 4 and re.match(r"\s*[A-Z]", tail):
+            continue
+        street = f"{name} {number}"
+        if street.lower() in exclude:
+            continue
+        # ", 9000 Gent" / " - Gent" / " te Gent": the place must come right after.
+        close = tail[:14]
+        if near_place and not (
+            (postcode and postcode in close) or (city and city.lower() in close.lower())
+        ):
+            continue
+        return street
+    return None
+
+
+def chrome_streets(soup: BeautifulSoup) -> set[str]:
+    """Every street address printed in the page chrome. On an agency site
+    that is the office address, repeated on every listing page."""
+    found: set[str] = set()
+    nodes = soup.find_all(["footer", "nav", "address"])
+    # A <header> is site chrome only at the top level; inside an article,
+    # section or main it is the listing's own heading.
+    nodes += [h for h in soup.find_all("header")
+              if not h.find_parent(["article", "main", "section"])]
+    nodes += [n for n in soup.find_all(id=True) if CHROME_CLASS.search(str(n.get("id")))]
+    nodes += [n for n in soup.find_all(class_=True)
+              if any(CHROME_CLASS.search(c) for c in n.get("class", []))]
+    for node in nodes:
+        text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+        for m in STREET.finditer(text):
+            name = _clean_street_name(m.group(1), "")
+            if name:
+                found.add(f"{name} {_normal_number(m.group(2))}".lower())
+    return found
 
 
 # ----------------------------------------------------------------- heuristics
@@ -332,6 +490,14 @@ def _locate(listing: Listing, text: str) -> None:
     """
     url, title = listing.url, listing.title
 
+    # "Woning te koop - Beekstraat 27, 9940 Wippelgem": a postcode in the
+    # title is the property's, and the most reliable thing on the page.
+    if not (listing.postal_code and listing.city):
+        m = re.search(POSTAL_CITY, title)
+        if m and m.group(3).lower() not in NOT_A_CITY:
+            listing.postal_code = listing.postal_code or m.group(1)
+            listing.city = listing.city or f"{m.group(2) or ''}{m.group(3)}".strip()
+
     if not (listing.postal_code and listing.city):
         m = re.search(CITY_IN_URL_WITH_POSTCODE, url)
         if m:
@@ -367,7 +533,10 @@ def _locate(listing: Listing, text: str) -> None:
 
 
 def _titleize(slug: str) -> str:
-    return "-".join(part.capitalize() for part in slug.split("-"))
+    parts = slug.split("-")
+    while len(parts) > 1 and parts[0].lower() in SLUG_TYPE_WORDS:
+        parts.pop(0)
+    return "-".join(part.capitalize() for part in parts)
 
 
 def strip_priced_links(soup: BeautifulSoup) -> int:
@@ -437,7 +606,8 @@ def extract_listing(url: str, html: str, source: str, region: str = "") -> Listi
     listing.description = _meta(soup, "og:description", "description")
     listing.image_url = _meta(soup, "og:image", "twitter:image")
 
-    _from_jsonld(jsonld_objects(BeautifulSoup(html, "lxml")), listing)
+    office = chrome_streets(soup)
+    office |= _from_jsonld(jsonld_objects(BeautifulSoup(html, "lxml")), listing)
 
     if not listing.title:
         h1 = soup.find("h1")
@@ -455,6 +625,18 @@ def extract_listing(url: str, html: str, source: str, region: str = "") -> Listi
 
     _from_text(text, listing)
     _locate(listing, text)
+
+    # The street: structured data first, then the title, then an address line
+    # in the body. Whatever the page chrome prints is the agency's own door.
+    if listing.street and listing.street.lower() in office:
+        listing.street = ""
+    if not listing.street:
+        listing.street = (
+            find_street(listing.title, listing.city, exclude=office)
+            or find_street(text, listing.city, listing.postal_code,
+                           exclude=office, near_place=True)
+            or ""
+        )
 
     if listing.image_url:
         listing.image_url = urljoin(url, listing.image_url)

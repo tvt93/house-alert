@@ -19,7 +19,7 @@ import httpx
 log = logging.getLogger(__name__)
 
 USER_AGENT = (
-    "house-alert/0.1 (personal listing watcher; "
+    "house-alert/0.2 (personal listing watcher; +https://github.com/tvt93/house-alert; "
     "one polite request per second; contact via repo owner)"
 )
 

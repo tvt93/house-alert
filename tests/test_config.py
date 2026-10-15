@@ -6,11 +6,12 @@ CONFIG = Path(__file__).resolve().parents[1] / "config"
 
 
 def test_shipped_criteria_parses():
-    criteria = load_criteria(CONFIG / "criteria.yaml")
+    criteria = load_criteria(CONFIG / "subscriptions" / "default.yaml")
     assert "house" in criteria.property_types
     assert "garagebox" in criteria.exclude_keywords
     # Placeholders are intentionally open-ended until filled in.
     assert criteria.price.is_open
+    assert criteria.postcodes == []
 
 
 def test_shipped_registry_parses():

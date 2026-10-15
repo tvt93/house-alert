@@ -22,7 +22,7 @@
       {{ listings|length }} nieuwe {{ 'woning' if listings|length == 1 else 'woningen' }}
     </div>
     <div style="font-size:13px;color:#6b6b66;padding-top:4px;">
-      {{ run_date }} &middot; {{ agency_count }} kantoren gescand{% if scan_errors %} &middot; {{ scan_errors }} niet bereikbaar{% endif %}
+      {{ run_date }}{% if label %} &middot; {{ label }}{% endif %} &middot; {{ agency_count }} kantoren gescand{% if scan_errors %} &middot; {{ scan_errors }} niet bereikbaar{% endif %}
     </div>
   </td></tr>
 
@@ -101,7 +101,10 @@
   <!-- footer -->
   <tr><td style="padding:8px 4px 0;font-size:12px;color:#8a8a84;line-height:1.6;">
     house-alert &middot; {{ candidate_count }} advertenties bekeken, {{ listings|length }} door de filter.<br>
-    Criteria aanpassen: <code style="font-family:ui-monospace,Menlo,Consolas,monospace;">config/criteria.yaml</code>.
+    {% if site_url %}
+    Alle woningen op kaart en in lijst: <a href="{{ site_url }}" style="color:#1c1c1a;">{{ site_url }}</a><br>
+    {% endif %}
+    Filters aanpassen: <code style="font-family:ui-monospace,Menlo,Consolas,monospace;">config/subscriptions/</code>.
     Kantoor toevoegen: <code style="font-family:ui-monospace,Menlo,Consolas,monospace;">config/agencies.yaml</code>.
   </td></tr>
 

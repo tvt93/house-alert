@@ -3,10 +3,13 @@
 Personal project. **No connection to Verity work of any kind.** Also unrelated to
 `personal-planning` — separate repo, separate purpose, nothing shared.
 
-Every morning, one email: the houses that came online yesterday at estate agencies around
-Ghent and Kortrijk and match the criteria you set. It reads the agencies' own websites
-directly, so listings show up here as soon as the agency publishes them — usually before
-they reach the big portals.
+Every house that comes online at ~87 estate agencies around Ghent and Kortrijk, on one
+page — as a list and on a map — plus one email every morning per recipient with the new
+ones that match their filters. It reads the agencies' own websites directly, so listings
+show up as soon as the agency publishes them, usually before they reach the big portals.
+
+- **Overview page:** `https://<owner>.github.io/house-alert/` (GitHub Pages, served from `docs/`)
+- **Daily mail:** one file per recipient in `config/subscriptions/`
 
 ## How it works
 
@@ -19,17 +22,67 @@ config/agencies.yaml   87 agencies, Ghent + Kortrijk regions
         ├─ skip known   state/seen.json — a URL is only ever fetched once
         │
         ├─ extract      schema.org JSON-LD if the site emits it, otherwise
-        │               Dutch-language heuristics over the page
+        │               Dutch-language heuristics; street address when the
+        │               page prints one (and it isn't the agency's own)
         │
-        ├─ filter       config/criteria.yaml
+        ├─ locate       street → Nominatim (OpenStreetMap), cached in
+        │               state/geocache.json; otherwise postcode centroid
         │
-        └─ email        photo-card digest over SMTP
+        ├─ store        state/listings.json — everything seen in 180 days
+        │
+        ├─ email        per subscription: filter, render photo cards, SMTP
+        │
+        └─ export       docs/listings.json → the overview page
 ```
 
 The key economy is `state/seen.json`: a listing page is fetched exactly once, ever. The
-first run records everything currently online without emailing you, and after that a
-daily run only pays for pages that genuinely appeared since yesterday — a few dozen
-fetches, not a few thousand.
+first run records everything currently online (and puts it on the page) without emailing
+anyone; after that a daily run only pays for pages that genuinely appeared since
+yesterday.
+
+## The overview page
+
+`docs/index.html` is a static page that loads `docs/listings.json`. No build step, no
+framework — Leaflet for the map, everything else is plain HTML.
+
+- **Lijst / Kaart** toggle. The map clusters pins; a solid pin is a street address, a
+  dashed one is the postcode (or municipality) centroid because the agency did not
+  print the street.
+- **Filters:** price, postcode (exact or prefix: `85` = 8500–8599), type, plot area,
+  habitable area, bedrooms, how recently it appeared, region, agency. Unknown values are
+  included by default; untick the box to make every filter strict.
+- Filters live in the URL, so a filtered view can be bookmarked or sent to someone.
+- **Dagelijkse mail** turns the current filters into a subscription file and opens it,
+  pre-filled, in GitHub's editor. One click on *Commit* and the mail starts tomorrow.
+
+## Daily mail: subscriptions
+
+Each file in `config/subscriptions/` is one email. `default.yaml` documents every field.
+
+```yaml
+name: Thijs
+to:
+  - $MAIL_TO            # a GitHub secret / env var holding the address
+property_types: [house]
+price: { min: 250000, max: 500000, include_unknown: true }
+bedrooms: { min: 3, include_unknown: true }
+living_area_m2: { min: 120, include_unknown: true }
+plot_area_m2: { min: 300, include_unknown: true }
+postcodes: ["9000", "90", "9820"]
+```
+
+Two things worth knowing:
+
+- **Recipients are `$NAME` references.** This repository is public (GitHub Pages on a
+  free plan requires it), so addresses live in Actions secrets, not in files. The workflow
+  hands every secret to the run, so a new subscription can reference `$MAIL_TO_PARTNER`
+  as soon as a secret of that name exists. A literal address also works if you don't mind
+  it being visible.
+- **`include_unknown`** decides what happens when a field can't be read off the page. Not
+  every agency publishes the EPC or the plot size, and `true` keeps those listings rather
+  than silently dropping them. Set it to `false` for anything non-negotiable. The
+  `postcodes` filter has no such switch: a listing without a readable postcode never
+  passes it.
 
 ## Setup
 
@@ -42,59 +95,54 @@ copy .env.example .env      # then fill in the Gmail app password
 For Gmail you need an **app password** ([myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords),
 requires 2-step verification) — your normal Google password will be rejected.
 
-## Setting your criteria
-
-`config/criteria.yaml` ships with placeholders that match almost nothing, so a first run
-stays quiet until you fill it in. Every field is optional; leaving one blank skips that
-check entirely.
-
-Two things worth knowing:
-
-- **`include_unknown`** decides what happens when a field can't be read off the page. Not
-  every agency publishes the EPC or the plot size, and `include_unknown: true` keeps those
-  listings rather than silently dropping them. Set it to `false` for anything you consider
-  non-negotiable.
-- **`municipalities.include`** matters more than you'd expect. Several agencies in the
-  registry (Kleyo, Immo Francois, Dewaele) sell across the whole country, so without a
-  municipality filter you'll get houses in Antwerp and Knokke too. Leave it empty until
-  you've seen a day's output, then narrow it.
-
 ## Daily use
-
-Everything runs through one command:
 
 ```powershell
 .\.venv\Scripts\house-alert run                      # the real thing
 .\.venv\Scripts\house-alert -v run --dry-run         # scan, explain, send nothing
 .\.venv\Scripts\house-alert run --region kortrijk    # one region only
 .\.venv\Scripts\house-alert run --only Immotion      # one agency, for debugging
+.\.venv\Scripts\house-alert geocode                  # resolve stored streets to map points
+.\.venv\Scripts\house-alert export                   # rewrite docs/listings.json from state
+.\.venv\Scripts\house-alert export --sample --out x  # sample data to try the page locally
 .\.venv\Scripts\house-alert preview                  # write preview.html, no network
-.\.venv\Scripts\house-alert test-mail                # prove SMTP works
-.\.venv\Scripts\house-alert list                     # show the registry
+.\.venv\Scripts\house-alert test-mail                # prove SMTP works, per subscription
+.\.venv\Scripts\house-alert list                     # agencies and subscriptions
 .\.venv\Scripts\house-alert detect --write           # fingerprint each site's platform
 ```
 
 `-v --dry-run` is the one to reach for when the email looks wrong: it prints every listing
-that was filtered out and the exact reason, which is usually enough to spot a criterion set
-one notch too tight.
+that was filtered out, per subscription, with the exact reason.
 
-## Scheduling
+To try the page locally: `house-alert export --sample --out site`, copy `docs/index.html`
+next to the generated `listings.json`, and serve the folder (`python -m http.server`).
 
-`.github/workflows/daily.yml` runs it at 06:15 UTC on GitHub's runners, so it does not
-matter whether your laptop is on. Push the repo (**private**), then add these repository
-secrets under *Settings → Secrets and variables → Actions*:
+## Scheduling and hosting
+
+`.github/workflows/daily.yml` runs at 06:15 UTC on GitHub's runners. It commits the
+updated `state/` and `docs/listings.json` back to the repo, and GitHub Pages redeploys
+the page from `docs/` on its own.
+
+One-time setup on GitHub:
+
+1. Repository **Settings → Pages**: source *Deploy from a branch*, branch `main`,
+   folder `/docs`.
+2. **Settings → Secrets and variables → Actions**, add:
 
 | secret | value |
 | --- | --- |
 | `SMTP_USER` | your Gmail address |
 | `SMTP_PASSWORD` | the app password |
-| `MAIL_TO` | where the digest goes |
+| `MAIL_TO` | where the default digest goes |
+| `MAIL_TO_<NAME>` | any other recipient a subscription refers to |
 | `SMTP_HOST`, `SMTP_PORT`, `MAIL_FROM` | optional; sensible defaults |
 
-The workflow commits the updated `state/seen.json` back to the repo after each run — that
-file *is* the memory of what you've already been shown, so it belongs in version control.
-You can trigger a run by hand from the Actions tab, and each run uploads the rendered
-digest as an artifact so you can see exactly what was sent.
+3. Run the workflow once by hand from the Actions tab. The first run seeds the state and
+   fills the page; from the next morning on, the mails go out.
+
+The first run fetches every listing currently online (up to 80 per agency) and takes
+15–30 minutes. Street-level geocoding is capped at 300 lookups per run, so pins refine
+from postcode to street over the first few days.
 
 ## Adding an agency
 
@@ -105,29 +153,24 @@ One line in `config/agencies.yaml`:
 ```
 
 No code. The generic scraper handles any site that publishes a sitemap or a browsable
-"te koop" index, which is nearly all of them. `house-alert detect --write` then records
-which platform each site runs on (Whise, SweepBright, Omnicasa, Skarabee), and
-`platforms/` uses that to pick better URL patterns.
+"te koop" index, which is nearly all of them.
 
 ## Being a good citizen
 
 These are small businesses' websites, not a CDN. The scraper reads `robots.txt` and obeys
 it, identifies itself honestly in the User-Agent, and makes at most one request per second
-per host. Because seen URLs are never re-fetched, a steady-state daily run is a handful of
-requests per agency — far less traffic than one person browsing the site. Please don't
-raise `--workers` or drop `--delay` much; there's nothing to gain and it would be rude.
+per host. Nominatim gets the same treatment: one request per second, an identifying
+User-Agent, every answer cached. Please don't raise `--workers` or drop `--delay`.
 
 ## Known limitations
 
-- **JavaScript-only sites** return nothing useful. There is no headless browser here, by
-  choice — it would turn a 30-second job into a heavy one. Those agencies show up as
-  contributing zero listings; `-v` names them.
-- **Extraction is heuristic** on sites without JSON-LD. Bedrooms, EPC and plot size are the
-  fields most often missing; price and location are reliable. A field that can't be read
-  stays blank rather than guessed.
-- **Category pages** — some agencies publish per-municipality landing pages at the same URL
-  shape as real listings. These are detected and skipped (see `is_index_page`), but a new
-  site could invent a shape that slips through. Symptom: a listing whose price doesn't
-  match its photo.
-- **No price-drop tracking.** A listing is reported once, when it first appears. Watching
-  for reductions on listings you've already seen would be the obvious next feature.
+- **JavaScript-only sites** return nothing useful; there is no headless browser here, by
+  choice. Those agencies show up as contributing zero listings; `-v` names them.
+- **Extraction is heuristic** on sites without JSON-LD. Bedrooms, EPC, plot size and the
+  street are the fields most often missing; price and location are reliable. A field that
+  can't be read stays blank rather than guessed, and a listing without a street gets a
+  dashed pin at its postcode.
+- **The agency's own address** is filtered out (page footer, JSON-LD organisation block,
+  and any street that most of one agency's listings share), but a new site could print
+  its office somewhere unexpected. Symptom: several listings from one agency on one pin.
+- **No price-drop tracking.** A listing is reported once, when it first appears.

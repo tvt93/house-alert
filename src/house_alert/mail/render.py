@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from datetime import date
 from pathlib import Path
 
@@ -22,14 +23,20 @@ def _env() -> Environment:
     )
 
 
-def subject_for(listings: list[Listing], run_date: date) -> str:
+def site_url() -> str:
+    """Where the overview page lives; set by the workflow, blank locally."""
+    return os.environ.get("HOUSE_ALERT_SITE_URL", "").strip()
+
+
+def subject_for(listings: list[Listing], run_date: date, label: str = "") -> str:
     if not listings:
         return f"house-alert: geen nieuwe woningen ({run_date:%d/%m})"
     n = len(listings)
     cheapest = min((l.price for l in listings if l.price is not None), default=None)
     tail = f" vanaf € {cheapest:,}".replace(",", ".") if cheapest else ""
     noun = "nieuwe woning" if n == 1 else "nieuwe woningen"
-    return f"{n} {noun}{tail}"
+    suffix = f" · {label}" if label else ""
+    return f"{n} {noun}{tail}{suffix}"
 
 
 def render_html(
@@ -38,15 +45,18 @@ def render_html(
     agency_count: int,
     candidate_count: int,
     scan_errors: int = 0,
+    label: str = "",
 ) -> str:
     template = _env().get_template("digest.html.j2")
     return template.render(
-        subject=subject_for(listings, run_date),
+        subject=subject_for(listings, run_date, label),
         listings=listings,
         run_date=run_date.strftime("%d/%m/%Y"),
         agency_count=agency_count,
         candidate_count=candidate_count,
         scan_errors=scan_errors,
+        label=label,
+        site_url=site_url(),
     )
 
 

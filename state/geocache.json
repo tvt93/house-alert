@@ -65,6 +65,10 @@
    "lat": 50.9211943,
    "lon": 3.2535279
   },
+  "brusselsesteenweg 89|9050|ledeberg": {
+   "lat": 51.0403792,
+   "lon": 3.7440323
+  },
   "buntstraat 20|9940|evergem": {
    "lat": 51.0940368,
    "lon": 3.6593972
@@ -151,6 +155,10 @@
   "franklin rooseveltplein 5|9600|renaix": {
    "lat": 50.7471693,
    "lon": 3.5988653
+  },
+  "gasmeterlaan 189|9000|gent": {
+   "lat": 51.0671577,
+   "lon": 3.7222265
   },
   "gasmeterstraat 19|9990|maldegem": {
    "lat": 51.2096032,
@@ -249,6 +257,10 @@
    "lon": 3.4279296
   },
   "instapklare woonst vlamingenstraat 2|8940|wervik": null,
+  "izegemsestraat 333|8501|heule": {
+   "lat": 50.8497456,
+   "lon": 3.2521524
+  },
   "ja kantoor ingelmunster stationsstraat 4 bus 1|8770|ingelmunster": null,
   "jan palfijnstraat 2|8500|kortrijk": {
    "lat": 50.8263484,
@@ -302,6 +314,7 @@
    "lat": 50.7755832,
    "lon": 3.4470413
   },
+  "ketterijstraat 22|9980|sint-laureins": null,
   "knokkebaan. adres brouwerijstraat 7|9880|aalter": null,
   "knollingstraat 5|8850|ardooie": {
    "lat": 50.9612111,
@@ -394,6 +407,10 @@
    "lat": 50.8102654,
    "lon": 3.3013891
   },
+  "magerakkerlaan 10|9080|lochristi": {
+   "lat": 51.0974063,
+   "lon": 3.8556345
+  },
   "magermerriestraat 12|8800|roulers": {
    "lat": 50.9222372,
    "lon": 3.0656056
@@ -461,6 +478,10 @@
    "lon": 3.7743637
   },
   "nederkouter 56|9000|gent": null,
+  "nederkouter 57|9000|gent": {
+   "lat": 51.0477092,
+   "lon": 3.7218871
+  },
   "neen kantoor ingelmunster stationsstraat 4 bus 1|8770|ingelmunster": null,
   "nieuwstraat 131|8790|waregem": null,
   "nokerstraat 4|9042|desteldonk": {
@@ -531,6 +552,10 @@
   "pietendries 5|9910|knesselare": {
    "lat": 51.1182491,
    "lon": 3.4433388
+  },
+  "politieke gevangenenstraat 126|8530|harelbeke": {
+   "lat": 50.8316265,
+   "lon": 3.3020886
   },
   "president kennedypark 1|8500|kortrijk": {
    "lat": 50.803224,
@@ -785,6 +810,10 @@
   "wodecqstraat 64|9600|renaix": {
    "lat": 50.7374334,
    "lon": 3.617629
+  },
+  "wolvenstraat 24|8530|harelbeke": {
+   "lat": 50.862327,
+   "lon": 3.3187135
   },
   "zelzatestraat 78|9960|assenede": {
    "lat": 51.2034511,

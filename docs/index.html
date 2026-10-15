@@ -138,6 +138,9 @@ main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height:
   font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; letter-spacing: .3px;
 }
 .badge.soft { background: var(--surface); color: var(--text); }
+.badge.warn { background: var(--warn-soft); color: var(--warn-text); }
+.card.closed { opacity: .72; }
+.card.closed .price { text-decoration: line-through; text-decoration-color: var(--faint); }
 .card .inner { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
 .price { font-size: 18px; font-weight: 700; }
 .title { font-weight: 600; line-height: 1.3; }
@@ -175,6 +178,7 @@ main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height:
 }
 .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; background: var(--accent); }
 .legend i.ap { background: transparent; border: 2px dashed var(--accent); }
+.legend i.gr { background: var(--faint); }
 .mapwrap { position: relative; flex: 1; display: flex; min-height: 0; }
 
 /* ---------------------------------------------------------------- dialog */
@@ -223,6 +227,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
   </div>
   <button type="button" class="btn only-mobile" id="filterToggle">Filters</button>
   <button type="button" class="btn primary" id="mailBtn">✉ <span>Dagelijkse mail</span></button>
+  <a class="btn ghost icon" id="refreshLink" href="#" target="_blank" rel="noopener" title="De gegevens worden rond middernacht, om 8u en rond de middag ververst. Klik om nu een run te starten (Run workflow op GitHub).">↻</a>
   <button type="button" class="btn ghost icon" id="themeBtn" title="Licht/donker">◐</button>
 </header>
 
@@ -264,6 +269,14 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       <div class="field"><label for="bedMin">min</label><input type="number" id="bedMin" min="0" step="1" placeholder="0"></div>
       <div class="field"><label for="bedMax">max</label><input type="number" id="bedMax" min="0" step="1" placeholder="∞"></div>
     </div>
+
+    <h2>Beschikbaarheid</h2>
+    <div class="chips" id="status">
+      <label class="chip"><input type="checkbox" value="available" checked><span>Beschikbaar</span></label>
+      <label class="chip"><input type="checkbox" value="option"><span>In optie</span></label>
+      <label class="chip"><input type="checkbox" value="sold"><span>Verkocht of weg</span></label>
+    </div>
+    <p class="hint">Elke woning wordt om de paar dagen opnieuw bekeken op de site van het kantoor.</p>
 
     <h2>Nieuw sinds</h2>
     <div class="field">
@@ -318,7 +331,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
     <section class="view" id="view-map">
       <div class="mapwrap">
         <div id="mapEl" role="region" aria-label="Kaart"></div>
-        <div class="legend"><span><i></i>exact adres</span><span><i class="ap"></i>bij benadering (postcode of gemeente)</span></div>
+        <div class="legend"><span><i></i>exact adres</span><span><i class="ap"></i>bij benadering (postcode of gemeente)</span><span><i class="gr"></i>verkocht, in optie of weg</span></div>
       </div>
     </section>
   </main>
@@ -354,6 +367,8 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
   // ------------------------------------------------------------ constants
   var REPO_FALLBACK = { owner: 'tvt93', repo: 'house-alert' };
   var TYPE_LABEL = { house: 'Woning', apartment: 'Appartement', land: 'Grond', commercial: 'Handel', unknown: 'Onbekend' };
+  var STATUS_LABEL = { option: 'In optie', sold: 'Verkocht', gone: 'Niet meer online' };
+  function statusGroup(l) { var s = l.status || 'available'; return s === 'gone' ? 'sold' : s; }
   var PAGE = 48;
 
   var $ = function (id) { return document.getElementById(id); };
@@ -411,9 +426,11 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
     ids: ['priceMin', 'priceMax', 'postcodes', 'plotMin', 'plotMax', 'livingMin', 'livingMax',
           'bedMin', 'bedMax', 'days', 'region', 'agency', 'unknown', 'sort'],
     read: function () {
-      var types = {};
+      var types = {}, status = {};
       document.querySelectorAll('#types input:checked').forEach(function (i) { types[i.value] = true; });
+      document.querySelectorAll('#status input:checked').forEach(function (i) { status[i.value] = true; });
       return {
+        status: status, statusCount: Object.keys(status).length,
         priceMin: num($('priceMin').value), priceMax: num($('priceMax').value),
         postcodes: $('postcodes').value.split(/[,\s;]+/).map(function (s) { return s.trim(); }).filter(function (s) { return /^\d{1,4}$/.test(s); }),
         types: types, typeCount: Object.keys(types).length,
@@ -433,6 +450,8 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       });
       var types = [].map.call(document.querySelectorAll('#types input:checked'), function (i) { return i.value; });
       if (types.join(',') !== 'house,unknown') p.set('types', types.join(','));
+      var st = [].map.call(document.querySelectorAll('#status input:checked'), function (i) { return i.value; });
+      if (st.join(',') !== 'available') p.set('status', st.join(','));
       if ($('view-map').classList.contains('active')) p.set('view', 'map');
       var s = p.toString();
       history.replaceState(null, '', s ? '#' + s : location.pathname + location.search);
@@ -449,6 +468,10 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
         var want = p.get('types').split(',');
         document.querySelectorAll('#types input').forEach(function (i) { i.checked = want.indexOf(i.value) >= 0; });
       }
+      if (p.has('status')) {
+        var wantS = p.get('status').split(',');
+        document.querySelectorAll('#status input').forEach(function (i) { i.checked = wantS.indexOf(i.value) >= 0; });
+      }
       if (p.get('view') === 'map') document.querySelector('.seg button[data-view=map]').click();
     },
     reset: function () {
@@ -457,6 +480,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
         if (el.type === 'checkbox') el.checked = true; else el.value = id === 'sort' ? 'new' : '';
       });
       document.querySelectorAll('#types input').forEach(function (i) { i.checked = i.value === 'house' || i.value === 'unknown'; });
+      document.querySelectorAll('#status input').forEach(function (i) { i.checked = i.value === 'available'; });
     }
   };
 
@@ -471,6 +495,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
     if (!inRange(l.living_area_m2, f.livingMin, f.livingMax, unk)) return false;
     if (!inRange(l.bedrooms, f.bedMin, f.bedMax, unk)) return false;
     if (f.typeCount && !f.types[l.property_type || 'unknown']) return false;
+    if (f.statusCount && !f.status[statusGroup(l)]) return false;
     if (f.postcodes.length) {
       if (!l.postal_code) { if (!unk) return false; }
       else if (!f.postcodes.some(function (p) { return l.postal_code.indexOf(p) === 0; })) return false;
@@ -501,13 +526,15 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
   // ---------------------------------------------------------------- list
   function card(l) {
     var fresh = daysSince(l.first_seen);
-    var badge = fresh != null && fresh <= 1 ? '<span class="badge">Nieuw</span>' : '';
+    var closed = (l.status || 'available') !== 'available';
+    var badge = closed ? '<span class="badge warn">' + STATUS_LABEL[l.status] + '</span>'
+      : fresh != null && fresh <= 1 ? '<span class="badge">Nieuw</span>' : '';
     var photo = l.image_url
       ? '<img loading="lazy" src="' + esc(l.image_url) + '" alt="" referrerpolicy="no-referrer">'
       : '<div class="nophoto">geen foto</div>';
     var approx = l.geo === 'postcode' ? '<span class="approx" title="Straat niet gekend; ligging is het centrum van de postcode">± postcode</span>'
       : l.geo === 'city' ? '<span class="approx" title="Alleen de gemeente is gekend">± gemeente</span>' : '';
-    return '<article class="card">' +
+    return '<article class="card' + (closed ? ' closed' : '') + '">' +
       '<a class="photo" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + photo + badge + '</a>' +
       '<div class="inner">' +
         '<div class="price">' + euro(l.price) + '</div>' +
@@ -561,8 +588,9 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
   function popup(l) {
     var img = l.image_url ? '<img src="' + esc(l.image_url) + '" alt="" referrerpolicy="no-referrer">' : '';
     var approx = l.geo === 'postcode' ? ' <span class="approx">± postcode</span>' : l.geo === 'city' ? ' <span class="approx">± gemeente</span>' : '';
+    var state = (l.status || 'available') !== 'available' ? ' <span class="approx">' + STATUS_LABEL[l.status] + '</span>' : '';
     return '<div class="pop">' + img + '<div class="pb">' +
-      '<div class="price">' + euro(l.price) + '</div>' +
+      '<div class="price">' + euro(l.price) + state + '</div>' +
       '<div><b>' + esc(l.title || '') + '</b></div>' +
       '<div class="where">' + esc(where(l)) + approx + '</div>' +
       '<div class="facts">' + facts(l) + '</div>' +
@@ -574,12 +602,14 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
     if (!mapDirty) { map.invalidateSize(); return; }
     cluster.clearLayers();
     var accent = getComputedStyle(root).getPropertyValue('--accent').trim() || '#2f5d3a';
+    var grey = getComputedStyle(root).getPropertyValue('--faint').trim() || '#9a9a94';
     var pts = [];
     shown.forEach(function (l) {
       if (l.lat == null || l.lon == null) return;
       var exact = l.geo === 'address';
+      var colour = (l.status || 'available') === 'available' ? accent : grey;
       var m = L.circleMarker([l.lat, l.lon], {
-        radius: exact ? 8 : 7, color: accent, weight: 2, fillColor: accent,
+        radius: exact ? 8 : 7, color: colour, weight: 2, fillColor: colour,
         fillOpacity: exact ? 0.85 : 0.25, dashArray: exact ? null : '3 3'
       });
       m.bindPopup(popup(l), { maxWidth: 260, closeButton: true });
@@ -665,6 +695,10 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       encodeURIComponent('config/subscriptions/' + slug(b.name) + '.yaml') + '&value=' + encodeURIComponent(b.yaml);
   }
   $('mailBtn').addEventListener('click', function () { refreshDialog(); $('mailDialog').showModal(); });
+  (function () {
+    var r = repoInfo();
+    $('refreshLink').href = 'https://github.com/' + r.owner + '/' + r.repo + '/actions/workflows/daily.yml';
+  })();
   $('subClose').addEventListener('click', function () { $('mailDialog').close(); });
   $('subName').addEventListener('input', refreshDialog);
   $('subTo').addEventListener('input', refreshDialog);
@@ -684,7 +718,8 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
     .then(function (data) {
       all = data.listings || [];
       var when = data.generated ? new Date(data.generated) : null;
-      $('stats').textContent = all.length + ' woningen' + (data.agencies ? ' · ' + data.agencies + ' kantoren' : '') +
+      var open = all.filter(function (l) { return (l.status || 'available') === 'available'; }).length;
+      $('stats').textContent = open + ' beschikbaar van ' + all.length + (data.agencies ? ' · ' + data.agencies + ' kantoren' : '') +
         (when ? ' · bijgewerkt ' + when.toLocaleDateString('nl-BE') + ' ' + when.toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit' }) : '');
       applyFilters();
       if ($('view-map').classList.contains('active')) renderMap();

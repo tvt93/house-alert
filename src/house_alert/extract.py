@@ -54,6 +54,15 @@ UNAVAILABLE_MARKERS = (
     "geen beschikbare", "sold", "rented",
 )
 
+# Status banners, strongest first. "compromis in opmaak", "onder optie" and
+# "verkocht onder voorbehoud" all mean the house is spoken for but not gone.
+STATUS_SOLD = re.compile(
+    r"\b(?:verkocht|verhuurd|sold|rented|vendu|lou[ée])\b(?!\s+onder\s+voorbehoud)", re.IGNORECASE)
+STATUS_OPTION = re.compile(
+    r"\b(?:in\s+optie|onder\s+optie|optie\s+genomen|onder\s+bod|onder\s+voorbehoud|compromis|"
+    r"in\s+onderhandeling|gereserveerd|reserved|under\s+offer|sous\s+option|sous\s+compromis)\b",
+    re.IGNORECASE)
+
 # URL path fragments that mark a page as a listing detail page.
 LISTING_URL_HINTS = (
     "/te-koop/", "/tekoop/", "/pand/", "/panden/", "/woning/", "/woningen/",
@@ -665,6 +674,36 @@ def _plausible_area(value: int | None, low: int, high: int) -> int | None:
     return value if low <= value <= high else None
 
 
+# -------------------------------------------------------------------- status
+
+def detect_status(html: str) -> str:
+    """Is the property still for sale, according to its own page?
+
+    Returns "available", "option" or "sold". Only the listing's own banner
+    counts: the title, the headings, and the first stretch of body text once
+    the site chrome is gone - a "recent verkocht" strip in a sidebar must
+    not sink a live listing.
+    """
+    soup = BeautifulSoup(html, "lxml")
+    for tag in soup(["script", "style", "noscript"]):
+        tag.decompose()
+    for node in chrome_nodes(soup):
+        node.decompose()
+
+    strong = " ".join(filter(None, [
+        _meta(soup, "og:title", "twitter:title"),
+        soup.title.get_text(" ", strip=True) if soup.title else "",
+        *[h.get_text(" ", strip=True) for h in soup.find_all(["h1", "h2"])[:6]],
+    ]))
+    body = re.sub(r"\s+", " ", soup.get_text(" ", strip=True))[:800]
+    for text in (strong, body):
+        if STATUS_OPTION.search(text):
+            return "option"
+        if STATUS_SOLD.search(text):
+            return "sold"
+    return "available"
+
+
 # -------------------------------------------------------------------- entry
 
 def extract_listing(url: str, html: str, source: str, region: str = "") -> Listing | None:
@@ -733,10 +772,9 @@ def extract_listing(url: str, html: str, source: str, region: str = "") -> Listi
     if not has_substance:
         return None
 
-    # Drop anything explicitly marked as gone. Only check the top of the page
-    # so a "recently sold" sidebar doesn't sink a live listing.
-    head = text[:1200].lower()
-    if any(marker in head for marker in UNAVAILABLE_MARKERS):
+    # Drop anything already sold or under option at first sight; the daily
+    # re-check (scan.recheck_status) tracks what happens to the rest.
+    if detect_status(html) != "available":
         return None
 
     return listing

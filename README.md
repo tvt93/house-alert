@@ -117,11 +117,30 @@ that was filtered out, per subscription, with the exact reason.
 To try the page locally: `house-alert export --sample --out site`, copy `docs/index.html`
 next to the generated `listings.json`, and serve the folder (`python -m http.server`).
 
+## Is it still for sale?
+
+A listing page is normally fetched once, but a house sold yesterday still has a page.
+So every run re-visits up to 400 stored listings whose status is more than two days
+old and reads the banner on the page: *verkocht*, *in optie*, *onder bod*, *compromis in
+opmaak*, *onder voorbehoud*... A page that 404s or redirects up to the index is *gone*.
+The page shows the status on the card and on the pin, filters on "Beschikbaar" by
+default, and forgets sold or vanished listings a month after that was established.
+
 ## Scheduling and hosting
 
-`.github/workflows/daily.yml` runs at 06:15 UTC on GitHub's runners. It commits the
-updated `state/` and `docs/listings.json` back to the repo, and GitHub Pages redeploys
-the page from `docs/` on its own.
+`.github/workflows/daily.yml` runs three times a day on GitHub's runners (UTC times):
+
+| when | what |
+| --- | --- |
+| 23:00 (around midnight in Brussels) | scan, re-check, refresh the page |
+| 06:15 (morning) | the same, **and send the mails** |
+| 11:00 (around noon in Brussels) | scan, re-check, refresh the page |
+
+A mail covers everything found since the previous mail, so nothing found at midnight
+or noon is lost; it waits in the queue for the morning. The ↻ button on the page opens
+the workflow on GitHub, where *Run workflow* starts a refresh on demand (tick *send_mail*
+to mail right away). Each run commits the updated `state/` and `docs/listings.json` back
+to the repo, and GitHub Pages redeploys the page from `docs/` on its own.
 
 One-time setup on GitHub:
 

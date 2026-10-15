@@ -41,8 +41,13 @@ subscription. Python, no services, no database; the state is JSON files in git.
 - **Be polite on the wire.** `robots.txt` is respected, the User-Agent is honest, and hosts
   are rate-limited to ~1 req/s. Nominatim: ≥1 s between requests, capped per run,
   answers cached. Concurrency is per agency, never per page within one site.
-- **A URL is fetched at most once, ever.** That's what makes a daily run cheap. Pages that
-  fail to parse are recorded as seen too, deliberately — otherwise they're retried forever.
+- **A URL is fetched at most once for extraction.** That's what makes a run cheap. Pages
+  that fail to parse are recorded as seen too, deliberately — otherwise they're retried
+  forever. The one exception is `scan.recheck_status`: stored listings are re-visited
+  every couple of days (capped per run) purely to read their status banner, because a
+  sold house keeps its page. Fields are never re-extracted on that visit.
+- **Mail covers the queue, not the run.** `Listing.mailed` is set by a mailing run; the
+  midnight and noon runs pass `--no-email` and leave new listings queued for the morning.
 - **Email addresses never go in files.** The repo is public (Pages on a free plan).
   Subscriptions say `$MAIL_TO`; the workflow passes all secrets as `HOUSE_ALERT_SECRETS`.
 - **Every real-world parsing trap gets a regression test** using the markup shape that

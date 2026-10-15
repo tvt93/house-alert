@@ -58,7 +58,14 @@ class Listing:
     first_seen: str = ""             # ISO date the listing first appeared in a scan
     lat: float | None = None
     lon: float | None = None
-    geo: str = ""                    # "address" | "postcode" | "" (not located)
+    geo: str = ""                    # "address" | "postcode" | "city" | "" (not located)
+    status: str = "available"        # "available" | "option" | "sold" | "gone"
+    checked: str = ""                # ISO date the status was last verified on the page
+    mailed: bool = False             # has a mail run already considered this listing?
+
+    @property
+    def available(self) -> bool:
+        return self.status == "available"
 
     @property
     def id(self) -> str:

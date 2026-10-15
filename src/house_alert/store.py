@@ -152,14 +152,39 @@ class ListingStore:
         return [l for l in self.listings.values()
                 if l.street and l.postal_code and l.geo != "address"]
 
+    def unmailed(self) -> list[Listing]:
+        """Available listings no mail run has considered yet, oldest first."""
+        return sorted((l for l in self.listings.values() if not l.mailed and l.available),
+                      key=lambda l: (l.first_seen, l.id))
+
+    def mark_mailed(self, listings: list[Listing]) -> None:
+        for listing in listings:
+            listing.mailed = True
+
+    def due_for_check(self, today: date | None = None, every_days: int = 2,
+                      limit: int = 400) -> list[Listing]:
+        """Listings whose status should be verified again: never checked
+        first, then the longest ago. Sold and vanished ones are final."""
+        today = today or date.today()
+        cutoff = (today - timedelta(days=every_days)).isoformat()
+        due = [l for l in self.listings.values()
+               if l.status in ("available", "option") and (not l.checked or l.checked <= cutoff)]
+        due.sort(key=lambda l: (l.checked, l.first_seen, l.id))
+        return due[:limit]
+
     def prune(self, retention_days: int = DEFAULT_RETENTION_DAYS,
-              today: date | None = None) -> int:
+              today: date | None = None, closed_days: int = 30) -> int:
+        """Forget listings older than the retention window, and sold or
+        vanished ones a month after that was established."""
         today = today or date.today()
         cutoff = today - timedelta(days=retention_days)
+        closed_cutoff = (today - timedelta(days=closed_days)).isoformat()
         stale = [
             key for key, listing in self.listings.items()
-            if _parse_date(listing.first_seen) is not None
-            and _parse_date(listing.first_seen) < cutoff  # type: ignore[operator]
+            if (_parse_date(listing.first_seen) is not None
+                and _parse_date(listing.first_seen) < cutoff)  # type: ignore[operator]
+            or (listing.status in ("sold", "gone") and listing.checked
+                and listing.checked <= closed_cutoff)
         ]
         for key in stale:
             del self.listings[key]

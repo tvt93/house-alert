@@ -2,10 +2,16 @@ name: daily digest
 
 on:
   schedule:
-    # 06:15 UTC = 08:15 Brussels in summer, 07:15 in winter.
-    - cron: "15 6 * * *"
+    # Times are UTC. Brussels is UTC+1 in winter, UTC+2 in summer.
+    - cron: "0 23 * * *"    # around midnight: refresh the page
+    - cron: "15 6 * * *"    # morning: refresh and send the mails
+    - cron: "0 11 * * *"    # around noon: refresh the page
   workflow_dispatch:
     inputs:
+      send_mail:
+        description: "Also send the mails (otherwise new listings stay queued for the morning mail)"
+        type: boolean
+        default: false
       dry_run:
         description: "Scan and report only - send no email, save no state"
         type: boolean
@@ -35,7 +41,7 @@ jobs:
 
       - run: pip install -e .
 
-      - name: Scan, locate, email, export
+      - name: Scan, re-check, locate, email, export
         env:
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
@@ -47,9 +53,12 @@ jobs:
           # without this file having to list it.
           HOUSE_ALERT_SECRETS: ${{ toJSON(secrets) }}
           HOUSE_ALERT_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+          # Only the 06:15 run (or a manual run that asks for it) sends mail.
+          NO_EMAIL: ${{ ((github.event_name == 'schedule' && github.event.schedule != '15 6 * * *') || (github.event_name == 'workflow_dispatch' && !inputs.send_mail)) && '--no-email' || '' }}
         run: |
           house-alert -v run \
             ${{ inputs.dry_run && '--dry-run' || '' }} \
+            $NO_EMAIL \
             --out digest.html
 
       - name: Upload the rendered digest
@@ -71,6 +80,6 @@ jobs:
           git config user.name  "house-alert[bot]"
           git config user.email "house-alert@users.noreply.github.com"
           git add state/ docs/listings.json
-          git commit -m "chore(state): listings seen on $(date -u +%F)"
+          git commit -m "chore(state): listings as of $(date -u '+%F %H:%M') UTC"
           git pull --rebase
           git push

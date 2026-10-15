@@ -18,7 +18,7 @@ from .geo import Geocoder
 from .mail import MailConfigError, render_html, render_text, send, subject_for
 from .models import Agency, Listing
 from .net import Fetcher
-from .scan import ScanResult, scan
+from .scan import ScanResult, recheck_status, scan
 from .site import SITE_DIR, export_site
 from .store import ListingStore, SeenStore
 
@@ -234,7 +234,7 @@ def _report(result: ScanResult, per_sub: dict[str, tuple[list[Listing], list[fil
     print(f"pages fetched    : {result.fetched}")
     print(f"listings parsed  : {len(result.listings)}")
     for name, (matches, _) in per_sub.items():
-        print(f"matched '{name}'{'':<{max(0, 8 - len(name))}}: {len(matches)}")
+        print(f"to mail '{name}'{'':<{max(0, 8 - len(name))}}: {len(matches)}")
 
     if verbose and result.unreachable:
         print("\nno listings found on:")
@@ -284,11 +284,25 @@ def cmd_run(args: argparse.Namespace) -> int:
             max_listings=args.limit,
             workers=args.workers,
         )
+        fresh = result.listings
+        for listing in fresh:
+            listing.first_seen = today.isoformat()
+            listing.checked = today.isoformat()
+        store.add_all(fresh, today)
 
-    fresh = result.listings
-    for listing in fresh:
-        listing.first_seen = today.isoformat()
-    store.add_all(fresh, today)
+        # Has anything we already show been sold, taken under option, or
+        # taken offline since we last looked?
+        changes: dict[str, int] = {}
+        if args.recheck_max > 0 and not seeding:
+            wanted = {a.name for a in agencies}
+            due = [l for l in store.due_for_check(today, args.recheck_days, args.recheck_max)
+                   if l.source in wanted]
+            changes = dict(recheck_status(due, fetcher, today, workers=args.workers))
+    if changes:
+        moved = {k: v for k, v in changes.items() if "->" in k}
+        print(f"status re-checked : {changes.get('checked', 0)} listings"
+              + (f", changed: {moved}" if moved else "")
+              + (f", unreachable: {changes['unreachable']}" if changes.get("unreachable") else ""))
 
     with Geocoder.load(online=not args.dry_run, max_requests=args.geocode_max) as geocoder:
         exact, backlog = _locate(geocoder, fresh, store)
@@ -297,15 +311,20 @@ def cmd_run(args: argparse.Namespace) -> int:
     print(f"located          : {exact} of {len(fresh)} new at street level, "
           f"{backlog} older resolved, {geocoder.requests_made} lookups")
 
-    per_sub = {sub.name: filters.apply(fresh, sub.criteria) for sub in subscriptions}
+    # A mail covers everything found since the previous mail, not just this
+    # run: the noon and midnight runs refresh the page without mailing.
+    pending = store.unmailed() if not seeding else []
+    per_sub = {sub.name: filters.apply(pending, sub.criteria) for sub in subscriptions}
     _report(result, per_sub, verbose=args.verbose)
+    if pending and len(pending) != len(fresh):
+        print(f"unmailed so far  : {len(pending)} (this run found {len(fresh)})")
 
     if args.out:
         union: dict[str, Listing] = {}
         for matches, _ in per_sub.values():
             for listing in matches:
                 union.setdefault(listing.id, listing)
-        html = render_html(list(union.values()), today, len(agencies), len(fresh),
+        html = render_html(list(union.values()), today, len(agencies), len(pending),
                            len(result.unreachable))
         Path(args.out).write_text(html, encoding="utf-8")
         print(f"\nwrote {args.out}")
@@ -315,10 +334,14 @@ def cmd_run(args: argparse.Namespace) -> int:
         return 0
 
     if seeding:
+        store.mark_mailed(fresh)
         print(f"\nseeded {len(fresh)} listings from {len(result.per_agency)} agencies; "
               f"no email on a first run")
-    elif not args.no_email:
-        _deliver(subscriptions, fresh, today, len(agencies), len(result.unreachable))
+    elif args.no_email:
+        print(f"\nno email this run; {len(pending)} listings stay queued for the next mail")
+    else:
+        _deliver(subscriptions, pending, today, len(agencies), len(result.unreachable))
+        store.mark_mailed(pending)
 
     for url in result.all_seen_urls:
         seen.record(Listing(url=url, source="scan"))
@@ -379,7 +402,8 @@ def build_parser() -> argparse.ArgumentParser:
     add_selectors(p_run)
     p_run.add_argument("--dry-run", action="store_true",
                        help="scan and report, but send nothing and save nothing")
-    p_run.add_argument("--no-email", action="store_true", help="scan and save, don't email")
+    p_run.add_argument("--no-email", action="store_true",
+                       help="refresh the page but send nothing; new listings stay queued for the next mail")
     p_run.add_argument("--seed", action="store_true",
                        help="force seeding: record everything online, email nothing")
     p_run.add_argument("--no-seed", action="store_true",
@@ -390,6 +414,10 @@ def build_parser() -> argparse.ArgumentParser:
                        help="agencies scanned concurrently (default 8)")
     p_run.add_argument("--geocode-max", type=int, default=300,
                        help="max Nominatim lookups this run (default 300)")
+    p_run.add_argument("--recheck-max", type=int, default=400,
+                       help="max stored listings whose status is re-verified (default 400, 0 = off)")
+    p_run.add_argument("--recheck-days", type=int, default=2,
+                       help="re-verify a listing's status every N days (default 2)")
     p_run.add_argument("--ignore-robots", action="store_true",
                        help="do not consult robots.txt (off by default; be considerate)")
     p_run.add_argument("--out", help="also write the digest HTML to this file")

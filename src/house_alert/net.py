@@ -113,10 +113,15 @@ class Fetcher:
 
     def get(self, url: str) -> str | None:
         """Fetch a URL as text. Returns None on any failure or disallowance."""
+        return self.fetch(url).text
+
+    def fetch(self, url: str) -> "Fetched":
+        """Fetch a URL and keep the status code and final URL too, for callers
+        that need to tell "gone" (404, redirected to the index) from "down"."""
         if not self.allowed(url):
             self.stats.blocked_by_robots += 1
             log.debug("robots.txt disallows %s", url)
-            return None
+            return Fetched(url, None, None)
 
         host = urlparse(url).netloc
         self._throttle(host)
@@ -126,13 +131,32 @@ class Fetcher:
         except httpx.HTTPError as exc:
             self.stats.failures += 1
             log.debug("fetch failed %s: %s", url, exc)
-            return None
+            return Fetched(url, None, None)
 
+        final = str(resp.url)
         if resp.status_code >= 400:
             self.stats.failures += 1
             log.debug("fetch %s returned %s", url, resp.status_code)
-            return None
+            return Fetched(url, resp.status_code, None, final)
         if len(resp.content) > self.max_bytes:
             log.debug("skipping oversized response %s", url)
-            return None
-        return resp.text
+            return Fetched(url, resp.status_code, None, final)
+        return Fetched(url, resp.status_code, resp.text, final)
+
+
+@dataclass
+class Fetched:
+    url: str
+    status_code: int | None          # None: network failure or robots.txt
+    text: str | None
+    final_url: str = ""              # after redirects
+
+    @property
+    def redirected_away(self) -> bool:
+        """Did the site bounce us up to an index or the homepage, as sites do
+        once a listing is gone? A redirect to a sibling URL (locale change,
+        canonical slug) keeps the same depth and does not count."""
+        if not self.final_url or self.final_url == self.url:
+            return False
+        depth = lambda u: len([s for s in urlparse(u).path.split("/") if s])  # noqa: E731
+        return depth(self.final_url) < depth(self.url)

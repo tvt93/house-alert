@@ -12,8 +12,10 @@ import re
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
+from datetime import date
+from urllib.parse import urlparse
 
-from .extract import extract_listing
+from .extract import detect_status, extract_listing
 from .models import Agency, Listing, listing_id
 from .net import Fetcher
 from .platforms import scraper_for
@@ -100,6 +102,52 @@ def scan_agency(
 
     strip_shared_street(result.listings)
     return result
+
+
+def recheck_status(
+    listings: list[Listing],
+    fetcher: Fetcher,
+    today: date | None = None,
+    workers: int = 8,
+) -> Counter:
+    """Visit stored listings again to see whether they are still for sale.
+
+    The one deliberate exception to "a URL is fetched once": a house that
+    was sold yesterday is still on the page unless somebody looks. Listings
+    are grouped by host so the per-host throttle keeps each site at one
+    request per second while several sites are visited at once.
+    """
+    today = today or date.today()
+    changes: Counter = Counter()
+
+    def visit(group: list[Listing]) -> Counter:
+        local: Counter = Counter()
+        for listing in group:
+            got = fetcher.fetch(listing.url)
+            if got.status_code is None:
+                local["unreachable"] += 1          # network trouble: try again another day
+                continue
+            if got.status_code in (404, 410) or got.redirected_away:
+                new = "gone"
+            elif got.text is None:
+                local["unreachable"] += 1
+                continue
+            else:
+                new = detect_status(got.text)
+            listing.checked = today.isoformat()
+            local["checked"] += 1
+            if new != listing.status:
+                local[f"{listing.status}->{new}"] += 1
+                listing.status = new
+        return local
+
+    by_host: dict[str, list[Listing]] = {}
+    for listing in listings:
+        by_host.setdefault(urlparse(listing.url).netloc, []).append(listing)
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        for local in pool.map(visit, by_host.values()):
+            changes.update(local)
+    return changes
 
 
 def strip_shared_street(listings: list[Listing]) -> int:

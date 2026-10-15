@@ -21,6 +21,7 @@ PUBLIC_FIELDS = (
     "id", "url", "source", "region", "title", "city", "postal_code", "street",
     "price", "property_type", "bedrooms", "living_area_m2", "plot_area_m2",
     "epc_kwh", "image_url", "description", "first_seen", "lat", "lon", "geo",
+    "status", "checked",
 )
 
 

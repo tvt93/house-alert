@@ -8,6 +8,7 @@ individual site still sees roughly one request per second.
 from __future__ import annotations
 
 import logging
+import re
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
@@ -108,15 +109,30 @@ def strip_shared_street(listings: list[Listing]) -> int:
     nearly every page of a site it is the office, printed somewhere the chrome
     detector did not look. Returns how many listings were cleared.
     """
-    counts = Counter(l.street.lower() for l in listings if l.street)
+    groups: dict[str, list[Listing]] = {}
+    for l in listings:
+        if l.street:
+            groups.setdefault(street_key(l.street), []).append(l)
     cleared = 0
-    for street, n in counts.items():
-        if n >= 3 and n >= 0.4 * len(listings):
-            for l in listings:
-                if l.street.lower() == street:
-                    l.street = ""
-                    cleared += 1
+    for members in groups.values():
+        n = len(members)
+        if n < 3:
+            continue
+        # A new-build project also puts one street on many listings, but all
+        # in one postcode. One street across several towns is the office.
+        places = {m.postal_code or m.city.lower() for m in members if m.postal_code or m.city}
+        if n >= 0.4 * len(listings) or len(places) >= 2:
+            for l in members:
+                l.street = ""
+                cleared += 1
     return cleared
+
+
+def street_key(street: str) -> str:
+    """'Ja Kantoor Stationsstraat 4 bus 1' and 'Stationsstraat 4 bus 1' are the
+    same door: compare on the last name word plus the number."""
+    m = re.search(r"(\S+\s+\d.*)$", street)
+    return (m.group(1) if m else street).lower()
 
 
 def scan(

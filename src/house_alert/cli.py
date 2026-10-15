@@ -187,8 +187,6 @@ def cmd_geocode(args: argparse.Namespace) -> int:
     print(f"{len(store)} listings, {len(pending)} with a street still to resolve")
     with Geocoder.load(max_requests=args.max) as geocoder:
         resolved = 0
-        for listing in store.listings.values():
-            geocoder.locate(listing)
         for listing in pending:
             if geocoder.budget_left == 0:
                 break
@@ -196,6 +194,10 @@ def cmd_geocode(args: argparse.Namespace) -> int:
                 resolved += 1
                 if args.verbose:
                     print(f"  {listing.location_display:<48} {listing.lat:.5f},{listing.lon:.5f}")
+        geocoder.online = False       # the rest only needs centroids
+        for listing in store.listings.values():
+            if listing.lat is None:
+                geocoder.locate(listing)
         geocoder.save()
     store.save()
     print(f"resolved {resolved} addresses with {geocoder.requests_made} lookups")

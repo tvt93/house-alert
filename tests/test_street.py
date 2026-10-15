@@ -22,6 +22,14 @@ def test_find_street_ignores_numbers_that_are_not_house_numbers():
     assert find_street("Vraagprijs 395.000") is None
 
 
+def test_find_street_skips_codes_and_shouting():
+    # landbergh.be: "Afrit E40 Adres Damstraat 41"; "Kortrijk. Adres Peter Benoitlaan 33"
+    assert find_street("Afrit E40 Adres Damstraat 41") == "Damstraat 41"
+    assert find_street("Kortrijk. Adres Peter Benoitlaan 33, 9800 Deinze") == "Peter Benoitlaan 33"
+    assert find_street("INSTAPKLARE WOONST Vlamingenstraat 2") == "Vlamingenstraat 2"
+    assert find_street("Kouter 8 bus 202") == "Kouter 8 bus 202"
+
+
 def test_find_street_trims_labels_and_city():
     assert find_street("Adres: Kerkstraat 12", city="Gent") == "Kerkstraat 12"
     assert find_street("Gent Kerkstraat 12", city="Gent") == "Kerkstraat 12"
@@ -168,15 +176,43 @@ def test_office_coordinates_are_never_used():
     assert listing.street == "Beekstraat 27"
 
 
+def test_form_labels_and_place_names_are_not_part_of_the_street():
+    # immocasa.be prints "Ja Kantoor Ingelmunster Stationsstraat 4 bus 1".
+    assert find_street("Ja Kantoor Ingelmunster Stationsstraat 4 bus 1") == "Stationsstraat 4 bus 1"
+    assert find_street("Neen Kantoor Ingelmunster Stationsstraat 4") == "Stationsstraat 4"
+
+
+def test_in_slug_city_must_be_a_real_place():
+    html = "<html><body><h1>Woning</h1><p>Vraagprijs: € 300.000</p></body></html>"
+    bad = extract_listing("https://x.be/te-koop/woning-in-een-prachtige-tuin/1", html, source="X")
+    assert bad is not None and bad.city == ""
+    good = extract_listing("https://x.be/te-koop/woning-in-heule/1", html, source="X")
+    assert good is not None and good.city == "Heule"
+
+
+def test_rental_by_title_is_not_a_listing():
+    html = ('<html><head><meta property="og:title" content="Te huur - Rustig gelegen"></head>'
+            '<body><h1>Te huur</h1><p>Huurprijs: € 1.250</p><p>2 slaapkamers</p></body></html>')
+    assert extract_listing("https://x.be/pand/123", html, source="X") is None
+
+
 def test_shared_street_across_an_agency_is_the_office():
     def l(street):
         return Listing(url=f"https://x.be/{street}", source="X", street=street)
 
-    listings = [l("Stationsstraat 5"), l("Stationsstraat 5"), l("Stationsstraat 5"),
+    listings = [l("Stationsstraat 5"), l("Ja Kantoor Stationsstraat 5"), l("Stationsstraat 5"),
                 l("Kerkstraat 12"), l("")]
     assert strip_shared_street(listings) == 3
     assert [x.street for x in listings] == ["", "", "", "Kerkstraat 12", ""]
 
-    # Three out of ten is a coincidence, not an office.
+    # Three out of ten in one postcode is a project with several units.
     many = [l("Stationsstraat 5")] * 3 + [l(f"Straat {i}") for i in range(7)]
+    for m in many:
+        m.postal_code = "9000"
     assert strip_shared_street(many) == 0
+
+    # The same door on listings in different towns is the office (immocasa.be).
+    spread = [l("Stationsstraat 4 bus 1") for _ in range(3)] + [l(f"Straat {i}") for i in range(7)]
+    for m, pc in zip(spread, ("8770", "8870", "8770")):
+        m.postal_code = pc
+    assert strip_shared_street(spread) == 3

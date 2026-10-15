@@ -192,11 +192,14 @@ class Geocoder:
         self._last_request_at = time.monotonic()
         self.requests_made += 1
 
+        # Street + postcode is unambiguous in Belgium, and the city name as an
+        # agency writes it ("Gullegem-Wevelgem-Heule") only makes OSM miss.
         params: dict[str, Any] = {
-            "street": street, "postalcode": postcode, "country": "Belgium",
+            "street": re.sub(r"\s+bus\s*\S+$", "", street, flags=re.IGNORECASE),
+            "postalcode": postcode, "country": "Belgium",
             "format": "jsonv2", "limit": 1, "addressdetails": 1,
         }
-        if city:
+        if city and not postcode:
             params["city"] = city
         try:
             resp = self._client.get(NOMINATIM_URL, params=params)

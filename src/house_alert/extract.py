@@ -64,7 +64,7 @@ LISTING_URL_HINTS = (
 
 # ...and fragments that mean it definitely is not one.
 LISTING_URL_ANTI_HINTS = (
-    "/te-huur", "/tehuur/", "/for-rent", "/verhuur", "/nieuws", "/blog",
+    "te-huur", "/tehuur/", "for-rent", "/verhuur", "/nieuws", "/blog",
     "/contact", "/over-ons", "/team", "/diensten", "/schatting", "/vacature",
     "/privacy", "/cookie", "/algemene-voorwaarden", "/verkocht", "/references",
     "/nieuwbouw", "/projecten", "/gerealiseerd", "/page/", "/tag/", "/author/",
@@ -104,7 +104,7 @@ CITY_IN_TITLE = (
 # "Kortrijk - Charmante te renoveren burgerwoning"
 CITY_LEADS_TITLE = r"^([A-Z][a-zà-ÿ]{2,}(?:[-\s][A-Z][a-zà-ÿ]+)*)\s+[-–|]\s+"
 # ".../te-koop/9140-Temse/..." and ".../woning-te-koop-astene"
-CITY_IN_URL_WITH_POSTCODE = r"/([1-9]\d{3})-([A-Za-z][A-Za-z-]{2,30})(?:/|$)"
+CITY_IN_URL_WITH_POSTCODE = r"(?:/|-in-|-te-)([1-9]\d{3})-([A-Za-z][A-Za-z-]{2,30})(?:/|$)"
 CITY_IN_URL_SLUG = r"/[\w-]*te-koop-([a-z][a-z-]{2,30})(?:/|$)"
 CITY_IN_URL_IN = r"/[\w-]*?-in-([a-z][a-z-]{2,30})(?:/|$)"
 
@@ -117,7 +117,7 @@ STREET_SUFFIX = (
     "bos|heide|dam|gracht|poort|beek|molen|hoek|wal|zoom|erf|gaarde|dorp|wijk|"
     "rede|reep|straatje|wegje|baantje|meers|brug"
 )
-_STREET_WORD = r"[A-Z][\w'’.-]*"
+_STREET_WORD = r"[A-Z][^\W\d_]*(?:['’-][^\W\d_]+)*"   # letters only: not "E40", not "Kortrijk."
 _STREET_CONNECTOR = r"(?:op|ter|ten|de|den|der|van|aan|'t|het|en)"
 STREET = re.compile(
     rf"(?<![\w-])({_STREET_WORD}(?:\s(?:{_STREET_WORD}|{_STREET_CONNECTOR})){{0,3}})"
@@ -131,6 +131,8 @@ STREET_LABELS = {
     "adres", "ligging", "locatie", "straat", "te", "koop", "woning", "huis",
     "appartement", "villa", "gelegen", "ref", "vraagprijs", "aan", "in", "op",
     "rijwoning", "nieuwbouw", "bouwgrond", "hoeve", "herenhuis", "bungalow",
+    # Form labels that precede an office address in running text (Immo Casa).
+    "ja", "nee", "neen", "kantoor", "bureau", "agentschap", "contact",
 }
 
 # Page regions whose addresses belong to the agency, not the property. Matched
@@ -337,6 +339,61 @@ def _clean_ws(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip(" ,")
 
 
+_places: frozenset[str] | None = None
+
+
+def _known_places() -> frozenset[str]:
+    """Every municipality and locality name in the bundled postcode table."""
+    global _places
+    if _places is None:
+        from .geo import postcode_table  # local import: geo depends on models, not on us
+        _places = frozenset(
+            str(n).lower() for entry in postcode_table().values() for n in entry.get("names", [])
+        )
+    return _places
+
+
+def is_known_place(name: str) -> bool:
+    return name.strip().lower().replace("-", " ") in {p.replace("-", " ") for p in _known_places()}
+
+
+def is_known_postcode(code: str) -> bool:
+    from .geo import postcode_table
+    return str(code).strip() in postcode_table()
+
+
+def chrome_nodes(soup: BeautifulSoup) -> list[Any]:
+    """Elements that are site furniture rather than listing content."""
+    nodes = soup.find_all(["footer", "nav", "address"])
+    # A <header> is site chrome only at the top level; inside an article,
+    # section or main it is the listing's own heading.
+    nodes += [h for h in soup.find_all("header")
+              if not h.find_parent(["article", "main", "section"])]
+    nodes += [n for n in soup.find_all(id=True) if CHROME_CLASS.search(str(n.get("id")))]
+    nodes += [n for n in soup.find_all(class_=True)
+              if any(CHROME_CLASS.search(c) for c in n.get("class", []))]
+    # A topbar inside a header would otherwise be counted twice.
+    unique = {id(n): n for n in nodes}
+    return [n for n in unique.values()
+            if not any(id(p) in unique for p in n.parents)]
+
+
+def chrome_places(soup: BeautifulSoup) -> dict[tuple[str, str], int]:
+    """How often each (postcode, city) pair is printed in the page chrome.
+
+    Counts, not a set: a house in Ghent sold by a Ghent agency has "9000 Gent"
+    in the footer *and* in its own address line, and only the surplus
+    occurrence in the body text is the property's.
+    """
+    found: dict[tuple[str, str], int] = {}
+    for node in chrome_nodes(soup):
+        text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+        for m in re.finditer(POSTAL_CITY, text):
+            key = (m.group(1), f"{m.group(2) or ''}{m.group(3)}".strip().lower())
+            found[key] = found.get(key, 0) + 1
+    return found
+
+
 def _normal_number(number: str) -> str:
     return number if "bus" in number.lower() else re.sub(r"\s+", "", number)
 
@@ -347,6 +404,9 @@ def _clean_street_name(name: str, city: str) -> str | None:
     while len(words) > 1 and (
         words[0].lower().strip(":") in STREET_LABELS
         or (city and words[0].lower() == city.lower())
+        or (words[0].lower() in {n.lower() for n in _known_places()})
+        # "INSTAPKLARE WOONST Vlamingenstraat 2": shouting is marketing, not a name.
+        or (words[0].isupper() and len(words[0]) >= 4 and not _STREET_ENDS.search(words[0]))
     ):
         words.pop(0)
     # "Kerkstraat", "Grote Markt" - or "Steenweg op Deinze", "Hof ter Linden",
@@ -399,15 +459,7 @@ def chrome_streets(soup: BeautifulSoup) -> set[str]:
     """Every street address printed in the page chrome. On an agency site
     that is the office address, repeated on every listing page."""
     found: set[str] = set()
-    nodes = soup.find_all(["footer", "nav", "address"])
-    # A <header> is site chrome only at the top level; inside an article,
-    # section or main it is the listing's own heading.
-    nodes += [h for h in soup.find_all("header")
-              if not h.find_parent(["article", "main", "section"])]
-    nodes += [n for n in soup.find_all(id=True) if CHROME_CLASS.search(str(n.get("id")))]
-    nodes += [n for n in soup.find_all(class_=True)
-              if any(CHROME_CLASS.search(c) for c in n.get("class", []))]
-    for node in nodes:
+    for node in chrome_nodes(soup):
         text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
         for m in STREET.finditer(text):
             name = _clean_street_name(m.group(1), "")
@@ -480,7 +532,9 @@ def _from_text(text: str, listing: Listing) -> None:
         listing.epc_kwh = epc if epc is not None and 0 < epc <= 1500 else None
 
 
-def _locate(listing: Listing, text: str) -> None:
+def _locate(listing: Listing, text: str,
+            chrome_places: dict[tuple[str, str], int] | None = None) -> None:
+    chrome_places = chrome_places or {}
     """Fill in city/postcode, most trustworthy source first.
 
     Page text is the last resort on purpose: an agency's own address sits in
@@ -514,15 +568,34 @@ def _locate(listing: Listing, text: str) -> None:
     if not listing.city:
         for pattern in (CITY_IN_URL_SLUG, CITY_IN_URL_IN):
             m = re.search(pattern, url.lower())
-            if m:
-                listing.city = _titleize(m.group(1))
-                break
+            if not m:
+                continue
+            candidate = _titleize(m.group(1))
+            # "/woning-in-een-prachtige-tuin" is not a place. The "-in-" shape
+            # is weak enough that the name must be a known municipality.
+            if pattern is CITY_IN_URL_IN and not is_known_place(candidate):
+                continue
+            listing.city = candidate
+            break
 
     if not listing.postal_code:
         for m in re.finditer(POSTAL_CITY, text):
             city = f"{m.group(2) or ''}{m.group(3)}".strip()
             if city.lower() in NOT_A_CITY:
                 continue
+            # Body text is the weakest source: "2024 Energie" and "1250
+            # Beschikbaar" have the shape of a postcode and a town, and the
+            # office's "1000 Brussel" sits in every footer. So the postcode
+            # must exist, and the pair must not be one the page chrome prints.
+            # (The place name itself is not checked against the table: it
+            # lists municipalities, not every hamlet an agency may name.)
+            if not is_known_postcode(m.group(1)):
+                continue
+            printed_in_chrome = chrome_places.get((m.group(1), city.lower()), 0)
+            if printed_in_chrome:
+                in_body = len(re.findall(rf"\b{m.group(1)}\s+{re.escape(city)}\b", text))
+                if in_body <= printed_in_chrome:
+                    continue
             # Only accept a postcode from the page body when it agrees with the
             # city we already trust, or when we have no city at all.
             if listing.city and city.lower() != listing.city.lower():
@@ -607,6 +680,7 @@ def extract_listing(url: str, html: str, source: str, region: str = "") -> Listi
     listing.image_url = _meta(soup, "og:image", "twitter:image")
 
     office = chrome_streets(soup)
+    offices_at = chrome_places(soup)
     office |= _from_jsonld(jsonld_objects(BeautifulSoup(html, "lxml")), listing)
 
     if not listing.title:
@@ -623,8 +697,13 @@ def extract_listing(url: str, html: str, source: str, region: str = "") -> Listi
     if is_index_page(text):
         return None
 
+    # Rentals share URL shapes with sales on some sites; the title says which.
+    lowered_title = listing.title.lower()
+    if "te huur" in lowered_title and "te koop" not in lowered_title:
+        return None
+
     _from_text(text, listing)
-    _locate(listing, text)
+    _locate(listing, text, offices_at)
 
     # The street: structured data first, then the title, then an address line
     # in the body. Whatever the page chrome prints is the agency's own door.

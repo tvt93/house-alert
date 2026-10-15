@@ -3,6 +3,37 @@
 Every case below was taken from an actual page that fooled an earlier version.
 """
 
+def test_postcode_in_slug_beats_office_postcode_in_body():
+    # immocasa.be: the form prints the office ("8770 Ingelmunster") on every
+    # page, while the URL says where the property is.
+    from house_alert.extract import extract_listing, looks_like_listing_url
+
+    page = """<html><body><h1>Appartement met 2 slaapkamers</h1>
+      <p>Vraagprijs: € 250.000</p><p>Kantoor Ingelmunster Stationsstraat 4 bus 1, 8770 Ingelmunster</p>
+    </body></html>"""
+    listing = extract_listing(
+        "https://x.be/aanbod/appartement-te-koop-in-8900-ieper", page, source="X")
+    assert listing is not None
+    assert (listing.postal_code, listing.city) == ("8900", "Ieper")
+    assert listing.street == ""
+    assert not looks_like_listing_url("https://x.be/aanbod/pand-te-huur-in-8800-roeselare")
+
+
+def test_body_text_postcode_must_be_real_and_not_the_office():
+    from house_alert.extract import extract_listing
+
+    page = """<html><body>
+      <header class="site-header">Immo X · Koningsstraat 1, 1000 Brussel</header>
+      <h1>Woning</h1><p>Vraagprijs: € 300.000</p>
+      <p>Bouwjaar 2024 Energie: EPC 120. Beschikbaar: 1250 Beschikbaar</p>
+      <p>Ligging: 9940 Wippelgem</p>
+      <footer>Immo X, Koningsstraat 1, 1000 Brussel</footer>
+    </body></html>"""
+    listing = extract_listing("https://x.be/pand/1", page, source="X")
+    assert listing is not None
+    assert (listing.postal_code, listing.city) == ("9940", "Wippelgem")
+
+
 from house_alert.extract import extract_listing
 
 FACTS = """

@@ -108,6 +108,7 @@
    "lon": 3.5760697
   },
   "documenten asbestattest vierschaarstraat 16|9185|wachtebeke": null,
+  "documenten documenten asbestattest hillestraat 10|8951|dranouter": null,
   "doorniksewijk 45 bus 33|8500|kortrijk": null,
   "dorp 24|9920|lievegem": {
    "lat": 51.0956949,
@@ -505,6 +506,10 @@
    "lon": 3.8515338
   },
   "ommegangstraat 8|9800|deinze": null,
+  "onze lieve vrouwestraat 15 / 31|8500|kortrijk": {
+   "lat": 50.8292272,
+   "lon": 3.2664928
+  },
   "oostakkerdorp 20|9041|oostakker": {
    "lat": 51.0999249,
    "lon": 3.763311

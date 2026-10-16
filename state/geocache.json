@@ -195,6 +195,10 @@
    "lon": 3.1844096
   },
   "gullegem torrestraat 23|8560|gullegem-wevelgem-heule": null,
+  "gullegemstraat 105|8560|wevelgem": {
+   "lat": 50.8155768,
+   "lon": 3.1868438
+  },
   "gustave royerslaan 108|9600|renaix": {
    "lat": 50.7419253,
    "lon": 3.5918937
@@ -501,6 +505,10 @@
    "lon": 3.8515338
   },
   "ommegangstraat 8|9800|deinze": null,
+  "oostakkerdorp 20|9041|oostakker": {
+   "lat": 51.0999249,
+   "lon": 3.763311
+  },
   "oostrozebekestraat 137|8770|ingelmunster": {
    "lat": 50.9192941,
    "lon": 3.2637814
@@ -548,6 +556,10 @@
   "peeërweg 11|3700|tongeren-borgloon": {
    "lat": 50.7508413,
    "lon": 5.4974323
+  },
+  "peperstraat 75|8501|heule": {
+   "lat": 50.8415865,
+   "lon": 3.2311687
   },
   "peter benoitlaan 33|9800|deinze": {
    "lat": 50.9872927,
@@ -759,6 +771,10 @@
   "vijverlaan 30|8560|gullegem": {
    "lat": 50.8370531,
    "lon": 3.2134065
+  },
+  "vissersstraat 17|8370|blankenberge": {
+   "lat": 51.3148379,
+   "lon": 3.1266321
   },
   "vlamingenstraat 2|8940|wervik": {
    "lat": 50.7786489,

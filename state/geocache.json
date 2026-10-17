@@ -63,6 +63,10 @@
    "lat": 50.8228465,
    "lon": 3.2638718
   },
+  "boterpotstraat 9|8530|harelbeke": {
+   "lat": 50.8586008,
+   "lon": 3.315976
+  },
   "broederlijke-weversplein 167|1972|lift": null,
   "brouwerijstraat 7|9880|aalter": null,
   "bruggestraat 15|8770|ingelmunster": {
@@ -340,6 +344,10 @@
   "koning ridderdijk 31|8434|westende": {
    "lat": 51.1702475,
    "lon": 2.773122
+  },
+  "koning-albertlaan 182|9080|lochristi": {
+   "lat": 51.1091287,
+   "lon": 3.8185807
   },
   "koningstraat 1|9000|gent": {
    "lat": 51.0550966,

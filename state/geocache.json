@@ -94,6 +94,10 @@
    "lat": 50.8280585,
    "lon": 3.2597074
   },
+  "charles de kerchovelaan 129|9000|gent": {
+   "lat": 51.0410264,
+   "lon": 3.7216867
+  },
   "dalestraat 55|8554|sint-denijs": {
    "lat": 50.7526976,
    "lon": 3.364811
@@ -607,6 +611,10 @@
    "lat": 51.1182491,
    "lon": 3.4433388
   },
+  "pieter de coninckstraat 11|8870|izegem": {
+   "lat": 50.9011541,
+   "lon": 3.1970762
+  },
   "politieke gevangenenstraat 126|8530|harelbeke": {
    "lat": 50.8316265,
    "lon": 3.3020886
@@ -622,6 +630,10 @@
   "pretlaan 28|9850|vosselare": {
    "lat": 51.0256641,
    "lon": 3.5580719
+  },
+  "priestersstraat 38|9600|ronse": {
+   "lat": 50.7487213,
+   "lon": 3.6003875
   },
   "r40 adres kopenhagenstraat 4|9000|gent": null,
   "recolettenstraat 9|2018|lift": null,
@@ -690,6 +702,10 @@
   "sint-katharinastraat 26|8501|heule": {
    "lat": 50.8625479,
    "lon": 3.2278745
+  },
+  "speltreep 11|9960|assenede": {
+   "lat": 51.205263,
+   "lon": 3.7609927
   },
   "spookkasteelstraat 5|8780|oostrozebeke": {
    "lat": 50.9142282,
@@ -841,6 +857,10 @@
   "wapenplein 6 bus 0401|8400|oostende": {
    "lat": 51.2322727,
    "lon": 2.9171352
+  },
+  "westkouter 19|8800|roulers": {
+   "lat": 50.9398827,
+   "lon": 3.1141905
   },
   "weststraat 39|8770|ingelmunster": {
    "lat": 50.9211623,

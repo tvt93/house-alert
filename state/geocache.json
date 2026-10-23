@@ -55,6 +55,10 @@
    "lat": 50.8414652,
    "lon": 3.2062267
   },
+  "blinde-rodenbachstraat 19a|8800|rumbeke": {
+   "lat": 50.9334512,
+   "lon": 3.1471549
+  },
   "bloemistenstraat 9 / 22|8500|kortrijk": {
    "lat": 50.8218889,
    "lon": 3.2643327
@@ -195,6 +199,10 @@
    "lon": 3.0918491
   },
   "gentse steenweg 438 bus 201|9080|zeveneken": null,
+  "gevangenisstraat 10|8900|ieper": {
+   "lat": 50.85071,
+   "lon": 2.8884284
+  },
   "graaf gwijde van namenstraat 31|8500|kortrijk": {
    "lat": 50.8300702,
    "lon": 3.2819846
@@ -202,6 +210,10 @@
   "graanmarkt 22|8500|kortrijk": {
    "lat": 50.8267883,
    "lon": 3.2645883
+  },
+  "gravinnestraat 13|8770|ingelmunster": {
+   "lat": 50.9207639,
+   "lon": 3.2548917
   },
   "groeninghekaai 22|8500|kortrijk": null,
   "grote ieperstraat 46|8560|gullegem": {
@@ -245,6 +257,7 @@
    "lat": 50.9122012,
    "lon": 3.3723317
   },
+  "hinnebilckstraat 85|8770|ingelmunster": null,
   "hogestraat 98|8830|hooglede": {
    "lat": 50.9808871,
    "lon": 3.0750351
@@ -695,6 +708,10 @@
    "lat": 50.8654366,
    "lon": 3.2740746
   },
+  "sint-jacobsstraat 16|8900|ieper": {
+   "lat": 50.8505936,
+   "lon": 2.8885947
+  },
   "sint-katharinastraat 142|8501|heule": {
    "lat": 50.8714856,
    "lon": 3.240275
@@ -842,6 +859,7 @@
    "lat": 50.8262018,
    "lon": 3.1602563
   },
+  "vrouwstraat 42|8770|ingelmunster": null,
   "wallekouter 18|8560|gullegem": {
    "lat": 50.8385459,
    "lon": 3.2139009

@@ -216,3 +216,89 @@ def test_shared_street_across_an_agency_is_the_office():
     for m, pc in zip(spread, ("8770", "8870", "8770")):
         m.postal_code = pc
     assert strip_shared_street(spread) == 3
+
+
+def test_find_street_does_not_cross_a_line_break():
+    # irres.be: the title ends in a place name and the address block follows it.
+    text = "Ruime gezinswoning nabij het Parkbos\nOvermeersstraat 9\n9051 Sint-Denijs-Westrem"
+    assert find_street(text, postcode="9051", near_place=True) == "Overmeersstraat 9"
+    # The postcode may sit on the next line; the name may not.
+    assert find_street("Kerkstraat 12\n9000 Gent", postcode="9000", near_place=True) == "Kerkstraat 12"
+    assert find_street("Kerkstraat\n12, 9000 Gent", postcode="9000", near_place=True) is None
+    # Indentation inside a line is still just a space.
+    assert find_street("Kerkstraat \t 12,   9000 Gent", postcode="9000", near_place=True) == "Kerkstraat 12"
+
+
+MENU_BEFORE_ADDRESS = """
+<html><head><meta property="og:title" content="Eigendom met praktijk op toplocatie"></head>
+<body>
+  <header><nav><button><span>Home</span></button></nav></header>
+  <main>
+    <div class="pretitle">
+      Beukenlaan 17, 9051 Sint-Denijs-Westrem
+    </div>
+    <h1>Eigendom met praktijk op toplocatie</h1>
+    <p>Vraagprijs: € 1.250.000</p><p>3 slaapkamers</p>
+  </main>
+</body></html>
+"""
+
+HEADING_BEFORE_ADDRESS = """
+<html><head><meta property="og:title" content="Ruime gezinswoning nabij het Parkbos"></head>
+<body>
+  <h1>Ruime gezinswoning in een verkeersluwe straat nabij het Parkbos</h1>
+  <div><p>Overmeersstraat 9</p><p>9051 Sint-Denijs-Westrem</p></div>
+  <p>Vraagprijs: € 695.000</p><p>4 slaapkamers</p>
+</body></html>
+"""
+
+TAB_BEFORE_ADDRESS = """
+<html><head><meta property="og:title" content="Charmante instapklare woning met mooie tuin"></head>
+<body>
+  <h1>Charmante instapklare woning met mooie tuin</h1>
+  <p>Vraagprijs: € 649.000</p><p>3 slaapkamers</p>
+  <div class="accordion-header"><button>Details</button></div>
+  <div class="accordion-body"><div class="spec"><a class="showMap">
+      Wittepaalstraat 41 , 9051 Afsnee</a></div></div>
+</body></html>
+"""
+
+
+def test_word_from_the_previous_block_is_not_part_of_the_street():
+    # huysewinkel.be, irres.be and rosseel.be each print the address right
+    # after a block that ends in a capitalised word; Nominatim then misses
+    # "Home Beukenlaan 17" and the house is drawn at the postcode centroid.
+    for page, street in (
+        (MENU_BEFORE_ADDRESS, "Beukenlaan 17"),
+        (HEADING_BEFORE_ADDRESS, "Overmeersstraat 9"),
+        (TAB_BEFORE_ADDRESS, "Wittepaalstraat 41"),
+    ):
+        listing = extract_listing("https://x.be/te-koop/1", page, source="X")
+        assert listing is not None
+        assert listing.street == street
+        assert listing.postal_code == "9051"
+
+
+TESTIMONIAL_PAGE = """
+<html><head><meta property="og:title" content="Brede woning met 5 slaapkamers"></head>
+<body>
+  <h1>Brede woning met 5 slaapkamers</h1>
+  <p>Vraagprijs: € 495.000</p><p>5 slaapkamers</p>
+  <div class="adres-one-line">wittemolenstraat 158 - 9040 SINT-AMANDSBERG</div>
+  <section class="view-wij-verkochten-onze-woning-met-cannoodt">
+    <h3>Wij verkochten onze woning met Cannoodt</h3>
+    <h5>Wintertuinstraat 2 - 9000 Gent</h5>
+    <p>Heel tevreden over de aanpak.</p>
+  </section>
+</body></html>
+"""
+
+
+def test_testimonial_address_is_not_the_house():
+    # cannoodt.be prints a sold client's address under the listing; before
+    # block-aware text it was read as "Cannoodt Wintertuinstraat 2", a street
+    # Nominatim rejected, which hid the mistake. Now it must not be read at all.
+    listing = extract_listing(
+        "https://x.be/huis/sint-amandsberg/brede-woning", TESTIMONIAL_PAGE, source="X")
+    assert listing is not None
+    assert listing.street == ""

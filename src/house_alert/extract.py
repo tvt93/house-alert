@@ -19,7 +19,7 @@ import re
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 from .models import Listing
 
@@ -144,9 +144,13 @@ STREET_SUFFIX = (
 )
 _STREET_WORD = r"[A-Z][^\W\d_]*(?:['’-][^\W\d_]+)*"   # letters only: not "E40", not "Kortrijk."
 _STREET_CONNECTOR = r"(?:op|ter|ten|de|den|der|van|aan|'t|het|en)"
+# Words are joined by a single space, never a newline: `find_street` collapses
+# all other whitespace but keeps the line breaks `block_text` puts between
+# blocks, so the last word of a heading cannot be glued onto the street that
+# starts the next paragraph ("...nabij het Parkbos</h1><p>Overmeersstraat 9").
 STREET = re.compile(
-    rf"(?<![\w-])({_STREET_WORD}(?:\s(?:{_STREET_WORD}|{_STREET_CONNECTOR})){{0,3}})"
-    rf"\s(\d{{1,4}}(?:\s?[A-Za-z](?![\w-])|\s?bus\s?\d+[A-Za-z]?)?)(?![\d.,]?\d)"
+    rf"(?<![\w-])({_STREET_WORD}(?: (?:{_STREET_WORD}|{_STREET_CONNECTOR})){{0,3}})"
+    rf" (\d{{1,4}}(?: ?[A-Za-z](?![\w-])| ?bus ?\d+[A-Za-z]?)?)(?![\d.,]?\d)"
 )
 _STREET_ENDS = re.compile(rf"(?:{STREET_SUFFIX})$", re.IGNORECASE)
 
@@ -158,14 +162,28 @@ STREET_LABELS = {
     "rijwoning", "nieuwbouw", "bouwgrond", "hoeve", "herenhuis", "bungalow",
     # Form labels that precede an office address in running text (Immo Casa).
     "ja", "nee", "neen", "kantoor", "bureau", "agentschap", "contact",
+    # A menu entry or tab title printed right before the address block
+    # (huysewinkel.be "Home", rosseel.be "Details").
+    "home", "details",
 }
+
+# Elements a browser renders on a line of their own. Text on either side of one
+# is never a single phrase, however the markup is indented.
+BLOCK_TAGS = frozenset(
+    "address article aside blockquote body br button dd details div dl dt fieldset "
+    "figcaption figure footer form h1 h2 h3 h4 h5 h6 header hr label legend li main "
+    "nav ol p pre section summary table tbody td tfoot th thead title tr ul".split()
+)
 
 # Page regions whose addresses belong to the agency, not the property. Matched
 # per class token, and "header" only in its site-wide spellings: a listing's
 # own hero is routinely a <header class="detail-header">.
 CHROME_CLASS = re.compile(
     r"^(?:(?:site|page|main|global|top|sticky)[-_]?)?(?:footer|header|nav|navbar|topbar|menu)$"
-    r"|footer|contact|kantoor|office|agency",
+    r"|footer|contact|kantoor|office|agency"
+    # Testimonials name the house a *previous* client sold (cannoodt.be:
+    # "Wij verkochten onze woning met Cannoodt - Wintertuinstraat 2, 9000 Gent").
+    r"|testimonial|getuigenis|referentie|review|verkochten",
     re.IGNORECASE,
 )
 
@@ -455,6 +473,34 @@ def _clean_street_name(name: str, city: str) -> str | None:
     return " ".join(words)
 
 
+def block_text(root: Tag) -> str:
+    """The page text with a line break wherever the browser would put one.
+
+    `get_text(" ")` flattens the whole page into one line, so a street regex
+    that allows a few capitalised words reads "Home" from the menu button or
+    "Parkbos" from the end of the title as part of the street name that opens
+    the next block. Here every block element starts and ends a line and the
+    whitespace inside a line is collapsed, so markup indentation never matters
+    but a block boundary always does.
+    """
+    parts: list[str] = []
+
+    def walk(node: Tag) -> None:
+        for child in node.children:
+            if type(child) is NavigableString:
+                parts.append(re.sub(r"\s+", " ", str(child)))
+            elif isinstance(child, Tag):
+                block = child.name in BLOCK_TAGS
+                if block:
+                    parts.append("\n")
+                walk(child)
+                if block:
+                    parts.append("\n")
+
+    walk(root)
+    return re.sub(r"[^\S\n]*\n[\s]*", "\n", "".join(parts)).strip()
+
+
 def find_street(
     text: str,
     city: str = "",
@@ -467,7 +513,11 @@ def find_street(
     With `near_place`, the street must be followed closely by the listing's
     postcode or city, as in "Kerkstraat 12, 9000 Gent" - the shape of a real
     address line, as opposed to a street name mentioned in running prose.
+
+    Line breaks in `text` are block boundaries (see `block_text`): a street
+    name never spans one, though the postcode may follow on the next line.
     """
+    text = re.sub(r"[^\S\n]+", " ", text)
     for m in STREET.finditer(text):
         name = _clean_street_name(m.group(1), city)
         if not name:
@@ -822,7 +872,7 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
     if not listing.street:
         listing.street = (
             find_street(listing.title, listing.city, exclude=office)
-            or find_street(text, listing.city, listing.postal_code,
+            or find_street(block_text(soup), listing.city, listing.postal_code,
                            exclude=office, near_place=True)
             or ""
         )

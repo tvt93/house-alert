@@ -1,5 +1,29 @@
 {
  "entries": {
+  "aaigemstraat 120|9000|gent": {
+   "lat": 51.0389747,
+   "lon": 3.7051026
+  },
+  "aartrijkestraat 266|8820|torhout": {
+   "lat": 51.0906193,
+   "lon": 3.10023
+  },
+  "abdisstraat 13|9000|gent": {
+   "lat": 51.043163,
+   "lon": 3.7134071
+  },
+  "adelaarstraat 17 bus 201|2170|merksem": {
+   "lat": 51.2593559,
+   "lon": 4.440075
+  },
+  "adhemar goetersstraat 55|9160|lokeren": {
+   "lat": 51.0910646,
+   "lon": 4.0037225
+  },
+  "adolf samuëlstraat 1|9050|gentbrugge": {
+   "lat": 51.0370986,
+   "lon": 3.7582596
+  },
   "adriaan brouwerstraat 2|9700|oudenaarde": {
    "lat": 50.8467703,
    "lon": 3.61091
@@ -20,6 +44,14 @@
    "lat": 51.0749708,
    "lon": 3.6787934
   },
+  "andries pevernagestraat 109|8530|harelbeke": {
+   "lat": 50.8519642,
+   "lon": 3.3089451
+  },
+  "annonciadenstraat 21|9000|gent": {
+   "lat": 51.0499748,
+   "lon": 3.7161142
+  },
   "antonius triestlaan 6a|9000|gent": {
    "lat": 51.0499277,
    "lon": 3.7036176
@@ -36,6 +68,10 @@
    "lat": 51.0925065,
    "lon": 3.8189306
   },
+  "antwerpsesteenweg 239|9040|sint-amandsberg": {
+   "lat": 51.061679,
+   "lon": 3.7484351
+  },
   "antwerpsesteenweg 273|9040|sint amandberg": {
    "lat": 51.0636917,
    "lon": 3.7512365
@@ -44,6 +80,7 @@
    "lat": 51.0645463,
    "lon": 3.7523216
   },
+  "appartementsgebouw zinniastraat 5|9000|gent": null,
   "asserendries 97|9300|aalst": {
    "lat": 50.9438686,
    "lon": 4.0232927
@@ -61,6 +98,10 @@
    "lat": 51.0328952,
    "lon": 3.6215336
   },
+  "baarledorpstraat 92|9031|drongen": {
+   "lat": 51.0359921,
+   "lon": 3.6136326
+  },
   "baarleveldestraat 19|9031|drongen": {
    "lat": 51.0397604,
    "lon": 3.6199776
@@ -69,6 +110,10 @@
   "bagattenstraat 41|9000|gent": {
    "lat": 51.0476123,
    "lon": 3.7224373
+  },
+  "bakkerstraat 89|9240|zele": {
+   "lat": 51.0684574,
+   "lon": 4.0640413
   },
   "barakkenstraat 19|8930|menen": {
    "lat": 50.7872078,
@@ -97,6 +142,11 @@
    "lat": 50.778223,
    "lon": 3.2303316
   },
+  "beukenlaan 17|9051|sint-denijs-westrem": {
+   "lat": 51.0264617,
+   "lon": 3.6734817
+  },
+  "beukenstraat 63|9255|buggenhout": null,
   "beveren-dries 100|8790|waregem": null,
   "bevrijdingslaan 70|9000|gent": {
    "lat": 51.0613203,
@@ -110,6 +160,8 @@
    "lat": 51.0570992,
    "lon": 3.743252
   },
+  "biezenstraat 8|9810|nazareth": null,
+  "bisschopstraat 13|9000|gent": null,
   "bissegemsestraat 243|8501|bissegem": {
    "lat": 50.8265356,
    "lon": 3.2280433
@@ -117,6 +169,10 @@
   "bissegemstraat 50|8560|gullegem": {
    "lat": 50.8414652,
    "lon": 3.2062267
+  },
+  "blaisantvest 9 bus 101|9000|gent": {
+   "lat": 51.0661544,
+   "lon": 3.7219576
   },
   "blinde-rodenbachstraat 19a|8800|rumbeke": {
    "lat": 50.9334512,
@@ -130,9 +186,29 @@
    "lat": 50.8228465,
    "lon": 3.2638718
   },
+  "bomastraat 1b|9000|gent": {
+   "lat": 51.0619675,
+   "lon": 3.7303258
+  },
+  "bonifantenstraat 14 bus 002|9000|gent": {
+   "lat": 51.0566563,
+   "lon": 3.717292
+  },
+  "boomkwekerijstraat 14|8020|oostkamp": {
+   "lat": 51.1559755,
+   "lon": 3.2573671
+  },
+  "bosvijverdreef 28|9880|aalter": {
+   "lat": 51.0709612,
+   "lon": 3.4731141
+  },
   "boterpotstraat 9|8530|harelbeke": {
    "lat": 50.8586008,
    "lon": 3.315976
+  },
+  "bressers-blanchaertlaan 4|9051|sint-denijs-westrem": {
+   "lat": 51.0226069,
+   "lon": 3.6938364
   },
   "broederlijke-weversplein 167|1972|lift": null,
   "broekplein 7|8530|harelbeke": {
@@ -148,6 +224,10 @@
    "lat": 50.9211943,
    "lon": 3.2535279
   },
+  "brugse steenweg 206|9990|maldegem": {
+   "lat": 51.206836,
+   "lon": 3.4109627
+  },
   "brugsesteenweg 84|8520|kuurne": {
    "lat": 50.8495127,
    "lon": 3.2700496
@@ -160,14 +240,45 @@
    "lat": 50.8827237,
    "lon": 3.2896313
   },
+  "brugseweg 370|8900|ieper": {
+   "lat": 50.8758452,
+   "lon": 2.9231968
+  },
+  "brugstraat 1|9230|wetteren": null,
+  "bruilofstraat 42|9050|gent": null,
+  "bruiloftstraat 42|9050|gent": {
+   "lat": 51.0320967,
+   "lon": 3.7654203
+  },
+  "bruiloftstraat 42|9050|gentbrugge": {
+   "lat": 51.0320967,
+   "lon": 3.7654203
+  },
+  "brusselsesteenweg 157b|9090|melle": {
+   "lat": 51.0153663,
+   "lon": 3.7853694
+  },
+  "brusselsesteenweg 348a|9090|melle": null,
   "brusselsesteenweg 89|9050|ledeberg": {
    "lat": 51.0403792,
    "lon": 3.7440323
   },
   "brusselsesteenweg gent brusselsesteenweg 348|9050|ledeberg": null,
+  "brusselsestraat 138|9660|brakel": {
+   "lat": 50.8073827,
+   "lon": 3.7811299
+  },
   "buntstraat 20|9940|evergem": {
    "lat": 51.0940368,
    "lon": 3.6593972
+  },
+  "burgemeester lambrechtlaan 1|8500|kortrijk": {
+   "lat": 50.8259597,
+   "lon": 3.2578585
+  },
+  "burgemeester libbrechthof 3|9070|destelbergen": {
+   "lat": 51.0575587,
+   "lon": 3.799831
   },
   "burgemeester mayeurlaan 82|8500|kortrijk": {
    "lat": 50.8156294,
@@ -177,7 +288,22 @@
    "lat": 50.8280585,
    "lon": 3.2597074
   },
-  "cannoodt wintertuinstraat 2|9000|gent": null,
+  "burgemeesterstraat 24|9830|sint-martens-latem": {
+   "lat": 51.0156582,
+   "lon": 3.6272252
+  },
+  "burggravenlaan 121|9000|gent": {
+   "lat": 51.033092,
+   "lon": 3.7216379
+  },
+  "camiel van den busschestraat 24|8310|assebroek": {
+   "lat": 51.1974557,
+   "lon": 3.244928
+  },
+  "caritasstraat 30|9090|melle": {
+   "lat": 50.9989197,
+   "lon": 3.7851716
+  },
   "celine dangottestraat 23/25|9041|oostakker": {
    "lat": 51.0908675,
    "lon": 3.7607618
@@ -190,9 +316,21 @@
    "lat": 51.0410264,
    "lon": 3.7216867
   },
+  "charles de kerchovelaan 51|9000|gent": {
+   "lat": 51.0412692,
+   "lon": 3.721092
+  },
+  "citadellaan 43|9000|gent": {
+   "lat": 51.0387121,
+   "lon": 3.7279506
+  },
   "citadellaan 72|9000|gent": {
    "lat": 51.0382118,
    "lon": 3.7292666
+  },
+  "cobdenstraat 37 bus 2|2018|antwerpen": {
+   "lat": 51.2013483,
+   "lon": 4.427799
   },
   "coupure 707|9000|gent": {
    "lat": 51.055811,
@@ -219,7 +357,6 @@
    "lat": 50.9239174,
    "lon": 3.2502696
   },
-  "de panne egelantierlaan 6|8660|de-panne": null,
   "de wieleman 18|9890|gavere": {
    "lat": 50.9186009,
    "lon": 3.6811522
@@ -228,56 +365,30 @@
    "lat": 51.1172233,
    "lon": 3.5598469
   },
-  "details baarledorpstraat 92|9031|drongen": null,
-  "details brugstraat 1|9230|wetteren": null,
-  "details bruilofstraat 42|9050|gent": null,
-  "details bruiloftstraat 42|9050|gent": null,
-  "details bruiloftstraat 42|9050|gentbrugge": null,
-  "details brusselsesteenweg 348a|9090|melle": null,
-  "details charles de kerchovelaan 51|9000|gent": null,
-  "details doornzelestraat 12|9000|gent": null,
-  "details emiel clauslaan 78|9800|astene": null,
-  "details eugeen zetternamstraat 2|9050|gentbrugge": null,
-  "details filaturestraat 38|9000|gent": null,
-  "details graaf van landaststraat 41|9700|eine": null,
-  "details haverstraat 30|9000|gent": null,
-  "details hertogstraat 10|9000|gent": null,
-  "details hoogstraat 147|9000|gent": null,
-  "details hubert frère-orbanlaan 592|9000|gent": null,
-  "details jan frans willemsstraat 4|9000|gent": null,
-  "details jenny tanghestraat 5|9000|gent": null,
-  "details karel antheunisstraat 55|9000|gent": null,
-  "details karperstraat 150|9000|gent": null,
-  "details kelderijstraat 1|9052|zwijnaarde": null,
-  "details koningin fabiolalaan 60|9000|gent": null,
-  "details merelstraat 44|9000|gent": null,
-  "details noorwegenstraat 51|9940|evergem": null,
-  "details oosteeklostraat 15|9000|gent": null,
-  "details ottogracht 3|9000|gent": null,
-  "details oudescheldestraat 10h|9000|gent": null,
-  "details parklaan 76|9000|gent": null,
-  "details sint-michielsstraat 13a|9000|gent": null,
-  "details sint-michielsstraat 13|9000|gent": null,
-  "details stationsstraat 115|9890|gavere": null,
-  "details tennisbaanstraat 59|9000|gent": null,
-  "details victor frisstraat 93|9000|gent": null,
-  "details vlotstraat 64|9000|gent": null,
-  "details voorstraat 1|9970|kaprijke": null,
-  "details wittepaalstraat 41|9051|afsnee": null,
+  "diagorasstraat 40|8510|kortrijk": {
+   "lat": 50.7995742,
+   "lon": 3.2195185
+  },
   "diepestraat 19|9850|merendree": {
    "lat": 51.0740675,
    "lon": 3.5760697
   },
-  "documenten asbestattest vierschaarstraat 16|9185|wachtebeke": null,
-  "documenten documenten asbestattest hillestraat 10|8951|dranouter": null,
   "domien craccostraat 72|8800|roeselare": {
    "lat": 50.9434644,
    "lon": 3.1064037
   },
   "doorniksewijk 45 bus 33|8500|kortrijk": null,
+  "doornzelestraat 12|9000|gent": {
+   "lat": 51.0639693,
+   "lon": 3.7300288
+  },
   "dorp 24|9920|lievegem": {
    "lat": 51.0956949,
    "lon": 3.6069701
+  },
+  "dorpsplein 29|8880|sint-eloois-winkel": {
+   "lat": 50.8766616,
+   "lon": 3.178351
   },
   "dorpsstraat 91|8450|bredene": {
    "lat": 51.2352193,
@@ -286,6 +397,11 @@
   "dorpsstraat 97|9080|lochristi": {
    "lat": 51.1045102,
    "lon": 3.840106
+  },
+  "dorpstraat 43|9890|gavere": null,
+  "drabstraat 43|9000|gent": {
+   "lat": 51.0550348,
+   "lon": 3.7184519
   },
   "dreef 11|9850|merendree": {
    "lat": 51.0754761,
@@ -311,6 +427,10 @@
    "lat": 51.0554907,
    "lon": 3.6924472
   },
+  "dublinstraat 37|9000|gent": {
+   "lat": 51.0781128,
+   "lon": 3.7277645
+  },
   "e17. adres winkelkouter 2|9770|kruisem": null,
   "e34 adres zelzatestraat 78|9960|assenede": null,
   "e40 adres baarleveldestraat 19|9031|drongen": null,
@@ -326,11 +446,27 @@
    "lat": 50.9492597,
    "lon": 3.3261902
   },
+  "eedverbondkaai 73|9000|gent": {
+   "lat": 51.0417483,
+   "lon": 3.716343
+  },
   "eekhoekstraat 54|9270|laarne": {
    "lat": 51.033034,
    "lon": 3.8358078
   },
+  "egelantierlaan 6|8660|de-panne": {
+   "lat": 51.0943383,
+   "lon": 2.5804176
+  },
+  "eikenlaan 58|9111|sint-niklaas": {
+   "lat": 51.1666556,
+   "lon": 4.0830016
+  },
   "eke-nazareth adres hoogkouter 32|9810|eke": null,
+  "ellestraat 36|9680|maarkedal": {
+   "lat": 50.8158268,
+   "lon": 3.6388967
+  },
   "elsstraat 4|9270|laarne": {
    "lat": 51.0540235,
    "lon": 3.8425043
@@ -339,11 +475,19 @@
    "lat": 50.7460102,
    "lon": 3.607964
   },
+  "emiel clauslaan 78|9800|astene": {
+   "lat": 50.9870466,
+   "lon": 3.5775182
+  },
   "esplanadestraat 8|8930|menen": {
    "lat": 50.7972697,
    "lon": 3.1209321
   },
   "ettingen 13b 104|9820|merelbeke": null,
+  "eugeen zetternamstraat 2|9050|gentbrugge": {
+   "lat": 51.0290736,
+   "lon": 3.751535
+  },
   "evergemsesteenweg 110|9032|wondelgem": {
    "lat": 51.094087,
    "lon": 3.716238
@@ -353,6 +497,14 @@
    "lon": 3.1131906
   },
   "ferdinand lousbergkaai 104|9000|gent": null,
+  "ferdinand lousbergskaai 104|9000|gent": {
+   "lat": 51.043795,
+   "lon": 3.7403468
+  },
+  "filaturestraat 38|9000|gent": {
+   "lat": 51.0667462,
+   "lon": 3.710096
+  },
   "floraliënlaan 4|9000|gent": {
    "lat": 51.0397751,
    "lon": 3.7188615
@@ -381,6 +533,10 @@
    "lat": 51.0747807,
    "lon": 3.7137622
   },
+  "galeipad 5|9000|gent": {
+   "lat": 51.065544,
+   "lon": 3.7369666
+  },
   "ganzestraat 22|9506|schendelbeke": {
    "lat": 50.7976081,
    "lon": 3.9014098
@@ -392,6 +548,10 @@
   "gasmeterstraat 19|9990|maldegem": {
    "lat": 51.2096032,
    "lon": 3.4381793
+  },
+  "gebroeders vandeveldestraat 101|9000|gent": {
+   "lat": 51.0502876,
+   "lon": 3.7179275
   },
   "gefusilleerdenlaan 37|9600|ronse": {
    "lat": 50.741476,
@@ -405,7 +565,6 @@
    "lat": 50.8459463,
    "lon": 3.0918491
   },
-  "gent-centrum nederkouter 57|9000|gent": null,
   "gentpoortstraat 12|8000|brugge": {
    "lat": 51.2040928,
    "lon": 3.231869
@@ -431,14 +590,21 @@
    "lat": 50.85071,
    "lon": 2.8884284
   },
+  "gitsestraat 276|8800|roeselare": {
+   "lat": 50.9596155,
+   "lon": 3.1179779
+  },
   "goedingenstraat 46|9051|afsnee": {
    "lat": 51.039755,
    "lon": 3.6465849
   },
-  "golf burgemeesterstraat 24|9830|sint-martens-latem": null,
   "graaf gwijde van namenstraat 31|8500|kortrijk": {
    "lat": 50.8300702,
    "lon": 3.2819846
+  },
+  "graaf van landaststraat 41|9700|eine": {
+   "lat": 50.8709701,
+   "lon": 3.6198938
   },
   "graanmarkt 22|8500|kortrijk": {
    "lat": 50.8267883,
@@ -452,8 +618,12 @@
    "lat": 50.8271744,
    "lon": 3.2761089
   },
+  "groeningestraat 26|8870|izegem": {
+   "lat": 50.9114417,
+   "lon": 3.2152546
+  },
   "groeninghekaai 22|8500|kortrijk": null,
-  "grond moorselbaan 494|9300|aalst": null,
+  "grondwetlaan 3|9000|gent": null,
   "grote baan 106|9920|lovendegem": {
    "lat": 51.1006737,
    "lon": 3.6347836
@@ -479,6 +649,10 @@
    "lon": 3.3043613
   },
   "gullegem torrestraat 23|8560|gullegem-wevelgem-heule": null,
+  "gullegemsestraat 202|8880|ledegem": {
+   "lat": 50.8609544,
+   "lon": 3.1829199
+  },
   "gullegemstraat 105|8560|wevelgem": {
    "lat": 50.8155768,
    "lon": 3.1868438
@@ -491,11 +665,17 @@
    "lat": 50.8292637,
    "lon": 3.2599647
   },
-  "handelspand hoogstraat 69|9000|gent": null,
-  "handelspand markt 7|9960|assenede": null,
   "hanzestraat 13|8370|blankenberge": {
    "lat": 51.2989039,
    "lon": 3.1527299
+  },
+  "haverstraat 30|9000|gent": {
+   "lat": 51.0660981,
+   "lon": 3.7065549
+  },
+  "heernislaan 91|9000|gent": {
+   "lat": 51.0485425,
+   "lon": 3.7442912
   },
   "heerweg 82|8560|moorsele": {
    "lat": 50.838156,
@@ -521,13 +701,25 @@
    "lat": 51.0951734,
    "lon": 3.764814
   },
+  "henri lebbestraat 96 bus 21|8790|waregem": {
+   "lat": 50.8801248,
+   "lon": 3.4239414
+  },
   "hernieuwenstraat 12|8710|wielsbeke": {
    "lat": 50.9122012,
    "lon": 3.3723317
   },
+  "hertogstraat 10|9000|gent": {
+   "lat": 51.0572888,
+   "lon": 3.7224314
+  },
   "heulestraat 2|8560|gullegem": {
    "lat": 50.8416119,
    "lon": 3.2068196
+  },
+  "hillestraat 10|8951|dranouter": {
+   "lat": 50.7582427,
+   "lon": 2.7646221
   },
   "hinnebilckstraat 85|8770|ingelmunster": null,
   "hogeheerweg 20|9051|sint-denijs-westrem": {
@@ -539,75 +731,17 @@
    "lon": 3.0750351
   },
   "holstraat 39|8790|waregem": null,
-  "home abdisstraat 13|9000|gent": null,
-  "home adelaarstraat 17 bus 201|2170|merksem": null,
-  "home adhemar goetersstraat 55|9160|lokeren": null,
-  "home adolf samuëlstraat 1|9050|gentbrugge": null,
-  "home bakkerstraat 89|9240|zele": null,
-  "home beukenlaan 17|9051|sint-denijs-westrem": null,
-  "home beukenstraat 63|9255|buggenhout": null,
-  "home biezenstraat 8|9810|nazareth": null,
-  "home blaisantvest 9 bus 101|9000|gent": null,
-  "home bonifantenstraat 14 bus 002|9000|gent": null,
-  "home brusselsestraat 138|9660|brakel": null,
-  "home citadellaan 43|9000|gent": null,
-  "home cobdenstraat 37 bus 2|2018|antwerpen": null,
-  "home de maerestraat 4 bus 61|8301|knokke-heist": null,
-  "home diagorasstraat 40|8510|kortrijk": null,
-  "home dorpstraat 43|9890|gavere": null,
-  "home eedverbondkaai 73|9000|gent": null,
-  "home eikenlaan 58|9111|sint-niklaas": null,
-  "home gebroeders vandeveldestraat 101|9000|gent": null,
-  "home gullegemsestraat 202|8880|ledegem": null,
-  "home henri lebbestraat 96 bus 21|8790|waregem": null,
-  "home hospicestraat 70|9180|lokeren": null,
-  "home keizerstraat 3 bus 10|2000|antwerpen": null,
-  "home keizerstraat 3 bus 20|2000|antwerpen": null,
-  "home keizerstraat 3 bus 9|2000|antwerpen": null,
-  "home kleine dweersstraat 31|9140|temse": null,
-  "home kloosterstraat 42|9120|beveren": null,
-  "home kokkelbeekstraat 9|9100|sint-niklaas": null,
-  "home koning boudewijnstraat 123|8520|kuurne": null,
-  "home koophandelsplein 30|9000|gent": null,
-  "home kuilstraat 31|9250|waasmunster": null,
-  "home lange kruisstraat 25|9000|gent": null,
-  "home lippenslaan 203 bus 33|8300|knokke-heist": null,
-  "home luxemburgstraat 102|9890|gavere": null,
-  "home maaltebruggestraat 81|9000|gent": null,
-  "home mercatorstraat 5|9150|kruibeke": null,
-  "home minister liebaertlaan 53d|8500|kortrijk": null,
-  "home molenaarsstraat 111 bus 43|9000|gent": null,
-  "home nieuwe steenweg 60|9140|elversele": null,
-  "home ommegangstraat 68|9080|lochristi": null,
-  "home ommegangstraat 8 bus 101|9800|deinze": null,
-  "home oostdonkstraat 2|9042|mendonk": null,
-  "home oudeheerweg-heide 14|9250|waasmunster": null,
-  "home oudenaardsesteenweg 32|9000|gent": null,
-  "home oudenaardsesteenweg 69|8500|kortrijk": null,
-  "home plotersgracht 12|9000|gent": null,
-  "home poosmeersstraat 15|9230|wetteren": null,
-  "home putkapelstraat 49|9051|sint-denijs-westrem": null,
-  "home scheldelaan 3 bus 301|9070|destelbergen": null,
-  "home schoonhoudtstraat 81|9111|sint-niklaas": null,
-  "home sint-joriskaai 4|9000|gent": null,
-  "home sint-margriete-houtemlaan 9|8500|kortrijk": null,
-  "home smetledesteenweg 137|9230|wetteren": null,
-  "home stationsstraat 31|9220|hamme": null,
-  "home stationsstraat 86|8551|zwevegem": null,
-  "home steenakkerstraat 2|9070|destelbergen": null,
-  "home steenweg 63|9810|nazareth-de pinte": null,
-  "home stenenmuurstraat 0|9112|sinaai-waas": null,
-  "home theofiel lybaertstraat 50|9040|sint": null,
-  "home tinnenpotstraat 22|9000|gent": null,
-  "home vijverwegel 93|9090|melle": null,
-  "home vlaanderenstraat 44 bus 301|9000|gent": null,
-  "home walpoortstraat 10|9000|gent": null,
-  "home winkelstraat 23|9032|wondelgem": null,
-  "home zeelsebaan 85|9200|dendermonde": null,
-  "home zwartezustersstraat 4|9000|gent": null,
   "hoogleedsesteenweg 410|8800|roeselare": {
    "lat": 50.9619666,
    "lon": 3.1000233
+  },
+  "hoogpoort 41|9000|gent": {
+   "lat": 51.0552046,
+   "lon": 3.7245416
+  },
+  "hoogpoort 57|9000|gent": {
+   "lat": 51.0551271,
+   "lon": 3.7250755
   },
   "hoogstraat 117|8540|deerlijk": {
    "lat": 50.8532023,
@@ -617,6 +751,10 @@
    "lat": 51.055309,
    "lon": 3.7125052
   },
+  "hoogstraat 147|9000|gent": {
+   "lat": 51.0555093,
+   "lon": 3.7109525
+  },
   "hoogstraat 37|9600|renaix": {
    "lat": 50.7459379,
    "lon": 3.5989859
@@ -624,6 +762,10 @@
   "hoogstraat 38|9572|sint-martens-lierde": {
    "lat": 50.8089021,
    "lon": 3.8157807
+  },
+  "hoogstraat 69|9000|gent": {
+   "lat": 51.0550156,
+   "lon": 3.7126949
   },
   "hoogstraat 77|9000|gent": {
    "lat": 51.0552979,
@@ -634,7 +776,10 @@
    "lat": 50.9380365,
    "lon": 4.0376428
   },
-  "hotel adoma sint-denijslaan 19|9000|gent": null,
+  "hospicestraat 70|9180|lokeren": {
+   "lat": 51.175574,
+   "lon": 3.9526382
+  },
   "houtmarkt 25|8500|kortrijk": {
    "lat": 50.8292987,
    "lon": 3.271672
@@ -642,6 +787,10 @@
   "hubert frère orbanlaan 144|9000|gent": {
    "lat": 51.0447318,
    "lon": 3.7338687
+  },
+  "hubert frère-orbanlaan 592|9000|gent": {
+   "lat": 51.041393,
+   "lon": 3.7356397
   },
   "hugo verriestlaan 75|8560|gullegem": {
    "lat": 50.8375671,
@@ -671,14 +820,23 @@
    "lat": 51.0611719,
    "lon": 3.728662
   },
+  "jan frans willemsstraat 4|9000|gent": {
+   "lat": 51.0388095,
+   "lon": 3.7274989
+  },
   "jan palfijnstraat 2|8500|kortrijk": {
    "lat": 50.8263484,
    "lon": 3.2637235
+  },
+  "jean béthunestraat 43|9040|sint-amandsberg": {
+   "lat": 51.0533717,
+   "lon": 3.7480496
   },
   "jean-baptiste de ghellincklaan 19|9051|sint-denijs-westrem": {
    "lat": 51.020795,
    "lon": 3.6779377
   },
+  "jenny tanghestraat 5|9000|gent": null,
   "johannes schrantstraat 1|9000|gent": {
    "lat": 51.0543136,
    "lon": 3.7013611
@@ -695,8 +853,13 @@
    "lat": 50.749203,
    "lon": 3.5990848
   },
+  "kalbergstraat 115|8780|oostrozebeke": {
+   "lat": 50.9275731,
+   "lon": 3.3471831
+  },
   "kallobaan 126|9000|gent": null,
-  "kantoren vlaemynck tielt sint-janstraat 185|8700|tielt": null,
+  "kantoorruimte ekkergemstraat 80|9000|gent": null,
+  "kantoorruimte kasteellaan 421|9000|gent": null,
   "kapellestraat 17|9800|deinze": {
    "lat": 50.9823418,
    "lon": 3.5536401
@@ -709,6 +872,10 @@
    "lat": 51.1209564,
    "lon": 3.8607627
   },
+  "karel antheunisstraat 55|9000|gent": {
+   "lat": 51.0450415,
+   "lon": 3.7341801
+  },
   "karel antheunisstraat 73|9000|gent": {
    "lat": 51.0449247,
    "lon": 3.7341583
@@ -717,9 +884,21 @@
    "lat": 51.0331269,
    "lon": 3.6320433
   },
+  "karel de bondtlaan 5|9031|drongen": {
+   "lat": 51.0327873,
+   "lon": 3.6312872
+  },
+  "karperstraat 150|9000|gent": {
+   "lat": 51.0464412,
+   "lon": 3.7419975
+  },
   "kasteeldreef 48|9920|lievegem": {
    "lat": 51.097046,
    "lon": 3.6063008
+  },
+  "kasteellaan 162|9000|gent": {
+   "lat": 51.0506012,
+   "lon": 3.7409269
   },
   "kasteelstraat 40|9600|renaix": {
    "lat": 50.7472425,
@@ -729,6 +908,17 @@
   "keizer karelstraat 114|9000|gent": {
    "lat": 51.0524126,
    "lon": 3.7319547
+  },
+  "keizerstraat 3 bus 10|2000|antwerpen": null,
+  "keizerstraat 3 bus 20|2000|antwerpen": null,
+  "keizerstraat 3 bus 9|2000|antwerpen": null,
+  "keizervest 40|9000|gent": {
+   "lat": 51.0406414,
+   "lon": 3.7382717
+  },
+  "kelderijstraat 1|9052|zwijnaarde": {
+   "lat": 50.9965596,
+   "lon": 3.7118814
   },
   "kerkstraat 1|8587|spiere-helkijn": null,
   "kerkstraat 265|9050|gentbrugge": {
@@ -760,6 +950,10 @@
    "lat": 51.0238519,
    "lon": 3.7194564
   },
+  "kleine dweersstraat 31|9140|temse": {
+   "lat": 51.136367,
+   "lon": 4.2032445
+  },
   "klerkenstraat 10|8840|staden": {
    "lat": 50.9791316,
    "lon": 2.9954401
@@ -768,9 +962,17 @@
    "lat": 50.806703,
    "lon": 3.1282296
   },
+  "kliniekstraat 104|9050|gentbrugge": {
+   "lat": 51.0411795,
+   "lon": 3.7543946
+  },
   "kliniekstraat 49|9050|gentbrugge": {
    "lat": 51.0414616,
    "lon": 3.7549063
+  },
+  "kloosterstraat 42|9120|beveren": {
+   "lat": 51.2145071,
+   "lon": 4.2593696
   },
   "klossebos 5|9052|zwijnaarde": {
    "lat": 50.9983475,
@@ -781,6 +983,10 @@
    "lat": 50.9612111,
    "lon": 3.1742787
   },
+  "kokkelbeekstraat 9|9100|sint-niklaas": {
+   "lat": 51.162173,
+   "lon": 4.1420246
+  },
   "kongostraat 55|9000|gent": {
    "lat": 51.0612326,
    "lon": 3.732797
@@ -788,6 +994,14 @@
   "koning albert i-laan 81|8800|roeselare": {
    "lat": 50.9405551,
    "lon": 3.1299285
+  },
+  "koning albertlaan 30|9000|gent": {
+   "lat": 51.0378628,
+   "lon": 3.7112813
+  },
+  "koning boudewijnstraat 123|8520|kuurne": {
+   "lat": 50.8622484,
+   "lon": 3.2795086
   },
   "koning ridderdijk 31|8434|westende": {
    "lat": 51.1702475,
@@ -798,6 +1012,10 @@
    "lon": 3.8185807
   },
   "koningalbertlaan 22|9080|lochristi": null,
+  "koningin fabiolalaan 60|9000|gent": {
+   "lat": 51.0381521,
+   "lon": 3.7049063
+  },
   "koningstraat 1|9000|gent": {
    "lat": 51.0550966,
    "lon": 3.7271865
@@ -809,6 +1027,10 @@
   "koolputstraat 14|9120|melsele": {
    "lat": 51.231089,
    "lon": 4.2687731
+  },
+  "koophandelsplein 30|9000|gent": {
+   "lat": 51.0506183,
+   "lon": 3.7205603
   },
   "kopenhagenstraat 4|9000|gent": {
    "lat": 51.0738413,
@@ -877,6 +1099,14 @@
    "lat": 50.9844322,
    "lon": 3.5602899
   },
+  "kruideniersstraat 8|9000|gent": {
+   "lat": 51.0546494,
+   "lon": 3.731013
+  },
+  "kuilstraat 31|9250|waasmunster": {
+   "lat": 51.1356528,
+   "lon": 4.1175996
+  },
   "kuitenberg 29|9920|lievegem": {
    "lat": 51.1007646,
    "lon": 3.6404388
@@ -888,6 +1118,10 @@
   "landmansstraat 30|8800|roulers": {
    "lat": 50.8941543,
    "lon": 3.1189165
+  },
+  "lange kruisstraat 25|9000|gent": {
+   "lat": 51.0526448,
+   "lon": 3.7258229
   },
   "langerbruggestraat 23|9041|oostakker": {
    "lat": 51.1014583,
@@ -914,9 +1148,17 @@
    "lat": 51.0988871,
    "lon": 3.7583317
   },
+  "leenstraat 28|8870|izegem": {
+   "lat": 50.9118201,
+   "lon": 3.1953284
+  },
   "leernsesteenweg 110|9800|bachte-maria-leerne": {
    "lat": 51.0049038,
    "lon": 3.5659351
+  },
+  "leiestraat 3|8520|kuurne": {
+   "lat": 50.8504454,
+   "lon": 3.2926742
   },
   "leieweg 19|8510|marke": {
    "lat": 50.8102838,
@@ -952,7 +1194,10 @@
    "lat": 51.1764179,
    "lon": 3.7460343
   },
-  "loft dublinstraat 37|9000|gent": null,
+  "lippenslaan 203 bus 33|8300|knokke-heist": {
+   "lat": 51.3475902,
+   "lon": 3.2880039
+  },
   "loofblommestraat 36|9051|sint-denijs-westrem": {
    "lat": 51.0244014,
    "lon": 3.6689125
@@ -969,13 +1214,25 @@
    "lat": 50.8102654,
    "lon": 3.3013891
   },
+  "luxemburgstraat 102|9890|gavere": {
+   "lat": 50.927787,
+   "lon": 3.6331909
+  },
   "maagdestraat 29|9000|gent": {
    "lat": 51.0505284,
    "lon": 3.7160382
   },
+  "maaltebruggestraat 81|9000|gent": {
+   "lat": 51.030306,
+   "lon": 3.7108253
+  },
   "maaltemeers 62|9052|zwijnaarde": {
    "lat": 51.017482,
    "lon": 3.7042123
+  },
+  "maerestraat 4 bus 61|8301|knokke-heist": {
+   "lat": 51.3402241,
+   "lon": 3.2325407
   },
   "mageleinstraat 28|9000|gent": {
    "lat": 51.0531634,
@@ -1009,6 +1266,10 @@
    "lat": 51.2278822,
    "lon": 3.7525001
   },
+  "markt 7|9960|assenede": {
+   "lat": 51.2271891,
+   "lon": 3.7530866
+  },
   "marktplein 6|8530|harelbeke": {
    "lat": 50.8573557,
    "lon": 3.3104876
@@ -1033,15 +1294,31 @@
    "lat": 51.0712173,
    "lon": 3.7115509
   },
+  "meensesteenweg 85|8500|kortrijk": {
+   "lat": 50.8291604,
+   "lon": 3.2508215
+  },
   "meersstraat 40|8790|waregem": {
    "lat": 50.8848675,
    "lon": 3.4287401
+  },
+  "menensesteenweg 260|8940|wervik": {
+   "lat": 50.778978,
+   "lon": 3.0732645
   },
   "menenstraat 4|8930|lauwe": {
    "lat": 50.7946449,
    "lon": 3.1843762
   },
+  "mercatorstraat 5|9150|kruibeke": {
+   "lat": 51.166349,
+   "lon": 4.310565
+  },
   "merelbeke adres lembergsesteenweg 61|9090|merelbeke-melle": null,
+  "merelstraat 44|9000|gent": {
+   "lat": 51.0352013,
+   "lon": 3.7245439
+  },
   "meulebekestraat 175|8770|ingelmunster": {
    "lat": 50.9414898,
    "lon": 3.2752281
@@ -1049,6 +1326,10 @@
   "mgr. de haernestraat 14|8800|roulers": {
    "lat": 50.9350287,
    "lon": 3.1366303
+  },
+  "minister liebaertlaan 53d|8500|kortrijk": {
+   "lat": 50.8326703,
+   "lon": 3.2704277
   },
   "moerstraat 56|9230|wetteren": {
    "lat": 51.0059041,
@@ -1061,6 +1342,10 @@
   "moeskroenstraat 408|8930|menen": {
    "lat": 50.7896078,
    "lon": 3.1431765
+  },
+  "molenaarsstraat 111 bus 43|9000|gent": {
+   "lat": 51.0629066,
+   "lon": 3.7177832
   },
   "molendam 66|9600|renaix": {
    "lat": 50.7407603,
@@ -1099,6 +1384,10 @@
    "lat": 51.0936252,
    "lon": 3.7743637
   },
+  "nagelstraat 13|9750|kruisem": {
+   "lat": 50.8959472,
+   "lon": 3.6539389
+  },
   "nederkouter 56|9000|gent": null,
   "nederkouter 57|9000|gent": {
    "lat": 51.0477092,
@@ -1108,6 +1397,10 @@
   "nelemeersstraat 33|9830|sint-martens-latem": {
    "lat": 51.0213698,
    "lon": 3.620499
+  },
+  "nieuwe steenweg 60|9140|elversele": {
+   "lat": 51.1185869,
+   "lon": 4.1445712
   },
   "nieuwpoortsesteenweg 403 bus 0201|8400|oostende": {
    "lat": 51.2169586,
@@ -1122,6 +1415,14 @@
    "lat": 51.1216333,
    "lon": 3.7996447
   },
+  "noorwegenstraat 51|9940|evergem": {
+   "lat": 51.1401525,
+   "lon": 3.7438666
+  },
+  "oedelemsestraat 53|8020|oostkamp": {
+   "lat": 51.1593365,
+   "lon": 3.2688154
+  },
   "olifantstraat 23|9600|ronse": null,
   "olympiadeplein 14|8510|marke": {
    "lat": 50.8029302,
@@ -1131,7 +1432,16 @@
    "lat": 51.0861762,
    "lon": 3.8515338
   },
+  "ommegangstraat 68|9080|lochristi": {
+   "lat": 51.0859906,
+   "lon": 3.8515067
+  },
+  "ommegangstraat 8 bus 101|9800|deinze": null,
   "ommegangstraat 8|9800|deinze": null,
+  "onderstraat 75|9000|gent": {
+   "lat": 51.0555126,
+   "lon": 3.7264044
+  },
   "onze lieve vrouwestraat 15 / 31|8500|kortrijk": {
    "lat": 50.8292272,
    "lon": 3.2664928
@@ -1139,6 +1449,18 @@
   "oostakkerdorp 20|9041|oostakker": {
    "lat": 51.0999249,
    "lon": 3.763311
+  },
+  "oostdonkstraat 2|9042|mendonk": {
+   "lat": 51.1500996,
+   "lon": 3.8434518
+  },
+  "oosteeklostraat 15|9000|gent": {
+   "lat": 51.0658069,
+   "lon": 3.7195879
+  },
+  "oostendestraat 366a|8820|torhout": {
+   "lat": 51.076128,
+   "lon": 3.0674246
   },
   "oostrozebekestraat 137|8770|ingelmunster": {
    "lat": 50.9192941,
@@ -1152,6 +1474,9 @@
    "lat": 50.9205561,
    "lon": 3.2557723
   },
+  "opbrengsteigendom phoenixstraat 144|9000|gent": null,
+  "opbrengsteigendom posteernestraat 11|9000|gent": null,
+  "opbrengsteigendom volmolenstraat 21|9000|gent": null,
   "opperstraat 28|9180|moerbeke-waas": {
    "lat": 51.1740628,
    "lon": 3.9388664
@@ -1176,6 +1501,10 @@
    "lat": 50.8150517,
    "lon": 3.3456072
   },
+  "ottogracht 3|9000|gent": {
+   "lat": 51.0586131,
+   "lon": 3.7273111
+  },
   "oude holstraat 8|9041|oostakker": {
    "lat": 51.1013827,
    "lon": 3.7611059
@@ -1188,19 +1517,46 @@
    "lat": 51.1252339,
    "lon": 3.8806827
   },
+  "oudeheerweg-heide 14|9250|waasmunster": {
+   "lat": 51.1223057,
+   "lon": 4.0858812
+  },
   "oudenaardsesteenweg 30|8580|avelgem": {
    "lat": 50.7775915,
    "lon": 3.4471193
+  },
+  "oudenaardsesteenweg 32|9000|gent": {
+   "lat": 51.024918,
+   "lon": 3.7093144
+  },
+  "oudenaardsesteenweg 69|8500|kortrijk": {
+   "lat": 50.8214662,
+   "lon": 3.2804141
+  },
+  "oudescheldestraat 10h|9000|gent": {
+   "lat": 51.0488334,
+   "lon": 3.7304883
+  },
+  "oudevest 59|9000|gent": {
+   "lat": 51.0595319,
+   "lon": 3.7279926
   },
   "overleiestraat 56|8530|harelbeke": {
    "lat": 50.8597517,
    "lon": 3.3064295
   },
+  "overmeersstraat 9|9051|sint-denijs-westrem": {
+   "lat": 51.0179351,
+   "lon": 3.660033
+  },
   "papestraat 24|8560|wevelgem": {
    "lat": 50.8120646,
    "lon": 3.1822925
   },
-  "parkbos overmeersstraat 9|9051|sint-denijs-westrem": null,
+  "parklaan 76|9000|gent": {
+   "lat": 51.0348482,
+   "lon": 3.7176866
+  },
   "pastorijstraat 85b|8700|aarsele": {
    "lat": 50.9941185,
    "lon": 3.4260043
@@ -1249,6 +1605,10 @@
    "lat": 50.9011541,
    "lon": 3.1970762
   },
+  "plotersgracht 12|9000|gent": {
+   "lat": 51.0579694,
+   "lon": 3.7225664
+  },
   "politieke gevangenenstraat 126|8530|harelbeke": {
    "lat": 50.8316265,
    "lon": 3.3020886
@@ -1257,6 +1617,11 @@
    "lat": 51.0009739,
    "lon": 3.6045842
   },
+  "poosmeersstraat 15|9230|wetteren": {
+   "lat": 51.0182064,
+   "lon": 3.8787021
+  },
+  "praktijkruimte schuurstraat 74a|9040|sint-amandsberg": null,
   "preshoekstraat 28|8510|marke": {
    "lat": 50.8054927,
    "lon": 3.2326856
@@ -1278,6 +1643,10 @@
    "lon": 3.6003875
   },
   "processiestraat 96|1740|ternat": null,
+  "putkapelstraat 49|9051|sint-denijs-westrem": {
+   "lat": 51.0225188,
+   "lon": 3.6915101
+  },
   "r40 adres kopenhagenstraat 4|9000|gent": null,
   "raf verhaeststraat 67|9050|gent gentbrugge": {
    "lat": 51.0338853,
@@ -1287,7 +1656,15 @@
    "lat": 51.0397529,
    "lon": 3.7120684
   },
+  "rasphuisstraat 1|9000|gent": {
+   "lat": 51.0549432,
+   "lon": 3.7124758
+  },
   "recolettenstraat 9|2018|lift": null,
+  "recollettenlei 2|9000|gent": {
+   "lat": 51.0505639,
+   "lon": 3.7196
+  },
   "reinaertstraat 14|9000|gent": {
    "lat": 51.0597924,
    "lon": 3.702
@@ -1312,9 +1689,17 @@
    "lat": 50.8277894,
    "lon": 3.2641644
   },
+  "rijsenbergstraat 400|9000|gent": {
+   "lat": 51.0401853,
+   "lon": 3.705355
+  },
   "rijvisschepark 104|9052|zwijnaarde": {
    "lat": 51.0157217,
    "lon": 3.6892564
+  },
+  "roeselaarsestraat 78|8850|ardooie": {
+   "lat": 50.9617737,
+   "lon": 3.164941
   },
   "roza van de voordestraat 0|9032|wondelgem": {
    "lat": 51.0795332,
@@ -1346,6 +1731,10 @@
    "lat": 51.1776069,
    "lon": 3.5802769
   },
+  "scheldelaan 3 bus 301|9070|destelbergen": {
+   "lat": 51.0520242,
+   "lon": 3.7668315
+  },
   "schippersstraat 1|8500|kortrijk": {
    "lat": 50.8291938,
    "lon": 3.2588888
@@ -1358,6 +1747,10 @@
    "lat": 50.9208032,
    "lon": 3.2551675
   },
+  "schoonhoudtstraat 81|9111|sint-niklaas": {
+   "lat": 51.1364832,
+   "lon": 4.0806611
+  },
   "schuttershoflaan 60|8560|gullegem": {
    "lat": 50.8428133,
    "lon": 3.2002842
@@ -1365,6 +1758,10 @@
   "secretaris vanmarckelaan 10|8560|moorsele": {
    "lat": 50.8390435,
    "lon": 3.165774
+  },
+  "senator coolestraat 38|8500|kortrijk": {
+   "lat": 50.8176048,
+   "lon": 3.285495
   },
   "sergeant de bruynestraat 26|8370|blankenberge": {
    "lat": 51.3118269,
@@ -1381,6 +1778,10 @@
   "sint-denijslaan 134|9000|gent": {
    "lat": 51.035363,
    "lon": 3.6909196
+  },
+  "sint-denijslaan 19|9000|gent": {
+   "lat": 51.0337789,
+   "lon": 3.7146648
   },
   "sint-denijslaan 26|9000|gent": {
    "lat": 51.0368461,
@@ -1406,6 +1807,10 @@
    "lat": 50.873469,
    "lon": 3.3315486
   },
+  "sint-joriskaai 4|9000|gent": {
+   "lat": 51.0563274,
+   "lon": 3.7326484
+  },
   "sint-katharinastraat 142|8501|heule": {
    "lat": 50.8714856,
    "lon": 3.240275
@@ -1413,6 +1818,22 @@
   "sint-katharinastraat 26|8501|heule": {
    "lat": 50.8625479,
    "lon": 3.2278745
+  },
+  "sint-lievenslaan 234|9000|gent": {
+   "lat": 51.0384602,
+   "lon": 3.732056
+  },
+  "sint-margriete-houtemlaan 9|8500|kortrijk": {
+   "lat": 50.812387,
+   "lon": 3.277574
+  },
+  "sint-michielsstraat 13a|9000|gent": {
+   "lat": 51.0539988,
+   "lon": 3.7179235
+  },
+  "sint-michielsstraat 13|9000|gent": {
+   "lat": 51.0539988,
+   "lon": 3.7179235
   },
   "sint-pietershofstraat 68|9070|destelbergen": {
    "lat": 51.0582212,
@@ -1426,9 +1847,21 @@
    "lat": 50.8905408,
    "lon": 3.446783
   },
+  "smetledesteenweg 137|9230|wetteren": {
+   "lat": 50.9917113,
+   "lon": 3.9019594
+  },
+  "smidsestraat 50|9000|gent": {
+   "lat": 51.0398006,
+   "lon": 3.7150641
+  },
   "speltreep 11|9960|assenede": {
    "lat": 51.205263,
    "lon": 3.7609927
+  },
+  "spijkerlaan 57|8791|beveren-leie": {
+   "lat": 50.86536,
+   "lon": 3.3436121
   },
   "spookkasteelstraat 5|8780|oostrozebeke": {
    "lat": 50.9142282,
@@ -1442,6 +1875,18 @@
    "lat": 50.8328116,
    "lon": 3.2895494
   },
+  "sportstraat 76|9000|gent": {
+   "lat": 51.0422901,
+   "lon": 3.7081791
+  },
+  "sportstraat 82|9000|gent": {
+   "lat": 51.0419145,
+   "lon": 3.7074054
+  },
+  "sportstraat 88|9000|gent": {
+   "lat": 51.0419145,
+   "lon": 3.7074054
+  },
   "stationsplein 5|8770|ingelmunster": {
    "lat": 50.915184,
    "lon": 3.2554951
@@ -1451,6 +1896,18 @@
    "lon": 3.5765558
   },
   "stationsstraat 101|8790|waregem": null,
+  "stationsstraat 115|9890|gavere": {
+   "lat": 50.929183,
+   "lon": 3.6409176
+  },
+  "stationsstraat 31|9220|hamme": {
+   "lat": 51.0965879,
+   "lon": 4.1299842
+  },
+  "stationsstraat 37|8860|lendelede": {
+   "lat": 50.8860877,
+   "lon": 3.2418717
+  },
   "stationsstraat 4 bus 1|8770|ingelmunster": {
    "lat": 50.9204064,
    "lon": 3.2533895
@@ -1471,12 +1928,24 @@
    "lat": 51.3149097,
    "lon": 3.1360666
   },
+  "stationsstraat 86|8551|zwevegem": {
+   "lat": 50.7784496,
+   "lon": 3.3936631
+  },
   "statiosnsplein 41|8770|ingelmunster": null,
+  "steenakkerstraat 2|9070|destelbergen": {
+   "lat": 51.029312,
+   "lon": 3.7995208
+  },
   "steenbergstraat 40|9300|aalst": null,
   "steenstraat 34|8650|klerken": null,
   "steentjestraat 17a|9270|laarne": {
    "lat": 51.0344049,
    "lon": 3.8725599
+  },
+  "steenweg 63|9810|nazareth-de pinte": {
+   "lat": 50.9529041,
+   "lon": 3.6418791
   },
   "steenweg 81|9470|denderleeuw": {
    "lat": 50.8783396,
@@ -1486,27 +1955,46 @@
    "lat": 50.9074414,
    "lon": 4.0538914
   },
+  "stenenmuurstraat 0|9112|sinaai-waas": {
+   "lat": 51.1714246,
+   "lon": 4.0483004
+  },
   "sterhoek 8|8570|anzegem": {
    "lat": 50.8324033,
    "lon": 3.4478327
+  },
+  "stijn streuvelslaan 6|9051|sint-denijs-westrem": {
+   "lat": 51.027783,
+   "lon": 3.682077
   },
   "stijn streuvelsstraat 18|8530|harelbeke": null,
   "stropstraat 18|9000|gent": {
    "lat": 51.0363023,
    "lon": 3.7275523
   },
-  "studio rasphuisstraat 1|9000|gent": null,
   "swolfsstraat 9|8300|knokke": {
    "lat": 51.3540758,
    "lon": 3.2940452
+  },
+  "tennisbaanstraat 59|9000|gent": {
+   "lat": 51.0414654,
+   "lon": 3.7087483
   },
   "ter wal 5|9930|lievegem": {
    "lat": 51.1152493,
    "lon": 3.5585534
   },
+  "theofiel lybaertstraat 50|9040|sint": {
+   "lat": 51.0726278,
+   "lon": 3.7740351
+  },
   "tieltstraat 210|8760|meulebeke": {
    "lat": 50.9758382,
    "lon": 3.3097253
+  },
+  "tinnenpotstraat 22|9000|gent": {
+   "lat": 51.0583701,
+   "lon": 3.7184793
   },
   "toekomststraat 12|8940|wervik": {
    "lat": 50.7812824,
@@ -1535,6 +2023,10 @@
   "tumulusstraat 6|8800|roulers": {
    "lat": 50.9333445,
    "lon": 3.1234263
+  },
+  "tweebekenstraat 23|9750|kruisem": {
+   "lat": 50.9207439,
+   "lon": 3.5945266
   },
   "uitstekend gelegen sint jansstraat 149|8790|waregem": null,
   "vaartstraat 1|8770|ingelmunster": {
@@ -1565,6 +2057,10 @@
    "lat": 51.2765775,
    "lon": 3.6294914
   },
+  "velodroomstraat 9|8900|ieper": {
+   "lat": 50.8566975,
+   "lon": 2.8758783
+  },
   "vennestraat 41|8500|courtrai": {
    "lat": 50.8325141,
    "lon": 3.2873692
@@ -1581,11 +2077,19 @@
    "lat": 50.84675,
    "lon": 3.4575363
   },
+  "victor frisstraat 93|9000|gent": {
+   "lat": 51.063593,
+   "lon": 3.7080913
+  },
   "vierboomstraat 2a|9850|nevele": {
    "lat": 51.0363163,
    "lon": 3.5390888
   },
   "vierschaarstraat 16|9185|lochristi": {
+   "lat": 51.1688802,
+   "lon": 3.8556694
+  },
+  "vierschaarstraat 16|9185|wachtebeke": {
    "lat": 51.1688802,
    "lon": 3.8556694
   },
@@ -1605,11 +2109,23 @@
    "lat": 50.8370531,
    "lon": 3.2134065
   },
+  "vijvermeerspark 24|9000|gent": {
+   "lat": 51.0339423,
+   "lon": 3.6923112
+  },
+  "vijverwegel 93|9090|melle": {
+   "lat": 51.0146649,
+   "lon": 3.7745094
+  },
   "vissersstraat 17|8370|blankenberge": {
    "lat": 51.3148379,
    "lon": 3.1266321
   },
   "vlaaienpad 3|9041|oostakker": null,
+  "vlaanderenstraat 44 bus 301|9000|gent": {
+   "lat": 51.0507027,
+   "lon": 3.7293593
+  },
   "vlamingenstraat 2|8940|wervik": {
    "lat": 50.7786489,
    "lon": 3.0444054
@@ -1618,6 +2134,10 @@
    "lat": 51.0561896,
    "lon": 3.7003131
   },
+  "vlotstraat 64|9000|gent": {
+   "lat": 51.0642094,
+   "lon": 3.7125789
+  },
   "vogelzangstraat 5|8780|oostrozebeke": {
    "lat": 50.9218982,
    "lon": 3.3266858
@@ -1625,6 +2145,10 @@
   "voordestraat 26|9080|lochristi": {
    "lat": 51.0858567,
    "lon": 3.8132601
+  },
+  "voorstraat 1|9970|kaprijke": {
+   "lat": 51.2189303,
+   "lon": 3.6172073
   },
   "voorstraat 40|9970|kaprijke": {
    "lat": 51.2181316,
@@ -1651,6 +2175,10 @@
    "lat": 50.9447389,
    "lon": 3.1220798
   },
+  "walpoortstraat 10|9000|gent": {
+   "lat": 51.0490346,
+   "lon": 3.7269406
+  },
   "wantestraat 12|8780|oostrozebeke": {
    "lat": 50.914171,
    "lon": 3.2923997
@@ -1670,6 +2198,10 @@
   "westkouter 19|8800|roulers": {
    "lat": 50.9398827,
    "lon": 3.1141905
+  },
+  "westremstraat 22|9230|westrem": {
+   "lat": 50.9689359,
+   "lon": 3.8617756
   },
   "weststraat 39|8770|ingelmunster": {
    "lat": 50.9211623,
@@ -1703,13 +2235,25 @@
    "lat": 50.9001233,
    "lon": 3.5153596
   },
+  "winkelsestraat 144|8860|lendelede": {
+   "lat": 50.8846208,
+   "lon": 3.2260606
+  },
   "winkelsestraat 82|8860|lendelede": {
    "lat": 50.8850504,
    "lon": 3.230591
   },
+  "winkelstraat 23|9032|wondelgem": {
+   "lat": 51.0861578,
+   "lon": 3.7148834
+  },
   "wittemolenstraat 125|9040|sint-amandsberg": {
    "lat": 51.0545716,
    "lon": 3.7469476
+  },
+  "wittepaalstraat 41|9051|afsnee": {
+   "lat": 51.0239129,
+   "lon": 3.6520666
   },
   "wodecqstraat 64|9600|renaix": {
    "lat": 50.7374334,
@@ -1731,6 +2275,10 @@
    "lat": 51.0957636,
    "lon": 3.2190649
   },
+  "zeelsebaan 85|9200|dendermonde": {
+   "lat": 51.0510811,
+   "lon": 4.0818411
+  },
   "zelzatestraat 78|9960|assenede": {
    "lat": 51.2034511,
    "lon": 3.7774088
@@ -1743,6 +2291,10 @@
   "zuidstraat 4|9600|renaix": {
    "lat": 50.7450546,
    "lon": 3.6042103
+  },
+  "zwartezustersstraat 4|9000|gent": {
+   "lat": 51.0522599,
+   "lon": 3.7193601
   },
   "zwevegemstraat 113|8550|zwevegem": null,
   "zwijnaardsesteenweg 491|9000|gent": {

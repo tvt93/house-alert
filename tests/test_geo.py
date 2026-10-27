@@ -72,3 +72,42 @@ def test_cache_roundtrip(tmp_path):
     geocoder.entries["a|b|c"] = {"lat": 1.0, "lon": 2.0}
     geocoder.save()
     assert Geocoder.load(tmp_path / "geo.json").entries == {"a|b|c": {"lat": 1.0, "lon": 2.0}}
+
+
+def test_accept_hit_takes_neighbouring_postcode_when_the_town_matches():
+    # Krekelstraat 29, 9840 Zevergem: OSM tags the building 9052 (Zwijnaarde)
+    # but its address names Zevergem and the merged municipality.
+    hit = [{"lat": "51.0", "lon": "3.7", "addresstype": "building", "class": "building",
+            "address": {"house_number": "29", "road": "Krekelstraat", "suburb": "Zwijnaarde",
+                        "village": "Zevergem", "town": "Nazareth-De Pinte", "postcode": "9052"}}]
+    assert accept_hit(hit, "9840", "De Pinte Zevergem") == (51.0, 3.7)
+    assert accept_hit(hit, "9840") == (51.0, 3.7)          # the table knows Zevergem
+    # A different town with the same street name stays rejected.
+    other = [{"lat": "51.0", "lon": "3.7", "addresstype": "building", "class": "building",
+              "address": {"road": "Kerkstraat", "town": "Sint-Martens-Latem", "postcode": "9830"}}]
+    assert accept_hit(other, "9840", "De Pinte") is None
+    # "Sint-Denijs-Westrem" is one place, not Westrem (9230).
+    sdw = [{"lat": "51.0", "lon": "3.7", "addresstype": "building", "class": "building",
+            "address": {"road": "Kerkstraat", "suburb": "Sint-Denijs-Westrem", "postcode": "9051"}}]
+    assert accept_hit(sdw, "9230", "Westrem") is None
+
+
+def test_locate_looks_up_street_with_city_when_postcode_is_unknown(tmp_path):
+    from house_alert.models import Listing
+    calls = []
+
+    class Fake(Geocoder):
+        def _nominatim(self, street, postcode, city):
+            calls.append((street, postcode, city))
+            return (51.0, 3.7)
+
+    g = Fake(cache_path=tmp_path / "c.json")
+    l = Listing(url="https://x.be/1", source="X", street="Ledelaan 26", city="Sleidinge")
+    assert g.locate(l) is True
+    assert (l.lat, l.lon, l.geo) == (51.0, 3.7, "address")
+    assert calls == [("Ledelaan 26", "", "Sleidinge")]
+    # Without a postcode the hit must name the town.
+    hit = [{"lat": "51.0", "lon": "3.7", "addresstype": "building", "class": "building",
+            "address": {"road": "Ledelaan", "village": "Sleidinge", "postcode": "9940"}}]
+    assert accept_hit(hit, "", "Sleidinge") == (51.0, 3.7)
+    assert accept_hit(hit, "", "Evergem") is None

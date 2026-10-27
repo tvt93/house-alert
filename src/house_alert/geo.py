@@ -57,18 +57,23 @@ def postcode_centroid(postcode: str) -> tuple[float, float] | None:
 _by_name: dict[str, list[str]] | None = None
 
 
-def city_centroid(city: str) -> tuple[float, float] | None:
-    """Centroid for a place name, for listings that print a city but no
-    postcode. Only the coordinates are used - the postcode itself is never
-    written back onto the listing, because a name like "Gent" could mean one
-    of several codes and the filters must not run on a guess."""
+def _known_names() -> dict[str, list[str]]:
+    """Normalised place name -> postcodes, from the bundled table."""
     global _by_name
     if _by_name is None:
         _by_name = {}
         for code, entry in postcode_table().items():
             for name in entry.get("names", []):
-                _by_name.setdefault(str(name).strip().lower(), []).append(code)
-    codes = _by_name.get(_norm(city)) if city else None
+                _by_name.setdefault(_norm(str(name)), []).append(code)
+    return _by_name
+
+
+def city_centroid(city: str) -> tuple[float, float] | None:
+    """Centroid for a place name, for listings that print a city but no
+    postcode. Only the coordinates are used - the postcode itself is never
+    written back onto the listing, because a name like "Gent" could mean one
+    of several codes and the filters must not run on a guess."""
+    codes = _known_names().get(_norm(city)) if city else None
     if not codes:
         return None
     return postcode_centroid(codes[0])
@@ -136,8 +141,12 @@ class Geocoder:
         """Fill in lat/lon/geo as precisely as the data allows. True if changed."""
         before = (listing.lat, listing.lon, listing.geo)
 
-        if listing.street and listing.postal_code and listing.geo != "address":
-            point = self.lookup_address(listing.street, listing.postal_code, listing.city)
+        # A street with a postcode, or failing that a street with a town:
+        # oximo.be and demeester.be print "Ledelaan 26" and "Sleidinge" but
+        # never the postcode. Without a postcode `accept_hit` insists that
+        # the hit names the town.
+        if listing.street and (listing.postal_code or listing.city) and listing.geo != "address":
+            point = self.lookup_address(listing.street, listing.postal_code or "", listing.city)
             if point is not None:
                 listing.lat, listing.lon = point
                 listing.geo = "address"
@@ -196,10 +205,12 @@ class Geocoder:
         # agency writes it ("Gullegem-Wevelgem-Heule") only makes OSM miss.
         params: dict[str, Any] = {
             "street": re.sub(r"\s+bus\s*\S+$", "", street, flags=re.IGNORECASE),
-            "postalcode": postcode, "country": "Belgium",
+            "country": "Belgium",
             "format": "jsonv2", "limit": 1, "addressdetails": 1,
         }
-        if city and not postcode:
+        if postcode:
+            params["postalcode"] = postcode
+        elif city:
             params["city"] = city
         try:
             resp = self._client.get(NOMINATIM_URL, params=params)
@@ -213,20 +224,28 @@ class Geocoder:
             hits = resp.json()
         except ValueError:
             return "error"
-        return accept_hit(hits, postcode)
+        return accept_hit(hits, postcode, city)
 
 
 AREA_TYPES = ("city", "town", "village", "municipality", "postcode", "suburb",
               "administrative", "county", "state")
+PLACE_FIELDS = ("village", "town", "city", "municipality", "suburb", "hamlet",
+                "neighbourhood", "city_district", "quarter")
 
 
-def accept_hit(hits: Any, postcode: str) -> tuple[float, float] | None:
+def accept_hit(hits: Any, postcode: str, city: str = "") -> tuple[float, float] | None:
     """Take Nominatim's answer only when it is really the house, not the town.
 
     Asking for a street that OSM does not know returns the municipality
     centre, which would be plotted with false confidence. A result counts only
     when it is not an administrative area and its own postcode, if it has one,
     agrees with the listing's.
+
+    The one exception is a house whose OSM postcode is the neighbouring one
+    but whose address names the listing's town: Krekelstraat 29 in Zevergem
+    (9840) is tagged 9052 in OSM, with "Zevergem" and "Nazareth-De Pinte" in
+    its address. The names of the listing's postcode, from the bundled table,
+    and the city as the agency wrote it both count as the town.
     """
     if not isinstance(hits, list) or not hits:
         return None
@@ -235,10 +254,38 @@ def accept_hit(hits: Any, postcode: str) -> tuple[float, float] | None:
         return None
     if hit.get("class") == "boundary" or hit.get("addresstype") in AREA_TYPES:
         return None
-    found_postcode = str((hit.get("address") or {}).get("postcode") or "")
+    address = hit.get("address") or {}
+    found_postcode = str(address.get("postcode") or "")
     if found_postcode and found_postcode != str(postcode):
-        return None
+        if not _names_town(address, postcode, city):
+            return None
     try:
         return float(hit["lat"]), float(hit["lon"])
     except (KeyError, TypeError, ValueError):
         return None
+
+
+def _names_town(address: dict[str, Any], postcode: str, city: str) -> bool:
+    """Does one of the hit's place fields name the listing's town?"""
+    entry = postcode_table().get(str(postcode).strip()) or {}
+    wanted = {_norm(str(n)) for n in entry.get("names", []) if n}
+    if city:
+        wanted.add(_norm(city))
+    wanted.discard("")
+    if not wanted:
+        return False
+    known = _known_names()
+    for field_name in PLACE_FIELDS:
+        value = address.get(field_name)
+        if not value:
+            continue
+        parts = {_norm(str(value))}
+        # "Nazareth-De Pinte" is a merged municipality and each half counts -
+        # but only when every half is a place in its own right, or
+        # "Sint-Denijs-Westrem" would pass as Westrem.
+        halves = [_norm(p) for p in re.split(r"\s*-\s*", str(value))]
+        if len(halves) > 1 and all(h in known for h in halves):
+            parts.update(halves)
+        if parts & wanted:
+            return True
+    return False

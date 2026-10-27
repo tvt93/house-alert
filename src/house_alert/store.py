@@ -150,7 +150,7 @@ class ListingStore:
     def needing_address_lookup(self) -> list[Listing]:
         """Listings with a street we have not yet resolved to a point."""
         return [l for l in self.listings.values()
-                if l.street and l.postal_code and l.geo != "address"]
+                if l.street and (l.postal_code or l.city) and l.geo != "address"]
 
     def unmailed(self) -> list[Listing]:
         """Available listings no mail run has considered yet, oldest first."""

@@ -297,8 +297,189 @@ TESTIMONIAL_PAGE = """
 def test_testimonial_address_is_not_the_house():
     # cannoodt.be prints a sold client's address under the listing; before
     # block-aware text it was read as "Cannoodt Wintertuinstraat 2", a street
-    # Nominatim rejected, which hid the mistake. Now it must not be read at all.
+    # Nominatim rejected, which hid the mistake. The house's own address sits
+    # in a labelled element, in lower case with the town in capitals.
     listing = extract_listing(
         "https://x.be/huis/sint-amandsberg/brede-woning", TESTIMONIAL_PAGE, source="X")
     assert listing is not None
+    assert listing.street == "Wittemolenstraat 158"
+    assert listing.postal_code == "9040"
+    assert listing.city == "Sint-Amandsberg"
+
+
+LABELLED_OFFICE = """
+<html><head><meta property="og:title" content="Rijwoning te koop"></head>
+<body>
+  <h1>Rijwoning te koop</h1><p>Vraagprijs: € 295.000</p><p>2 slaapkamers</p>
+  <div class="address">Kerkstraat 12, 9000 Gent</div>
+  <aside class="contact"><div class="address">Stationsstraat 5, 9000 Gent</div></aside>
+  <footer><div class="address">Stationsstraat 5, 9000 Gent</div></footer>
+</body></html>
+"""
+
+
+def test_labelled_address_skips_chrome_and_office():
+    listing = extract_listing("https://x.be/te-koop/1", LABELLED_OFFICE, source="X")
+    assert listing is not None
+    assert listing.street == "Kerkstraat 12"
+    assert listing.postal_code == "9000"
+
+
+LABELLED_NO_SUFFIX = TESTIMONIAL_PAGE.replace(
+    "wittemolenstraat 158 - 9040 SINT-AMANDSBERG", "BEROUW   156  - 9000 GENT")
+
+
+def test_labelled_address_may_lack_a_street_word():
+    # cannoodt.be: "Berouw" is a Ghent street with no -straat/-laan ending. Only
+    # trusted because the site labels the element as the address and the
+    # postcode follows the number; the same text in prose would be skipped.
+    listing = extract_listing("https://x.be/huis/gent/berouw-156", LABELLED_NO_SUFFIX, source="X")
+    assert listing is not None
+    assert listing.street == "Berouw 156"
+    assert listing.postal_code == "9000"
+    assert listing.city == "Gent"
+    assert find_street("Ref 1234, 9000 Gent", postcode="9000", near_place=True,
+                       require_suffix=False) is None
+    assert find_street("Berouw 156 in de buurt", near_place=False, require_suffix=False) is None
+
+
+def test_property_type_words_are_not_part_of_the_street():
+    assert find_street("Opbrengsteigendom Volmolenstraat 21") == "Volmolenstraat 21"
+    assert find_street("Kantoorruimte Ekkergemstraat 80, 9000 Gent") == "Ekkergemstraat 80"
+
+
+MAP_LINK_PAGE = """
+<html><head><meta property="og:title" content="Villa op het eilandje"></head>
+<body>
+  <h1>Privatief gelegen villa op 5.480m2 op het eilandje in Zwijnaarde</h1>
+  <div><p>Berouw 156</p><p>9000 Gent</p>
+    <a href="https://www.google.com/maps/place/Berouw+156,9000+Gent" target="_blank">Toon ligging</a></div>
+  <p>Vraagprijs: € 1.245.000</p><p>5 slaapkamers</p>
+  <footer><a href="https://www.google.com/maps/place/Stationsstraat+5,+9000+Gent">Route naar kantoor</a></footer>
+</body></html>
+"""
+
+
+def test_map_link_gives_the_address_even_without_a_street_word():
+    # irres.be: "Kappetragel 1" has no -straat/-laan ending, but the "Toon
+    # ligging" link spells the address out. The footer route link is chrome.
+    listing = extract_listing("https://x.be/pand/1/villa", MAP_LINK_PAGE, source="X")
+    assert listing is not None
+    assert listing.street == "Berouw 156"
+    assert listing.postal_code == "9000"
+    assert listing.city == "Gent"
+
+
+def test_map_link_with_coordinates_or_office_only_gives_nothing():
+    from house_alert.extract import map_link_address
+    from bs4 import BeautifulSoup
+    page = MAP_LINK_PAGE.replace("Berouw+156,9000+Gent", "51.02,3.67")
+    assert map_link_address(BeautifulSoup(page, "lxml")) == ""
+    page = """<html><body><a href="http://maps.google.com/?q=Stijn Streuvelslaan+6+9051+Sint-Denijs-Westrem">kaart</a>
+    <iframe src="https://maps.google.com/maps?hl=nl&q=Wittemolenstraat+158%2C+SINT-AMANDSBERG+9040&output=embed"></iframe></body></html>"""
+    assert map_link_address(BeautifulSoup(page, "lxml")) == "Stijn Streuvelslaan 6 9051 Sint-Denijs-Westrem"
+
+
+WEAK_CHROME_PAGE = """
+<html><head><meta property="og:title" content="Exclusief wonen nabij het kasteeldomein"></head>
+<body>
+  <nav class="c-nav c-nav--breadcrumb">Home Te koop Hazelaarstraat 63, 8870 Izegem</nav>
+  <h1>Exclusief wonen nabij het kasteeldomein</h1>
+  <address class="s-property-address">Hazelaarstraat 63, 8870 Izegem</address>
+  <p>Vraagprijs: € 815.000</p><p>4 slaapkamers</p>
+  <div id="contact">Interesse? Hazelaarstraat 63, 8870 Izegem Contacteer Laurence</div>
+  <footer>Bordes, Rijksweg 17, 8870 Izegem</footer>
+</body></html>
+"""
+
+
+def test_address_tag_breadcrumb_and_contact_block_are_not_the_office():
+    # bordes.be, kleyo.be, entree.be: the house sits in an <address> element,
+    # in the breadcrumb, and is quoted inside the contact form. None of those
+    # is the agency's door; the footer still is.
+    listing = extract_listing("https://x.be/panden/1", WEAK_CHROME_PAGE, source="X")
+    assert listing is not None
+    assert listing.street == "Hazelaarstraat 63"
+    assert listing.postal_code == "8870"
+    assert listing.city == "Izegem"
+    office_only = WEAK_CHROME_PAGE.replace("Hazelaarstraat 63", "Rijksweg 17")
+    listing = extract_listing("https://x.be/panden/1", office_only, source="X")
+    assert listing is not None
     assert listing.street == ""
+
+
+def test_slug_address():
+    from house_alert.extract import slug_address
+    assert slug_address("https://www.real-immo.be/nl/te-koop/tiegemberg-34-8573-tiegem-4485313-vkw180") == ("Tiegemberg 34", "8573", "Tiegem")
+    assert slug_address("https://www.mijnhabitat.be/nl/aanbod/parkstraat-78-8560-wevelgem") == ("Parkstraat 78", "8560", "Wevelgem")
+    assert slug_address("https://entree.be/pand/de-pintelaan-209-9000-gent/8563167") == ("De Pintelaan 209", "9000", "Gent")
+    assert slug_address("https://x.be/aanbod/lot-3-9000-gent") == ("", "", "")
+    assert slug_address("https://x.be/te-koop/woning-te-koop-in-8500-kortrijk") == ("", "", "")
+
+
+def test_street_from_slug_when_the_page_only_has_it_in_chrome():
+    page = """<html><head><meta property="og:title" content="Villa te koop"></head>
+    <body><h1>Villa te koop</h1><p>Vraagprijs: € 745.000</p><p>5 slaapkamers</p>
+    <footer>Real Immo, Westerlaan 61, 8790 Waregem</footer></body></html>"""
+    listing = extract_listing(
+        "https://www.real-immo.be/nl/te-koop/tiegemberg-34-8573-tiegem-4485313-vkw180", page, source="X")
+    assert listing is not None
+    assert (listing.street, listing.postal_code, listing.city) == ("Tiegemberg 34", "8573", "Tiegem")
+
+
+def test_label_line_and_city_only_address():
+    from house_alert.extract import address_place
+    # immo-lys.be: "Ligging Sint-Amandsstraat 1 8800 Roeselare" in an unlabelled block.
+    page = """<html><head><meta property="og:title" content="Appartement te koop"></head>
+    <body><h1>Appartement te koop</h1><p>Vraagprijs: € 155.000</p><p>2 slaapkamers</p>
+    <div><p>Ligging Sint-Amandsstraat 1 8800 Roeselare <a href="#">Bekijk op kaart</a></p></div>
+    <footer><p>Adres Harelbeeksestraat 109 8520 Kuurne</p></footer></body></html>"""
+    listing = extract_listing("https://x.be/aanbod/1", page, source="X")
+    assert listing is not None
+    assert (listing.street, listing.postal_code, listing.city) == ("Sint-Amandsstraat 1", "8800", "Roeselare")
+    # sofimmo.be / axellenaerts.be order the place before the postcode;
+    # immo-zone.be prints only the municipality.
+    assert address_place("Centrumstraat 53, Olsene, 9870, Oost-Vlaanderen") == ("9870", "Olsene")
+    assert address_place("Heirbaan 270, Burcht 2070") == ("2070", "Burcht")
+    assert address_place("Magerstraat 18 , Mere") == ("", "Mere")
+    assert address_place("Magerstraat 18") == ("", "")
+
+
+def test_city_only_pages_keep_the_street_and_get_the_city():
+    # oximo.be: labelled street, city in a location element, no postcode anywhere
+    # but the office's. demeester.be: city only as a URL segment.
+    page = """<html><head><meta property="og:title" content="Huis te koop"></head>
+    <body><h1>Huis te koop</h1><p>Vraagprijs: € 359.000</p><p>3 slaapkamers</p>
+    <div class="property-detail__address">Locatie Ledelaan 26</div>
+    <div class="property-detail__location">Sleidinge</div>
+    <footer>Adres Hundelgemsesteenweg 155 A 9820 Merelbeke</footer></body></html>"""
+    listing = extract_listing("https://www.oximo.be/nl/immo-te-koop/huis/sleidinge/52993343", page, source="X")
+    assert listing is not None
+    assert (listing.street, listing.postal_code, listing.city) == ("Ledelaan 26", "", "Sleidinge")
+    page = """<html><head><meta property="og:title" content="Woning te koop"></head>
+    <body><h1>Woning te koop</h1><p>Vraagprijs: € 575.000</p><p>Pontstraat 145</p>
+    <footer>Holstraat 32 8790 Waregem</footer></body></html>"""
+    listing = extract_listing("https://www.demeester.be/te-koop/deinze/woning/4486809", page, source="X")
+    assert listing is not None
+    assert listing.city == "Deinze"
+
+
+def test_place_before_street_and_place_as_street():
+    # immotion.be: "Kortrijk, Camiel De Stoopstraat 51 € 445.000"
+    assert find_street("Kortrijk, Camiel De Stoopstraat 51 € 445.000", city="Kortrijk",
+                       near_place=True) == "Camiel De Stoopstraat 51"
+    # axellenaerts.be: "Ledeberg 9050" is a town and its postcode.
+    assert find_street("Ledeberg 9050") is None
+    assert find_street("Sint-Amandsberg 9040 Street View Heirbaan 270, 2070 Burcht") == "Heirbaan 270"
+
+
+def test_city_from_a_location_element_when_the_page_has_no_postcode():
+    # oranjeberg.be: street in an "adres" element, town alone in a "location"
+    # element, and the only postcode on the page is the office's.
+    page = """<html><head><meta property="og:title" content="Instapklare rijwoning"></head>
+    <body><h1>Instapklare rijwoning</h1><p>Vraagprijs: € 349.000</p><p>4 slaapkamers</p>
+    <div class="location">Gent</div><div class="adres">Krevelstraat 53</div>
+    <footer>Oranjeberg Korte Kruisstraat 53 9000 Gent</footer></body></html>"""
+    listing = extract_listing("https://www.oranjeberg.be/te-koop/instapklare-rijwoning/4486383", page, source="X")
+    assert listing is not None
+    assert (listing.street, listing.postal_code, listing.city) == ("Krevelstraat 53", "", "Gent")

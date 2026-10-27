@@ -17,7 +17,7 @@ from __future__ import annotations
 import json
 import re
 from typing import Any
-from urllib.parse import urljoin, urlparse
+from urllib.parse import parse_qs, unquote_plus, urljoin, urlparse
 
 from bs4 import BeautifulSoup, NavigableString, Tag
 
@@ -114,7 +114,7 @@ NOT_A_CITY = {
     "gsm", "email", "belgie", "belgië", "bel", "contact", "kantoor",
     "renovatiejaar", "bouwjaar", "jaar", "gebouwd", "richting", "bouwjaren",
     "oppervlakte", "bewoonbare", "kadastraal", "verkoop", "sinds", "btw",
-    "foto", "opp", "kijkdag", "kijkdagen",
+    "foto", "opp", "kijkdag", "kijkdagen", "beschikbaar", "beschikbaarheid",
 }
 
 # "Woning te koop in Aalter", "Appartement te huur te Gent"
@@ -140,7 +140,7 @@ STREET_SUFFIX = (
     "straat|steenweg|laan|weg|plein|dreef|dreve|baan|lei|kaai|markt|dries|hof|"
     "wegel|plaats|vest|kouter|pad|park|kade|dijk|ring|singel|veld|akker|berg|"
     "bos|heide|dam|gracht|poort|beek|molen|hoek|wal|zoom|erf|gaarde|dorp|wijk|"
-    "rede|reep|straatje|wegje|baantje|meers|brug"
+    "rede|reep|straatje|wegje|baantje|meers|brug|tragel|steeg|vaart"
 )
 _STREET_WORD = r"[A-Z][^\W\d_]*(?:['’-][^\W\d_]+)*"   # letters only: not "E40", not "Kortrijk."
 _STREET_CONNECTOR = r"(?:op|ter|ten|de|den|der|van|aan|'t|het|en)"
@@ -160,6 +160,11 @@ STREET_LABELS = {
     "adres", "ligging", "locatie", "straat", "te", "koop", "woning", "huis",
     "appartement", "villa", "gelegen", "ref", "vraagprijs", "aan", "in", "op",
     "rijwoning", "nieuwbouw", "bouwgrond", "hoeve", "herenhuis", "bungalow",
+    "opbrengsteigendom", "appartementsgebouw", "kantoorruimte", "praktijkruimte",
+    "handelspand", "handelsruimte", "loft", "studio", "penthouse", "duplex", "grond",
+    "project", "nieuwbouwproject", "landhuis", "woonhuis", "hoekwoning", "garage",
+    # yvimat.be "EPC Jan Breydelstraat 115"; axellenaerts.be "Street View Heirbaan 270"
+    "epc", "street", "view", "streetview",
     # Form labels that precede an office address in running text (Immo Casa).
     "ja", "nee", "neen", "kantoor", "bureau", "agentschap", "contact",
     # A menu entry or tab title printed right before the address block
@@ -178,14 +183,25 @@ BLOCK_TAGS = frozenset(
 # Page regions whose addresses belong to the agency, not the property. Matched
 # per class token, and "header" only in its site-wide spellings: a listing's
 # own hero is routinely a <header class="detail-header">.
-CHROME_CLASS = re.compile(
+STRONG_CHROME_CLASS = re.compile(
     r"^(?:(?:site|page|main|global|top|sticky)[-_]?)?(?:footer|header|nav|navbar|topbar|menu)$"
-    r"|footer|contact|kantoor|office|agency"
+    r"|footer",
+    re.IGNORECASE,
+)
+CHROME_CLASS = re.compile(
+    STRONG_CHROME_CLASS.pattern
+    + r"|contact|kantoor|office|agency"
     # Testimonials name the house a *previous* client sold (cannoodt.be:
     # "Wij verkochten onze woning met Cannoodt - Wintertuinstraat 2, 9000 Gent").
     r"|testimonial|getuigenis|referentie|review|verkochten",
     re.IGNORECASE,
 )
+BREADCRUMB = re.compile(r"breadcrumb|kruimel", re.IGNORECASE)
+
+
+def _is_breadcrumb(node: Any) -> bool:
+    tokens = list(node.get("class", [])) + [str(node.get("id") or ""), str(node.get("aria-label") or "")]
+    return any(BREADCRUMB.search(t) for t in tokens)
 
 # Property-type words that URL slugs put in front of the municipality:
 # /te-koop-woning-wippelgem/ is Wippelgem, not "Woning-Wippelgem".
@@ -416,16 +432,31 @@ def is_known_postcode(code: str) -> bool:
     return str(code).strip() in postcode_table()
 
 
-def chrome_nodes(soup: BeautifulSoup) -> list[Any]:
-    """Elements that are site furniture rather than listing content."""
-    nodes = soup.find_all(["footer", "nav", "address"])
+def chrome_nodes(soup: BeautifulSoup, strong_only: bool = False) -> list[Any]:
+    """Elements that are site furniture rather than listing content.
+
+    Strong chrome is structural: footer, navigation, the site-wide header.
+    Weak chrome is a region named after the agency's own things - contact
+    block, office, testimonials - which is where an office address is printed,
+    but also where a contact form quotes the house ("Ik had graag meer info
+    over De Pintelaan 209"). A street found in weak chrome is kept out of the
+    body-text search but cannot veto a source that names the house outright.
+
+    Not chrome at all: a breadcrumb (its last crumb is this page's own title,
+    address included) and the <address> element, which these sites use for
+    the property rather than the agency.
+    """
+    nodes = soup.find_all("footer")
+    nodes += [n for n in soup.find_all("nav") if not _is_breadcrumb(n)]
     # A <header> is site chrome only at the top level; inside an article,
     # section or main it is the listing's own heading.
     nodes += [h for h in soup.find_all("header")
               if not h.find_parent(["article", "main", "section"])]
-    nodes += [n for n in soup.find_all(id=True) if CHROME_CLASS.search(str(n.get("id")))]
+    pattern = STRONG_CHROME_CLASS if strong_only else CHROME_CLASS
+    nodes += [n for n in soup.find_all(id=True) if pattern.search(str(n.get("id")))]
     nodes += [n for n in soup.find_all(class_=True)
-              if any(CHROME_CLASS.search(c) for c in n.get("class", []))]
+              if any(pattern.search(c) for c in n.get("class", []))]
+    nodes = [n for n in nodes if not _is_breadcrumb(n)]
     # A topbar inside a header would otherwise be counted twice.
     unique = {id(n): n for n in nodes}
     return [n for n in unique.values()
@@ -452,7 +483,7 @@ def _normal_number(number: str) -> str:
     return number if "bus" in number.lower() else re.sub(r"\s+", "", number)
 
 
-def _clean_street_name(name: str, city: str) -> str | None:
+def _clean_street_name(name: str, city: str, require_suffix: bool = True) -> str | None:
     """Trim label words off the front and insist on a street suffix."""
     words = name.split()
     while len(words) > 1 and (
@@ -468,8 +499,10 @@ def _clean_street_name(name: str, city: str) -> str | None:
     suffix_last = bool(_STREET_ENDS.search(words[-1]))
     suffix_first = (len(words) >= 3 and bool(_STREET_ENDS.search(words[0]))
                     and words[1].lower() in ("op", "ter", "ten", "van", "aan", "de", "der", "den"))
-    if not (suffix_last or suffix_first):
+    if require_suffix and not (suffix_last or suffix_first):
         return None
+    if words[0].lower().strip(":") in STREET_LABELS:
+        return None                        # "Ref 1234, 9000 Gent": a label, not a name
     return " ".join(words)
 
 
@@ -507,19 +540,23 @@ def find_street(
     postcode: str = "",
     exclude: set[str] | frozenset[str] = frozenset(),
     near_place: bool = False,
+    require_suffix: bool = True,
 ) -> str | None:
     """First credible street + number in `text`, or None.
 
     With `near_place`, the street must be followed closely by the listing's
     postcode or city, as in "Kerkstraat 12, 9000 Gent" - the shape of a real
     address line, as opposed to a street name mentioned in running prose.
+    `require_suffix=False` also accepts a name without a street word
+    ("Berouw 156", "Kouter 8") - only safe on text the site labels as the
+    address, and then only with `near_place`.
 
     Line breaks in `text` are block boundaries (see `block_text`): a street
     name never spans one, though the postcode may follow on the next line.
     """
     text = re.sub(r"[^\S\n]+", " ", text)
     for m in STREET.finditer(text):
-        name = _clean_street_name(m.group(1), city)
+        name = _clean_street_name(m.group(1), city, require_suffix or not near_place)
         if not name:
             continue
         number = _normal_number(m.group(2))
@@ -531,22 +568,195 @@ def find_street(
         street = f"{name} {number}"
         if street.lower() in exclude:
             continue
-        # ", 9000 Gent" / " - Gent" / " te Gent": the place must come right after.
+        # "Ledeberg 9050": a municipality and its postcode, not a street.
+        if is_known_place(name):
+            continue
+        # ", 9000 Gent" / " - Gent" / " te Gent": the place must come right
+        # after - or, as immotion.be writes it, right before:
+        # "Kortrijk, Camiel De Stoopstraat 51".
         close = tail[:14]
+        before = text[max(0, m.start() - 25):m.start()]
         if near_place and not (
-            (postcode and postcode in close) or (city and city.lower() in close.lower())
+            (postcode and (postcode in close or postcode in before))
+            or (city and (city.lower() in close.lower() or city.lower() in before.lower()))
         ):
             continue
         return street
     return None
 
 
-def chrome_streets(soup: BeautifulSoup) -> set[str]:
+ADDRESS_CLASS = re.compile(r"adres|address|locat|ligging", re.IGNORECASE)
+# "Ligging Sint-Amandsstraat 1 8800 Roeselare", "Adres: Kerkstraat 12"
+ADDRESS_LABEL_LINE = re.compile(r"^(?:adres|address|ligging|locatie)\s*:?\s+(\S.{4,90})$",
+                                re.IGNORECASE | re.MULTILINE)
+
+
+def labelled_address(soup: BeautifulSoup) -> str:
+    """The text of the element a site marks as *the* address, case-normalised.
+
+    cannoodt.be prints "<span class='pand-adres'>wittemolenstraat 158 - 9040
+    SINT-AMANDSBERG</span>", which the capitalised street and place patterns
+    cannot read. An element that is labelled as an address - by class, by the
+    <address> tag, or by a leading "Adres:"/"Ligging" label in its text - is a
+    stronger source than running text, so its casing is normalised here
+    ("Wittemolenstraat 158 - 9040 Sint-Amandsberg") and the usual patterns run
+    on the result. Strong chrome is skipped; the office check happens at the
+    call site.
+    """
+    chrome = {id(n) for n in chrome_nodes(soup, strong_only=True)}
+    for node in soup.find_all(True):
+        tokens = list(node.get("class", [])) + [node.get("id") or ""]
+        if node.name != "address" and not any(ADDRESS_CLASS.search(t) for t in tokens):
+            continue
+        if any(id(p) in chrome for p in node.parents) or id(node) in chrome:
+            continue
+        text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+        if not text or len(text) > 100 or not re.search(r"\d", text):
+            continue
+        return _address_case(text)
+    # "Ligging Sint-Amandsstraat 1 8800 Roeselare" as a short block of its own.
+    # Here all chrome is skipped: "Adres Hundelgemsesteenweg 155" in a footer
+    # is exactly the office line this label introduces.
+    chrome = {id(n) for n in chrome_nodes(soup)}
+    for node in soup.find_all(["p", "div", "li", "span", "dd", "td", "tr", "h2", "h3", "h4"]):
+        if any(id(p) in chrome for p in node.parents) or id(node) in chrome:
+            continue
+        text = block_text(node).split("\n", 1)[0]
+        if len(text) > 100:
+            continue
+        m = ADDRESS_LABEL_LINE.match(text)
+        if m and re.search(r"\d", m.group(1)):
+            return _address_case(m.group(1).strip())
+    return ""
+
+
+def labelled_place(soup: BeautifulSoup) -> str:
+    """A municipality printed alone in an element labelled as the location
+    (oranjeberg.be: <div class="location">Gent</div>), when the page gives
+    the town nowhere else. Only a name the postcode table knows counts."""
+    chrome = {id(n) for n in chrome_nodes(soup)}
+    for node in soup.find_all(True):
+        tokens = list(node.get("class", [])) + [node.get("id") or ""]
+        if not any(ADDRESS_CLASS.search(t) for t in tokens):
+            continue
+        if any(id(p) in chrome for p in node.parents) or id(node) in chrome:
+            continue
+        text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+        text = re.sub(r"^(?:ligging|locatie|location|gemeente)\s*:?\s*", "", text, flags=re.IGNORECASE)
+        if 2 < len(text) <= 30 and is_known_place(_address_case(text)):
+            return _address_case(text)
+    return ""
+
+
+def _address_case(text: str) -> str:
+    """'wittemolenstraat 158 - 9040 SINT-AMANDSBERG' -> 'Wittemolenstraat 158 - 9040 Sint-Amandsberg'."""
+    return re.sub(
+        r"[^\W\d_]+",
+        lambda m: m.group(0).capitalize() if m.group(0).islower() or m.group(0).isupper() else m.group(0),
+        text,
+    )
+
+
+MAP_URL = re.compile(r"google\.[a-z.]+/maps|maps\.google\.[a-z.]+/|goo\.gl/maps|maps\.app\.goo\.gl",
+                     re.IGNORECASE)
+
+
+def map_link_address(soup: BeautifulSoup) -> str:
+    """The address a "show on map" link carries, or "".
+
+    irres.be, huysewinkel.be and carloeggermont.be all link the listing to
+    Google Maps with the house's own address in the URL:
+    /maps/place/Kappetragel+1,9052+Zwijnaarde. That is the site telling us the
+    address outright, and it reads "Kappetragel 1" where the street patterns
+    would not, since the name has no street word. Links in the page chrome
+    (route to the office) are skipped, and a link that carries coordinates
+    instead of an address yields nothing.
+    """
+    chrome = {id(n) for n in chrome_nodes(soup)}
+    for node in soup.find_all(["a", "iframe"]):
+        url = node.get("href") or node.get("src") or ""
+        if not MAP_URL.search(url):
+            continue
+        if any(id(p) in chrome for p in node.parents):
+            continue
+        text = _map_query(url)
+        if text and len(text) <= 100 and re.search(r"\d", text):
+            return _address_case(text)
+    return ""
+
+
+def _map_query(url: str) -> str:
+    parsed = urlparse(url)
+    m = re.search(r"/maps/place/([^/]+)", parsed.path)
+    if m:
+        raw = m.group(1)
+    else:
+        query = parse_qs(parsed.query)
+        raw = next((v[0] for k in ("q", "query", "destination", "daddr") if (v := query.get(k))), "")
+    text = re.sub(r"\s+", " ", unquote_plus(raw)).strip()
+    if re.match(r"^-?\d+(?:\.\d+)?\s*,\s*-?\d+", text):
+        return ""                                  # "51.02,3.67": coordinates
+    # "Kappetragel 1,9052 Zwijnaarde": a comma glued to the postcode would
+    # read as a thousands separator and hide the house number.
+    return re.sub(r",(?=\S)", ", ", text)
+
+
+# "Olsene, 9870" / "Burcht 2070": the place before the postcode, as a map link
+# or a labelled element may order them.
+CITY_POSTAL = re.compile(
+    r"\b((?:De|Den|Sint|Groot|Nieuw)\s+)?([A-Z][a-zà-ÿ]{2,}(?:-[A-Z][a-zà-ÿ]+)*),?\s+([1-9]\d{3})\b(?![\d.,]?\d)"
+)
+
+
+def address_place(text: str) -> tuple[str, str]:
+    """(postcode, city) read off an address line the site itself labelled.
+
+    Accepts "9040 Sint-Amandsberg", "Olsene, 9870" and, with no postcode at
+    all, a trailing municipality the table knows ("Magerstraat 18 , Mere").
+    Either part may come back empty; nothing here is guessed.
+    """
+    m = re.search(POSTAL_CITY, text)
+    if m and is_known_postcode(m.group(1)) and m.group(3).lower() not in NOT_A_CITY:
+        return m.group(1), f"{m.group(2) or ''}{m.group(3)}".strip()
+    m = CITY_POSTAL.search(text)
+    if m and is_known_postcode(m.group(3)):
+        city = f"{m.group(1) or ''}{m.group(2)}".strip()
+        if is_known_place(city):
+            return m.group(3), city
+    words = re.findall(r"[^\W\d_]+(?:[-\s][^\W\d_]+)*", text)
+    if words and is_known_place(words[-1].strip()):
+        return "", words[-1].strip()
+    return "", ""
+
+
+# ".../te-koop/tiegemberg-34-8573-tiegem-4485313" (real-immo.be),
+# ".../aanbod/parkstraat-78-8560-wevelgem" (mijnhabitat.be),
+# ".../pand/de-pintelaan-209-9000-gent/8563167" (entree.be)
+SLUG_ADDRESS = re.compile(r"/([a-z][a-z-]{2,40}?)-(\d{1,4}[a-z]?)-([1-9]\d{3})-([a-z][a-z-]{2,30}?)(?:-\d+[a-z0-9-]*)?(?:/|$)")
+
+
+def slug_address(url: str) -> tuple[str, str, str]:
+    """(street, postcode, city) when the URL slug spells the whole address
+    out, street-number-postcode-city. The street must carry a street word:
+    a slug is not labelled, so "lot-3-9000-gent" must not become a street."""
+    m = SLUG_ADDRESS.search(urlparse(url).path.lower())
+    if not m or not is_known_postcode(m.group(3)):
+        return "", "", ""
+    street = find_street(f"{_titleize(m.group(1)).replace('-', ' ')} {m.group(2).upper()}")
+    if not street:
+        return "", "", ""
+    return street, m.group(3), _titleize(m.group(4))
+
+
+def chrome_streets(soup: BeautifulSoup, strong_only: bool = False) -> set[str]:
     """Every street address printed in the page chrome. On an agency site
     that is the office address, repeated on every listing page."""
     found: set[str] = set()
-    for node in chrome_nodes(soup):
-        text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+    for node in chrome_nodes(soup, strong_only):
+        # Block-aware, like the body read, or the two disagree on the same
+        # door: "<h3>...met Cannoodt</h3><h5>Wintertuinstraat 2</h5>" must
+        # not be recorded here as "cannoodt wintertuinstraat 2".
+        text = re.sub(r"[^\S\n]+", " ", block_text(node))
         for m in STREET.finditer(text):
             name = _clean_street_name(m.group(1), "")
             if name:
@@ -666,8 +876,19 @@ def _locate(listing: Listing, text: str,
             # is weak enough that the name must be a known municipality.
             if pattern is CITY_IN_URL_IN and not is_known_place(candidate):
                 continue
+            # "te-koop-in-het-hart-van-spiere-helkijn": prose, not a place.
+            if re.match(r"(?:in|te|het|een|de|met|op)-", m.group(1)) and not is_known_place(candidate):
+                continue
             listing.city = candidate
             break
+
+    if not listing.city:
+        # "/te-koop/deinze/woning/4486809" (demeester.be): a path segment that
+        # is a municipality on its own.
+        for segment in urlparse(url).path.lower().split("/"):
+            if 3 <= len(segment) <= 30 and is_known_place(_titleize(segment)):
+                listing.city = _titleize(segment)
+                break
 
     if not listing.postal_code:
         for m in re.finditer(POSTAL_CITY, text):
@@ -837,9 +1058,15 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
     listing.description = _meta(soup, "og:description", "description")
     listing.image_url = _meta(soup, "og:image", "twitter:image")
 
+    # Two office lists: `office_hard` is what the site states outright (an
+    # Organization block, the footer, the nav) and vetoes every source;
+    # `office` adds the weak chrome - contact blocks and the like - and only
+    # guards the body-text search, where the house is not named as such.
+    office_hard = chrome_streets(soup, strong_only=True)
     office = chrome_streets(soup)
     offices_at = chrome_places(soup)
-    office |= _from_jsonld(jsonld_objects(BeautifulSoup(html, "lxml")), listing)
+    office_hard |= _from_jsonld(jsonld_objects(BeautifulSoup(html, "lxml")), listing)
+    office |= office_hard
 
     if not listing.title:
         h1 = soup.find("h1")
@@ -863,15 +1090,38 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
         return None
 
     _from_text(text, listing)
+
+    # An element the site itself labels as the address, read before the
+    # weaker sources: it may be the only place the postcode is printed in a
+    # shape the patterns can read (cannoodt.be: "9040 SINT-AMANDSBERG").
+    labelled = labelled_address(soup) or map_link_address(soup)
+    slug_street, slug_postcode, slug_city = slug_address(url)
+    if labelled and not (listing.postal_code and listing.city):
+        postcode, city = address_place(labelled)
+        if city and (not listing.city or city.lower() == listing.city.lower()):
+            listing.city = listing.city or city
+            listing.postal_code = listing.postal_code or postcode
+    if slug_postcode and not (listing.postal_code and listing.city):
+        if not listing.city or slug_city.lower() == listing.city.lower():
+            listing.city = listing.city or slug_city
+            listing.postal_code = listing.postal_code or slug_postcode
+    if not listing.city:
+        listing.city = labelled_place(soup)
+
     _locate(listing, text, offices_at)
 
-    # The street: structured data first, then the title, then an address line
-    # in the body. Whatever the page chrome prints is the agency's own door.
-    if listing.street and listing.street.lower() in office:
+    # The street: structured data first, then the labelled address element,
+    # the URL slug, the title, and finally an address line in the body.
+    # Whatever the site states as its own door is never the house.
+    if listing.street and listing.street.lower() in office_hard:
         listing.street = ""
     if not listing.street:
         listing.street = (
-            find_street(listing.title, listing.city, exclude=office)
+            find_street(labelled, listing.city, listing.postal_code, exclude=office_hard,
+                        near_place=True, require_suffix=False)
+            or find_street(labelled, listing.city, exclude=office_hard)
+            or (slug_street if slug_street.lower() not in office_hard else "")
+            or find_street(listing.title, listing.city, exclude=office_hard)
             or find_street(block_text(soup), listing.city, listing.postal_code,
                            exclude=office, near_place=True)
             or ""

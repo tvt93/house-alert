@@ -6,8 +6,11 @@ for-sale detail pages? Two strategies, tried in order:
   sitemap  - robots.txt Sitemap: lines plus the usual sitemap paths, index
              files expanded one level. Cheap, complete, and what most of these
              platforms publish.
-  crawl    - fetch the homepage and a handful of likely index paths, scrape
-             same-host anchors. The fallback for sites with no usable sitemap.
+  crawl    - fetch the homepage, follow its own "te koop"/"aanbod" links one
+             level, and scrape same-host anchors. Always runs alongside the
+             sitemap: several sites ship a stale one (immo-lys.be lists ids
+             that 404) or none with listings in it at all. A handful of
+             conventional index paths is tried only when both came up empty.
 
 Neither strategy parses detail pages; that's extract.py's job.
 """
@@ -49,6 +52,12 @@ INDEX_PATHS = (
 )
 
 MAX_SITEMAPS = 30
+MAX_INDEX_PAGES = 8      # homepage links followed per crawl
+
+# A same-site link that leads to a listing index rather than a listing.
+INDEX_LINK = re.compile(
+    r"te[-_]?koop|aanbod|/kopen|for-sale|/panden|/woningen|/properties|/eigendommen",
+    re.IGNORECASE)
 
 # Locale segments that agency sitemaps duplicate: several of these sites emit
 # "https://host/nl//nl/te-koop/123", which 404s. Seen in the wild on Immotion.
@@ -83,17 +92,20 @@ class GenericScraper:
     # ------------------------------------------------------------------ api
 
     def discover(self, agency: Agency, fetcher: Fetcher) -> list[str]:
-        urls = self._from_sitemaps(agency, fetcher)
-        if not urls:
-            urls = self._from_crawl(agency, fetcher)
-        deduped = list(dict.fromkeys(normalize_url(u) for u in urls))
-        if len(deduped) > self.max_listings:
-            log.info(
-                "%s: capping discovery at %d of %d candidate URLs",
-                agency.name, self.max_listings, len(deduped),
-            )
-            deduped = deduped[: self.max_listings]
-        return deduped
+        """Every candidate detail URL, uncapped: the per-run cap belongs to
+        the scan, applied to URLs not seen before."""
+        crawled = self._from_crawl(agency, fetcher)
+        mapped = self._from_sitemaps(agency, fetcher)
+        if not crawled and not mapped:
+            crawled = self._from_crawl(agency, fetcher, probe_defaults=True)
+        # Index pages show what is on the market today; a sitemap carries the
+        # whole history. New pages are capped per run, so today's go first.
+        return list(dict.fromkeys(self.canonical(u) for u in crawled + mapped))
+
+    def canonical(self, url: str) -> str:
+        """One spelling per page. Platforms whose identity lives in the query
+        string override this; everyone else drops it."""
+        return normalize_url(url)
 
     def is_listing_url(self, url: str) -> bool:
         if any(hint in url.lower() for hint in self.extra_url_hints):
@@ -142,19 +154,37 @@ class GenericScraper:
 
     # ---------------------------------------------------------------- crawl
 
-    def _from_crawl(self, agency: Agency, fetcher: Fetcher) -> list[str]:
+    def _from_crawl(self, agency: Agency, fetcher: Fetcher,
+                    probe_defaults: bool = False) -> list[str]:
         found: list[str] = []
-        pages = [agency.url] + [agency.url + p for p in INDEX_PATHS]
+        queue = [agency.url]
+        if probe_defaults:
+            queue += [agency.url + p for p in INDEX_PATHS]
+        visited: set[str] = set()
+        followed = 0
 
-        for page in pages:
+        while queue:
+            page = queue.pop(0)
+            if page in visited:
+                continue
+            visited.add(page)
             html = fetcher.get(page)
             if not html:
                 continue
             soup = BeautifulSoup(html, "lxml")
             for a in soup.find_all("a", href=True):
                 url = urljoin(page, str(a["href"])).split("#")[0]
-                if self._same_site(agency, url) and self.is_listing_url(url):
+                if not self._same_site(agency, url):
+                    continue
+                if self.is_listing_url(url):
                     found.append(url)
+                elif (page == agency.url and followed < MAX_INDEX_PAGES
+                      and INDEX_LINK.search(urlparse(url).path)
+                      and normalize_url(url) not in visited):
+                    # The site's own "te koop" page: oximo.be/nl/immo-te-koop,
+                    # cannoodt.be/aanbod - names no default list would guess.
+                    queue.append(normalize_url(url))
+                    followed += 1
             if len(found) >= self.max_listings:
                 break
 

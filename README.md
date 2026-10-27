@@ -14,7 +14,7 @@ show up as soon as the agency publishes them, usually before they reach the big 
 ## How it works
 
 ```
-config/agencies.yaml   87 agencies, Ghent + Kortrijk regions
+config/agencies.yaml   87 agencies around Ghent and Kortrijk
         │
         ├─ discover     robots.txt → sitemap.xml → listing detail URLs
         │               (falls back to crawling the "te koop" index)
@@ -49,7 +49,7 @@ framework — Leaflet for the map, everything else is plain HTML.
   dashed one is the postcode (or municipality) centroid because the agency did not
   print the street.
 - **Filters:** price, postcode (exact or prefix: `85` = 8500–8599), type, plot area,
-  habitable area, bedrooms, how recently it appeared, region, agency. Unknown values are
+  habitable area, bedrooms, how recently it appeared, agency. Unknown values are
   included by default; untick the box to make every filter strict.
 - Filters live in the URL, so a filtered view can be bookmarked or sent to someone.
 - **Dagelijkse mail** turns the current filters into a subscription file and opens it,
@@ -101,7 +101,6 @@ requires 2-step verification) — your normal Google password will be rejected.
 ```powershell
 .\.venv\Scripts\house-alert run                      # the real thing
 .\.venv\Scripts\house-alert -v run --dry-run         # scan, explain, send nothing
-.\.venv\Scripts\house-alert run --region kortrijk    # one region only
 .\.venv\Scripts\house-alert run --only Immotion      # one agency, for debugging
 .\.venv\Scripts\house-alert geocode                  # resolve stored streets to map points
 .\.venv\Scripts\house-alert export                   # rewrite docs/listings.json from state
@@ -110,6 +109,7 @@ requires 2-step verification) — your normal Google password will be rejected.
 .\.venv\Scripts\house-alert test-mail                # prove SMTP works, per subscription
 .\.venv\Scripts\house-alert list                     # agencies and subscriptions
 .\.venv\Scripts\house-alert detect --write           # fingerprint each site's platform
+.\.venv\Scripts\house-alert forget --only Rosseel     # refetch one agency after a scraper fix
 ```
 
 `-v --dry-run` is the one to reach for when the email looks wrong: it prints every listing
@@ -160,7 +160,8 @@ One-time setup on GitHub:
 3. Run the workflow once by hand from the Actions tab. The first run seeds the state and
    fills the page; from the next morning on, the mails go out.
 
-The first run fetches every listing currently online (up to 80 per agency) and takes
+The first run fetches every listing currently online (up to 80 new pages per agency per
+run, so a site with a long sitemap catches up over a few runs) and takes
 15–30 minutes. Street-level geocoding is capped at 300 lookups per run, so pins refine
 from postcode to street over the first few days.
 
@@ -169,11 +170,22 @@ from postcode to street over the first few days.
 One line in `config/agencies.yaml`:
 
 ```yaml
-  - { name: Nieuw Kantoor, url: "https://www.nieuwkantoor.be", region: gent }
+  - { name: Nieuw Kantoor, url: "https://www.nieuwkantoor.be" }
 ```
 
-No code. The generic scraper handles any site that publishes a sitemap or a browsable
-"te koop" index, which is nearly all of them.
+No code. The generic scraper reads the sitemap and follows the site's own "te koop" /
+"aanbod" links from the homepage, which covers nearly every agency. Two optional keys:
+
+- `platform: omnicasa | skarabee | whise | sweepbright` when `house-alert detect` recognises
+  one; it teaches discovery that platform's URL shapes (Omnicasa keeps the property id in
+  the query string, Skarabee ends the path in the property number).
+- `postcodes: ["8", "9"]` for chains that sell across the country: only listings whose
+  postcode starts with one of the prefixes are kept (and URLs that carry another postcode are
+  never fetched). A listing without a readable postcode is kept, never guessed away.
+
+Sites that render their listings purely in JavaScript stay empty; `config/agencies.yaml`
+marks the known ones in a comment. A site that was fixed after it had been scanned needs
+`house-alert forget --only <name>` once, so its pages are fetched again.
 
 ## Being a good citizen
 

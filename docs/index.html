@@ -289,17 +289,8 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       </select>
     </div>
 
-    <h2>Regio en kantoor</h2>
-    <div class="row">
-      <div class="field">
-        <select id="region">
-          <option value="">Alle regio's</option>
-          <option value="gent">Gent</option>
-          <option value="kortrijk">Kortrijk</option>
-        </select>
-      </div>
-      <div class="field"><input type="text" id="agency" placeholder="kantoor…" autocomplete="off"></div>
-    </div>
+    <h2>Kantoor</h2>
+    <div class="field"><input type="text" id="agency" placeholder="kantoor…" autocomplete="off"></div>
 
     <label class="check"><input type="checkbox" id="unknown" checked> Ook woningen tonen waarvan een waarde ontbreekt</label>
 
@@ -424,7 +415,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
   // ------------------------------------------------------------- filters
   var F = {
     ids: ['priceMin', 'priceMax', 'postcodes', 'plotMin', 'plotMax', 'livingMin', 'livingMax',
-          'bedMin', 'bedMax', 'days', 'region', 'agency', 'unknown', 'sort'],
+          'bedMin', 'bedMax', 'days', 'agency', 'unknown', 'sort'],
     read: function () {
       var types = {}, status = {};
       document.querySelectorAll('#types input:checked').forEach(function (i) { types[i.value] = true; });
@@ -437,7 +428,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
         plotMin: num($('plotMin').value), plotMax: num($('plotMax').value),
         livingMin: num($('livingMin').value), livingMax: num($('livingMax').value),
         bedMin: num($('bedMin').value), bedMax: num($('bedMax').value),
-        days: num($('days').value), region: $('region').value,
+        days: num($('days').value),
         agency: $('agency').value.trim().toLowerCase(),
         unknown: $('unknown').checked, sort: $('sort').value
       };
@@ -500,7 +491,6 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       if (!l.postal_code) { if (!unk) return false; }
       else if (!f.postcodes.some(function (p) { return l.postal_code.indexOf(p) === 0; })) return false;
     }
-    if (f.region && l.region !== f.region) return false;
     if (f.agency && (l.source || '').toLowerCase().indexOf(f.agency) < 0) return false;
     if (f.days != null) { var d = daysSince(l.first_seen); if (d == null || d > f.days) return false; }
     return true;
@@ -674,7 +664,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       'municipalities:\n  include: []\n  exclude: []\n\n' +
       'exclude_keywords:\n  - garagebox\n  - staanplaats\n  - parkeerplaats\n  - opbrengsteigendom\n  - nieuwbouwproject\n  - handelspand\n\n' +
       'highlight_keywords:\n  - tuin\n  - zuidgericht\n  - te renoveren\n';
-    if (f.region || f.agency) y += '\n# Regio en kantoor zijn alleen filters op de pagina, niet in de mail.\n';
+    if (f.agency) y += '\n# Kantoor is alleen een filter op de pagina, niet in de mail.\n';
     return { yaml: y, name: name, f: f, types: types };
   }
   function summarize(b) {

@@ -15,9 +15,15 @@ def listing_id(url: str) -> str:
     """Stable identity for a listing URL.
 
     Query strings and fragments are dropped so tracking parameters don't
-    resurface a listing as "new" the next day.
+    resurface a listing as "new" the next day. The one exception is a
+    numeric `id=`: Omnicasa sites address every property as
+    /nl/te-koop?view=detail&id=795, so there the id *is* the identity.
     """
-    canonical = url.split("?")[0].split("#")[0].rstrip("/").lower()
+    path, _, query = url.split("#")[0].partition("?")
+    canonical = path.rstrip("/").lower()
+    m = re.search(r"\bid=(\d+)", query)
+    if m:
+        canonical += f"?id={m.group(1)}"
     return hashlib.sha1(canonical.encode()).hexdigest()[:16]
 
 
@@ -25,9 +31,12 @@ def listing_id(url: str) -> str:
 class Agency:
     name: str
     url: str
-    region: str = ""
     platform: str = "auto"
     enabled: bool = True
+    # Postcode prefixes to keep ("8", "90"); empty = everything. For chains
+    # with offices across the country. A listing whose postcode could not be
+    # read is kept: unknown is never treated as a mismatch.
+    postcodes: list[str] = field(default_factory=list)
 
     @property
     def host(self) -> str:
@@ -40,7 +49,6 @@ class Listing:
 
     url: str
     source: str                      # agency display name
-    region: str = ""
     title: str = ""
     city: str = ""
     postal_code: str = ""

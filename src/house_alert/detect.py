@@ -16,7 +16,7 @@ from .net import Fetcher
 FINGERPRINTS: list[tuple[str, tuple[str, ...]]] = [
     ("sweepbright", ("sweepbright", "estates.api.sweepbright", "sweepbright.com")),
     ("whise", ("whise.eu", "whise.be", "whisecdn", "whise-", "wsapi.whise")),
-    ("skarabee", ("skarabee.com", "skarabee.be", "skarabee-", "sk-widget")),
+    ("skarabee", ("skarabee.com", "skarabee.be", "skarabee.net", "skarabee-", "sk-widget")),
     ("omnicasa", ("omnicasa", "onlineadmin.omnicasa", "ocwebsite")),
 ]
 

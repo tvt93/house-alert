@@ -80,9 +80,16 @@ def scan_agency(
         result.unreachable = True
         log.info("%s: no listing URLs discovered", agency.name)
         return result
+    urls = [u for u in urls if in_region_url(agency, u)]
 
     fresh = [u for u in urls if listing_id(u) not in store.entries]
     log.info("%s: %d discovered, %d new", agency.name, len(urls), len(fresh))
+    if len(fresh) > max_listings:
+        # The cap is on *new* pages per run. Capping discovery itself would
+        # refetch the same first 80 sitemap entries forever (immolietaer.be
+        # lists 700, oldest first) and never reach the current ones.
+        log.info("%s: capping at %d of %d new URLs", agency.name, max_listings, len(fresh))
+        fresh = fresh[:max_listings]
 
     if discover_only:
         result.dead_urls = fresh
@@ -94,8 +101,8 @@ def scan_agency(
         if html is None:
             result.dead_urls.append(url)
             continue
-        listing = extract_listing(url, html, source=agency.name, region=agency.region)
-        if listing is None:
+        listing = extract_listing(url, html, source=agency.name)
+        if listing is None or not in_region(agency, listing):
             result.dead_urls.append(url)
             continue
         result.listings.append(listing)
@@ -133,7 +140,7 @@ def recheck_status(
                 local["unreachable"] += 1
                 continue
             else:
-                new = detect_status(got.text)
+                new = detect_status(got.text, listing.url)
             listing.checked = today.isoformat()
             local["checked"] += 1
             if new != listing.status:
@@ -148,6 +155,26 @@ def recheck_status(
         for local in pool.map(visit, by_host.values()):
             changes.update(local)
     return changes
+
+
+# "/nl/te-koop/8800-roeselare/huis/..." - chains put the postcode in the URL,
+# which saves fetching the other end of the country at all.
+URL_POSTCODE = re.compile(r"/([1-9]\d{3})-[a-z]", re.IGNORECASE)
+
+
+def in_region_url(agency: Agency, url: str) -> bool:
+    if not agency.postcodes:
+        return True
+    m = URL_POSTCODE.search(urlparse(url).path)
+    return m is None or any(m.group(1).startswith(p) for p in agency.postcodes)
+
+
+def in_region(agency: Agency, listing: Listing) -> bool:
+    """Agency-level postcode guard, for chains that sell across the country.
+    A listing without a readable postcode passes: unknown is not a mismatch."""
+    if not agency.postcodes or not listing.postal_code:
+        return True
+    return any(listing.postal_code.startswith(p) for p in agency.postcodes)
 
 
 def strip_shared_street(listings: list[Listing]) -> int:

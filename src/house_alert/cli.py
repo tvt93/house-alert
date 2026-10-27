@@ -7,6 +7,7 @@ import logging
 import sys
 from datetime import date
 from pathlib import Path
+from urllib.parse import urlparse
 
 from . import filters
 from .config import (
@@ -35,15 +36,29 @@ def _load_dotenv() -> None:
 
 # ---------------------------------------------------------------- commands
 
+def cmd_forget(args: argparse.Namespace) -> int:
+    """Drop an agency's URLs from the seen store, so pages that failed to parse
+    before a scraper fix are fetched again. Listings already stored are kept."""
+    if not args.only:
+        print("forget needs --only <agency>: it never wipes the whole store")
+        return 2
+    agencies = load_agencies(only=args.only)
+    hosts = {a.host.removeprefix("www.") for a in agencies}
+    seen = SeenStore.load()
+    before = len(seen)
+    seen.entries = {
+        key: entry for key, entry in seen.entries.items()
+        if urlparse(entry.get("url", "")).netloc.removeprefix("www.") not in hosts
+    }
+    seen.save()
+    print(f"forgot {before - len(seen)} URLs of {len(agencies)} agencies; {len(seen)} remain")
+    return 0
+
+
 def cmd_list(args: argparse.Namespace) -> int:
-    agencies = load_agencies(regions=args.region, only=args.only)
-    by_region: dict[str, list[Agency]] = {}
+    agencies = load_agencies(only=args.only)
     for a in agencies:
-        by_region.setdefault(a.region or "(geen)", []).append(a)
-    for region, items in sorted(by_region.items()):
-        print(f"\n{region} ({len(items)})")
-        for a in items:
-            print(f"  {a.name:<34} {a.platform:<12} {a.url}")
+        print(f"  {a.name:<34} {a.platform:<12} {a.url}")
     print(f"\n{len(agencies)} agencies total")
 
     subs = load_subscriptions()
@@ -57,7 +72,7 @@ def cmd_list(args: argparse.Namespace) -> int:
 
 
 def cmd_detect(args: argparse.Namespace) -> int:
-    agencies = load_agencies(regions=args.region, only=args.only)
+    agencies = load_agencies(only=args.only)
     detected: dict[str, str] = {}
     counts: dict[str, int] = {}
 
@@ -85,7 +100,7 @@ def _sample_listings() -> list[Listing]:
     return [
         Listing(
             url="https://example.be/te-koop/woning-gent-123",
-            source="Voorbeeld Vastgoed", region="gent",
+            source="Voorbeeld Vastgoed",
             title="Charmante rijwoning met zuidgerichte tuin",
             city="Gent", postal_code="9000", street="Kortrijksesteenweg 12",
             price=395000, property_type="house", bedrooms=3, living_area_m2=168,
@@ -100,7 +115,7 @@ def _sample_listings() -> list[Listing]:
         ),
         Listing(
             url="https://example.be/te-koop/woning-kortrijk-456",
-            source="Immo Voorbeeld Kortrijk", region="kortrijk",
+            source="Immo Voorbeeld Kortrijk",
             title="Te renoveren woning met 4 slaapkamers",
             city="Kortrijk", postal_code="8500", price=289000,
             property_type="house", bedrooms=4, living_area_m2=205,
@@ -111,7 +126,7 @@ def _sample_listings() -> list[Listing]:
         ),
         Listing(
             url="https://example.be/te-koop/woning-deinze-789",
-            source="Derde Kantoor", region="gent",
+            source="Derde Kantoor",
             title="Nieuwbouwvilla met open bebouwing",
             city="Deinze", postal_code="9800",
             property_type="house", bedrooms=4, living_area_m2=232, plot_area_m2=680,
@@ -119,7 +134,7 @@ def _sample_listings() -> list[Listing]:
         ),
         Listing(
             url="https://example.be/te-koop/appartement-gent-321",
-            source="Voorbeeld Vastgoed", region="gent",
+            source="Voorbeeld Vastgoed",
             title="Lichtrijk appartement met terras",
             city="Gent", postal_code="9000", price=265000,
             property_type="apartment", bedrooms=2, living_area_m2=95,
@@ -258,7 +273,7 @@ def _report(result: ScanResult, per_sub: dict[str, tuple[list[Listing], list[fil
 
 def cmd_run(args: argparse.Namespace) -> int:
     subscriptions = load_subscriptions()
-    agencies = load_agencies(regions=args.region, only=args.only)
+    agencies = load_agencies(only=args.only)
     seen = SeenStore.load()
     store = ListingStore.load()
     today = date.today()
@@ -391,8 +406,6 @@ def build_parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", required=True)
 
     def add_selectors(p: argparse.ArgumentParser) -> None:
-        p.add_argument("--region", action="append",
-                       help="only this region tag (repeatable): gent, kortrijk")
         p.add_argument("--only", action="append",
                        help="only agencies whose name contains this (repeatable)")
         p.add_argument("--delay", type=float, default=1.0,
@@ -428,6 +441,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_detect.add_argument("--write", action="store_true",
                           help="save detected platforms into agencies.yaml")
     p_detect.set_defaults(func=cmd_detect)
+
+    p_forget = sub.add_parser("forget", help="drop one agency's URLs from the seen store (after a scraper fix)")
+    add_selectors(p_forget)
+    p_forget.set_defaults(func=cmd_forget)
 
     p_list = sub.add_parser("list", help="show the agency registry and subscriptions")
     add_selectors(p_list)

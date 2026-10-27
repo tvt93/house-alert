@@ -41,6 +41,10 @@ subscription. Python, no services, no database; the state is JSON files in git.
 - **Be polite on the wire.** `robots.txt` is respected, the User-Agent is honest, and hosts
   are rate-limited to ~1 req/s. Nominatim: ≥1 s between requests, capped per run,
   answers cached. Concurrency is per agency, never per page within one site.
+- **Discovery is sitemap + homepage crawl, uncapped; the per-run cap (80) applies to
+  *new* URLs** in `scan.scan_agency`. Capping discovery itself meant a site with a long,
+  oldest-first sitemap re-fetched the same 80 forever. Index links found on the homepage are
+  followed one level because the sitemap is often stale or listing-free.
 - **A URL is fetched at most once for extraction.** That's what makes a run cheap. Pages
   that fail to parse are recorded as seen too, deliberately — otherwise they're retried
   forever. The one exception is `scan.recheck_status`: stored listings are re-visited

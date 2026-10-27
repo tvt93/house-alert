@@ -178,7 +178,6 @@ def load_subscriptions(directory: Path | None = None,
 
 def load_agencies(
     path: Path | None = None,
-    regions: list[str] | None = None,
     only: list[str] | None = None,
 ) -> list[Agency]:
     path = path or CONFIG_DIR / "agencies.yaml"
@@ -194,13 +193,11 @@ def load_agencies(
         a = Agency(
             name=str(entry.get("name") or entry["url"]),
             url=str(entry["url"]).rstrip("/"),
-            region=str(entry.get("region", "")),
             platform=str(entry.get("platform", defaults.get("platform", "auto"))),
             enabled=bool(entry.get("enabled", defaults.get("enabled", True))),
+            postcodes=[str(p) for p in (entry.get("postcodes") or defaults.get("postcodes") or [])],
         )
         if not a.enabled:
-            continue
-        if regions and a.region not in regions:
             continue
         if only and not any(o.lower() in a.name.lower() for o in only):
             continue

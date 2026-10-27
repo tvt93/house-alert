@@ -57,7 +57,9 @@ UNAVAILABLE_MARKERS = (
 # Status banners, strongest first. "compromis in opmaak", "onder optie" and
 # "verkocht onder voorbehoud" all mean the house is spoken for but not gone.
 STATUS_SOLD = re.compile(
-    r"\b(?:verkocht|verhuurd|sold|rented|vendu|lou[ée])\b(?!\s+onder\s+voorbehoud)", re.IGNORECASE)
+    r"(?<!recent )(?<!recente )(?<!onze )"                 # "Recent verkocht" is a menu item
+    r"\b(?:verkocht|verhuurd|sold|rented|vendu|lou[ée])\b(?!\s+onder\s+voorbehoud)",
+    re.IGNORECASE)
 STATUS_OPTION = re.compile(
     r"\b(?:in\s+optie|onder\s+optie|optie\s+genomen|onder\s+bod|onder\s+voorbehoud|compromis|"
     r"in\s+onderhandeling|gereserveerd|reserved|under\s+offer|sous\s+option|sous\s+compromis)\b",
@@ -69,6 +71,9 @@ LISTING_URL_HINTS = (
     "/aanbod/", "/eigendom/", "/eigendommen/", "/property/", "/properties/",
     "/estate/", "/vastgoed/", "/immo/", "/for-sale/", "/detail/", "/objecten/",
     "/realisatie/", "/aanbod-", "/te-koop-",
+    # axellenaerts.be files sales under /kopen/, oximo.be under /immo-te-koop/,
+    # cannoodt.be and vastgoeddevos.be under /<type>/<place>/<slug>.
+    "/kopen/", "-te-koop/", "/huis/", "/appartement/",
 )
 
 # ...and fragments that mean it definitely is not one.
@@ -77,6 +82,12 @@ LISTING_URL_ANTI_HINTS = (
     "/contact", "/over-ons", "/team", "/diensten", "/schatting", "/vacature",
     "/privacy", "/cookie", "/algemene-voorwaarden", "/verkocht", "/references",
     "/nieuwbouw", "/projecten", "/gerealiseerd", "/page/", "/tag/", "/author/",
+    # Documents and photos that sitemaps list under a property folder.
+    "/assets/", "/uploads/", "/imager/", "/wp-content/", "/files/",
+    # Other-language mirrors of the same pages, and property abroad.
+    "/fr/", "/en/", "/de/", "/buitenland",
+    # crevits.be keeps sold houses online as /aanbod/<id>/villa-verkochte-panden-in-9840-de-pinte
+    "verkocht",
 )
 
 PRICE_FLOOR = 25_000
@@ -103,6 +114,7 @@ NOT_A_CITY = {
     "gsm", "email", "belgie", "belgië", "bel", "contact", "kantoor",
     "renovatiejaar", "bouwjaar", "jaar", "gebouwd", "richting", "bouwjaren",
     "oppervlakte", "bewoonbare", "kadastraal", "verkoop", "sinds", "btw",
+    "foto", "opp", "kijkdag", "kijkdagen",
 }
 
 # "Woning te koop in Aalter", "Appartement te huur te Gent"
@@ -112,6 +124,10 @@ CITY_IN_TITLE = (
 )
 # "Kortrijk - Charmante te renoveren burgerwoning"
 CITY_LEADS_TITLE = r"^([A-Z][a-zà-ÿ]{2,}(?:[-\s][A-Z][a-zà-ÿ]+)*)\s+[-–|]\s+"
+# "Appartement te koop te WEVELGEM (8560)" - the Omnicasa title shape.
+CITY_PAREN_POSTCODE = r"\b([A-Z][A-Za-zà-ÿ'-]{2,}(?:[-\s][A-Z][A-Za-zà-ÿ'-]+)*)\s*\(([1-9]\d{3})\)"
+# "Bouwjaar 1930", "renovatie 2012": a year, never a postcode, whatever follows it.
+YEAR_LEAD = re.compile(r"(?:bouw|renovatie|renovatiejaar|ver)?jaar|gebouwd|anno|sinds|renovatie", re.IGNORECASE)
 # ".../te-koop/9140-Temse/..." and ".../woning-te-koop-astene"
 CITY_IN_URL_WITH_POSTCODE = r"(?:/|-in-|-te-)([1-9]\d{3})-([A-Za-z][A-Za-z-]{2,30})(?:/|$)"
 CITY_IN_URL_SLUG = r"/[\w-]*te-koop-([a-z][a-z-]{2,30})(?:/|$)"
@@ -234,7 +250,11 @@ def jsonld_objects(soup: BeautifulSoup) -> list[dict[str, Any]]:
     def walk(node: Any) -> None:
         if isinstance(node, dict):
             out.append(node)
-            for v in node.values():
+            for key, v in node.items():
+                # Members of an ItemList are other properties (an index
+                # page, a "similar" strip); their prices are not this page's.
+                if key == "itemListElement":
+                    continue
                 walk(v)
         elif isinstance(node, list):
             for v in node:
@@ -304,9 +324,16 @@ def _from_jsonld(objects: list[dict[str, Any]], listing: Listing) -> set[str]:
         ))
 
         addr = obj.get("address")
+        if not isinstance(addr, dict) and is_property and isinstance(obj.get("geo"), dict):
+            addr = obj["geo"].get("address")      # mvastgoed.be nests it under geo
         if isinstance(addr, dict) and is_property:
-            if not listing.city and addr.get("addressLocality"):
-                listing.city = str(addr["addressLocality"]).strip()
+            locality = str(addr.get("addressLocality") or "").strip()
+            if re.search(r"\d", locality):
+                # Skarabee sites put the street in addressLocality and the
+                # municipality in addressRegion.
+                locality = str(addr.get("addressRegion") or "").strip()
+            if not listing.city and locality:
+                listing.city = locality
             if not listing.postal_code and addr.get("postalCode"):
                 listing.postal_code = str(addr["postalCode"]).strip()
             if not listing.street and addr.get("streetAddress"):
@@ -492,7 +519,7 @@ def _from_text(text: str, listing: Listing) -> None:
         # Prefer a labelled price, fall back to the largest plausible euro
         # figure on the page (agency sites love putting the price in a banner).
         labelled = _int(_first(text, (
-            rf"(?:vraagprijs|verkoopprijs|prijs|price)\s*:?\s*(?:€\s*)?{AMOUNT}",
+            rf"(?:vraagprijs|verkoopprijs|richtprijs|prijs|price)\s*:?\s*(?:€\s*)?{AMOUNT}",
         )))
         candidates = price_candidates(text)
         if labelled is not None and PRICE_FLOOR <= labelled <= PRICE_CEILING:
@@ -556,6 +583,11 @@ def _locate(listing: Listing, text: str,
     # "Woning te koop - Beekstraat 27, 9940 Wippelgem": a postcode in the
     # title is the property's, and the most reliable thing on the page.
     if not (listing.postal_code and listing.city):
+        m = re.search(CITY_PAREN_POSTCODE, title)
+        if m and m.group(1).lower() not in NOT_A_CITY:
+            listing.postal_code = listing.postal_code or m.group(2)
+            listing.city = listing.city or _place_case(m.group(1))
+    if not (listing.postal_code and listing.city):
         m = re.search(POSTAL_CITY, title)
         if m and m.group(3).lower() not in NOT_A_CITY:
             listing.postal_code = listing.postal_code or m.group(1)
@@ -589,7 +621,7 @@ def _locate(listing: Listing, text: str,
 
     if not listing.postal_code:
         for m in re.finditer(POSTAL_CITY, text):
-            city = f"{m.group(2) or ''}{m.group(3)}".strip()
+            city = _whole_place(f"{m.group(2) or ''}{m.group(3)}".strip(), text[m.end():m.end() + 40])
             if city.lower() in NOT_A_CITY:
                 continue
             # Body text is the weakest source: "2024 Energie" and "1250
@@ -600,6 +632,8 @@ def _locate(listing: Listing, text: str,
             # lists municipalities, not every hamlet an agency may name.)
             if not is_known_postcode(m.group(1)):
                 continue
+            if YEAR_LEAD.search(text[max(0, m.start() - 25):m.start()]):
+                continue                       # "Bouwjaar 1930 Opp. bewoonbaar"
             printed_in_chrome = chrome_places.get((m.group(1), city.lower()), 0)
             if printed_in_chrome:
                 in_body = len(re.findall(rf"\b{m.group(1)}\s+{re.escape(city)}\b", text))
@@ -612,6 +646,26 @@ def _locate(listing: Listing, text: str,
             listing.postal_code = m.group(1)
             listing.city = listing.city or city
             break
+
+
+def _whole_place(name: str, tail: str) -> str:
+    """'Nazareth-De' + ' Pinte ...' -> 'Nazareth-De Pinte' when the table knows
+    the fused municipality; otherwise the name as matched."""
+    m = re.match(r"\s+([A-Z][a-zà-ÿ]+)", tail)
+    if not m:
+        return name
+    # The 2025 fusions (Nazareth-De Pinte, Merelbeke-Melle) postdate the
+    # bundled table, so a dangling particle is enough to take the next word.
+    if is_known_place(f"{name} {m.group(1)}") or re.search(r"-(?:De|Den|Der|Ter|Ten|Op|Aan|Sint)$", name):
+        return f"{name} {m.group(1)}"
+    return name
+
+
+def _place_case(name: str) -> str:
+    """'DE PINTE' -> 'De Pinte', 'SINT-AMANDSBERG' -> 'Sint-Amandsberg'; mixed case kept."""
+    if not name.isupper():
+        return name
+    return re.sub(r"[^\W\d_]+", lambda m: m.group(0).capitalize(), name)
 
 
 def _titleize(slug: str) -> str:
@@ -636,6 +690,12 @@ def strip_priced_links(soup: BeautifulSoup) -> int:
         if re.search(rf"€\s*{AMOUNT}", anchor.get_text(" ", strip=True)):
             anchor.decompose()
             removed += 1
+    # The same fact in attribute form: a card that carries data-price and links
+    # somewhere (rosseel.be prints the amount next to the link, not inside it).
+    for card in soup.find_all(attrs={"data-price": True}):
+        if card.find("a", href=True):
+            card.decompose()
+            removed += 1
     return removed
 
 
@@ -647,7 +707,9 @@ def price_candidates(text: str) -> set[int]:
 
 
 def has_labelled_price(text: str) -> bool:
-    return bool(re.search(r"(?:vraagprijs|verkoopprijs)\s*:?\s*(?:€|\d)",
+    # "Prijs € 362.500" (immodavinci.be) is a label too; "prijs van ... tot" on
+    # a search form is not, because a word sits between label and amount.
+    return bool(re.search(r"\b(?:vraag|verkoop|richt)?prijs\s*:?\s*(?:€|\d)",
                           text, re.IGNORECASE))
 
 
@@ -676,14 +738,21 @@ def _plausible_area(value: int | None, low: int, high: int) -> int | None:
 
 # -------------------------------------------------------------------- status
 
-def detect_status(html: str) -> str:
+# A slug that says so: crevits.be files sold houses under "...-verkochte-panden-in-...".
+SOLD_IN_URL = re.compile(r"verkocht|verhuurd|/sold|/vendu", re.IGNORECASE)
+
+
+def detect_status(html: str, url: str = "") -> str:
     """Is the property still for sale, according to its own page?
 
-    Returns "available", "option" or "sold". Only the listing's own banner
+    Returns "available", "option" or "sold". The URL counts first: a slug
+    that says "verkocht" settles it. Otherwise only the listing's own banner
     counts: the title, the headings, and the first stretch of body text once
     the site chrome is gone - a "recent verkocht" strip in a sidebar must
     not sink a live listing.
     """
+    if url and SOLD_IN_URL.search(urlparse(url).path):
+        return "sold"
     soup = BeautifulSoup(html, "lxml")
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
@@ -706,13 +775,13 @@ def detect_status(html: str) -> str:
 
 # -------------------------------------------------------------------- entry
 
-def extract_listing(url: str, html: str, source: str, region: str = "") -> Listing | None:
+def extract_listing(url: str, html: str, source: str) -> Listing | None:
     """Turn a detail page into a Listing, or None if it isn't a live listing."""
     soup = BeautifulSoup(html, "lxml")
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
 
-    listing = Listing(url=url, source=source, region=region)
+    listing = Listing(url=url, source=source)
 
     listing.title = _meta(soup, "og:title", "twitter:title")
     listing.description = _meta(soup, "og:description", "description")
@@ -733,7 +802,9 @@ def extract_listing(url: str, html: str, source: str, region: str = "") -> Listi
     strip_priced_links(soup)
     text = re.sub(r"\s+", " ", soup.get_text(" ", strip=True))
 
-    if is_index_page(text):
+    # A Product/Offer block is structured data about *one* property; with it
+    # the price count below means a "similar properties" strip, not a grid.
+    if listing.price is None and is_index_page(text):
         return None
 
     # Rentals share URL shapes with sales on some sites; the title says which.
@@ -774,7 +845,7 @@ def extract_listing(url: str, html: str, source: str, region: str = "") -> Listi
 
     # Drop anything already sold or under option at first sight; the daily
     # re-check (scan.recheck_status) tracks what happens to the rest.
-    if detect_status(html) != "available":
+    if detect_status(html, url) != "available":
         return None
 
     return listing

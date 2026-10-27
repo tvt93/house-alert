@@ -17,7 +17,6 @@ def test_shipped_criteria_parses():
 def test_shipped_registry_parses():
     agencies = load_agencies(CONFIG / "agencies.yaml")
     assert len(agencies) > 60
-    assert {a.region for a in agencies} == {"gent", "kortrijk"}
     assert all(a.url.startswith("https://") for a in agencies)
     assert all(not a.url.endswith("/") for a in agencies)
     # No duplicate hosts.
@@ -25,9 +24,7 @@ def test_shipped_registry_parses():
     assert len(hosts) == len(set(hosts))
 
 
-def test_region_and_name_filters():
-    gent = load_agencies(CONFIG / "agencies.yaml", regions=["gent"])
-    assert gent and all(a.region == "gent" for a in gent)
+def test_name_filter():
     only = load_agencies(CONFIG / "agencies.yaml", only=["Fleximmo"])
     assert [a.name for a in only] == ["Fleximmo"]
 

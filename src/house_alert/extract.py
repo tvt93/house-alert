@@ -432,6 +432,50 @@ def is_known_postcode(code: str) -> bool:
     return str(code).strip() in postcode_table()
 
 
+# Places and countries that mark a listing as abroad when they appear in the
+# title, the town or the URL. Belgian agencies sell second homes on the Spanish
+# and French coasts from the same site, and those must not reach the map or
+# the mail. Only unmistakable names: no "Costa" alone, no street words.
+FOREIGN_HINT = re.compile(
+    r"\b(?:spanje|spain|espa[nñ]a|frankrijk|france|portugal|itali[eë]|italy|nederland|"
+    r"the netherlands|turkije|turkey|dubai|griekenland|greece|"
+    r"costa\s+(?:blanca|del\s+sol|c[aá]lida|brava|dorada|tropical|azul|del\s+azahar)|"
+    r"c[oô]te\s+d'?azur|provence|dordogne|ard[eè]che|"
+    r"alicante|marbella|torrevieja|orihuela|moraira|calpe|j[aá]vea|xabia|benidorm|"
+    r"d[eé]nia|altea|benitachell|guardamar|murcia|m[aá]laga|tenerife|mallorca|ibiza|"
+    r"lanzarote|fuerteventura|estepona|mijas|nerja|almer[ií]a|valencia|"
+    r"sainte-maxime|grimaud|saint-tropez|cannes|antibes|fr[eé]jus|"
+    r"arnemuiden|cadzand|breskens)\b(?!\s*\d)",     # "Sluis 22, 9290 Berlare" is a street
+    re.IGNORECASE,
+)
+
+
+def in_belgium(listing: Listing) -> bool | None:
+    """True when the postcode or the town is Belgian, False on evidence of
+    another country, None when the page gives nothing to go on.
+
+    A postcode the Belgian table knows settles it unless the title names a
+    foreign place outright: immo-zone.be stamps its Aalst office postcode on
+    its Dubai and Alicante projects. A postcode the table does not know -
+    "03750", "34449" - is abroad.
+    """
+    text = " ".join((listing.title or "", listing.city or "", listing.url or ""))
+    if FOREIGN_HINT.search(text):
+        # "Residentie Costa Brava" in Blankenberge: a Belgian postcode whose
+        # town the title or URL also names outranks a foreign-sounding word.
+        # The Aalst office postcode on a Rojales villa has no such backing.
+        if listing.postal_code and is_known_postcode(listing.postal_code) and listing.city:
+            named = re.sub(r"[\s-]+", " ", f"{listing.title or ''} {listing.url or ''}").lower()
+            if re.sub(r"[\s-]+", " ", listing.city).lower() in named:
+                return True
+        return False
+    if listing.postal_code:
+        return is_known_postcode(listing.postal_code)
+    if listing.city:
+        return True if is_known_place(listing.city) else None
+    return None
+
+
 def chrome_nodes(soup: BeautifulSoup, strong_only: bool = False) -> list[Any]:
     """Elements that are site furniture rather than listing content.
 

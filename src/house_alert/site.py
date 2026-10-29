@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .config import REPO_ROOT
+from .extract import in_belgium
 from .models import Listing
 from .store import ListingStore
 
@@ -40,7 +41,8 @@ def export_site(
 ) -> Path:
     out_dir = out_dir or SITE_DIR
     out_dir.mkdir(parents=True, exist_ok=True)
-    ordered = sorted(store.listings.values(),
+    # Abroad never reaches the page, whatever an older store still holds.
+    ordered = sorted((l for l in store.listings.values() if in_belgium(l) is not False),
                      key=lambda l: (l.first_seen, l.id), reverse=True)
     payload = {
         "generated": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),

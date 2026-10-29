@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .config import Criteria
+from .extract import in_belgium
 from .models import Listing
 
 
@@ -45,6 +46,8 @@ def evaluate(listing: Listing, criteria: Criteria) -> Verdict:
             shown = "unknown" if value is None else value
             return Verdict(listing, False, f"{label} {shown} outside range")
 
+    if in_belgium(listing) is False:
+        return Verdict(listing, False, "outside Belgium")
     if criteria.postcodes:
         if not listing.postal_code:
             return Verdict(listing, False, "postcode unknown")

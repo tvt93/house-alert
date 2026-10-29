@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from datetime import date
 from urllib.parse import urlparse
 
-from .extract import detect_status, extract_listing
+from .extract import detect_status, extract_listing, in_belgium
 from .models import Agency, Listing, listing_id
 from .net import Fetcher
 from .platforms import scraper_for
@@ -175,8 +175,12 @@ def in_region_url(agency: Agency, url: str) -> bool:
 
 
 def in_region(agency: Agency, listing: Listing) -> bool:
-    """Agency-level postcode guard, for chains that sell across the country.
-    A listing without a readable postcode passes: unknown is not a mismatch."""
+    """Agency-level postcode guard, for chains that sell across the country,
+    and the country guard: a second home on the Costa Blanca never enters
+    the store. A listing without a readable postcode passes: unknown is not
+    a mismatch."""
+    if in_belgium(listing) is False:
+        return False
     if not agency.postcodes or not listing.postal_code:
         return True
     return any(listing.postal_code.startswith(p) for p in agency.postcodes)

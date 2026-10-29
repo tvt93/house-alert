@@ -148,8 +148,9 @@ main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height:
 .title a:hover { text-decoration: underline; }
 .where { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
 .approx { color: var(--warn-text); background: var(--warn-soft); border-radius: 999px; padding: 1px 7px; font-size: 11px; font-weight: 600; }
-.facts { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; font-size: 13px; }
-.facts b { font-weight: 600; }
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; margin-top: 6px; font-size: 13px; }
+.facts b { font-weight: 600; text-align: right; white-space: nowrap; }
+.facts b.na { font-weight: 400; color: var(--faint); }
 .facts span { color: var(--muted); }
 .meta { margin-top: auto; padding-top: 10px; font-size: 12px; color: var(--faint); display: flex; justify-content: space-between; gap: 8px; }
 .meta a { color: var(--muted); }
@@ -403,13 +404,15 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
     var place = [l.postal_code, l.city].filter(Boolean).join(' ');
     return l.street && place ? l.street + ', ' + place : (l.street || place);
   }
+  function fact(value, unit, label) {
+    var v = value != null ? '<b>' + value + (unit ? ' ' + unit : '') + '</b>' : '<b class="na">NA</b>';
+    return v + '<span>' + label + '</span>';
+  }
   function facts(l) {
-    var out = [];
-    if (l.bedrooms != null) out.push('<b>' + l.bedrooms + '</b> <span>slk</span>');
-    if (l.living_area_m2 != null) out.push('<b>' + l.living_area_m2 + ' m²</b> <span>bewoonbaar</span>');
-    if (l.plot_area_m2 != null) out.push('<b>' + l.plot_area_m2 + ' m²</b> <span>grond</span>');
-    if (l.epc_kwh != null) out.push('<b>' + l.epc_kwh + '</b> <span>kWh/m²</span>');
-    return out.join('');
+    return fact(l.bedrooms, '', 'slaapkamers') +
+      fact(l.living_area_m2, 'm²', 'bewoonbaar') +
+      fact(l.plot_area_m2, 'm²', 'grond') +
+      fact(l.epc_kwh, 'kWh/m²', 'EPC');
   }
 
   // ------------------------------------------------------------- filters

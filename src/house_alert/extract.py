@@ -146,7 +146,7 @@ CITY_PAREN_POSTCODE = r"\b([A-Z][A-Za-zà-ÿ'-]{2,}(?:[-\s][A-Z][A-Za-zà-ÿ'-]+
 # "Bouwjaar 1930", "renovatie 2012": a year, never a postcode, whatever follows it.
 YEAR_LEAD = re.compile(r"(?:bouw|renovatie|renovatiejaar|ver)?jaar|gebouwd|anno|sinds|renovatie", re.IGNORECASE)
 # ".../te-koop/9140-Temse/..." and ".../woning-te-koop-astene"
-CITY_IN_URL_WITH_POSTCODE = r"(?:/|-in-|-te-)([1-9]\d{3})-([A-Za-z][A-Za-z-]{2,30})(?:/|$)"
+CITY_IN_URL_WITH_POSTCODE = r"(?:/|-in-|-te-)([1-9]\d{3})-([A-Za-z][A-Za-z-]{2,30}?)(?:-\d+)?(?:/|$)"
 CITY_IN_URL_SLUG = r"/[\w-]*te-koop-([a-z][a-z-]{2,30})(?:/|$)"
 CITY_IN_URL_IN = r"/[\w-]*?-in-([a-z][a-z-]{2,30})(?:/|$)"
 
@@ -182,6 +182,8 @@ STREET_LABELS = {
     "project", "nieuwbouwproject", "landhuis", "woonhuis", "hoekwoning", "garage",
     # yvimat.be "EPC Jan Breydelstraat 115"; axellenaerts.be "Street View Heirbaan 270"
     "epc", "street", "view", "streetview",
+    # aclea-vastgoed.be prints a project address as "Bus 201": a box, not a street.
+    "bus",
     # Form labels that precede an office address in running text (Immo Casa).
     "ja", "nee", "neen", "kantoor", "bureau", "agentschap", "contact",
     # A menu entry or tab title printed right before the address block
@@ -527,6 +529,9 @@ def in_belgium(listing: Listing) -> bool | None:
     return None
 
 
+PAGE_ROOTS = frozenset(("html", "body", "main"))
+
+
 def chrome_nodes(soup: BeautifulSoup, strong_only: bool = False) -> list[Any]:
     """Elements that are site furniture rather than listing content.
 
@@ -548,9 +553,13 @@ def chrome_nodes(soup: BeautifulSoup, strong_only: bool = False) -> list[Any]:
     nodes += [h for h in soup.find_all("header")
               if not h.find_parent(["article", "main", "section"])]
     pattern = STRONG_CHROME_CLASS if strong_only else CHROME_CLASS
-    nodes += [n for n in soup.find_all(id=True) if pattern.search(str(n.get("id")))]
+    # A class on <body> or <main> describes the theme, not a region: the
+    # WordPress body class "ehf-footer" (aclea-vastgoed.be) must not turn
+    # the whole page into chrome.
+    nodes += [n for n in soup.find_all(id=True)
+              if n.name not in PAGE_ROOTS and pattern.search(str(n.get("id")))]
     nodes += [n for n in soup.find_all(class_=True)
-              if any(pattern.search(c) for c in n.get("class", []))]
+              if n.name not in PAGE_ROOTS and any(pattern.search(c) for c in n.get("class", []))]
     nodes = [n for n in nodes if not _is_breadcrumb(n)]
     # A topbar inside a header would otherwise be counted twice.
     unique = {id(n): n for n in nodes}
@@ -681,6 +690,9 @@ def find_street(
 
 
 ADDRESS_CLASS = re.compile(r"adres|address|locat|ligging", re.IGNORECASE)
+# Icon classes that mark the line next to them as the address:
+# "fa-location-pin", "fa-map-marker-alt", "fa-location-dot", "bi-geo-alt".
+PIN_ICON = re.compile(r"location|map-marker|marker|(?:^|[-_])pin(?:$|[-_])|geo-alt", re.IGNORECASE)
 # "Ligging Sint-Amandsstraat 1 8800 Roeselare", "Adres: Kerkstraat 12"
 ADDRESS_LABEL_LINE = re.compile(r"^(?:adres|address|ligging|locatie)\s*:?\s+(\S.{4,90})$",
                                 re.IGNORECASE | re.MULTILINE)
@@ -700,7 +712,10 @@ def labelled_address(soup: BeautifulSoup) -> str:
     """
     chrome = {id(n) for n in chrome_nodes(soup, strong_only=True)}
     for node in soup.find_all(True):
-        tokens = list(node.get("class", [])) + [node.get("id") or ""]
+        # Elementor names its template regions "elementor-location-popup",
+        # "-header", "-single": a region, not an address.
+        tokens = [t for t in list(node.get("class", [])) + [node.get("id") or ""]
+                  if not t.lower().startswith("elementor-location")]
         if node.name != "address" and not any(ADDRESS_CLASS.search(t) for t in tokens):
             continue
         if any(id(p) in chrome for p in node.parents) or id(node) in chrome:
@@ -709,10 +724,25 @@ def labelled_address(soup: BeautifulSoup) -> str:
         if not text or len(text) > 100 or not re.search(r"\d", text):
             continue
         return _address_case(text)
-    # "Ligging Sint-Amandsstraat 1 8800 Roeselare" as a short block of its own.
-    # Here all chrome is skipped: "Adres Hundelgemsesteenweg 155" in a footer
-    # is exactly the office line this label introduces.
+    # From here all chrome is skipped: "Adres Hundelgemsesteenweg 155" in a
+    # footer is exactly the office line a label or a pin icon introduces.
     chrome = {id(n) for n in chrome_nodes(soup)}
+    # A map-pin icon and nothing else marks the line: aclea-vastgoed.be
+    # "<i class='fa-solid fa-location-pin'></i> Hogevoorde 28<br>Lievegem".
+    # The line must carry a number, so an icon on a "find us" button or a
+    # town name alone is not taken.
+    for icon in soup.find_all(["i", "svg", "span"]):
+        if not any(PIN_ICON.search(t) for t in icon.get("class", [])):
+            continue
+        parent = icon.parent
+        if parent is None or id(parent) in chrome or any(id(p) in chrome for p in parent.parents):
+            continue
+        lines = [ln.strip() for ln in block_text(parent).split("\n") if ln.strip()]
+        text = ", ".join(lines[:2])
+        if not text or len(text) > 100 or not re.search(r"\d", text):
+            continue
+        return _address_case(text)
+    # "Ligging Sint-Amandsstraat 1 8800 Roeselare" as a short block of its own.
     for node in soup.find_all(["p", "div", "li", "span", "dd", "td", "tr", "h2", "h3", "h4"]):
         if any(id(p) in chrome for p in node.parents) or id(node) in chrome:
             continue
@@ -740,6 +770,25 @@ def labelled_place(soup: BeautifulSoup) -> str:
         text = re.sub(r"^(?:ligging|locatie|location|gemeente)\s*:?\s*", "", text, flags=re.IGNORECASE)
         if 2 < len(text) <= 30 and is_known_place(_address_case(text)):
             return _address_case(text)
+    return ""
+
+
+BARE_PLACE_TITLE = re.compile(r"^\s*[1-9]\d{3}\s*[-–:]\s*[^\W\d_][\w\s'’-]{1,40}\s*$")
+
+
+def _heading(soup: BeautifulSoup) -> str:
+    """The first h1, or failing that the first h2 outside the chrome that
+    reads as a sentence rather than a label."""
+    chrome = {id(n) for n in chrome_nodes(soup)}
+    for tag in ("h1", "h2"):
+        for node in soup.find_all(tag):
+            if id(node) in chrome or any(id(p) in chrome for p in node.parents):
+                continue
+            text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+            if tag == "h2" and len(text.split()) < 3:
+                continue
+            if text:
+                return text
     return ""
 
 
@@ -1163,9 +1212,10 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
     office_hard |= _from_jsonld(jsonld_objects(BeautifulSoup(html, "lxml")), listing)
     office |= office_hard
 
-    if not listing.title:
-        h1 = soup.find("h1")
-        listing.title = h1.get_text(" ", strip=True) if h1 else ""
+    if not listing.title or BARE_PLACE_TITLE.match(listing.title):
+        # aclea-vastgoed.be titles every page "9950 - Lievegem"; the heading
+        # ("Te renoveren open bebouwing met landelijke ligging") is the title.
+        listing.title = _heading(soup) or listing.title
     if not listing.title and soup.title:
         listing.title = soup.title.get_text(" ", strip=True)
 

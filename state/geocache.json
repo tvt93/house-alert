@@ -599,6 +599,11 @@
    "lat": 51.1583645,
    "lon": 4.1468941
   },
+  "blommekens 62|9900|eeklo": {
+   "lat": 51.19118507038427,
+   "level": "address",
+   "lon": 3.570791187846482
+  },
   "bobijnstraat 2|9880|aalter": {
    "lat": 51.1085546,
    "lon": 3.4328039
@@ -606,6 +611,11 @@
   "bodemstraat 10||meerbeke": {
    "lat": 50.8266168,
    "lon": 4.0623471
+  },
+  "boelare 42|9900|eeklo": {
+   "lat": 51.18631423169249,
+   "level": "address",
+   "lon": 3.565777645083542
   },
   "boerderijstraat 71|8500|kortrijk": {
    "lat": 50.8202991,
@@ -899,6 +909,11 @@
    "lat": 51.0940368,
    "lon": 3.6593972
   },
+  "buntstraat 5|9940|evergem": {
+   "lat": 51.09467568437496,
+   "level": "address",
+   "lon": 3.6594889864288627
+  },
   "burgemeester achiel heymanstraat 85|9140|tielrode": {
    "lat": 51.1152703,
    "lon": 4.1816564
@@ -972,6 +987,9 @@
    "level": "none"
   },
   "bus 201|8770|ingelmunster": {
+   "level": "none"
+  },
+  "bus 201|9940|ertvelde": {
    "level": "none"
   },
   "buyckstraat 14|8570|anzegem": {
@@ -2354,6 +2372,11 @@
    "level": "address",
    "lon": 3.390195451697646
   },
+  "haringrokerij 14|9990|maldegem": {
+   "lat": 51.20780791719975,
+   "level": "address",
+   "lon": 3.4426118021599894
+  },
   "harwichstraat 6|8380|zeebrugge": {
    "lat": 51.3288521,
    "lon": 3.1800471
@@ -2637,6 +2660,11 @@
   "hogestraat 98|8830|hooglede": {
    "lat": 50.9808871,
    "lon": 3.0750351
+  },
+  "hogevoorde 28|9950|lievegem": {
+   "lat": 51.12599475390572,
+   "level": "address",
+   "lon": 3.6187754732962487
   },
   "hogeweg 4|9000|gent": {
    "lat": 51.0742262,
@@ -4243,6 +4271,11 @@
    "level": "address",
    "lon": 3.098079699355545
   },
+  "lionel pussemierstraat 43|9900|eeklo": {
+   "lat": 51.1888512,
+   "level": "address",
+   "lon": 3.5762326
+  },
   "lippenslaan 203 bus 33|8300|knokke-heist": {
    "lat": 51.3475902,
    "lon": 3.2880039
@@ -5042,6 +5075,11 @@
    "lat": 51.2455436,
    "lon": 2.9559105
   },
+  "noordstraat 211|9990|maldegem": {
+   "lat": 51.21700187238598,
+   "level": "address",
+   "lon": 3.447306123084461
+  },
   "noordstraat 96|8800|roeselare": {
    "lat": 50.947848,
    "lon": 3.1218948
@@ -5546,6 +5584,11 @@
    "lat": 50.80534392675231,
    "level": "street",
    "lon": 3.1729588343503834
+  },
+  "pastoor de nevestraat 2|9900|eeklo": {
+   "lat": 51.18654069690725,
+   "level": "address",
+   "lon": 3.5625324170544177
   },
   "pastorijstraat 85b|8700|aarsele": {
    "lat": 50.9941185,
@@ -6755,9 +6798,19 @@
    "lat": 50.8248558,
    "lon": 3.2700416
   },
+  "spoorwegstraat 10|9900|eeklo": {
+   "lat": 51.177382433866356,
+   "level": "address",
+   "lon": 3.580590316671958
+  },
   "spoorwegstraat 31|8400|oostende": {
    "lat": 51.2227213,
    "lon": 2.9165462
+  },
+  "spoorwegstraat 52|9032|wondelgem": {
+   "lat": 51.07931226480542,
+   "level": "address",
+   "lon": 3.7128991000342415
   },
   "sportstraat 76|9000|gent": {
    "lat": 51.0422901,
@@ -6872,6 +6925,11 @@
    "lat": 50.7327777,
    "lon": 3.3813194
   },
+  "stationsstraat 58|9900|eeklo": {
+   "lat": 51.182602177313846,
+   "level": "address",
+   "lon": 3.570539075207268
+  },
   "stationsstraat 60|8790|waregem": {
    "lat": 50.889208,
    "lon": 3.4303375
@@ -6879,6 +6937,11 @@
   "stationsstraat 66a|8830|gits": {
    "lat": 50.9981004,
    "lon": 3.106229
+  },
+  "stationsstraat 68|9900|eeklo": {
+   "lat": 51.182440389036515,
+   "level": "address",
+   "lon": 3.571087330268864
   },
   "stationsstraat 6|8500|kortrijk": {
    "lat": 50.8257081,
@@ -7502,6 +7565,11 @@
   "voorhavenlaan 19|9000|gent": {
    "lat": 51.0784532,
    "lon": 3.7286319
+  },
+  "voorstraat 10|9970|kaprijke": {
+   "lat": 51.218227755814546,
+   "level": "address",
+   "lon": 3.615786090024955
   },
   "voorstraat 1|9970|kaprijke": {
    "lat": 51.2189303,

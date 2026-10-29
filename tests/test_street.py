@@ -483,3 +483,46 @@ def test_city_from_a_location_element_when_the_page_has_no_postcode():
     listing = extract_listing("https://www.oranjeberg.be/te-koop/instapklare-rijwoning/4486383", page, source="X")
     assert listing is not None
     assert (listing.street, listing.postal_code, listing.city) == ("Krevelstraat 53", "", "Gent")
+
+
+ACLEA = """
+<html><head><title>9950 - Lievegem - Aclea vastgoed</title>
+<meta property="og:title" content="9950 - Lievegem"></head>
+<body class="wp-singular single-property ehf-header ehf-footer elementor-default">
+<header><nav><a href="/te-koop/">TE KOOP</a><a href="/spanje/">SPANJE</a>
+<a class="elementor-button" href="/gratis-schatting/"><i class="fas fa-map-marker-alt"></i> gratis schatting</a></nav></header>
+<div class="elementor-location-popup">Ontdek Residentie Herdershoek tijdens de nieuwbouw zondag op 25 oktober van 11u tot 15u. Meer info</div>
+<main>
+<div class="single-property-headline-wrapper"><h2>Te renoveren open bebouwing met landelijke ligging</h2></div>
+<div class="price">€ 499.000</div>
+<a class="cta">IK WIL MEER INFO OF EEN AFSPRAAK <i class="fa-solid fa-chevron-right"></i></a>
+<div class="single-property-icon-lines-wrapper">
+ <div class="elementor-row single-property-icon-line">
+  <div class="elementor-column elementor-col-66">
+   <i class="fa-solid fa-location-pin fa-fw two-lines-centered"></i>
+   Hogevoorde 28<br />Lievegem</div>
+  <div class="elementor-column"><i class="fa-solid fa-bed"></i> 3 slaapkamers</div>
+ </div>
+</div>
+<p>Bewoonbare oppervlakte 180 m², perceel 1200 m².</p>
+</main>
+<footer><i class="fas fa-map-marker-alt"></i> Stationsstraat 51, 9900 Eeklo<br>09 377 31 77</footer>
+</body></html>
+"""
+
+
+def test_pin_icon_marks_the_address_and_url_carries_postcode_and_town():
+    """aclea-vastgoed.be: the address stands next to a map-pin icon without
+    any label, the URL is postcode-town-number, and every page is titled
+    "9950 - Lievegem"."""
+    from house_alert.extract import extract_listing, labelled_address
+    from bs4 import BeautifulSoup
+
+    assert labelled_address(BeautifulSoup(ACLEA, "html.parser")) == "Hogevoorde 28, Lievegem"
+    l = extract_listing("https://aclea-vastgoed.be/properties/9950-lievegem-2/", ACLEA, "Aclea Vastgoed")
+    assert (l.street, l.postal_code, l.city) == ("Hogevoorde 28", "9950", "Lievegem")
+    assert l.title == "Te renoveren open bebouwing met landelijke ligging"
+    assert l.price == 499000
+    # The same site prints a project as "Bus 201<br>Ertvelde": no street there.
+    from house_alert.extract import find_street
+    assert find_street("Bus 201, Ertvelde", "Ertvelde", "9940", near_place=True, require_suffix=False) is None

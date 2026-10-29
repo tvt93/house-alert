@@ -23,10 +23,13 @@ def listing_id(url: str) -> str:
     /nl/te-koop?view=detail&id=795, so there the id *is* the identity - and
     the path is not, because the same property is also served as
     /nl/component/properties/?view=detail&id=795 (LD-Vastgoed, Pattymo).
+    A "binnenkort te koop" page that becomes "te koop" keeps its slug and
+    moves one path segment up (Rosseel), while the old page stays online:
+    the segment is read as te-koop so the house does not appear twice.
     """
     path, _, query = url.split("#")[0].partition("?")
     path = re.sub(r"^https?://(www\.)?", "", path, flags=re.IGNORECASE)
-    canonical = path.rstrip("/").lower()
+    canonical = path.rstrip("/").lower().replace("/binnenkort-te-koop/", "/te-koop/")
     m = re.search(r"\bid=(\d+)", query)
     if m and re.search(r"\bview=detail\b", query):
         canonical = canonical.split("/", 1)[0] + f"?view=detail&id={m.group(1)}"

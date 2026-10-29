@@ -78,6 +78,27 @@ def test_listing_id_ignores_scheme_and_www():
     assert listing_id("https://immo-lvb.be/nl/te-koop/kortrijk/villa/2754") != a
 
 
+def test_listing_id_reads_binnenkort_te_koop_as_te_koop():
+    # rosseel.be keeps /binnenkort-te-koop/<slug> online after the house went
+    # on sale as /te-koop/<slug>; three houses sat on the map twice.
+    soon = listing_id("https://rosseel.be/binnenkort-te-koop/gent/appartementen/woning-aan-de-ottogracht")
+    sale = listing_id("https://rosseel.be/te-koop/gent/appartementen/woning-aan-de-ottogracht")
+    assert soon == sale
+    assert listing_id("https://rosseel.be/te-huur/gent/appartementen/woning-aan-de-ottogracht") != sale
+
+
+def test_merged_listing_keeps_the_plain_url(tmp_path):
+    path = tmp_path / "listings.json"
+    rows = [
+        house(url="https://rosseel.be/binnenkort-te-koop/gent/huizen/x", first_seen="2026-10-27"),
+        house(url="https://rosseel.be/te-koop/gent/huizen/x", first_seen="2026-10-29"),
+    ]
+    path.write_text(json.dumps({"version": 1, "listings": [r.to_dict() for r in rows]}), encoding="utf-8")
+    kept = next(iter(ListingStore.load(path).listings.values()))
+    assert kept.url == "https://rosseel.be/te-koop/gent/huizen/x"
+    assert kept.first_seen == "2026-10-27"
+
+
 def test_listing_store_merges_rows_stored_under_two_spellings(tmp_path):
     path = tmp_path / "listings.json"
     rows = [

@@ -120,6 +120,9 @@ def merge_duplicate(a: Listing, b: Listing) -> Listing:
     the one a mail already showed - and whatever the other learned later (a
     status re-check, a better point on the map) is carried over."""
     first, later = sorted((a, b), key=lambda l: (l.first_seen or "9999-12-31", len(l.url), l.url))
+    # Of two spellings the shorter is the plain one: te-koop rather than
+    # binnenkort-te-koop, the index route rather than the component route.
+    first.url = min((first.url, later.url), key=lambda u: (len(u), u))
     first.mailed = first.mailed or later.mailed
     if (later.checked or "") > (first.checked or ""):
         first.status, first.checked = later.status, later.checked

@@ -20,13 +20,17 @@ def listing_id(url: str) -> str:
     map - twice. Query strings and fragments are dropped so tracking
     parameters don't resurface a listing as "new" the next day. The one
     exception is a numeric `id=`: Omnicasa sites address every property as
-    /nl/te-koop?view=detail&id=795, so there the id *is* the identity.
+    /nl/te-koop?view=detail&id=795, so there the id *is* the identity - and
+    the path is not, because the same property is also served as
+    /nl/component/properties/?view=detail&id=795 (LD-Vastgoed, Pattymo).
     """
     path, _, query = url.split("#")[0].partition("?")
     path = re.sub(r"^https?://(www\.)?", "", path, flags=re.IGNORECASE)
     canonical = path.rstrip("/").lower()
     m = re.search(r"\bid=(\d+)", query)
-    if m:
+    if m and re.search(r"\bview=detail\b", query):
+        canonical = canonical.split("/", 1)[0] + f"?view=detail&id={m.group(1)}"
+    elif m:
         canonical += f"?id={m.group(1)}"
     return hashlib.sha1(canonical.encode()).hexdigest()[:16]
 

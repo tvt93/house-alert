@@ -119,7 +119,7 @@ def merge_duplicate(a: Listing, b: Listing) -> Listing:
     before `listing_id` ignored the host. The row seen first stays - it is
     the one a mail already showed - and whatever the other learned later (a
     status re-check, a better point on the map) is carried over."""
-    first, later = sorted((a, b), key=lambda l: (l.first_seen or "9999-12-31", l.url))
+    first, later = sorted((a, b), key=lambda l: (l.first_seen or "9999-12-31", len(l.url), l.url))
     first.mailed = first.mailed or later.mailed
     if (later.checked or "") > (first.checked or ""):
         first.status, first.checked = later.status, later.checked

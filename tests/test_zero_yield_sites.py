@@ -41,6 +41,11 @@ def test_omnicasa_identity_lives_in_the_query_string():
            listing_id("https://www.ld-vastgoed.be/nl/te-koop?view=detail&id=786"),
            listing_id("https://www.ld-vastgoed.be/nl/te-koop")}
     assert len(ids) == 3
+    # The Joomla component route serves the same property; the path is not identity.
+    assert listing_id("https://www.ld-vastgoed.be/nl/component/properties/?view=detail&id=795") \
+        == listing_id(scraper.canonical(detail))
+    # Without view=detail a numeric id still belongs to its path.
+    assert listing_id("https://x.be/a?id=1") != listing_id("https://x.be/b?id=1")
     # Tracking parameters still don't change the identity.
     assert listing_id("https://x.be/te-koop/woning-1?utm_source=mail") == listing_id("https://x.be/te-koop/woning-1")
 

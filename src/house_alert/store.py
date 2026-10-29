@@ -13,7 +13,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from .config import STATE_DIR
-from .models import Listing
+from .models import Listing, listing_id
 
 VERSION = 1
 DEFAULT_RETENTION_DAYS = 180
@@ -37,7 +37,17 @@ class SeenStore:
             # A corrupt state file would otherwise mean re-emailing everything;
             # starting empty is the same outcome, so be explicit about it.
             raise RuntimeError(f"state file is not valid JSON: {path}")
-        return cls(path=path, entries=raw.get("seen") or {})
+        # Keys are recomputed from the URL rather than trusted: when the
+        # identity rule changes (it once told www.x.be and x.be apart) the
+        # old keys would otherwise make every page look new again.
+        entries: dict[str, dict[str, str]] = {}
+        for key, entry in (raw.get("seen") or {}).items():
+            if entry.get("url"):
+                key = listing_id(entry["url"])
+            known = entries.get(key)
+            if known is None or _first_seen(entry) < _first_seen(known):
+                entries[key] = entry
+        return cls(path=path, entries=entries)
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -86,6 +96,10 @@ class SeenStore:
         return len(stale)
 
 
+def _first_seen(entry: dict[str, str]) -> str:
+    return entry.get("first_seen") or "9999-12-31"
+
+
 def _parse_date(value: str | None) -> date | None:
     if not value:
         return None
@@ -96,6 +110,23 @@ def _parse_date(value: str | None) -> date | None:
 
 
 # ---------------------------------------------------------------- listings
+
+GEO_RANK = {"address": 4, "street": 3, "postcode": 2, "city": 1}
+
+
+def merge_duplicate(a: Listing, b: Listing) -> Listing:
+    """Two stored rows for one page: the same URL under two spellings, from
+    before `listing_id` ignored the host. The row seen first stays - it is
+    the one a mail already showed - and whatever the other learned later (a
+    status re-check, a better point on the map) is carried over."""
+    first, later = sorted((a, b), key=lambda l: (l.first_seen or "9999-12-31", l.url))
+    first.mailed = first.mailed or later.mailed
+    if (later.checked or "") > (first.checked or ""):
+        first.status, first.checked = later.status, later.checked
+    if GEO_RANK.get(later.geo, 0) > GEO_RANK.get(first.geo, 0):
+        first.lat, first.lon, first.geo = later.lat, later.lon, later.geo
+    return first
+
 
 @dataclass
 class ListingStore:
@@ -119,8 +150,11 @@ class ListingStore:
             raw = json.loads(path.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             raise RuntimeError(f"listing file is not valid JSON: {path}")
-        items = [Listing.from_dict(d) for d in raw.get("listings") or []]
-        return cls(path=path, listings={l.id: l for l in items})
+        listings: dict[str, Listing] = {}
+        for item in (Listing.from_dict(d) for d in raw.get("listings") or []):
+            known = listings.get(item.id)
+            listings[item.id] = merge_duplicate(known, item) if known else item
+        return cls(path=path, listings=listings)
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)

@@ -14,12 +14,16 @@ PropertyType = str  # "house" | "apartment" | "land" | "commercial" | "unknown"
 def listing_id(url: str) -> str:
     """Stable identity for a listing URL.
 
-    Query strings and fragments are dropped so tracking parameters don't
-    resurface a listing as "new" the next day. The one exception is a
-    numeric `id=`: Omnicasa sites address every property as
+    The scheme and a leading "www." are ignored: a site that links itself as
+    both www.immo-lvb.be (menu) and immo-lvb.be (sitemap) is one site, and
+    this hash is what keeps such a page from being stored - and shown on the
+    map - twice. Query strings and fragments are dropped so tracking
+    parameters don't resurface a listing as "new" the next day. The one
+    exception is a numeric `id=`: Omnicasa sites address every property as
     /nl/te-koop?view=detail&id=795, so there the id *is* the identity.
     """
     path, _, query = url.split("#")[0].partition("?")
+    path = re.sub(r"^https?://(www\.)?", "", path, flags=re.IGNORECASE)
     canonical = path.rstrip("/").lower()
     m = re.search(r"\bid=(\d+)", query)
     if m:

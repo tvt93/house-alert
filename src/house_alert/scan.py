@@ -82,7 +82,12 @@ def scan_agency(
         return result
     urls = [u for u in urls if in_region_url(agency, u)]
 
-    fresh = [u for u in urls if listing_id(u) not in store.entries]
+    fresh_by_id: dict[str, str] = {}
+    for url in urls:
+        key = listing_id(url)
+        if key not in store.entries:
+            fresh_by_id.setdefault(key, url)   # www.x.be/p and x.be/p: one page
+    fresh = list(fresh_by_id.values())
     log.info("%s: %d discovered, %d new", agency.name, len(urls), len(fresh))
     if len(fresh) > max_listings:
         # The cap is on *new* pages per run. Capping discovery itself would

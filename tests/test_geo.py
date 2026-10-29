@@ -101,7 +101,10 @@ def test_locate_looks_up_street_with_city_when_postcode_is_unknown(tmp_path):
     calls = []
 
     class Fake(Geocoder):
-        def _nominatim(self, street, postcode, city):
+        def _flanders(self, street, postcode, city, street_only=False):
+            return None
+
+        def _nominatim(self, street, postcode, city, street_only=False):
             calls.append((street, postcode, city))
             return (51.0, 3.7)
 
@@ -129,6 +132,9 @@ def test_street_fallback_when_the_house_number_is_not_in_osm(tmp_path):
     calls = []
 
     class Fake(Geocoder):
+        def _flanders(self, street, postcode, city, street_only=False):
+            return None                       # outside Flanders' register
+
         def _nominatim(self, street, postcode, city, street_only=False):
             calls.append((street, street_only))
             return (accept_street_hit(road, street, postcode, city) if street_only
@@ -166,3 +172,50 @@ def test_street_fallback_when_the_house_number_is_not_in_osm(tmp_path):
     road[0]["address"]["road"] = "Kerkstraat"
     assert accept_street_hit(road, "Kerkstraat", "9000", "Gent") is None
     assert accept_street_hit(road, "Kerkstraat", "", "Destelbergen") == (51.0578, 3.7968)
+
+
+def test_flemish_register_is_asked_first_and_must_name_the_house(tmp_path):
+    from house_alert.geo import accept_flanders
+    from house_alert.models import Listing
+
+    def result(address, kind, zipcode, number, lat=51.05785, lon=3.79876, street="Kerkstraat"):
+        return {"FormattedAddress": address, "LocationType": kind, "Zipcode": zipcode,
+                "Housenumber": number, "Thoroughfarename": street, "Municipality": "Destelbergen",
+                "Location": {"Lat_WGS84": lat, "Lon_WGS84": lon}}
+
+    house = [result("Kerkstraat 28, 9070 Destelbergen", "basisregisters_huisnummer_aangeduidDoorBeheerder", "9070", "28")]
+    # "Kortrijksesteenweg 12" also returns 120: the number must match exactly.
+    wrong_number = [result("Kortrijksesteenweg 120, 9000 Gent", "basisregisters_huisnummer_aangeduidDoorBeheerder", "9000", "120")]
+    road = [result("Kerkstraat, Destelbergen", "basisregisters_straat", "9070", None)]
+    assert accept_flanders(house, "Kerkstraat 28", "9070", "Destelbergen", False) == (51.05785, 3.79876)
+    assert accept_flanders(house, "Kerkstraat 28 bus 2", "9070", "Destelbergen", False) == (51.05785, 3.79876)
+    assert accept_flanders(house, "Kerkstraat 28", "9000", "Gent", False) is None
+    assert accept_flanders(house, "Kerkstraat 28", "", "Destelbergen", False) == (51.05785, 3.79876)
+    assert accept_flanders(house, "Kerkstraat 28", "", "Gent", False) is None
+    assert accept_flanders(wrong_number, "Kortrijksesteenweg 12", "9000", "Gent", False) is None
+    assert accept_flanders(road, "Kerkstraat 28", "9070", "Destelbergen", False) is None
+    assert accept_flanders(road, "Kerkstraat", "9070", "Destelbergen", True) == (51.05785, 3.79876)
+    assert accept_flanders(road, "Kerklaan", "9070", "Destelbergen", True) is None
+    assert accept_flanders([], "Kerkstraat 28", "9070", "Destelbergen", False) is None
+
+    calls = []
+
+    class Fake(Geocoder):
+        def _flanders(self, street, postcode, city, street_only=False):
+            calls.append(("vl", street, street_only))
+            return accept_flanders(house, street, postcode, city, street_only)
+
+        def _nominatim(self, street, postcode, city, street_only=False):
+            calls.append(("osm", street, street_only))
+            return None
+
+    g = Fake(cache_path=tmp_path / "c.json")
+    l = Listing(url="https://x.be/1", source="X", street="Kerkstraat 28", postal_code="9070", city="Destelbergen")
+    assert g.locate(l) is True
+    assert (l.lat, l.lon, l.geo) == (51.05785, 3.79876, "address")
+    assert calls == [("vl", "Kerkstraat 28", False)]        # Nominatim never asked
+    # Wallonia: the register answers nothing, Nominatim takes over, then the streets.
+    l2 = Listing(url="https://x.be/2", source="X", street="Rue du Trieu 8", postal_code="7750", city="Russeignies")
+    g.locate(l2)
+    assert [c[0] for c in calls[1:]] == ["vl", "osm", "vl", "osm"]
+    assert g.entries[cache_key("Rue du Trieu 8", "7750", "Russeignies")] == {"level": "none"}

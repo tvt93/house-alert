@@ -34,6 +34,8 @@ log = logging.getLogger(__name__)
 
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 NOMINATIM_DELAY = 1.1          # policy says at least 1 s between requests
+FLANDERS_URL = "https://geo.api.vlaanderen.be/geolocation/v4/Location"
+FLANDERS_DELAY = 0.3           # no stated policy; stay well clear of bursts
 DEFAULT_MAX_REQUESTS = 300     # per run; whatever is left is picked up tomorrow
 
 _postcodes: dict[str, dict[str, Any]] | None = None
@@ -96,6 +98,7 @@ class Geocoder:
     entries: dict[str, dict[str, float] | None] = field(default_factory=dict)
     requests_made: int = 0
     _last_request_at: float = 0.0
+    _last_flanders_at: float = 0.0
     _client: httpx.Client | None = None
 
     # ------------------------------------------------------------- cache
@@ -179,7 +182,7 @@ class Geocoder:
         cached, so it is retried tomorrow.
         """
         key = cache_key(street, postcode, city)
-        entry = self.entries.get(key, "untried")
+        entry = self.entries.get(key)
         if isinstance(entry, dict):
             if "lat" in entry:
                 return entry["lat"], entry["lon"], entry.get("level", "address")
@@ -187,28 +190,66 @@ class Geocoder:
         if not self.online or self.budget_left == 0:
             return None
 
-        if entry == "untried":
-            result = self._nominatim(street, postcode, city)
+        # The Flemish address register first: it is the authority for every
+        # 8xxx/9xxx address (and Brussels), answers nothing rather than the
+        # wrong house, and knows numbers OSM lacks. Nominatim covers the rest.
+        name = street_name(street)
+        steps = (
+            (self._flanders, street, False, "address"),
+            (self._nominatim, street, False, "address"),
+            (self._flanders, name, True, "street"),
+            (self._nominatim, name, True, "street"),
+        )
+        for ask, what, street_only, level in steps:
+            if not what:
+                continue
+            if self.budget_left == 0:
+                return None                       # retried tomorrow, nothing cached
+            result = ask(what, postcode, city, street_only=street_only)
             if result == "error":
                 return None
             if result is not None:
-                self.entries[key] = {"lat": result[0], "lon": result[1]}
-                return result[0], result[1], "address"
-            if self.budget_left == 0:
-                self.entries[key] = None          # street still to try
-                return None
-
-        name = street_name(street)
-        result = self._nominatim(name, postcode, city, street_only=True) if name else None
-        if result == "error":
-            return None
-        if result is None:
-            self.entries[key] = {"level": "none"}
-            return None
-        self.entries[key] = {"lat": result[0], "lon": result[1], "level": "street"}
-        return result[0], result[1], "street"
+                self.entries[key] = {"lat": result[0], "lon": result[1], "level": level}
+                return result[0], result[1], level
+        self.entries[key] = {"level": "none"}
+        return None
 
     # -------------------------------------------------------- nominatim
+
+    def _flanders(self, street: str, postcode: str, city: str,
+                  street_only: bool = False) -> tuple[float, float] | None | str:
+        """The Flemish government's geolocation service (Geopunt, backed by
+        the Basisregisters address register, plus Urbis for Brussels). Free,
+        no key, exact house positions. Outside its area it answers [].
+
+        A house result must carry the requested house number and, when the
+        listing has one, the postcode; "Kortrijksesteenweg 12" also returns
+        number 120, and a street query returns the street itself."""
+        if self._client is None:
+            self._client = httpx.Client(
+                timeout=20.0,
+                headers={"User-Agent": USER_AGENT, "Accept-Language": "nl-BE,nl;q=0.9"},
+            )
+        wait = FLANDERS_DELAY - (time.monotonic() - self._last_flanders_at)
+        if wait > 0:
+            time.sleep(wait)
+        self._last_flanders_at = time.monotonic()
+        self.requests_made += 1
+
+        query = f"{re.sub(r'\s+bus\s*\S+$', '', street, flags=re.IGNORECASE)}, {postcode} {city}".strip(", ")
+        try:
+            resp = self._client.get(FLANDERS_URL, params={"q": query, "c": 3})
+        except httpx.HTTPError as exc:
+            log.debug("flanders geolocation failed for %s: %s", street, exc)
+            return "error"
+        if resp.status_code != 200:
+            log.debug("flanders geolocation returned %s for %s", resp.status_code, street)
+            return "error"
+        try:
+            results = resp.json().get("LocationResult") or []
+        except (ValueError, AttributeError):
+            return "error"
+        return accept_flanders(results, street, postcode, city, street_only)
 
     def _nominatim(self, street: str, postcode: str, city: str,
                    street_only: bool = False) -> tuple[float, float] | None | str:
@@ -254,6 +295,41 @@ class Geocoder:
 def street_name(street: str) -> str:
     """'Kerkstraat 28 bus 3' -> 'Kerkstraat'; '' when there is no name part."""
     return re.sub(r"\s+\d.*$", "", street).strip()
+
+
+def accept_flanders(results: Any, street: str, postcode: str, city: str,
+                    street_only: bool) -> tuple[float, float] | None:
+    """The first Flemish geolocation result that is really the requested
+    house (or, for the street fallback, the requested street)."""
+    if not isinstance(results, list):
+        return None
+    wanted_number = re.match(r"\s*\S.*?\s(\d+[A-Za-z]?)", street)
+    number = wanted_number.group(1).lower() if wanted_number else ""
+    for hit in results:
+        if not isinstance(hit, dict):
+            continue
+        kind = str(hit.get("LocationType") or "")
+        zipcode = str(hit.get("Zipcode") or "")
+        if postcode and zipcode and zipcode != str(postcode):
+            continue
+        if not postcode and city and _norm(city) not in _norm(str(hit.get("FormattedAddress") or "")):
+            continue
+        if street_only:
+            if not kind.endswith("_straat"):
+                continue
+            if _norm(str(hit.get("Thoroughfarename") or "")) != _norm(street):
+                continue
+        else:
+            if "huisnummer" not in kind:
+                continue
+            if str(hit.get("Housenumber") or "").lower() != number:
+                continue
+        try:
+            loc = hit["Location"]
+            return float(loc["Lat_WGS84"]), float(loc["Lon_WGS84"])
+        except (KeyError, TypeError, ValueError):
+            continue
+    return None
 
 
 def accept_street_hit(hits: Any, name: str, postcode: str, city: str) -> tuple[float, float] | None:

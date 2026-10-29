@@ -146,10 +146,9 @@ class Geocoder:
         # never the postcode. Without a postcode `accept_hit` insists that
         # the hit names the town.
         if listing.street and (listing.postal_code or listing.city) and listing.geo != "address":
-            point = self.lookup_address(listing.street, listing.postal_code or "", listing.city)
-            if point is not None:
-                listing.lat, listing.lon = point
-                listing.geo = "address"
+            found = self.lookup_address(listing.street, listing.postal_code or "", listing.city)
+            if found is not None and (found[2] == "address" or listing.geo != "street"):
+                listing.lat, listing.lon, listing.geo = found
 
         if listing.lat is None and listing.postal_code:
             centroid = postcode_centroid(listing.postal_code)
@@ -165,31 +164,54 @@ class Geocoder:
 
         return (listing.lat, listing.lon, listing.geo) != before
 
-    def lookup_address(self, street: str, postcode: str, city: str) -> tuple[float, float] | None:
-        """Street-level point, from cache or Nominatim. None when unknown.
+    def lookup_address(self, street: str, postcode: str, city: str) -> tuple[float, float, str] | None:
+        """(lat, lon, level) from cache or Nominatim, or None when unknown.
 
-        A definitive miss is cached so it is not retried every day; a network
-        failure or an exhausted budget is not, so it is retried tomorrow.
+        Level "address" is the house. When OSM has the street but not the
+        number - Kerkstraat 28 in Destelbergen - the street itself is looked
+        up and the point is its centreline, level "street": a few hundred
+        metres off at worst, where the postcode centroid is kilometres.
+
+        Cache entries: {"lat", "lon"} is the house; {"lat", "lon", "level":
+        "street"} the street; {"level": "none"} a definitive miss. A bare
+        None is a miss written before the street fallback existed, and gets
+        one street lookup. A network failure or an exhausted budget is never
+        cached, so it is retried tomorrow.
         """
         key = cache_key(street, postcode, city)
-        if key in self.entries:
-            hit = self.entries[key]
-            return (hit["lat"], hit["lon"]) if hit else None
+        entry = self.entries.get(key, "untried")
+        if isinstance(entry, dict):
+            if "lat" in entry:
+                return entry["lat"], entry["lon"], entry.get("level", "address")
+            return None
         if not self.online or self.budget_left == 0:
             return None
 
-        result = self._nominatim(street, postcode, city)
+        if entry == "untried":
+            result = self._nominatim(street, postcode, city)
+            if result == "error":
+                return None
+            if result is not None:
+                self.entries[key] = {"lat": result[0], "lon": result[1]}
+                return result[0], result[1], "address"
+            if self.budget_left == 0:
+                self.entries[key] = None          # street still to try
+                return None
+
+        name = street_name(street)
+        result = self._nominatim(name, postcode, city, street_only=True) if name else None
         if result == "error":
             return None
         if result is None:
-            self.entries[key] = None
+            self.entries[key] = {"level": "none"}
             return None
-        self.entries[key] = {"lat": result[0], "lon": result[1]}
-        return result
+        self.entries[key] = {"lat": result[0], "lon": result[1], "level": "street"}
+        return result[0], result[1], "street"
 
     # -------------------------------------------------------- nominatim
 
-    def _nominatim(self, street: str, postcode: str, city: str) -> tuple[float, float] | None | str:
+    def _nominatim(self, street: str, postcode: str, city: str,
+                   street_only: bool = False) -> tuple[float, float] | None | str:
         if self._client is None:
             self._client = httpx.Client(
                 timeout=20.0,
@@ -224,7 +246,39 @@ class Geocoder:
             hits = resp.json()
         except ValueError:
             return "error"
+        if street_only:
+            return accept_street_hit(hits, street, postcode, city)
         return accept_hit(hits, postcode, city)
+
+
+def street_name(street: str) -> str:
+    """'Kerkstraat 28 bus 3' -> 'Kerkstraat'; '' when there is no name part."""
+    return re.sub(r"\s+\d.*$", "", street).strip()
+
+
+def accept_street_hit(hits: Any, name: str, postcode: str, city: str) -> tuple[float, float] | None:
+    """A point on the street itself, for the fallback when the house number
+    is not in OSM. The hit must be a road carrying exactly the requested
+    name, in the listing's postcode or a hit that names its town."""
+    if not isinstance(hits, list) or not hits:
+        return None
+    hit = hits[0]
+    # jsonv2 calls the OSM class "category"; the v1 format called it "class".
+    if not isinstance(hit, dict) or (hit.get("category") or hit.get("class")) != "highway":
+        return None
+    address = hit.get("address") or {}
+    if _norm(str(address.get("road") or "")) != _norm(name):
+        return None
+    found_postcode = str(address.get("postcode") or "")
+    if found_postcode and postcode and found_postcode != str(postcode):
+        if not _names_town(address, postcode, city):
+            return None
+    if not postcode and not _names_town(address, "", city):
+        return None
+    try:
+        return float(hit["lat"]), float(hit["lon"])
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 AREA_TYPES = ("city", "town", "village", "municipality", "postcode", "suburb",
@@ -252,7 +306,8 @@ def accept_hit(hits: Any, postcode: str, city: str = "") -> tuple[float, float] 
     hit = hits[0]
     if not isinstance(hit, dict):
         return None
-    if hit.get("class") == "boundary" or hit.get("addresstype") in AREA_TYPES:
+    kind = hit.get("category") or hit.get("class")      # jsonv2 / v1 naming
+    if kind in ("boundary", "highway") or hit.get("addresstype") in AREA_TYPES:
         return None
     address = hit.get("address") or {}
     found_postcode = str(address.get("postcode") or "")

@@ -23,10 +23,14 @@ def test_accept_hit_rejects_towns_and_foreign_postcodes():
     assert accept_hit([], "9000") is None
     assert accept_hit({"error": "x"}, "9000") is None
 
-    # A street without its own postcode is still accepted: mid-street beats centroid.
-    street = [{"lat": "51.05", "lon": "3.72", "class": "highway", "addresstype": "road",
-               "address": {}}]
-    assert accept_hit(street, "9000") == (51.05, 3.72)
+    # A road is never the house: it is the street-level fallback's job, and
+    # there it must carry the requested name. jsonv2 says "category", v1 "class".
+    from house_alert.geo import accept_street_hit
+    street = [{"lat": "51.05", "lon": "3.72", "category": "highway", "addresstype": "road",
+               "address": {"road": "Kerkstraat", "postcode": "9000"}}]
+    assert accept_hit(street, "9000") is None
+    assert accept_street_hit(street, "Kerkstraat", "9000", "Gent") == (51.05, 3.72)
+    assert accept_street_hit(street, "Kerklaan", "9000", "Gent") is None
 
 
 def test_city_name_is_the_last_resort(tmp_path):
@@ -111,3 +115,54 @@ def test_locate_looks_up_street_with_city_when_postcode_is_unknown(tmp_path):
             "address": {"road": "Ledelaan", "village": "Sleidinge", "postcode": "9940"}}]
     assert accept_hit(hit, "", "Sleidinge") == (51.0, 3.7)
     assert accept_hit(hit, "", "Evergem") is None
+
+
+def test_street_fallback_when_the_house_number_is_not_in_osm(tmp_path):
+    # Kerkstraat 28, 9070 Destelbergen: OSM knows the street, not the number.
+    from house_alert.geo import accept_street_hit, street_name
+    from house_alert.models import Listing
+
+    house_elsewhere = [{"lat": "51.03", "lon": "3.76", "addresstype": "building", "class": "building",
+                        "address": {"house_number": "28", "road": "Kerkstraat", "town": "Gentbrugge", "postcode": "9050"}}]
+    road = [{"lat": "51.0578", "lon": "3.7968", "addresstype": "residential", "class": "highway",
+             "address": {"road": "Kerkstraat", "town": "Destelbergen", "postcode": "9070"}}]
+    calls = []
+
+    class Fake(Geocoder):
+        def _nominatim(self, street, postcode, city, street_only=False):
+            calls.append((street, street_only))
+            return (accept_street_hit(road, street, postcode, city) if street_only
+                    else accept_hit(house_elsewhere, postcode, city))
+
+    g = Fake(cache_path=tmp_path / "c.json")
+    l = Listing(url="https://x.be/1", source="X", street="Kerkstraat 28", postal_code="9070", city="Destelbergen")
+    assert g.locate(l) is True
+    assert (l.lat, l.lon, l.geo) == (51.0578, 3.7968, "street")
+    assert calls == [("Kerkstraat 28", False), ("Kerkstraat", True)]
+    assert g.entries[cache_key("Kerkstraat 28", "9070", "Destelbergen")] == {"lat": 51.0578, "lon": 3.7968, "level": "street"}
+    # Next run: served from the cache, nothing asked, nothing changed.
+    assert g.locate(l) is False
+    assert len(calls) == 2
+
+    # A miss cached before the fallback existed gets exactly one street lookup.
+    g.entries[cache_key("Dorpstraat 5", "9070", "Destelbergen")] = None
+    l2 = Listing(url="https://x.be/2", source="X", street="Dorpstraat 5", postal_code="9070", city="Destelbergen")
+    road[0]["address"]["road"] = "Dorpstraat"
+    assert g.locate(l2) is True and l2.geo == "street"
+    assert calls[-1] == ("Dorpstraat", True)
+    # Definitive miss: stored as such, never asked again.
+    road[0]["address"]["road"] = "Elsewherestraat"
+    l3 = Listing(url="https://x.be/3", source="X", street="Nergensstraat 1", postal_code="9070", city="Destelbergen")
+    assert g.locate(l3) is True and l3.geo == "postcode"
+    assert g.entries[cache_key("Nergensstraat 1", "9070", "Destelbergen")] == {"level": "none"}
+    n = len(calls)
+    g.locate(l3)
+    assert len(calls) == n
+
+    assert street_name("Kerkstraat 28 bus 3") == "Kerkstraat"
+    assert street_name("Steenweg op Deinze 140") == "Steenweg op Deinze"
+    # The road must carry the requested name and sit in the right place.
+    assert accept_street_hit(road, "Kerkstraat", "9070", "Destelbergen") is None
+    road[0]["address"]["road"] = "Kerkstraat"
+    assert accept_street_hit(road, "Kerkstraat", "9000", "Gent") is None
+    assert accept_street_hit(road, "Kerkstraat", "", "Destelbergen") == (51.0578, 3.7968)

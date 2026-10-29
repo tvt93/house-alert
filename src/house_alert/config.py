@@ -196,6 +196,7 @@ def load_agencies(
             platform=str(entry.get("platform", defaults.get("platform", "auto"))),
             enabled=bool(entry.get("enabled", defaults.get("enabled", True))),
             postcodes=[str(p) for p in (entry.get("postcodes") or defaults.get("postcodes") or [])],
+            index_urls=[u.strip() for u in _str_list(entry.get("index_urls")) if u.strip()],
         )
         if not a.enabled:
             continue

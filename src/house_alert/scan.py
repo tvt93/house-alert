@@ -15,10 +15,11 @@ from dataclasses import dataclass, field
 from datetime import date
 from urllib.parse import urlparse
 
-from .extract import detect_status, extract_listing, in_belgium
+from .extract import in_belgium
+from .geo import postcodes_for_place
 from .models import Agency, Listing, listing_id
 from .net import Fetcher
-from .platforms import scraper_for
+from .platforms import GenericScraper, scraper_for
 from .store import SeenStore
 
 log = logging.getLogger(__name__)
@@ -106,7 +107,7 @@ def scan_agency(
         if html is None:
             result.dead_urls.append(url)
             continue
-        listing = extract_listing(url, html, source=agency.name)
+        listing = scraper.parse(url, html, source=agency.name)
         if listing is None or not in_region(agency, listing):
             result.dead_urls.append(url)
             continue
@@ -121,19 +122,25 @@ def recheck_status(
     fetcher: Fetcher,
     today: date | None = None,
     workers: int = 8,
+    agencies: list[Agency] | None = None,
 ) -> Counter:
     """Visit stored listings again to see whether they are still for sale.
 
     The one deliberate exception to "a URL is fetched once": a house that
     was sold yesterday is still on the page unless somebody looks. Listings
     are grouped by host so the per-host throttle keeps each site at one
-    request per second while several sites are visited at once.
+    request per second while several sites are visited at once. With
+    `agencies`, a host's own platform reads the status where the generic
+    banner search would not (engelvoelkers.com states it in its data blob).
     """
     today = today or date.today()
     changes: Counter = Counter()
+    readers = {urlparse(a.url).netloc.removeprefix("www."): scraper_for(a) for a in agencies or []}
 
     def visit(group: list[Listing]) -> Counter:
         local: Counter = Counter()
+        host = urlparse(group[0].url).netloc.removeprefix("www.")
+        reader = readers.get(host) or GenericScraper()
         for listing in group:
             got = fetcher.fetch(listing.url)
             if got.status_code is None:
@@ -145,7 +152,7 @@ def recheck_status(
                 local["unreachable"] += 1
                 continue
             else:
-                new = detect_status(got.text, listing.url)
+                new = reader.status(got.text, listing.url)
             listing.checked = today.isoformat()
             local["checked"] += 1
             if new != listing.status:
@@ -181,9 +188,15 @@ def in_region(agency: Agency, listing: Listing) -> bool:
     a mismatch."""
     if in_belgium(listing) is False:
         return False
-    if not agency.postcodes or not listing.postal_code:
+    if not agency.postcodes:
         return True
-    return any(listing.postal_code.startswith(p) for p in agency.postcodes)
+    if listing.postal_code:
+        return any(listing.postal_code.startswith(p) for p in agency.postcodes)
+    # No postcode, but a town: when every postcode that name can mean lies
+    # elsewhere, so does the house. "Antwerpen" is 2000-2660 and never 8/9;
+    # a name the table does not know stays unknown and passes.
+    codes = postcodes_for_place(listing.city)
+    return not codes or any(c.startswith(p) for c in codes for p in agency.postcodes)
 
 
 def strip_shared_street(listings: list[Listing]) -> int:

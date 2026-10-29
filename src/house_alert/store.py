@@ -111,7 +111,9 @@ def _parse_date(value: str | None) -> date | None:
 
 # ---------------------------------------------------------------- listings
 
-GEO_RANK = {"address": 4, "street": 3, "postcode": 2, "city": 1}
+# "approx" is the agency's own map point, moved by up to a few hundred metres
+# (engelvoelkers.com says by how much): as good as knowing the street.
+GEO_RANK = {"address": 4, "street": 3, "approx": 3, "postcode": 2, "city": 1}
 
 
 def merge_duplicate(a: Listing, b: Listing) -> Listing:

@@ -85,6 +85,29 @@ def city_centroid(city: str) -> tuple[float, float] | None:
     return postcode_centroid(codes[0])
 
 
+def postcodes_for_place(name: str) -> list[str]:
+    """Every postcode the bundled table knows under a place name, in table
+    order; empty when the name is unknown.
+
+    A merged municipality ("Merelbeke-Melle", "Nazareth-De Pinte") is not in
+    the table under its new name, so a hyphenated name nobody knows falls
+    back to the union of its parts. That is enough to say where a listing
+    can *not* be - a region guard - and a single answer is a postcode read
+    off a fact, not a guess.
+    """
+    if not name:
+        return []
+    found = _known_names().get(_norm(name))
+    if found:
+        return list(found)
+    if "-" not in name:
+        return []
+    codes: list[str] = []
+    for part in name.split("-"):
+        codes += _known_names().get(_norm(part), [])
+    return list(dict.fromkeys(codes))
+
+
 def _norm(s: str) -> str:
     return re.sub(r"\s+", " ", s.strip().lower())
 

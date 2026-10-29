@@ -21,7 +21,7 @@ subscription. Python, no services, no database; the state is JSON files in git.
 | `state/listings.json` | the parsed listings of the last 180 days, with coordinates |
 | `state/geocache.json` | Nominatim answers, including misses, so nothing is asked twice |
 | `docs/` | the Pages site: `index.html` (static app) + `listings.json` (exported each run) |
-| `platforms/` | discovery: which URLs on a site are listing detail pages |
+| `platforms/` | discovery: which URLs on a site are listing detail pages; a platform may also own parsing and status reading (`engelvoelkers.py` reads a Next.js data blob) |
 | `extract.py` | one detail page → a `Listing`; JSON-LD first, Dutch heuristics second |
 | `geo.py` | street → Nominatim point; else postcode / city centroid from bundled table |
 | `filters.py` | `Listing` + `Criteria` → keep or reject, with a reason |
@@ -33,8 +33,9 @@ subscription. Python, no services, no database; the state is JSON files in git.
 - **Never guess a field.** If a value can't be read off the page it stays `None`, and
   `include_unknown` in the criteria decides what that means. A wrong number is worse than a
   blank one because it silently changes what gets filtered. Coordinates follow the same
-  rule: `geo` says whether a point is the house (`address`), the postcode centroid, or the
-  city, and the page draws the approximate ones differently.
+  rule: `geo` says whether a point is the house (`address`), the street (`street`), the
+  agency's own deliberately offset pin (`approx`), the postcode centroid, or the city, and
+  the page draws the approximate ones differently.
 - **The street must be the house's, never the agency's.** Office addresses are excluded
   three ways: JSON-LD Organization blocks, page chrome (footer/header/contact regions),
   and any street shared by most of one agency's listings in a run (`scan.strip_shared_street`).

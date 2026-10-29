@@ -116,3 +116,18 @@ agencies:
   - { name: Carlo Eggermont,          url: "https://carloeggermont.be" }
   # Nationwide chain: only East and West Flanders postcodes are kept.
   - { name: Dewaele,                  url: "https://www.dewaele.com", postcodes: ["8", "9"] }
+  # Nationwide, one site for the whole country. No listings in the sitemap:
+  # the index pages below are the catalogue, newest first, 35 per page and
+  # not paginated - one per property type for Flanders, plus the town pages
+  # for the two regions (a town with few listings shows those within 50 km).
+  - name: "Engel & Völkers"
+    url: "https://www.engelvoelkers.com/be/nl"
+    platform: engelvoelkers
+    postcodes: ["8", "9"]
+    index_urls:
+      - https://www.engelvoelkers.com/be/nl/eigendom/res/koop/huis/vlaams-gewest
+      - https://www.engelvoelkers.com/be/nl/eigendom/res/koop/appartement/vlaams-gewest
+      - https://www.engelvoelkers.com/be/nl/eigendom/res/koop/land/vlaams-gewest
+      - https://www.engelvoelkers.com/be/nl/eigendom/res/koop/huis/vlaams-gewest/gent
+      - https://www.engelvoelkers.com/be/nl/eigendom/res/koop/appartement/vlaams-gewest/gent
+      - https://www.engelvoelkers.com/be/nl/eigendom/res/koop/huis/vlaams-gewest/kortrijk

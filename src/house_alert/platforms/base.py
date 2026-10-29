@@ -23,8 +23,8 @@ from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup
 
-from ..extract import looks_like_listing_url
-from ..models import Agency
+from ..extract import detect_status, extract_listing, looks_like_listing_url
+from ..models import Agency, Listing
 from ..net import Fetcher
 
 log = logging.getLogger(__name__)
@@ -112,6 +112,16 @@ class GenericScraper:
             return True
         return looks_like_listing_url(url)
 
+    def parse(self, url: str, html: str, source: str) -> Listing | None:
+        """One detail page to a Listing. The generic reader works from the
+        page text and JSON-LD; a platform that keeps its facts elsewhere
+        (engelvoelkers.com: a Next.js data blob) overrides this."""
+        return extract_listing(url, html, source)
+
+    def status(self, html: str, url: str = "") -> str:
+        """Sale status of a stored listing's page on a later visit."""
+        return detect_status(html, url)
+
     # -------------------------------------------------------------- sitemap
 
     def _from_sitemaps(self, agency: Agency, fetcher: Fetcher) -> list[str]:
@@ -157,7 +167,10 @@ class GenericScraper:
     def _from_crawl(self, agency: Agency, fetcher: Fetcher,
                     probe_defaults: bool = False) -> list[str]:
         found: list[str] = []
-        queue = [agency.url]
+        # Index pages the registry names come first: they are the catalogue
+        # when the homepage leads nowhere, and the cap below could otherwise
+        # stop the crawl before they are read.
+        queue = list(agency.index_urls) + [agency.url]
         if probe_defaults:
             queue += [agency.url + p for p in INDEX_PATHS]
         visited: set[str] = set()

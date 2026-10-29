@@ -48,6 +48,9 @@ class Agency:
     # with offices across the country. A listing whose postcode could not be
     # read is kept: unknown is never treated as a mismatch.
     postcodes: list[str] = field(default_factory=list)
+    # Pages that list the properties, for a site whose sitemap and homepage
+    # do not lead to them (engelvoelkers.com: one index per region and type).
+    index_urls: list[str] = field(default_factory=list)
 
     @property
     def host(self) -> str:

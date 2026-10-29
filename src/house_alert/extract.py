@@ -15,6 +15,7 @@ necessary - and a wrong guess is worse than a blank.
 from __future__ import annotations
 
 import json
+import math
 import re
 from typing import Any
 from urllib.parse import parse_qs, unquote_plus, urljoin, urlparse
@@ -461,8 +462,8 @@ def _from_jsonld(objects: list[dict[str, Any]], listing: Listing) -> set[str]:
             if geo_postcode and (not listing.postal_code or geo_postcode == listing.postal_code):
                 geo = obj
         if isinstance(geo, dict) and listing.lat is None:
-            lat, lon = _num(str(geo.get("latitude") or "")), _num(str(geo.get("longitude") or ""))
-            if lat is not None and lon is not None and 49.4 < lat < 51.6 and 2.4 < lon < 6.5:
+            lat, lon = _coord(geo.get("latitude")), _coord(geo.get("longitude"))
+            if lat is not None and lon is not None and plausible_position(lat, lon, listing.postal_code):
                 listing.lat, listing.lon, listing.geo = lat, lon, "address"
 
         img = obj.get("image")
@@ -836,20 +837,36 @@ def _heading(soup: BeautifulSoup) -> str:
     return ""
 
 
-def describes_property(text: str) -> bool:
-    """Does a title say what is for sale? A property word, a parking word or
-    a number ("Lot 12") counts; a slogan ("Maak uw entree") does not."""
+def generic_title(title: str, site_name: str = "", url: str = "") -> bool:
+    """Is this og:title the site's, not the property's? Only when it names
+    the site itself - "Maak uw entree" on entree.be, "CdF - Vastgoedmakelaars"
+    on cdf.be - or is the PHP artefact "Array", and says nothing about a
+    property. A plain title without a property word ("Prachtig historische
+    eigendom") is the agency's choice and stays."""
+    text = title.strip()
+    if not text or text.lower() == "array":
+        return True
     low = text.lower()
-    return (any(kw in low for _, keywords in TYPE_KEYWORDS for kw in keywords)
-            or bool(PARKING_WORD.search(low))
-            or bool(re.search(r"\d", text)))
+    if any(kw in low for _, keywords in TYPE_KEYWORDS for kw in keywords) \
+            or PARKING_WORD.search(low) or re.search(r"\d", text):
+        return False
+    names = {w for w in re.findall(r"[^\W\d_]{3,}", site_name.lower())}
+    host = urlparse(url).netloc.lower().removeprefix("www.")
+    if host:
+        names.add(host.split(".")[0])
+    words = set(re.findall(r"[^\W\d_]{3,}", low))
+    return bool(names & words)
 
 
-# Headings that introduce a block rather than name the property.
+# Headings that introduce a block rather than name the property, and the
+# calls to action agency sites put in headings ("Heb je een vraag? Of wil
+# je jouw woning verkopen?", "Beschrijf je droomhuis", "deel deze woning").
 SECTION_HEADING = re.compile(
     r"gelijkaardig|vergelijkbaar|soortgelijk|\bandere\b|recent|\bmeer\b|ontdek|aanbod|"
     r"interesse|similar|other|related|bekijk|troeven|omschrijving|beschrijving|"
-    r"kenmerken|ligging|indeling|contact|afspraak|zoek", re.IGNORECASE)
+    r"kenmerken|ligging|indeling|contact|afspraak|zoek|\?|verkopen|verhuren|"
+    r"\bvraag|\bdroom|\bdeel\b|\bwil\b|\bwilt\b|\bheb\b|\bjouw\b|\bjou\b|\bje\b|"
+    r"\buw\b|\bu\b|waard|schatting|nieuwsbrief|blog|nieuws", re.IGNORECASE)
 
 
 def _property_heading(soup: BeautifulSoup) -> str:
@@ -898,6 +915,71 @@ def _address_case(text: str) -> str:
 
 MAP_URL = re.compile(r"google\.[a-z.]+/maps|maps\.google\.[a-z.]+/|goo\.gl/maps|maps\.app\.goo\.gl",
                      re.IGNORECASE)
+
+
+def _coord(raw: Any) -> float | None:
+    """A WGS84 coordinate as sites print it: '51.03151', '3,76455', 51.03."""
+    if raw is None:
+        return None
+    m = re.search(r"-?\d{1,3}(?:[.,]\d+)?", str(raw))
+    if not m:
+        return None
+    try:
+        return float(m.group(0).replace(",", "."))
+    except ValueError:
+        return None
+
+
+def plausible_position(lat: float, lon: float, postcode: str) -> bool:
+    """Inside Belgium and, when the postcode is known, within 20 km of its
+    centroid: a map centred on the office, or on the country, is not the
+    house."""
+    if not (49.4 < lat < 51.6 and 2.4 < lon < 6.5):
+        return False
+    if postcode:
+        from .geo import postcode_centroid
+        centre = postcode_centroid(postcode)
+        if centre is not None:
+            dlat = (lat - centre[0]) * 111.0
+            dlon = (lon - centre[1]) * 111.0 * math.cos(math.radians(centre[0]))
+            if math.hypot(dlat, dlon) > 20.0:
+                return False
+    return True
+
+
+# data-lat="51.03151" data-long="3.76455" (rosseel.be) and the other spellings
+LAT_ATTRS = ("data-lat", "data-latitude", "data-map-lat", "data-marker-lat")
+LON_ATTRS = ("data-lng", "data-lon", "data-long", "data-longitude", "data-map-lng",
+             "data-map-lon", "data-marker-lng", "data-marker-lon")
+# maps.google.com/maps?q=51.02891,3.671 / cbll= / ll= / center= / @51.0,3.6
+MAP_COORDS = re.compile(r"(?:[?&](?:q|ll|cbll|center|sll|daddr)=|/@)(-?\d{1,2}\.\d{3,}),(-?\d{1,2}\.\d{3,})")
+
+
+def page_coordinates(soup: BeautifulSoup, postcode: str = "") -> tuple[float, float] | None:
+    """The house position the page itself carries, or None.
+
+    rosseel.be hangs the map pin on the "show map" link as data-lat/data-long;
+    other sites put the coordinates in a Google Maps link. That is the agency
+    placing its own pin, which outranks any lookup - and is the only source
+    when the agency misspells the street ("Bruilofstraat" for Bruiloftstraat).
+    Links and pins in the page chrome are the office; a point far from the
+    listing's postcode is a default map centre.
+    """
+    chrome = {id(n) for n in chrome_nodes(soup)}
+    for node in soup.find_all(True):
+        if id(node) in chrome or any(id(p) in chrome for p in node.parents):
+            continue
+        lat = next((_coord(node.get(a)) for a in LAT_ATTRS if node.get(a)), None)
+        lon = next((_coord(node.get(a)) for a in LON_ATTRS if node.get(a)), None)
+        if lat is None or lon is None:
+            url = node.get("href") or node.get("src") or ""
+            m = MAP_COORDS.search(url) if MAP_URL.search(url) else None
+            if not m:
+                continue
+            lat, lon = float(m.group(1)), float(m.group(2))
+        if plausible_position(lat, lon, postcode):
+            return lat, lon
+    return None
 
 
 def map_link_address(soup: BeautifulSoup) -> str:
@@ -1366,7 +1448,7 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
         listing.title = _heading(soup) or listing.title
     if not listing.title and soup.title:
         listing.title = soup.title.get_text(" ", strip=True)
-    if listing.title and not describes_property(listing.title):
+    if listing.title and generic_title(listing.title, _meta(soup, "og:site_name"), url):
         # Older entree.be pages carry the site slogan ("Maak uw entree", or a
         # bare "Array") as og:title; the property is named further down.
         listing.title = _property_heading(soup) or listing.title
@@ -1434,6 +1516,12 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
         listing.image_url = urljoin(url, listing.image_url)
 
     listing.property_type = guess_property_type(listing.title, url, listing.description)
+
+    # The agency's own map pin, when the structured data carried none.
+    if listing.lat is None:
+        pin = page_coordinates(soup, listing.postal_code)
+        if pin is not None:
+            listing.lat, listing.lon, listing.geo = pin[0], pin[1], "address"
 
     # A page with no price and no measurable property fact is almost certainly
     # an index, a landing page, or a JS shell we can't read.

@@ -182,7 +182,14 @@ No code. The generic scraper reads the sitemap and follows the site's own "te ko
   the query string, Skarabee ends the path in the property number).
 - `postcodes: ["8", "9"]` for chains that sell across the country: only listings whose
   postcode starts with one of the prefixes are kept (and URLs that carry another postcode are
-  never fetched). A listing without a readable postcode is kept, never guessed away.
+  never fetched). A listing without a readable postcode is kept, never guessed away - unless
+  the town it names can only mean postcodes elsewhere ("Antwerpen" is never 8 or 9).
+- `index_urls: [...]` for a site whose sitemap and homepage never lead to the listings: these
+  pages are read for listing links before anything else. Engel & Völkers (`platform:
+  engelvoelkers`, one Next.js site for the whole country) is the one that needs it: its
+  catalogue is a set of region and town index pages, newest first, and its detail pages keep
+  every fact in a data blob rather than in the page text. The agency's own map point, which it
+  states it moved by a few hundred metres, is kept as `geo: approx` ("± omgeving" on the page).
 
 Sites that render their listings purely in JavaScript stay empty; `config/agencies.yaml`
 marks the known ones in a comment. A site that was fixed after it had been scanned needs

@@ -569,3 +569,41 @@ def test_page_header_holding_the_h1_is_not_site_chrome():
     l = extract_listing("https://www.makelaarshuys.be/detail/kopen-woning-sint-denijs-westrem/6670877",
                         MAKELAARSHUYS, "Makelaarshuys")
     assert (l.street, l.postal_code, l.city) == ("Steenaardestraat 11", "9051", "Sint-Denijs-Westrem")
+
+
+ROSSEEL = """
+<html><head><title>Te koop in Gent: Moderne woning in De Stip - Gentbrugge</title>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"PostalAddress","streetAddress":"Bruilofstraat 42","addressLocality":"Gent","postalCode":9050,"addressCountry":"BE"}</script>
+</head><body>
+<header class="site-header"><nav><a href="/">Home</a></nav>
+<a href="https://www.google.com/maps?q=51.0538,3.7250">Route naar ons kantoor</a></header>
+<main><h1>Moderne woning met tuin en fietsberging in De Stip</h1>
+<div class="price">€ 556.000</div>
+<a class="showMap" data-lat="51.03151" data-long="3.76455"><i class="bi bi-geo-alt-fill"></i> Bruilofstraat 42, 9050 Gent</a>
+<p>3 slaapkamers, bewoonbare oppervlakte 161 m².</p></main>
+<footer><a href="https://www.google.com/maps?q=51.0538,3.7250">Agence Rosseel, Kortrijksesteenweg 1, 9000 Gent</a></footer>
+</body></html>
+"""
+
+
+def test_the_agency_map_pin_places_a_house_no_register_knows():
+    """rosseel.be misspells Bruiloftstraat as "Bruilofstraat": no register
+    or OSM lookup can place it, but the page carries the pin itself as
+    data-lat/data-long. The office route link in the chrome is skipped."""
+    from house_alert.extract import extract_listing, page_coordinates, plausible_position, _coord
+    from bs4 import BeautifulSoup
+
+    assert _coord("51.03151") == 51.03151 and _coord("3,76455") == 3.76455 and _coord("") is None
+    assert page_coordinates(BeautifulSoup(ROSSEEL, "html.parser"), "9050") == (51.03151, 3.76455)
+    l = extract_listing("https://rosseel.be/te-koop/gent/huizen/moderne-woning-NB-5995-W6.2H", ROSSEEL, "Agence Rosseel")
+    assert (l.street, l.postal_code, l.city) == ("Bruilofstraat 42", "9050", "Gent")
+    assert (l.lat, l.lon, l.geo) == (51.03151, 3.76455, "address")
+    # A Google Maps link with coordinates counts too, the office one does not.
+    html = ROSSEEL.replace('data-lat="51.03151" data-long="3.76455"', "")
+    html = html.replace("<p>3 slaapkamers", '<a href="http://maps.google.com/maps?q=&layer=c&cbll=51.02891,3.671">Streetview</a><p>3 slaapkamers')
+    assert page_coordinates(BeautifulSoup(html, "html.parser"), "9050") == (51.02891, 3.671)
+    assert page_coordinates(BeautifulSoup(html.replace("cbll=51.02891,3.671", "cbll=50.8,4.35"), "html.parser"), "9050") is None
+    # A default map centre far from the postcode, or abroad, is no pin.
+    assert plausible_position(51.03151, 3.76455, "9050") is True
+    assert plausible_position(50.85, 4.35, "9050") is False
+    assert plausible_position(38.84, 0.10, "") is False

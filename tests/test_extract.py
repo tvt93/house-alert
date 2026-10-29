@@ -220,3 +220,71 @@ def test_van_in_the_title_does_not_hide_a_rent():
     html = ("<html><body><h2>Hoogwaardig afgewerkt appartement aan het Van Duyseplein</h2>"
             "<p>€ 1.500</p><p>2 slaapkamers</p></body></html>")
     assert extract_listing("https://entree.be/pand/eekhout-2-9000-gent/1", html, source="Entree") is None
+
+
+ENTREE_SLOGAN = """<html><head><meta property="og:title" content="{title}"><title>{title} | Entree</title></head>
+<body><h1>Dendermondesteenweg 545, 9070 DESTELBERGEN</h1>
+<h2>Interesse<br> in dit pand?</h2>
+<h2>op te frissen handelswoning met gekoppelde woonfunctie op TOP-locatie in Destelbergen centrum</h2>
+<p>€ 215.000</p><p>3 slaapkamers</p>
+<h2>Niet gevonden waar je naar op zoek bent?</h2>
+<footer>Aanbod <a href="/te-koop">Te koop</a></footer></body></html>"""
+
+
+def test_site_slogan_title_is_replaced_by_the_property_heading():
+    for slogan in ("Maak uw entree", "Array"):
+        listing = extract_listing("https://entree.be/pand/dendermondesteenweg-545-9070-destelbergen/134741",
+                                  ENTREE_SLOGAN.format(title=slogan), source="Entree")
+        assert listing is not None
+        assert listing.title.startswith("op te frissen handelswoning")
+        assert listing.property_type != "unknown"
+
+
+def test_poetic_title_is_not_replaced_by_a_section_heading():
+    # A real title without a property word stays, even when a "similar
+    # properties" heading further down has one.
+    html = ("<html><head><meta property=\"og:title\" content=\"Charmant pareltje in hartje Gent\"></head>"
+            "<body><h1>Charmant pareltje in hartje Gent</h1><p>€ 325.000</p><p>2 slaapkamers</p>"
+            "<h2>Gelijkaardige woningen in Gent</h2><h2>Andere woningen te koop</h2></body></html>")
+    listing = extract_listing("https://x.be/pand/1", html, source="X")
+    assert listing is not None
+    assert listing.title == "Charmant pareltje in hartje Gent"
+
+
+def test_slogan_title_falls_back_to_the_heading_above_the_price():
+    # entree.be "wonen in werelderfgoed Begijnhof": no property word in any
+    # heading, but the price sits right under the real title.
+    html = ("<html><head><meta property=\"og:title\" content=\"Maak uw entree\"></head>"
+            "<body><h1>Lange Violettestraat 201, 9000 GENT</h1><h2>Interesse<br> in dit pand?</h2>"
+            "<h2>wonen in werelderfgoed Begijnhof</h2><p>€ 710.000</p><p>120 m²</p><p>3 slaapkamers</p>"
+            "</body></html>")
+    listing = extract_listing("https://entree.be/pand/lange-violettestraat-201-9000-gent/50937", html, source="Entree")
+    assert listing is not None
+    assert listing.title == "wonen in werelderfgoed Begijnhof"
+    assert listing.price == 710000
+
+
+def test_only_site_names_and_array_are_generic_titles():
+    from house_alert.extract import generic_title
+    assert generic_title("Maak uw entree", "Entree", "https://entree.be/pand/x/1")
+    assert generic_title("Maak uw entree", "", "https://entree.be/pand/x/1")
+    assert generic_title("CdF - Vastgoedmakelaars", "", "https://www.cdf.be/te-koop/x/")
+    assert generic_title("Array", "", "https://entree.be/pand/x/1")
+    # The agency chose these; they stay even without a property word.
+    for title in ("Veelzijdig industriegebouw op toplocatie in Ronse.",
+                  "Prachtig historische eigendom",
+                  "Residentie Flandrien – Wonen aan de voet van de Kluisberg",
+                  "Grond  te koop in Ingelmunster"):
+        assert not generic_title(title, "Immo X", "https://www.immo-x.be/aanbod/1"), title
+
+
+def test_call_to_action_headings_never_become_the_title():
+    html = ("<html><head><meta property=\"og:title\" content=\"Maak uw entree\"></head>"
+            "<body><h1>Kerkstraat 5, 9000 GENT</h1>"
+            "<h2>Heb je een vraag? Of wil je jouw woning verkopen?</h2>"
+            "<h2>Beschrijf je droomhuis</h2><h3>deel deze woning</h3>"
+            "<h2>Wilt u ook uw kantoor verkopen?</h2><h2>Uw ideale woning stond er niet tussen?</h2>"
+            "<p>3 slaapkamers</p></body></html>")
+    listing = extract_listing("https://entree.be/pand/kerkstraat-5-9000-gent/1", html, source="Entree")
+    assert listing is not None
+    assert listing.title == "Maak uw entree"

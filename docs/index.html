@@ -527,6 +527,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       ? '<img loading="lazy" src="' + esc(l.image_url) + '" alt="" referrerpolicy="no-referrer">'
       : '<div class="nophoto">geen foto</div>';
     var approx = l.geo === 'street' ? '<span class="approx" title="Huisnummer niet gekend op de kaart; ligging is de straat">± straat</span>'
+      : l.geo === 'approx' ? '<span class="approx" title="De makelaar toont de ligging bewust enkele honderden meters verschoven">± omgeving</span>'
       : l.geo === 'postcode' ? '<span class="approx" title="Straat niet gekend; ligging is het centrum van de postcode">± postcode</span>'
       : l.geo === 'city' ? '<span class="approx" title="Alleen de gemeente is gekend">± gemeente</span>' : '';
     return '<article class="card' + (closed ? ' closed' : '') + '">' +
@@ -583,6 +584,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
   function popup(l) {
     var img = l.image_url ? '<img src="' + esc(l.image_url) + '" alt="" referrerpolicy="no-referrer">' : '';
     var approx = l.geo === 'street' ? ' <span class="approx">± straat</span>'
+      : l.geo === 'approx' ? ' <span class="approx">± omgeving</span>'
       : l.geo === 'postcode' ? ' <span class="approx">± postcode</span>' : l.geo === 'city' ? ' <span class="approx">± gemeente</span>' : '';
     var state = (l.status || 'available') !== 'available' ? ' <span class="approx">' + STATUS_LABEL[l.status] + '</span>' : '';
     return '<div class="pop">' + img + '<div class="pb">' +
@@ -603,7 +605,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
     shown.forEach(function (l) {
       if (l.lat == null || l.lon == null) return;
       var exact = l.geo === 'address';
-      var street = l.geo === 'street';          // on the right street, number unknown
+      var street = l.geo === 'street' || l.geo === 'approx';   // right street, or the agency's own offset pin
       var colour = (l.status || 'available') === 'available' ? accent : grey;
       var m = L.circleMarker([l.lat, l.lon], {
         radius: exact ? 8 : 7, color: colour, weight: 2, fillColor: colour,

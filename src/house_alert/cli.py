@@ -312,7 +312,8 @@ def cmd_run(args: argparse.Namespace) -> int:
             wanted = {a.name for a in agencies}
             due = [l for l in store.due_for_check(today, args.recheck_days, args.recheck_max)
                    if l.source in wanted]
-            changes = dict(recheck_status(due, fetcher, today, workers=args.workers))
+            changes = dict(recheck_status(due, fetcher, today, workers=args.workers,
+                                          agencies=agencies))
     if changes:
         moved = {k: v for k, v in changes.items() if "->" in k}
         print(f"status re-checked : {changes.get('checked', 0)} listings"

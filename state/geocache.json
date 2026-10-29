@@ -257,6 +257,11 @@
    "level": "address",
    "lon": 3.7341410270652657
   },
+  "appensvoordestraat 75|9920|lievegem": {
+   "lat": 51.09702736691804,
+   "level": "address",
+   "lon": 3.6209988225932586
+  },
   "ardooisesteenweg 175|8800|roeselare": {
    "lat": 50.951520382806194,
    "level": "address",
@@ -2170,6 +2175,11 @@
    "lat": 51.094344143037034,
    "level": "address",
    "lon": 2.5804120066312755
+  },
+  "eikenlaan 40|8553|otegem": {
+   "lat": 50.80855312249153,
+   "level": "address",
+   "lon": 3.41500461359302
   },
   "eikenlaan 58|9111|sint-niklaas": {
    "lat": 51.16671054888375,
@@ -6195,6 +6205,11 @@
    "level": "address",
    "lon": 3.7115052793644465
   },
+  "maïsstraat 53|9000|gent": {
+   "lat": 51.069173616600175,
+   "level": "address",
+   "lon": 3.709002697380679
+  },
   "meensesteenweg 172x|8501|bissegem": {
    "lat": 50.8259607648855,
    "level": "address",
@@ -7088,6 +7103,11 @@
    "lat": 50.98970220858801,
    "level": "address",
    "lon": 3.630201830886434
+  },
+  "ooievaarstraat 5|9000|gent (9000)": {
+   "lat": 51.0579061,
+   "level": "address",
+   "lon": 3.7009926
   },
   "oostakker 9041|9041|oostakker": {
    "level": "none"
@@ -9546,6 +9566,11 @@
    "lat": 50.82302858990489,
    "level": "address",
    "lon": 3.3505686988847843
+  },
+  "steenaardestraat 11|9051|sint-denijs-westrem": {
+   "lat": 51.028910903336445,
+   "level": "address",
+   "lon": 3.6709974666745477
   },
   "steenakkerstraat 2|9070|destelbergen": {
    "lat": 51.02915456609383,

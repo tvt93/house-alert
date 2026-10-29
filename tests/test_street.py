@@ -532,3 +532,40 @@ def test_labelled_address_keeps_the_whole_fused_municipality():
     from house_alert.extract import address_place
     assert address_place("Grote steenweg 105B, 9840 Nazareth-De Pinte") == ("9840", "Nazareth-De Pinte")
     assert address_place("Kerkstraat 28, 9070 Destelbergen") == ("9070", "Destelbergen")
+
+
+MAKELAARSHUYS = """
+<html><head><title>Woning te koop - Steenaardestraat 11, 9051 Sint-Denijs-Westrem</title>
+<meta property="og:title" content="Woning te koop - Steenaardestraat 11, 9051 Sint-Denijs-Westrem"></head>
+<body>
+<header class="site-header"><nav><a href="/">Home</a><a href="/te-koop">Te koop</a></nav></header>
+<div class="wrap--detail__content"><div class="container">
+<div class="page-header page-header--detail">
+ <h1 class="wrap__heading"><span>Instapklare en ruime halfopen bebouwing nabij het Leiepark</span></h1>
+ <div class="detail--header__container">
+  <address><div class="h2"><span>Sint-Denijs-Westrem</span></div>
+  <span class="street">Steenaardestraat 11</span></address>
+  <h2 class="detail__price"><span class="badge is-request"><span>Prijs op aanvraag</span></span></h2>
+ </div>
+</div>
+<p>Deze ruime halfopen bebouwing is instapklaar, 3 slaapkamers, bewoonbare oppervlakte 206 m², perceel 500 m².</p>
+</div></div>
+<footer><p>Makelaarshuys - Brugsesteenweg 620, 9030 Mariakerke - 09 123 45 67</p>
+<p>Website door Luxemburgstraat 16B, 9000 Gent</p></footer>
+</body></html>
+"""
+
+
+def test_page_header_holding_the_h1_is_not_site_chrome():
+    """makelaarshuys.be (and opt-immo.be, mvastgoed.be, the same CMS) names
+    the listing's heading block "page-header--detail": title, address and
+    price. That is the house, not the office, so it must not veto the
+    street; the footer's office line still does."""
+    from house_alert.extract import extract_listing, chrome_streets
+    from bs4 import BeautifulSoup
+
+    assert chrome_streets(BeautifulSoup(MAKELAARSHUYS, "html.parser"), strong_only=True) == {
+        "brugsesteenweg 620", "luxemburgstraat 16b"}
+    l = extract_listing("https://www.makelaarshuys.be/detail/kopen-woning-sint-denijs-westrem/6670877",
+                        MAKELAARSHUYS, "Makelaarshuys")
+    assert (l.street, l.postal_code, l.city) == ("Steenaardestraat 11", "9051", "Sint-Denijs-Westrem")

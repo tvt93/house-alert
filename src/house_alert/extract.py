@@ -594,10 +594,16 @@ def chrome_nodes(soup: BeautifulSoup, strong_only: bool = False) -> list[Any]:
     # A class on <body> or <main> describes the theme, not a region: the
     # WordPress body class "ehf-footer" (aclea-vastgoed.be) must not turn
     # the whole page into chrome.
+    # A block named "page-header" that holds the page's own <h1> is the
+    # listing's heading, not the site's: makelaarshuys.be, opt-immo.be and
+    # mvastgoed.be put the house address right under the title there, and
+    # recording it as the office address wiped the street.
     nodes += [n for n in soup.find_all(id=True)
-              if n.name not in PAGE_ROOTS and pattern.search(str(n.get("id")))]
+              if n.name not in PAGE_ROOTS and pattern.search(str(n.get("id")))
+              and n.find("h1") is None]
     nodes += [n for n in soup.find_all(class_=True)
-              if n.name not in PAGE_ROOTS and any(pattern.search(c) for c in n.get("class", []))]
+              if n.name not in PAGE_ROOTS and any(pattern.search(c) for c in n.get("class", []))
+              and n.find("h1") is None]
     nodes = [n for n in nodes if not _is_breadcrumb(n)]
     # A topbar inside a header would otherwise be counted twice.
     unique = {id(n): n for n in nodes}
@@ -827,6 +833,57 @@ def _heading(soup: BeautifulSoup) -> str:
                 continue
             if text:
                 return text
+    return ""
+
+
+def describes_property(text: str) -> bool:
+    """Does a title say what is for sale? A property word, a parking word or
+    a number ("Lot 12") counts; a slogan ("Maak uw entree") does not."""
+    low = text.lower()
+    return (any(kw in low for _, keywords in TYPE_KEYWORDS for kw in keywords)
+            or bool(PARKING_WORD.search(low))
+            or bool(re.search(r"\d", text)))
+
+
+# Headings that introduce a block rather than name the property.
+SECTION_HEADING = re.compile(
+    r"gelijkaardig|vergelijkbaar|soortgelijk|\bandere\b|recent|\bmeer\b|ontdek|aanbod|"
+    r"interesse|similar|other|related|bekijk|troeven|omschrijving|beschrijving|"
+    r"kenmerken|ligging|indeling|contact|afspraak|zoek", re.IGNORECASE)
+
+
+def _property_heading(soup: BeautifulSoup) -> str:
+    """The first heading outside the chrome that names the property: at
+    least three words, a property word, not the address line, not a section
+    label. entree.be puts the address in the h1 and the real title in the
+    second h2, after an "Interesse in dit pand?" form heading."""
+    chrome = {id(n) for n in chrome_nodes(soup)}
+    for tag in ("h1", "h2", "h3"):
+        for node in soup.find_all(tag):
+            if id(node) in chrome or any(id(p) in chrome for p in node.parents):
+                continue
+            text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+            if len(text.split()) < 3 or SECTION_HEADING.search(text):
+                continue
+            if re.search(POSTAL_CITY, text) or BARE_PLACE_TITLE.match(text):
+                continue
+            low = text.lower()
+            if any(kw in low for _, keywords in TYPE_KEYWORDS for kw in keywords):
+                return text
+    # No heading names a type ("wonen in werelderfgoed Begijnhof"): take the
+    # one the page's own price sits right under.
+    for node in soup.find_all(["h1", "h2", "h3"]):
+        if id(node) in chrome or any(id(p) in chrome for p in node.parents):
+            continue
+        text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+        if len(text.split()) < 2 or SECTION_HEADING.search(text):
+            continue
+        if re.search(POSTAL_CITY, text) or BARE_PLACE_TITLE.match(text):
+            continue
+        after = node.find_next_sibling()
+        if after is not None and after.name != "a" \
+                and re.match(r"€\s*\d", after.get_text(" ", strip=True)):
+            return text
     return ""
 
 
@@ -1309,6 +1366,10 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
         listing.title = _heading(soup) or listing.title
     if not listing.title and soup.title:
         listing.title = soup.title.get_text(" ", strip=True)
+    if listing.title and not describes_property(listing.title):
+        # Older entree.be pages carry the site slogan ("Maak uw entree", or a
+        # bare "Array") as og:title; the property is named further down.
+        listing.title = _property_heading(soup) or listing.title
 
     # Drop the cards, teasers and "similar properties" strips before reading any
     # numbers off the page, so nothing here can pick up a neighbour's price.

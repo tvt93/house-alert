@@ -250,6 +250,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
       <label class="chip"><input type="checkbox" value="apartment"><span>Appartement</span></label>
       <label class="chip"><input type="checkbox" value="land"><span>Grond</span></label>
       <label class="chip"><input type="checkbox" value="commercial"><span>Handel</span></label>
+      <label class="chip"><input type="checkbox" value="parking"><span>Garage</span></label>
       <label class="chip"><input type="checkbox" value="unknown" checked><span>Onbekend</span></label>
     </div>
 
@@ -358,7 +359,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
 
   // ------------------------------------------------------------ constants
   var REPO_FALLBACK = { owner: 'tvt93', repo: 'house-alert' };
-  var TYPE_LABEL = { house: 'Woning', apartment: 'Appartement', land: 'Grond', commercial: 'Handel', unknown: 'Onbekend' };
+  var TYPE_LABEL = { house: 'Woning', apartment: 'Appartement', land: 'Grond', commercial: 'Handel', parking: 'Garage', unknown: 'Onbekend' };
   var STATUS_LABEL = { option: 'In optie', sold: 'Verkocht', gone: 'Niet meer online' };
   function statusGroup(l) { var s = l.status || 'available'; return s === 'gone' ? 'sold' : s; }
   var PAGE = 48;
@@ -676,7 +677,7 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
   function summarize(b) {
     var f = b.f, bits = [];
     if (f.priceMin != null || f.priceMax != null) bits.push('prijs ' + (f.priceMin != null ? '≥ ' + euro(f.priceMin) : '') + (f.priceMax != null ? ' ≤ ' + euro(f.priceMax) : ''));
-    if (b.types.length && b.types.length < 4) bits.push(b.types.map(function (t) { return TYPE_LABEL[t].toLowerCase(); }).join('/'));
+    if (b.types.length && b.types.length < 5) bits.push(b.types.map(function (t) { return TYPE_LABEL[t].toLowerCase(); }).join('/'));
     if (f.postcodes.length) bits.push('postcode ' + f.postcodes.join(', '));
     if (f.plotMin != null || f.plotMax != null) bits.push('grond ' + (f.plotMin || 0) + (f.plotMax != null ? '–' + f.plotMax : '+') + ' m²');
     if (f.livingMin != null || f.livingMax != null) bits.push('bewoonbaar ' + (f.livingMin || 0) + (f.livingMax != null ? '–' + f.livingMax : '+') + ' m²');

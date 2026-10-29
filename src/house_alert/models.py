@@ -8,7 +8,7 @@ from dataclasses import dataclass, field, asdict
 from typing import Any
 
 
-PropertyType = str  # "house" | "apartment" | "land" | "commercial" | "unknown"
+PropertyType = str  # "house" | "apartment" | "land" | "commercial" | "parking" | "unknown"
 
 
 def listing_id(url: str) -> str:

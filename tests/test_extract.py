@@ -41,6 +41,37 @@ def test_property_type_from_title_and_url():
     assert guess_property_type("Iets onbekends", "") == "unknown"
 
 
+def test_garage_sold_on_its_own_is_parking():
+    for title in ("Inpandige autostaanplaats nabij station Gent-Sint-Pieters",
+                  "Gunstig gelegen afgesloten garagebox in centrum Bredene-Bad",
+                  "Topgelegen grote dubbele garagebox met sectionaalpoort",
+                  "Afgesloten garagebox in ondergronds garagecomplex met inrit via Dienst",
+                  "Staanplaats te koop", "Carport", "Parking te koop in Gent"):
+        assert guess_property_type(title, "") == "parking", title
+    assert guess_property_type("", "https://x.be/te-koop/garage-gent-centrum-12") == "parking"
+    # The description never makes a parking space: it describes what comes with the house.
+    assert guess_property_type("Te koop", "", "Woning met ruime garage") == "house"
+
+
+def test_garage_that_comes_with_a_home_is_not_parking():
+    for title in ("Woning met 3 slpks, garage, tuin en zonnepanelen",
+                  "Instapklare duplex met 3 slpks, garage en terras",
+                  "Charmante woning met 3 slpkrs, tuin en 4 staanplaatsen",
+                  "Ruime woning met GARAGEBOX EN UITWEG!",
+                  "Loodsencomplex met parking, op een centrale ligging",
+                  "Nieuwbouw met 2 slaapkamers en carport",
+                  "Rustig gelegen bungalow met ruime tuin, garage en oprit",
+                  "Vrijstaande villa op 733m² met 4 slprs en losstaande garage",
+                  "Prachtig penthouse incl. dubbele garage",
+                  "Nieuwbouw met 3 slpks, garage, tuin",
+                  "Centraal gelegen loft met 3 slaapkamers (meer mogelijk), garage voor 4 wagens",
+                  "Maison avec 3 chambres et double garage à Roulers | Coventa",
+                  "Spacieuse maison familiale avec 4 chambres, garage et jardin à Roeselare"):
+        assert guess_property_type(title, "") != "parking", title
+    assert guess_property_type(
+        "", "https://x.be/te-koop/instapklare-woning-met-dubbele-garage-te-koop-in-kuurne") == "house"
+
+
 HTML_HEURISTIC = """
 <html><head>
   <meta property="og:title" content="Charmante rijwoning met tuin">

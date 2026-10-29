@@ -22,6 +22,7 @@ property_types:          # matched against the listing's detected type
   # - apartment
   # - land
   # - commercial
+  # - parking              # a garage or parking space sold on its own
 
 price:
   min:                   # e.g. 200000

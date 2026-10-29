@@ -50,7 +50,8 @@ framework — Leaflet for the map, everything else is plain HTML.
   print the street.
 - **Filters:** price, postcode (exact or prefix: `85` = 8500–8599), type, plot area,
   habitable area, bedrooms, how recently it appeared, agency. Unknown values are
-  included by default; untick the box to make every filter strict.
+  included by default; untick the box to make every filter strict. A garage or
+  parking space sold on its own is its own type (*Garage*), hidden by default.
 - Filters live in the URL, so a filtered view can be bookmarked or sent to someone.
 - **Dagelijkse mail** turns the current filters into a subscription file and opens it,
   pre-filled, in GitHub's editor. One click on *Commit* and the mail starts tomorrow.

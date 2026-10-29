@@ -34,7 +34,7 @@ TYPE_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
     )),
     ("land", (
         "bouwgrond", "bouwgronden", "bouwkavel", "projectgrond", "landbouwgrond",
-        "perceel bouwgrond", "grond te koop",
+        "perceel bouwgrond", "grond te koop", "terrain à bâtir", "terrain a batir",
     )),
     ("apartment", (
         "appartement", "apartment", "penthouse", "duplex", "triplex", "studio",
@@ -44,9 +44,26 @@ TYPE_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
         "woning", "huis", "villa", "rijwoning", "rijhuis", "hoeve", "herenhuis",
         "bel-etage", "bel etage", "bungalow", "fermette", "koppelwoning",
         "halfopen bebouwing", "open bebouwing", "gesloten bebouwing",
-        "eengezinswoning", "landhuis", "cottage", "house",
+        "eengezinswoning", "landhuis", "cottage", "house", "maison",
     )),
 ]
+
+# A garage or parking space sold on its own. Only the title and URL decide,
+# and only when they name no other type: "woning met dubbele garage" is a
+# house, "Inpandige autostaanplaats nabij station Gent-Sint-Pieters" is not.
+PARKING_WORD = re.compile(
+    r"\b(?:garage(?:s|box|boxen|complex)?|parkeergarage|autostaanplaats(?:en)?|"
+    r"staanplaats(?:en)?|parkeerplaats(?:en)?|parking(?:s)?|parkeerplek(?:ken)?|"
+    r"carport(?:s)?|autobox(?:en)?)\b", re.IGNORECASE)
+# "... met garage", "tuin en carport", "incl. staanplaats", "3 slpks, garage,
+# tuin", "avec double garage": the garage comes with something else, named
+# or not.
+PARKING_AS_EXTRA = re.compile(
+    r"(?:\bmet|\ben|\bincl\.?|\binclusief|\bwith|\band|\+|&|\bplus|\bof|\bavec|\bet|,)\s*"
+    r"(?:\d+\s*)?"
+    r"(?:dubbele\s+|ruime\s+|grote\s+|losstaande\s+|inpandige\s+|ondergrondse\s+|"
+    r"afgesloten\s+|private\s+|privatieve\s+|eigen\s+|extra\s+|double\s+|un\s+|une\s+)*$",
+    re.IGNORECASE)
 
 # Presence of these means the listing is no longer on the market.
 UNAVAILABLE_MARKERS = (
@@ -305,12 +322,31 @@ def is_town_filter_path(path: str) -> bool:
     return any(slug == str(name).lower().replace("-", " ") for name in entry.get("names", []))
 
 
-def guess_property_type(*texts: str) -> str:
-    blob = " ".join(t for t in texts if t).lower()
+def guess_property_type(title: str = "", url: str = "", description: str = "") -> str:
+    head = f"{title} {_slug_words(url)}".lower()
+    if is_parking(head):
+        return "parking"
+    blob = f"{head} {description or ''}".lower()
     for ptype, keywords in TYPE_KEYWORDS:
         if any(kw in blob for kw in keywords):
             return ptype
     return "unknown"
+
+
+def _slug_words(url: str) -> str:
+    return urlparse(url).path.replace("-", " ").replace("_", " ").replace("/", " ") if url else ""
+
+
+def is_parking(text: str) -> bool:
+    """Does the title (or URL slug) advertise a garage or parking space itself?
+
+    A parking word counts only when nothing else is for sale: neither another
+    property type nor an "x met garage" phrasing in front of it.
+    """
+    if any(kw in text for _, keywords in TYPE_KEYWORDS for kw in keywords):
+        return False
+    return any(not PARKING_AS_EXTRA.search(text[max(0, m.start() - 40):m.start()])
+               for m in PARKING_WORD.finditer(text))
 
 
 # ------------------------------------------------------------------- JSON-LD

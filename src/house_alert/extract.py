@@ -111,10 +111,12 @@ PRICE_FLOOR = 25_000
 PRICE_CEILING = 5_000_000
 
 # A Belgian-formatted amount: 395.000 / 395 000 / 395000. Crucially it must not
-# match across a separator into the next number on the page, so whitespace and
-# dots are only allowed when followed by exactly three digits - and not by a
-# fourth, or "EUR 295.000 9000 Gent" would read as 295.000900.
-AMOUNT = r"(\d{1,3}(?:[.   ]\d{3})+(?!\d)|\d{4,8})"
+# match across a separator into the next number on the page: a separator is
+# only allowed when followed by exactly three digits - and not by a fourth,
+# or "EUR 295.000 9000 Gent" would read as 295.000900 - and the dotted form
+# is tried first on its own, or "€ 215.000 137 m² 110 m²" (entree.be, the
+# facts right after the price) would read as 215.000.137.110 and overflow.
+AMOUNT = r"(\d{1,3}(?:\.\d{3})+(?!\d)|\d{1,3}(?:[.   ]\d{3})+(?!\d)|\d{4,8})"
 
 # 9000 Gent / 8500 Kortrijk / 9040 Sint-Amandsberg / 9840 De Pinte
 POSTAL_CITY = (
@@ -1129,6 +1131,58 @@ def has_labelled_price(text: str) -> bool:
                           text, re.IGNORECASE))
 
 
+# A monthly figure: € 250 to € 9.999. Below that it is a fee, above it the
+# cheapest garage box.
+RENT_MIN, RENT_MAX = 250, 10_000
+# AMOUNT wants four digits or a thousands group; a rent is often "€ 680".
+# "€ 950.00" is 950, "€ 1.925.000" is not a rent at all.
+RENT_AMOUNT = r"(\d{1,2}[. ]\d{3}|\d{3,4})(?!\d)(?!\.\d{3})"
+# Small amounts a sale page prints legitimately: the cadastral income
+# (makelaarshuys.be "Niet geïndexeerd K.I.: € 334"), monthly charges of an
+# apartment, a loan simulator's instalment, and the bounds of a search
+# form's price filter (immo-emeraude.com "≤ € 500k Van € 500 tot € 750").
+NOT_RENT_LABEL = re.compile(
+    r"(?:\bk\.?\s*i\b\.?|kadastra\w*\s+inkomen|revenu\s+cadastral|"
+    r"kosten|lasten|charges|syndic|provisie|voorschot|aflossing|per\s+jaar|/\s*jaar)"
+    r"[^€]{0,40}$"
+    # The range words only count right before the amount: "van" is in half
+    # the Dutch titles ("appartement aan het Van Duyseplein € 1.500").
+    r"|(?:\bvan|\btot|\bvanaf|\bfrom|\bmin|\bmax|≤|≥|<=|>=)\s*$", re.IGNORECASE)
+# "€ 500k" is a filter bound in thousands, never a rent.
+THOUSANDS_SUFFIX = re.compile(r"\s*k\b", re.IGNORECASE)
+RENT_LABELLED = re.compile(
+    rf"(?:huurprijs|maandhuur|loyer)\s*:?\s*€\s*{RENT_AMOUNT}"
+    rf"|€\s*{RENT_AMOUNT}\s*(?:/|per)\s*(?:maand|mnd|month|mois)\b", re.IGNORECASE)
+SALE_HINT = re.compile(r"te[-\s]?koop|kopen|for[-\s]?sale|[àa][-\s]?vendre|"
+                       r"vraagprijs|verkoopprijs", re.IGNORECASE)
+
+
+def is_rental(text: str, url: str = "", title: str = "") -> bool:
+    """Is this page about a property for rent, judging by its amounts?
+
+    Called only when no sale price was read. A labelled rent decides on its
+    own. Otherwise the page is a rental when it prints a rent-sized amount
+    and nothing (URL path, title) says it is for sale - a sale page whose
+    price is rendered by JavaScript may still print the cadastral income,
+    and that must stay a listing with an unknown price.
+    """
+    for m in RENT_LABELLED.finditer(text):
+        if not NOT_RENT_LABEL.search(text[max(0, m.start() - 60):m.start()]):
+            return True
+    if SALE_HINT.search(urlparse(url).path) or SALE_HINT.search(title):
+        return False
+    for m in re.finditer(rf"€\s*{RENT_AMOUNT}", text):
+        value = _int(m.group(1))
+        if value is None or not RENT_MIN <= value < RENT_MAX:
+            continue
+        if NOT_RENT_LABEL.search(text[max(0, m.start() - 60):m.start()]):
+            continue
+        if THOUSANDS_SUFFIX.match(text, m.end()):
+            continue
+        return True
+    return False
+
+
 def is_index_page(text: str) -> bool:
     """Does this page advertise many properties rather than one?
 
@@ -1236,6 +1290,12 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
         return None
 
     _from_text(text, listing)
+
+    # entree.be prints "€ 1.600" for a rental with nothing that says rent: the
+    # price floor turned that into "price unknown", which the filters let
+    # through. A page whose only amount is rent-sized is a rental.
+    if listing.price is None and is_rental(text, url, listing.title):
+        return None
 
     # An element the site itself labels as the address, read before the
     # weaker sources: it may be the only place the postcode is printed in a

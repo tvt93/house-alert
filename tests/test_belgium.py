@@ -40,6 +40,28 @@ def test_in_belgium_reads_postcode_town_and_hints():
     assert in_belgium(listing(postal_code="7700", city="Moeskroen")) is True
 
 
+def test_five_digit_postcode_in_url_or_title_is_abroad():
+    # Pages that print no address at all, but whose URL or title carries a
+    # five-digit postcode: Spain and France have those, Belgium has four.
+    assert in_belgium(listing(url="https://immodebo.be/nl/aanbod/4415954/appartement-te-koop-in-03380-bigastro")) is False
+    assert in_belgium(listing(url="https://www.immobeguin.be/te-koop/24300-nontron/woningen/charmant-landhuis-70796")) is False
+    assert in_belgium(listing(url="https://aclea-vastgoed.be/properties/30710-los-alcazares/")) is False
+    assert in_belgium(listing(title="04638 - Mojacar", url="https://aclea-vastgoed.be/properties/04638-mojacar/")) is False
+    assert in_belgium(listing(url="https://home-vision.eu/nl/aanbod/4494241/villa-te-koop-in-34460-roquebrun")) is False
+    # A five-digit page number followed by the slug is not a postcode.
+    assert in_belgium(listing(url="https://www.axellenaerts.be/nl/kopen/28607-instapklare-halfopen-bebouwing-in-centrum-nieuwkerken")) is None
+    assert in_belgium(listing(url="https://www.immobeguin.be/te-koop/7520-templeuve/woningen/prachtige-villa-68781",
+                              postal_code="7520", city="Templeuve")) is True
+    assert in_belgium(listing(title="9980 - Sint-Laureins", url="https://aclea-vastgoed.be/properties/4529-eede-2/")) is None
+    # French Riviera and Alps towns sold by vlaemynck.be and bordes.be.
+    assert in_belgium(listing(city="Les Issambres", title="Villa met zeezicht te koop in Les Issambres")) is False
+    assert in_belgium(listing(city="Champagny", title="Nieuwbouw te koop in Champagny-en-Vanoise")) is False
+    assert in_belgium(listing(url="https://www.vlaemynck.be/te-koop/le-plan-de-la-tour/woning/11126622/moderne-villa")) is False
+    assert in_belgium(listing(title="Uniek kasteel", url="https://www.cdf.be/te-koop/1650-noordfrankrijk-avesnes-te-koop-uniek-kasteel/")) is False
+    # Belgian villages with French names stay undecided, not abroad.
+    assert in_belgium(listing(url="https://immo-emeraude.com/nl/eigendommen/charmante-villa-sars-la-bruyere-88562")) is None
+
+
 def test_abroad_is_kept_out_everywhere(tmp_path):
     agency = Agency(name="X", url="https://x.be")
     abroad = listing(url="https://x.be/pand/2", postal_code="03750", city="Denia", title="Denia Denia 2")

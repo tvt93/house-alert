@@ -1039,25 +1039,27 @@
    "lon": 3.713177
   },
   "chaussée de lannoy 191|7503|froyennes": {
-   "lat": 50.6221834,
-   "level": "street",
-   "lon": 3.3483593
+   "lat": 50.62752840462223,
+   "level": "address",
+   "lon": 3.3319854715069437
   },
   "chaussée de luingne 448|7712|herseaux": {
    "lat": 50.7337592,
    "lon": 3.2328306
   },
   "chaussée de tournai 55|7910|arc-wattripont": {
-   "lat": 50.7289835,
+   "lat": 50.72945589628907,
    "level": "street",
-   "lon": 3.5422638
+   "lon": 3.55117434883707
   },
   "chaussée du risquons-tout 493|7700|moeskroen": {
    "lat": 50.7518787,
    "lon": 3.1927224
   },
   "chaussée victor lampe 10|7866|ollignies": {
-   "level": "none"
+   "lat": 50.69033960250686,
+   "level": "address",
+   "lon": 3.8557063300077004
   },
   "chemin du grès 218|30500|saint-ambroix": {
    "level": "none"
@@ -1161,10 +1163,14 @@
    "lon": 4.9510184
   },
   "de brugsesteenweg 61|8500|kortrijk": {
-   "level": "none"
+   "lat": 50.8411035,
+   "level": "street",
+   "lon": 3.26497
   },
   "de citroenstraat 30|9000|gent": {
-   "level": "none"
+   "lat": 51.0620348,
+   "level": "street",
+   "lon": 3.7085547
   },
   "de goudvink 10|2970|schilde": {
    "lat": 51.24629,
@@ -4266,9 +4272,9 @@
    "lon": 3.7296406
   },
   "longue borne 15|7863|ghoy": {
-   "lat": 50.7231958,
+   "lat": 50.725403253723826,
    "level": "street",
-   "lon": 3.7910149
+   "lon": 3.795232446665617
   },
   "loodswezenplein 1|8620|nieuwpoort": {
    "lat": 51.1523804,
@@ -5679,7 +5685,9 @@
    "lon": 3.2177545
   },
   "place 64|7880|vloesberg": {
-   "level": "none"
+   "lat": 50.736601392440335,
+   "level": "address",
+   "lon": 3.738351619853295
   },
   "place d'amougies 10|7750|amougies": {
    "lat": 50.7439933,
@@ -6171,7 +6179,9 @@
    "lon": 3.2343449
   },
   "rue de village 2165|5542|blaimont": {
-   "level": "none"
+   "lat": 50.19230039160189,
+   "level": "street",
+   "lon": 4.835811362044776
   },
   "rue des carmes 49|7500|tournai": {
    "lat": 50.6071855,
@@ -6198,7 +6208,9 @@
    "lon": 3.3073634
   },
   "rue du général piron 23|7500|tournai": {
-   "level": "none"
+   "lat": 50.59789142542573,
+   "level": "address",
+   "lon": 3.3829311473046553
   },
   "rue du petit marais 1|7760|pottes": {
    "lat": 50.7348191,
@@ -7187,7 +7199,9 @@
    "lon": 3.7638844
   },
   "trieu de wazon 36|7520|templeuve": {
-   "level": "none"
+   "lat": 50.63583914676761,
+   "level": "address",
+   "lon": 3.2799363883514343
   },
   "troonstraat 258|8400|oostende": {
    "lat": 51.2149455,

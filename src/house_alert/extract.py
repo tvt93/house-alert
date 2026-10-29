@@ -437,17 +437,32 @@ def is_known_postcode(code: str) -> bool:
 # and French coasts from the same site, and those must not reach the map or
 # the mail. Only unmistakable names: no "Costa" alone, no street words.
 FOREIGN_HINT = re.compile(
-    r"\b(?:spanje|spain|espa[nñ]a|frankrijk|france|portugal|itali[eë]|italy|nederland|"
+    r"\b(?:spanje|spain|espa[nñ]a|(?:noord-?)?frankrijk|france|portugal|itali[eë]|italy|nederland|"
     r"the netherlands|turkije|turkey|dubai|griekenland|greece|"
     r"costa\s+(?:blanca|del\s+sol|c[aá]lida|brava|dorada|tropical|azul|del\s+azahar)|"
     r"c[oô]te\s+d'?azur|provence|dordogne|ard[eè]che|"
     r"alicante|marbella|torrevieja|orihuela|moraira|calpe|j[aá]vea|xabia|benidorm|"
     r"d[eé]nia|altea|benitachell|guardamar|murcia|m[aá]laga|tenerife|mallorca|ibiza|"
     r"lanzarote|fuerteventura|estepona|mijas|nerja|almer[ií]a|valencia|"
-    r"sainte-maxime|grimaud|saint-tropez|cannes|antibes|fr[eé]jus|"
+    r"sainte-maxime|grimaud|saint-tropez|cannes|antibes|fr[eé]jus|ramatuelle|cavalaire|"
+    r"cogolin|le lavandou|bormes|hy[eè]res|roquebrune|saint-rapha[eë]l|les issambres|"
+    r"la croix-valmer|gassin|gigaro|plan-de-la-tour|champagny|roquebrun|nontron|"
+    r"cond[eé]-sur-l'?escaut|savoie|haute-savoie|alpes|pyr[eé]n[eé]es|languedoc|bretagne|"
+    r"normandi[eë]|charente|gironde|cumbre del sol|finestrat|villajoyosa|rojales|"
+    r"pilar de la horadada|los alc[aá]zares|san javier|la nuc[ií]a|torre-?pacheco|"
+    r"ciudad quesada|benijofar|lo pag[aá]n|el campello|moj[aá]car|"
     r"arnemuiden|cadzand|breskens)\b(?!\s*\d)",     # "Sluis 22, 9290 Berlare" is a street
     re.IGNORECASE,
 )
+
+
+# A five-digit postcode in the URL slug or at the head of the title: Belgian
+# postcodes have four. immodebo.be "appartement-te-koop-in-03380-bigastro",
+# immobeguin.be "/te-koop/24300-nontron/", aclea-vastgoed.be
+# "/properties/03730-javea/" and "04638 - Mojacar". A bare "/28607-villa" is
+# not enough: axellenaerts.be numbers its pages that way.
+FOREIGN_POSTCODE_IN_URL = re.compile(r"(?:\bin|te-koop|properties)[-/](\d{5})-[a-z]|/(0\d{4})-[a-z]", re.I)
+FOREIGN_POSTCODE_IN_TITLE = re.compile(r"^\s*(\d{5})\s*[-–]\s*\S")
 
 
 def in_belgium(listing: Listing) -> bool | None:
@@ -457,9 +472,12 @@ def in_belgium(listing: Listing) -> bool | None:
     A postcode the Belgian table knows settles it unless the title names a
     foreign place outright: immo-zone.be stamps its Aalst office postcode on
     its Dubai and Alicante projects. A postcode the table does not know -
-    "03750", "34449" - is abroad.
+    "03750", "34449" - is abroad, and so is a five-digit one in the URL or
+    the title of a page that prints no address at all.
     """
     text = " ".join((listing.title or "", listing.city or "", listing.url or ""))
+    if FOREIGN_POSTCODE_IN_URL.search(listing.url or "") or FOREIGN_POSTCODE_IN_TITLE.match(listing.title or ""):
+        return False
     if FOREIGN_HINT.search(text):
         # "Residentie Costa Brava" in Blankenberge: a Belgian postcode whose
         # town the title or URL also names outranks a foreign-sounding word.

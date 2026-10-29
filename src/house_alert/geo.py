@@ -1,11 +1,13 @@
 """Where is a listing?
 
-Two levels of precision, cheapest first:
+Levels of precision, cheapest first:
 
   postcode  - the centroid of the postal code, from a bundled GeoNames table.
               Free, instant, and always available when a postcode is known.
-  address   - the house itself, from Nominatim (OpenStreetMap) when the page
-              gave us a street and number.
+  street    - the street itself, when the house number is nowhere to be found.
+  address   - the house itself, from the regional address register (Flanders
+              with Brussels, or Wallonia) or failing that Nominatim
+              (OpenStreetMap), when the page gave us a street and number.
 
 Nominatim is a shared, donated service with a strict usage policy: at most one
 request per second, an identifying User-Agent, and results cached. All three
@@ -36,6 +38,8 @@ NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 NOMINATIM_DELAY = 1.1          # policy says at least 1 s between requests
 FLANDERS_URL = "https://geo.api.vlaanderen.be/geolocation/v4/Location"
 FLANDERS_DELAY = 0.3           # no stated policy; stay well clear of bursts
+WALLONIA_URL = "https://geoservices.wallonie.be/geocodeWS/geocode"
+WALLONIA_DELAY = 0.3
 DEFAULT_MAX_REQUESTS = 300     # per run; whatever is left is picked up tomorrow
 
 _postcodes: dict[str, dict[str, Any]] | None = None
@@ -85,6 +89,38 @@ def _norm(s: str) -> str:
     return re.sub(r"\s+", " ", s.strip().lower())
 
 
+# Words a register or OSM may drop or add in a street name: the agency writes
+# "Trieu De Wazon", OSM has "Trieu Wazon" and the Walloon register "Trieu de
+# Wazon". Everything else must match word for word.
+STREET_FILLER = frozenset("de du des la le les l d van der den het t s".split())
+
+
+def _street_key(name: str) -> str:
+    words = re.split(r"[\s'’]+", _norm(str(name or "")))
+    return " ".join(w for w in words if w and w not in STREET_FILLER)
+
+
+def _house_number(street: str) -> str:
+    """'Kerkstraat 28 bus 3' -> '28'; '' when there is none."""
+    m = re.match(r"\s*\S.*?\s(\d+[A-Za-z]?)", street)
+    return m.group(1).lower() if m else ""
+
+
+def region(postcode: str) -> str:
+    """Which address register answers for a Belgian postcode: "flanders",
+    "brussels", "wallonia", or "" when it is not a Belgian postcode."""
+    if not re.fullmatch(r"[1-9]\d{3}", str(postcode).strip()):
+        return ""                                 # "03750" is Spain, not 3750
+    n = int(str(postcode).strip())
+    if 1000 <= n <= 1299:
+        return "brussels"
+    if 1300 <= n <= 1499 or 4000 <= n <= 7999:
+        return "wallonia"
+    if 1500 <= n <= 3999 or 8000 <= n <= 9999:
+        return "flanders"
+    return ""
+
+
 def cache_key(street: str, postcode: str, city: str) -> str:
     return f"{_norm(street)}|{_norm(postcode)}|{_norm(city)}"
 
@@ -99,6 +135,7 @@ class Geocoder:
     requests_made: int = 0
     _last_request_at: float = 0.0
     _last_flanders_at: float = 0.0
+    _last_wallonia_at: float = 0.0
     _client: httpx.Client | None = None
 
     # ------------------------------------------------------------- cache
@@ -190,14 +227,20 @@ class Geocoder:
         if not self.online or self.budget_left == 0:
             return None
 
-        # The Flemish address register first: it is the authority for every
-        # 8xxx/9xxx address (and Brussels), answers nothing rather than the
-        # wrong house, and knows numbers OSM lacks. Nominatim covers the rest.
+        # The regional address register first: Flanders (with Brussels) or
+        # Wallonia, chosen by postcode, both when there is none. A register
+        # is the authority for its addresses, answers nothing rather than
+        # the wrong house, and knows numbers OSM lacks. Nominatim covers the
+        # rest, and the street alone is the last resort.
         name = street_name(street)
+        registers = {
+            "flanders": (self._flanders,), "brussels": (self._flanders,),
+            "wallonia": (self._wallonia,),
+        }.get(region(postcode), (self._flanders, self._wallonia))
         steps = (
-            (self._flanders, street, False, "address"),
+            *((ask, street, False, "address") for ask in registers),
             (self._nominatim, street, False, "address"),
-            (self._flanders, name, True, "street"),
+            *((ask, name, True, "street") for ask in registers),
             (self._nominatim, name, True, "street"),
         )
         for ask, what, street_only, level in steps:
@@ -251,6 +294,38 @@ class Geocoder:
             return "error"
         return accept_flanders(results, street, postcode, city, street_only)
 
+    def _wallonia(self, street: str, postcode: str, city: str,
+                  street_only: bool = False) -> tuple[float, float] | None | str:
+        """The Walloon government's geocoder (geocodeWS, backed by the ICAR
+        address register). Free, no key, exact house positions; nothing
+        outside Wallonia. Asked for a number it does not know it answers
+        with the street alone, which `accept_wallonia` only takes as such."""
+        if self._client is None:
+            self._client = httpx.Client(
+                timeout=20.0,
+                headers={"User-Agent": USER_AGENT, "Accept-Language": "nl-BE,nl;q=0.9"},
+            )
+        wait = WALLONIA_DELAY - (time.monotonic() - self._last_wallonia_at)
+        if wait > 0:
+            time.sleep(wait)
+        self._last_wallonia_at = time.monotonic()
+        self.requests_made += 1
+
+        query = f"{re.sub(r'\s+bus\s*\S+$', '', street, flags=re.IGNORECASE)} {postcode} {city}".strip()
+        try:
+            resp = self._client.get(WALLONIA_URL, params={"address": query, "crs": "EPSG:4326"})
+        except httpx.HTTPError as exc:
+            log.debug("wallonia geocode failed for %s: %s", street, exc)
+            return "error"
+        if resp.status_code != 200:
+            log.debug("wallonia geocode returned %s for %s", resp.status_code, street)
+            return "error"
+        try:
+            candidates = resp.json().get("candidates") or []
+        except (ValueError, AttributeError):
+            return "error"
+        return accept_wallonia(candidates, street, postcode, city, street_only)
+
     def _nominatim(self, street: str, postcode: str, city: str,
                    street_only: bool = False) -> tuple[float, float] | None | str:
         if self._client is None:
@@ -303,8 +378,7 @@ def accept_flanders(results: Any, street: str, postcode: str, city: str,
     house (or, for the street fallback, the requested street)."""
     if not isinstance(results, list):
         return None
-    wanted_number = re.match(r"\s*\S.*?\s(\d+[A-Za-z]?)", street)
-    number = wanted_number.group(1).lower() if wanted_number else ""
+    number = _house_number(street)
     for hit in results:
         if not isinstance(hit, dict):
             continue
@@ -317,7 +391,7 @@ def accept_flanders(results: Any, street: str, postcode: str, city: str,
         if street_only:
             if not kind.endswith("_straat"):
                 continue
-            if _norm(str(hit.get("Thoroughfarename") or "")) != _norm(street):
+            if _street_key(str(hit.get("Thoroughfarename") or "")) != _street_key(street):
                 continue
         else:
             if "huisnummer" not in kind:
@@ -328,6 +402,44 @@ def accept_flanders(results: Any, street: str, postcode: str, city: str,
             loc = hit["Location"]
             return float(loc["Lat_WGS84"]), float(loc["Lon_WGS84"])
         except (KeyError, TypeError, ValueError):
+            continue
+    return None
+
+
+def accept_wallonia(candidates: Any, street: str, postcode: str, city: str,
+                    street_only: bool) -> tuple[float, float] | None:
+    """The first geocodeWS candidate that is the requested house (or, for
+    the street fallback, the requested street). A candidate carries the
+    municipality as `city`, the postcode as `zone.ident` with the locality
+    name, the `street`, and the `house` only when the number is known."""
+    if not isinstance(candidates, list):
+        return None
+    number = _house_number(street)
+    wanted_street = _street_key(street if street_only else street_name(street))
+    for cand in candidates:
+        if not isinstance(cand, dict):
+            continue
+        zone = cand.get("zone") or {}
+        town = cand.get("city") or {}
+        if postcode and str(zone.get("ident") or "") != str(postcode):
+            continue
+        if not postcode and city:
+            if _norm(city) not in {_norm(str(zone.get("name") or "")), _norm(str(town.get("name") or ""))}:
+                continue
+        road = cand.get("street") or {}
+        if _street_key(str(road.get("name") or "")) != wanted_street:
+            continue
+        if street_only:
+            geometry = road.get("geometry")
+        else:
+            house = cand.get("house") or {}
+            if not number or str(house.get("name") or "").lower() != number:
+                continue
+            geometry = house.get("geometry")
+        coords = (geometry or {}).get("coordinates") or []
+        try:
+            return float(coords[1]), float(coords[0])
+        except (IndexError, TypeError, ValueError):
             continue
     return None
 
@@ -343,7 +455,7 @@ def accept_street_hit(hits: Any, name: str, postcode: str, city: str) -> tuple[f
     if not isinstance(hit, dict) or (hit.get("category") or hit.get("class")) != "highway":
         return None
     address = hit.get("address") or {}
-    if _norm(str(address.get("road") or "")) != _norm(name):
+    if _street_key(str(address.get("road") or "")) != _street_key(name):
         return None
     found_postcode = str(address.get("postcode") or "")
     if found_postcode and postcode and found_postcode != str(postcode):

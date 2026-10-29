@@ -101,6 +101,9 @@ def test_locate_looks_up_street_with_city_when_postcode_is_unknown(tmp_path):
     calls = []
 
     class Fake(Geocoder):
+        def _wallonia(self, street, postcode, city, street_only=False):
+            return None
+
         def _flanders(self, street, postcode, city, street_only=False):
             return None
 
@@ -132,6 +135,9 @@ def test_street_fallback_when_the_house_number_is_not_in_osm(tmp_path):
     calls = []
 
     class Fake(Geocoder):
+        def _wallonia(self, street, postcode, city, street_only=False):
+            return None
+
         def _flanders(self, street, postcode, city, street_only=False):
             return None                       # outside Flanders' register
 
@@ -201,6 +207,9 @@ def test_flemish_register_is_asked_first_and_must_name_the_house(tmp_path):
     calls = []
 
     class Fake(Geocoder):
+        def _wallonia(self, street, postcode, city, street_only=False):
+            return None
+
         def _flanders(self, street, postcode, city, street_only=False):
             calls.append(("vl", street, street_only))
             return accept_flanders(house, street, postcode, city, street_only)
@@ -214,8 +223,75 @@ def test_flemish_register_is_asked_first_and_must_name_the_house(tmp_path):
     assert g.locate(l) is True
     assert (l.lat, l.lon, l.geo) == (51.05785, 3.79876, "address")
     assert calls == [("vl", "Kerkstraat 28", False)]        # Nominatim never asked
-    # Wallonia: the register answers nothing, Nominatim takes over, then the streets.
+    # Wallonia: the Walloon register (silent here) is asked instead of the
+    # Flemish one; it answers nothing, Nominatim takes over, then the street.
     l2 = Listing(url="https://x.be/2", source="X", street="Rue du Trieu 8", postal_code="7750", city="Russeignies")
     g.locate(l2)
-    assert [c[0] for c in calls[1:]] == ["vl", "osm", "vl", "osm"]
+    assert [c[0] for c in calls[1:]] == ["osm", "osm"]
     assert g.entries[cache_key("Rue du Trieu 8", "7750", "Russeignies")] == {"level": "none"}
+
+
+def test_walloon_register_answers_for_walloon_postcodes(tmp_path):
+    """Trieu De Wazon 36, 7520 Templeuve: the Flemish register knows no
+    Hainaut address and OSM has no number 36 there, but the Walloon
+    register does. Written "Trieu de Wazon" there and "Trieu Wazon" in OSM:
+    connector words never decide a street match."""
+    from house_alert.geo import accept_wallonia, region, _street_key
+    from house_alert.models import Listing
+
+    assert region("7520") == "wallonia" and region("9070") == "flanders"
+    assert region("1050") == "brussels" and region("1300") == "wallonia" and region("03750") == ""
+    assert _street_key("Trieu De Wazon") == _street_key("Trieu Wazon") == _street_key("Trieu du Wazon")
+    assert _street_key("Kerkstraat") != _street_key("Kerklaan")
+
+    house = [{"score": 111, "city": {"ident": "57081", "name": "Tournai"},
+              "zone": {"ident": "7520", "name": "Templeuve"},
+              "street": {"ident": 7723957, "name": "Trieu de Wazon"},
+              "house": {"ident": 971044, "name": "36",
+                        "geometry": {"type": "Point", "coordinates": [3.27994, 50.63584]}}}]
+    road = [{"score": 310, "city": {"ident": "57081", "name": "Tournai"},
+             "zone": {"ident": "7520", "name": "Templeuve"},
+             "street": {"ident": 7723957, "name": "Trieu de Wazon",
+                        "geometry": {"type": "Point", "coordinates": [3.28101, 50.63544]}}}]
+    assert accept_wallonia(house, "Trieu De Wazon 36", "7520", "Templeuve", False) == (50.63584, 3.27994)
+    assert accept_wallonia(house, "Trieu De Wazon 36", "7500", "Tournai", False) is None
+    assert accept_wallonia(house, "Trieu De Wazon 36", "", "Templeuve", False) == (50.63584, 3.27994)
+    assert accept_wallonia(house, "Trieu De Wazon 36", "", "Tournai", False) == (50.63584, 3.27994)
+    assert accept_wallonia(house, "Trieu De Wazon 36", "", "Mouscron", False) is None
+    assert accept_wallonia(house, "Trieu De Wazon 38", "7520", "Templeuve", False) is None
+    # The register answers a missing number with the street: never the house.
+    assert accept_wallonia(road, "Trieu De Wazon 9999", "7520", "Templeuve", False) is None
+    assert accept_wallonia(road, "Trieu De Wazon", "7520", "Templeuve", True) == (50.63544, 3.28101)
+    assert accept_wallonia(road, "Rue Verte", "7520", "Templeuve", True) is None
+    assert accept_wallonia([], "Trieu De Wazon 36", "7520", "Templeuve", False) is None
+
+    calls = []
+
+    class Fake(Geocoder):
+        def _flanders(self, street, postcode, city, street_only=False):
+            calls.append(("vl", street, street_only))
+            return None
+
+        def _wallonia(self, street, postcode, city, street_only=False):
+            calls.append(("wal", street, street_only))
+            return accept_wallonia(house, street, postcode, city, street_only)
+
+        def _nominatim(self, street, postcode, city, street_only=False):
+            calls.append(("osm", street, street_only))
+            return None
+
+    g = Fake(cache_path=tmp_path / "c.json")
+    l = Listing(url="https://x.be/1", source="X", street="Trieu De Wazon 36", postal_code="7520", city="Templeuve")
+    assert g.locate(l) is True
+    assert (l.lat, l.lon, l.geo) == (50.63584, 3.27994, "address")
+    # A Walloon postcode never troubles the Flemish register.
+    assert calls == [("wal", "Trieu De Wazon 36", False)]
+
+
+def test_osm_street_fallback_ignores_connector_words():
+    from house_alert.geo import accept_street_hit
+    hit = [{"lat": "50.6354", "lon": "3.2810", "category": "highway", "type": "residential",
+            "address": {"road": "Trieu Wazon", "postcode": "7520", "city": "Doornik"}}]
+    assert accept_street_hit(hit, "Trieu De Wazon", "7520", "Templeuve") == (50.6354, 3.281)
+    assert accept_street_hit(hit, "Trieu De Wazon", "7520", "Templeuve") == (50.6354, 3.281)
+    assert accept_street_hit(hit, "Rue Wazon", "7520", "Templeuve") is None

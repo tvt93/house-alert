@@ -526,3 +526,9 @@ def test_pin_icon_marks_the_address_and_url_carries_postcode_and_town():
     # The same site prints a project as "Bus 201<br>Ertvelde": no street there.
     from house_alert.extract import find_street
     assert find_street("Bus 201, Ertvelde", "Ertvelde", "9940", near_place=True, require_suffix=False) is None
+
+
+def test_labelled_address_keeps_the_whole_fused_municipality():
+    from house_alert.extract import address_place
+    assert address_place("Grote steenweg 105B, 9840 Nazareth-De Pinte") == ("9840", "Nazareth-De Pinte")
+    assert address_place("Kerkstraat 28, 9070 Destelbergen") == ("9070", "Destelbergen")

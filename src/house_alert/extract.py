@@ -861,7 +861,8 @@ def address_place(text: str) -> tuple[str, str]:
     """
     m = re.search(POSTAL_CITY, text)
     if m and is_known_postcode(m.group(1)) and m.group(3).lower() not in NOT_A_CITY:
-        return m.group(1), f"{m.group(2) or ''}{m.group(3)}".strip()
+        # "9840 Nazareth-De Pinte": the fused name runs past the hyphen.
+        return m.group(1), _whole_place(f"{m.group(2) or ''}{m.group(3)}".strip(), text[m.end():m.end() + 40])
     m = CITY_POSTAL.search(text)
     if m and is_known_postcode(m.group(3)):
         city = f"{m.group(1) or ''}{m.group(2)}".strip()

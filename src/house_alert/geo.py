@@ -100,6 +100,15 @@ def _street_key(name: str) -> str:
     return " ".join(w for w in words if w and w not in STREET_FILLER)
 
 
+def bare_number(street: str) -> str:
+    """'Grote Steenweg 105B' -> 'Grote Steenweg 105'; '' when the number
+    carries no letter. A new-build project is sold as 105B, 105C, 105D at
+    one gate: when the register does not know the letter yet, the bare
+    number is the same plot, where the street centreline is not."""
+    bare = re.sub(r"(\s\d+)[A-Za-z](?=\s|$)", r"\1", street, count=1)
+    return bare if bare != street else ""
+
+
 def _house_number(street: str) -> str:
     """'Kerkstraat 28 bus 3' -> '28'; '' when there is none."""
     m = re.match(r"\s*\S.*?\s(\d+[A-Za-z]?)", street)
@@ -233,12 +242,14 @@ class Geocoder:
         # the wrong house, and knows numbers OSM lacks. Nominatim covers the
         # rest, and the street alone is the last resort.
         name = street_name(street)
+        bare = bare_number(street)
         registers = {
             "flanders": (self._flanders,), "brussels": (self._flanders,),
             "wallonia": (self._wallonia,),
         }.get(region(postcode), (self._flanders, self._wallonia))
         steps = (
             *((ask, street, False, "address") for ask in registers),
+            *((ask, bare, False, "address") for ask in registers),
             (self._nominatim, street, False, "address"),
             *((ask, name, True, "street") for ask in registers),
             (self._nominatim, name, True, "street"),

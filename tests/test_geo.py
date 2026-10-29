@@ -295,3 +295,41 @@ def test_osm_street_fallback_ignores_connector_words():
     assert accept_street_hit(hit, "Trieu De Wazon", "7520", "Templeuve") == (50.6354, 3.281)
     assert accept_street_hit(hit, "Trieu De Wazon", "7520", "Templeuve") == (50.6354, 3.281)
     assert accept_street_hit(hit, "Rue Wazon", "7520", "Templeuve") is None
+
+
+def test_lettered_number_falls_back_to_the_bare_number_in_the_register(tmp_path):
+    """flame-estate.be sells a project as Grote Steenweg 105B, 105C, 105D.
+    When the register does not know a letter yet, the bare number is the
+    same gate; Nominatim's guess for "105B" was 500 m up the road."""
+    from house_alert.geo import bare_number
+    from house_alert.models import Listing
+
+    assert bare_number("Grote Steenweg 105B") == "Grote Steenweg 105"
+    assert bare_number("Kerkstraat 28A bus 3") == "Kerkstraat 28 bus 3"
+    assert bare_number("Kerkstraat 28") == ""
+    assert bare_number("Kerkstraat 28 bus 3") == ""
+
+    known = {"Grote Steenweg 105": (50.98347, 3.6802), "Grote Steenweg 105B": (50.98307, 3.68018)}
+    calls = []
+
+    class Fake(Geocoder):
+        def _flanders(self, street, postcode, city, street_only=False):
+            calls.append(("vl", street, street_only))
+            return None if street_only else known.get(street)
+
+        def _wallonia(self, street, postcode, city, street_only=False):
+            return None
+
+        def _nominatim(self, street, postcode, city, street_only=False):
+            calls.append(("osm", street, street_only))
+            return (50.9867, 3.6747)          # the wrong house, never reached
+
+    g = Fake(cache_path=tmp_path / "c.json")
+    l = Listing(url="https://x.be/1", source="X", street="Grote Steenweg 105C", postal_code="9840", city="Nazareth-De Pinte")
+    assert g.locate(l) is True
+    assert (l.lat, l.lon, l.geo) == (50.98347, 3.6802, "address")
+    assert calls == [("vl", "Grote Steenweg 105C", False), ("vl", "Grote Steenweg 105", False)]
+    # A letter the register knows is taken as is.
+    l2 = Listing(url="https://x.be/2", source="X", street="Grote Steenweg 105B", postal_code="9840", city="Nazareth-De Pinte")
+    g.locate(l2)
+    assert (l2.lat, l2.lon) == (50.98307, 3.68018)

@@ -90,6 +90,23 @@ LISTING_URL_ANTI_HINTS = (
     "verkocht",
 )
 
+# Category and search-landing pages whose URL otherwise reads like a detail
+# page. dewaele.com files its whole catalogue under /te-koop/alle/<type>/..., its
+# SEO landing pages ("Huis te koop Ruiselede 4 slaapkamers") as /lk-<slug>, and
+# a city filter as /te-koop/9000-gent/huis - none of which is one property. A
+# real detail slug names the house; it is never a bare type word.
+CATEGORY_PATH = re.compile(
+    r"/alle(?:/|$)"
+    r"|/lk-[^/]*/?$"
+    r"|/(?:huis|huizen|woning|woningen|appartement|appartementen|villa|villas|"
+    r"grond|bouwgrond|gronden|garage|garages|kantoor|kantoren|handelspand|"
+    r"opbrengsteigendom|bedrijfsvastgoed|nieuwbouw|projecten|luxevastgoed)/?$",
+    re.IGNORECASE)
+# "/te-koop/9000-gent": a town filter, when the slug is that postcode's town.
+# cdf.be writes "/te-koop/2335-stijlvol-appartement-in-..." with a reference
+# number in the same position, which the table tells apart from a postcode.
+POSTCODE_TOWN_TAIL = re.compile(r"/([1-9]\d{3})-([a-z-]+)/?$")
+
 PRICE_FLOOR = 25_000
 PRICE_CEILING = 5_000_000
 
@@ -259,6 +276,8 @@ def looks_like_listing_url(url: str) -> bool:
     path = urlparse(url).path.lower()
     if any(bad in path for bad in LISTING_URL_ANTI_HINTS):
         return False
+    if CATEGORY_PATH.search(path) or is_town_filter_path(path):
+        return False
     for hint in LISTING_URL_HINTS:
         index = path.find(hint)
         if index == -1:
@@ -266,6 +285,20 @@ def looks_like_listing_url(url: str) -> bool:
         if path[index + len(hint):].strip("/"):
             return True
     return False
+
+
+def is_town_filter_path(path: str) -> bool:
+    """Does the path end in "<postcode>-<town>" where the town really belongs
+    to that postcode? Then it filters a catalogue by town, it is not a house."""
+    m = POSTCODE_TOWN_TAIL.search(path.lower())
+    if not m:
+        return False
+    from .geo import postcode_table
+    entry = postcode_table().get(m.group(1))
+    if not entry:
+        return False
+    slug = m.group(2).replace("-", " ")
+    return any(slug == str(name).lower().replace("-", " ") for name in entry.get("names", []))
 
 
 def guess_property_type(*texts: str) -> str:

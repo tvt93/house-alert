@@ -370,6 +370,11 @@
    "level": "address",
    "lon": 3.7304699363322427
   },
+  "auguste van ooststraat 51|9050|gentbrugge": {
+   "lat": 51.04471418070854,
+   "level": "address",
+   "lon": 3.7462749102286734
+  },
   "augustijn moreelsstraat 1|9041|oostakker": {
    "lat": 51.08072825459778,
    "level": "address",
@@ -1730,6 +1735,11 @@
    "level": "address",
    "lon": 4.427801771432363
   },
+  "collegiebaan 105||wetteren": {
+   "lat": 51.006766546829716,
+   "level": "address",
+   "lon": 3.8922077133312913
+  },
   "colmarstraat 1|9100|sint-niklaas": {
    "lat": 51.15584492542222,
    "level": "address",
@@ -1909,6 +1919,11 @@
    "level": "address",
    "lon": 3.318460321968608
   },
+  "deerlijkseweg 20|8790|waregem": {
+   "lat": 50.874295122319765,
+   "level": "address",
+   "lon": 3.418626221257879
+  },
   "deerlijkseweg 8|8790|waregem": {
    "lat": 50.874913313514334,
    "level": "address",
@@ -1993,6 +2008,11 @@
    "lat": 50.93624990404642,
    "level": "address",
    "lon": 3.363071380432448
+  },
+  "dentergemstraat 50|9800|wontergem": {
+   "lat": 50.979175139035576,
+   "level": "address",
+   "lon": 3.4441238509092162
   },
   "derbystraat 168|9051|sint-denijs-westrem": {
    "lat": 51.0233431192976,
@@ -2760,6 +2780,11 @@
    "lat": 50.9293814,
    "lon": 4.4308393
   },
+  "franklin rooseveltlaan 350|9000|gent": {
+   "lat": 51.04431575429423,
+   "level": "address",
+   "lon": 3.7315290170323014
+  },
   "franklin rooseveltlaan 403|9000|gent": {
    "lat": 51.04377073914221,
    "level": "address",
@@ -3132,6 +3157,11 @@
    "level": "address",
    "lon": 2.888476845970016
   },
+  "gijzenzelestraat 40/0.3|9230|wetteren": {
+   "lat": 50.9799625332478,
+   "level": "street",
+   "lon": 3.840554845787897
+  },
   "gitsestraat 276|8800|roeselare": {
    "lat": 50.95961445160425,
    "level": "address",
@@ -3161,6 +3191,11 @@
    "lat": 50.74236381821909,
    "level": "address",
    "lon": 3.5944185918827714
+  },
+  "gouvernementstraat 1a|9000|gent": {
+   "lat": 51.05203800774118,
+   "level": "address",
+   "lon": 3.727153606658981
   },
   "graaf gwijde van namenstraat 31|8500|kortrijk": {
    "lat": 50.830081946784105,
@@ -3501,6 +3536,11 @@
    "lat": 50.815552858937586,
    "level": "address",
    "lon": 3.1868558559906712
+  },
+  "gullegemstraat 63a|8560|wevelgem": {
+   "lat": 50.81434842938983,
+   "level": "address",
+   "lon": 3.186183913097463
   },
   "gustaaf callierlaan 115||gent": {
    "lat": 51.0408343261611,
@@ -4639,6 +4679,11 @@
    "lat": 51.0541173376021,
    "level": "address",
    "lon": 3.701576993686795
+  },
+  "joostplaats 3|2100|antwerpen": {
+   "lat": 51.22069994378705,
+   "level": "address",
+   "lon": 4.458189642509286
   },
   "joseph gérardstraat 1a||sint-amandsberg": {
    "lat": 51.0611967,
@@ -7573,6 +7618,11 @@
    "level": "address",
    "lon": 3.352261424567743
   },
+  "nieuwstraat 54|8780|oostrozebeke": {
+   "lat": 50.91480476847117,
+   "level": "address",
+   "lon": 3.3314521843586675
+  },
   "nieuwstraat 60|9840|pinte": {
    "lat": 50.983763291558404,
    "level": "address",
@@ -8235,6 +8285,11 @@
    "level": "address",
    "lon": 3.2623786664620127
   },
+  "oudeheerweg 13||sint-lievens-houtem": {
+   "lat": 50.909721000056564,
+   "level": "address",
+   "lon": 3.866916277722577
+  },
   "oudeheerweg-heide 14|9250|waasmunster": {
    "lat": 51.12229456511465,
    "level": "address",
@@ -8680,6 +8735,11 @@
    "level": "address",
    "lon": 3.443344869059291
   },
+  "pieter boncquetstraat 29|8870|kachtem": {
+   "lat": 50.93313621084292,
+   "level": "address",
+   "lon": 3.2023087685915863
+  },
   "pieter de coninckstraat 11|8870|izegem": {
    "lat": 50.90115741417244,
    "level": "address",
@@ -8759,6 +8819,11 @@
    "level": "address",
    "lon": 3.6192039583099627
   },
+  "pleispark 15|9051|sint-denijs-westrem": {
+   "lat": 51.02035778777573,
+   "level": "address",
+   "lon": 3.6931430419460782
+  },
   "plezantstraat 154||sint-niklaas": {
    "lat": 51.16892779362611,
    "level": "address",
@@ -8835,6 +8900,11 @@
    "lat": 50.77084984173855,
    "level": "address",
    "lon": 3.4383854881180804
+  },
+  "pontstraat 72|8580|avelgem": {
+   "lat": 50.77096444332107,
+   "level": "address",
+   "lon": 3.43837089070483
   },
   "poosmeersstraat 15|9230|wetteren": {
    "lat": 51.01793912573974,
@@ -9179,6 +9249,11 @@
    "lon": 3.4990829671445907
   },
   "rijksweg 57|9870|machelen": {
+   "lat": 50.95823213639118,
+   "level": "address",
+   "lon": 3.498831499863215
+  },
+  "rijksweg 57|9870|zulte": {
    "lat": 50.95823213639118,
    "level": "address",
    "lon": 3.498831499863215
@@ -9904,6 +9979,11 @@
    "level": "address",
    "lon": 2.8192659291630644
   },
+  "sint hubertusstraat 15|9000|gent": {
+   "lat": 51.0449784,
+   "level": "address",
+   "lon": 3.7242444
+  },
   "sint jansstraat 48|8840|staden": {
    "lat": 50.97292152321634,
    "level": "address",
@@ -10242,6 +10322,11 @@
    "lat": 51.07149214018749,
    "level": "address",
    "lon": 3.6868887914547153
+  },
+  "spelonckvaart 5|9180|lokeren": {
+   "lat": 51.179283,
+   "level": "address",
+   "lon": 3.9495071
   },
   "speltreep 11|9960|assenede": {
    "lat": 51.20526682669624,
@@ -10749,6 +10834,11 @@
   "ten halven 47|9100|sint-niklaas": {
    "lat": 51.1865987,
    "lon": 4.1634529
+  },
+  "ten stroom 28|9890|vurste": {
+   "lat": 50.952042877369614,
+   "level": "address",
+   "lon": 3.6834673590789513
   },
   "tennisbaanstraat 59|9000|gent": {
    "lat": 51.04148126395951,
@@ -11414,6 +11504,11 @@
    "level": "address",
    "lon": 3.8132618806021563
   },
+  "voordries 81|9860|oosterzele": {
+   "lat": 50.95374986653565,
+   "level": "address",
+   "lon": 3.808804054759066
+  },
   "voorhavenlaan 19|9000|gent": {
    "lat": 51.07843741958313,
    "level": "address",
@@ -11881,6 +11976,11 @@
    "lat": 51.04004882584949,
    "level": "address",
    "lon": 3.7173543288967426
+  },
+  "windekekouter 43||oosterzele": {
+   "lat": 50.94419575462741,
+   "level": "address",
+   "lon": 3.799440138292445
   },
   "winkelhoekstraat 33|8870|izegem": {
    "lat": 50.90037859519655,

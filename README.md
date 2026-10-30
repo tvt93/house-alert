@@ -53,8 +53,9 @@ framework — Leaflet for the map, everything else is plain HTML.
   included by default; untick the box to make every filter strict. A garage or
   parking space sold on its own is its own type (*Garage*), hidden by default.
 - Filters live in the URL, so a filtered view can be bookmarked or sent to someone.
-- **Dagelijkse mail** turns the current filters into a subscription file and opens it,
-  pre-filled, in GitHub's editor. One click on *Commit* and the mail starts tomorrow.
+- **Dagelijkse mail** turns the current filters into a daily mail right from the page: a
+  name for the selection, an e-mail address, done. No GitHub account needed; see
+  *Setting up a mail from the page* below for the one-time wiring.
 
 ## Daily mail: subscriptions
 
@@ -74,12 +75,13 @@ postcodes: ["9000", "90", "9820"]
 
 Two things worth knowing:
 
-- **Recipients are `$NAME` references.** This repository is public (GitHub Pages on a
-  free plan requires it), so addresses live in Actions secrets, not in files. The workflow
-  maps `MAIL_TO`, `MAIL_TO_PARTNER`, `MAIL_TO_2` and `MAIL_TO_3` into the run; create a
-  secret with one of those names and a subscription can reference it. (Another name needs
-  one extra line in `daily.yml`.) A literal address also works if you don't mind it being
-  visible.
+- **Recipients never appear in clear.** This repository is public (GitHub Pages on a
+  free plan requires it), so a recipient is either a `$NAME` reference to an Actions
+  secret (the workflow maps `MAIL_TO`, `MAIL_TO_PARTNER`, `MAIL_TO_2` and `MAIL_TO_3`
+  into the run; another name needs one extra line in `daily.yml`) or an `enc:...` token:
+  the address sealed in the browser with the site's public key, which only the mail run
+  can open with the `MAIL_KEY` secret. Files written from the page use the second form.
+  A literal address also works if you don't mind it being visible.
 - **`include_unknown`** decides what happens when a field can't be read off the page. Not
   every agency publishes the EPC or the plot size, and `true` keeps those listings rather
   than silently dropping them. Set it to `false` for anything non-negotiable. The
@@ -156,10 +158,44 @@ One-time setup on GitHub:
 | `SMTP_PASSWORD` | the app password |
 | `MAIL_TO` | where the default digest goes |
 | `MAIL_TO_PARTNER`, `MAIL_TO_2`, `MAIL_TO_3` | other recipients a subscription refers to (optional) |
+| `MAIL_KEY` | private key from `house-alert keygen`; opens the addresses sealed by the page |
 | `SMTP_HOST`, `SMTP_PORT`, `MAIL_FROM` | optional; sensible defaults |
 
 3. Run the workflow once by hand from the Actions tab. The first run seeds the state and
    fills the page; from the next morning on, the mails go out.
+
+### Setting up a mail from the page
+
+The page is static, so something has to commit the subscription file on its behalf. That
+something is `worker/subscribe.js`: a Cloudflare Worker (free tier, one file, no build
+step) that validates the request, renders the YAML and commits it with a token that can
+touch nothing but this repository's contents. The address is encrypted in the browser
+before it leaves, so neither the Worker nor the repository ever holds it readably.
+
+1. **Keys.** `house-alert keygen` prints a pair. The public one goes into
+   `SUBSCRIBE_KEY` in `docs/index.html`; the private one becomes the Actions secret
+   `MAIL_KEY`. Keep it: addresses sealed with the public key can only be opened with it.
+2. **GitHub token.** *Settings → Developer settings → Fine-grained tokens*: this repository
+   only, permission *Contents: read and write*, nothing else. Note the expiry (a year at
+   most) and renew it in the Worker when it lapses.
+3. **Worker.** From the `worker/` folder (needs a free Cloudflare account; the first
+   command opens the browser to log in):
+
+   ```powershell
+   npx wrangler login
+   npx wrangler deploy                   # prints the Worker URL
+   npx wrangler secret put GITHUB_TOKEN  # paste the token from step 2
+   ```
+
+   `wrangler.toml` already sets `GITHUB_REPO`, `ALLOWED_ORIGIN` and `MAX_SUBSCRIPTIONS`
+   (default 20: the total number of files the Worker will ever create, since anyone who
+   finds the page can use the button). The dashboard route works too: *Workers & Pages →
+   Create*, paste `subscribe.js`, add the same variables under *Settings → Variables*.
+4. **Page.** Put the Worker's URL in `SUBSCRIBE_URL` next to `SUBSCRIBE_KEY`, commit.
+   Until both are filled the dialog says the feature is not active yet.
+
+Each click creates `config/subscriptions/<name>.yaml` (a repeated name gets `-2`, `-3`).
+Stopping a mail is deleting its file; the next morning run is the first that mails it.
 
 The first run fetches every listing currently online (up to 80 new pages per agency per
 run, so a site with a long sitemap catches up over a few runs) and takes

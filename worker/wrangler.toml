@@ -1,0 +1,12 @@
+# Deploy from this folder:  npx wrangler login && npx wrangler deploy
+# then:                     npx wrangler secret put GITHUB_TOKEN
+# The deploy prints the Worker URL; that goes into SUBSCRIBE_URL in docs/index.html.
+name = "house-alert-subscribe"
+main = "subscribe.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[vars]
+GITHUB_REPO = "tvt93/house-alert"
+ALLOWED_ORIGIN = "https://tvt93.github.io"
+MAX_SUBSCRIPTIONS = "20"

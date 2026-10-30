@@ -71,6 +71,17 @@ def cmd_list(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_keygen(args: argparse.Namespace) -> int:
+    from .sealed import keygen
+
+    public, private = keygen()
+    print("Key pair for addresses sealed by the overview page.\n")
+    print(f"SUBSCRIBE_KEY (public, goes in docs/index.html):\n  {public}\n")
+    print(f"MAIL_KEY (private, GitHub secret - never commit it):\n  {private}\n")
+    print("Addresses sealed with an earlier public key stop working once MAIL_KEY changes.")
+    return 0
+
+
 def cmd_detect(args: argparse.Namespace) -> int:
     agencies = load_agencies(only=args.only)
     detected: dict[str, str] = {}
@@ -467,6 +478,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_test = sub.add_parser("test-mail", help="send the sample email to every subscription")
     p_test.set_defaults(func=cmd_test_mail)
+
+    p_key = sub.add_parser("keygen", help="key pair for addresses the overview page seals (enc: recipients)")
+    p_key.set_defaults(func=cmd_keygen)
 
     return parser
 

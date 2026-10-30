@@ -192,13 +192,17 @@ dialog .dh { padding: 18px 20px 0; }
 dialog h3 { margin: 0 0 4px; font-size: 18px; }
 dialog p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
 dialog .db { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 12px; }
-dialog textarea {
-  width: 100%; min-height: 200px; font-family: var(--mono); font-size: 12px; padding: 10px;
-  border: 1px solid var(--border); border-radius: 8px; background: var(--bg); resize: vertical;
-}
 dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .summary { font-size: 13px; background: var(--accent-soft); color: var(--accent); border-radius: 8px; padding: 8px 10px; }
+.summary.ok { font-size: 14px; padding: 12px; line-height: 1.5; }
+.sum-title { font-weight: 600; margin-bottom: 4px; }
+.sum-list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; }
+.sum-list li { display: contents; }
+.sum-list li span:first-child { opacity: .75; }
+.sum-list li.wide { display: block; grid-column: 1 / -1; }
 .note { font-size: 12px; color: var(--faint); }
+.note.err { color: var(--warn-text); background: var(--warn-soft); border-radius: 8px; padding: 8px 10px; }
+dialog .btn[disabled] { opacity: .55; cursor: default; }
 
 /* ---------------------------------------------------------------- mobile */
 .only-mobile { display: none; }
@@ -333,20 +337,29 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
 <dialog id="mailDialog">
   <div class="dh">
     <h3>Dagelijkse mail instellen</h3>
-    <p>Elke ochtend één mail met de nieuwe woningen die door de filters hieronder komen. De instelling is een klein bestand in de repository; GitHub opent het al ingevuld, jij klikt enkel op <b>Commit</b>.</p>
+    <p>Elke ochtend één mail met de nieuwe woningen die door je huidige filters komen. Geef de selectie een naam en vul je e-mailadres in.</p>
   </div>
-  <div class="db">
+  <div class="db" id="subForm">
     <div class="row">
-      <div class="field"><label for="subName">Naam</label><input type="text" id="subName" value="Mijn filter" autocomplete="off"></div>
-      <div class="field"><label for="subTo">Ontvanger</label><input type="text" id="subTo" value="$MAIL_TO" autocomplete="off"></div>
+      <div class="field"><label for="subName">Naam van deze selectie</label><input type="text" id="subName" value="Mijn filter" maxlength="60" autocomplete="off"></div>
+      <div class="field"><label for="subTo">E-mailadres</label><input type="email" id="subTo" placeholder="naam@voorbeeld.be" autocomplete="email" inputmode="email"></div>
     </div>
-    <p class="note"><b>$MAIL_TO</b> leest het adres uit de GitHub-secret met die naam, zodat je adres niet in de publieke repo staat. <b>$MAIL_TO_PARTNER</b>, <b>$MAIL_TO_2</b> en <b>$MAIL_TO_3</b> werken ook zodra je zo'n secret aanmaakt onder Settings → Secrets. Een letterlijk e-mailadres mag, maar is dan publiek zichtbaar.</p>
-    <div class="summary" id="subSummary"></div>
-    <textarea id="subYaml" readonly spellcheck="false"></textarea>
+    <div class="summary">
+      <div class="sum-title">Filters in deze mail</div>
+      <ul class="sum-list" id="subSummary"></ul>
+    </div>
+    <p class="note">Je adres wordt in je browser versleuteld voor het verstuurd wordt en is alleen leesbaar op het moment dat de mail vertrekt.</p>
+    <p class="note err" id="subError" hidden></p>
     <div class="df">
       <button type="button" class="btn" id="subClose">Sluiten</button>
-      <button type="button" class="btn" id="subCopy">Kopieer YAML</button>
-      <a class="btn primary" id="subCreate" href="#" target="_blank" rel="noopener">Maak aan op GitHub →</a>
+      <button type="button" class="btn primary" id="subCreate">Mail instellen</button>
+    </div>
+  </div>
+  <div class="db" id="subDone" hidden>
+    <div class="summary ok" id="subDoneText"></div>
+    <p class="note">Wil je de mail later stoppen of aanpassen? Laat het de beheerder van de pagina weten.</p>
+    <div class="df">
+      <button type="button" class="btn primary" id="subDoneClose">Sluiten</button>
     </div>
   </div>
 </dialog>
@@ -359,7 +372,14 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
 
   // ------------------------------------------------------------ constants
   var REPO_FALLBACK = { owner: 'tvt93', repo: 'house-alert' };
-  var TYPE_LABEL = { house: 'Woning', apartment: 'Appartement', land: 'Grond', commercial: 'Handel', parking: 'Garage', unknown: 'Onbekend' };
+  // "Dagelijkse mail instellen" posts to this Cloudflare Worker (worker/subscribe.js),
+  // which commits the subscription file. The address is sealed in the browser with
+  // SUBSCRIBE_KEY (public key from `house-alert keygen`); only the mail run can open it.
+  // Both empty = the dialog explains that setting up from the page is not active yet.
+  var SUBSCRIBE_URL = '';
+  var SUBSCRIBE_KEY = '0JP8jPbMMnvtkxzpSvufrlM2YohAPGqy0UsiF+W6q3A=';
+  var NACL_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.3/nacl-fast.min.js';
+  var TYPE_LABEL ={ house: 'Woning', apartment: 'Appartement', land: 'Grond', commercial: 'Handel', parking: 'Garage', unknown: 'Onbekend' };
   var STATUS_LABEL = { option: 'In optie', sold: 'Verkocht', gone: 'Niet meer online' };
   function statusGroup(l) { var s = l.status || 'available'; return s === 'gone' ? 'sold' : s; }
   var PAGE = 48;
@@ -648,65 +668,121 @@ dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end
     if (m && seg) return { owner: m[1], repo: seg };
     return REPO_FALLBACK;
   }
-  function slug(s) {
-    return (s || 'filter').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
-      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'filter';
-  }
-  function yq(s) { return "'" + String(s).replace(/'/g, "''") + "'"; }
-  function rangeYaml(key, min, max, unk) {
-    return key + ':\n  min: ' + (min == null ? '' : min) + '\n  max: ' + (max == null ? '' : max) + '\n  include_unknown: ' + (unk ? 'true' : 'false') + '\n';
-  }
-  function buildYaml() {
-    var f = F.read(), name = $('subName').value.trim() || 'Mijn filter', to = $('subTo').value.trim() || '$MAIL_TO';
+  var subscribeReady = !!(SUBSCRIBE_URL && SUBSCRIBE_KEY);
+
+  // What the mail will filter on: the page's filters minus the ones that
+  // only make sense on the page (status, days, agency, sort).
+  function subscription() {
+    var f = F.read();
     var types = Object.keys(f.types).filter(function (t) { return t !== 'unknown'; });
-    var y = '# Dagelijkse mail, aangemaakt vanuit de overzichtspagina.\n' +
-      '# Elke ochtend: de nieuwe woningen die door deze filters komen.\n\n' +
-      'name: ' + yq(name) + '\n' +
-      'to:\n  - ' + yq(to) + '\n' +
-      'enabled: true\n\n' +
-      'property_types:' + (types.length ? '\n' + types.map(function (t) { return '  - ' + t; }).join('\n') : ' []') + '\n\n' +
-      rangeYaml('price', f.priceMin, f.priceMax, f.unknown) + '\n' +
-      rangeYaml('bedrooms', f.bedMin, f.bedMax, f.unknown) + '\n' +
-      rangeYaml('living_area_m2', f.livingMin, f.livingMax, f.unknown) + '\n' +
-      rangeYaml('plot_area_m2', f.plotMin, f.plotMax, f.unknown) + '\n' +
-      'postcodes:' + (f.postcodes.length ? '\n' + f.postcodes.map(function (p) { return '  - ' + yq(p); }).join('\n') : ' []') + '\n\n' +
-      'municipalities:\n  include: []\n  exclude: []\n\n' +
-      'exclude_keywords:\n  - garagebox\n  - staanplaats\n  - parkeerplaats\n  - opbrengsteigendom\n  - nieuwbouwproject\n  - handelspand\n\n' +
-      'highlight_keywords:\n  - tuin\n  - zuidgericht\n  - te renoveren\n';
-    if (f.agency) y += '\n# Kantoor is alleen een filter op de pagina, niet in de mail.\n';
-    return { yaml: y, name: name, f: f, types: types };
+    var range = function (min, max) { return { min: min, max: max, include_unknown: f.unknown }; };
+    return {
+      f: f, types: types,
+      body: {
+        name: $('subName').value.trim() || 'Mijn filter',
+        property_types: types,
+        price: range(f.priceMin, f.priceMax),
+        bedrooms: range(f.bedMin, f.bedMax),
+        living_area_m2: range(f.livingMin, f.livingMax),
+        plot_area_m2: range(f.plotMin, f.plotMax),
+        postcodes: f.postcodes
+      }
+    };
   }
-  function summarize(b) {
-    var f = b.f, bits = [];
-    if (f.priceMin != null || f.priceMax != null) bits.push('prijs ' + (f.priceMin != null ? '≥ ' + euro(f.priceMin) : '') + (f.priceMax != null ? ' ≤ ' + euro(f.priceMax) : ''));
-    if (b.types.length && b.types.length < 5) bits.push(b.types.map(function (t) { return TYPE_LABEL[t].toLowerCase(); }).join('/'));
-    if (f.postcodes.length) bits.push('postcode ' + f.postcodes.join(', '));
-    if (f.plotMin != null || f.plotMax != null) bits.push('grond ' + (f.plotMin || 0) + (f.plotMax != null ? '–' + f.plotMax : '+') + ' m²');
-    if (f.livingMin != null || f.livingMax != null) bits.push('bewoonbaar ' + (f.livingMin || 0) + (f.livingMax != null ? '–' + f.livingMax : '+') + ' m²');
-    if (f.bedMin != null || f.bedMax != null) bits.push((f.bedMin || 0) + (f.bedMax != null ? '–' + f.bedMax : '+') + ' slaapkamers');
-    return bits.length ? 'Mail bevat: ' + bits.join(' · ') : 'Mail bevat: alle nieuwe woningen (geen filters gezet)';
+  function span(min, max, unit) {
+    if (min != null && max != null) return min + ' tot ' + max + unit;
+    if (min != null) return 'vanaf ' + min + unit;
+    return 'tot ' + max + unit;
+  }
+  function summaryRows(s) {
+    var f = s.f, rows = [];
+    if (s.types.length && s.types.length < 5) rows.push(['Type', s.types.map(function (t) { return TYPE_LABEL[t].toLowerCase(); }).join(', ')]);
+    if (f.priceMin != null || f.priceMax != null) rows.push(['Prijs', (f.priceMin != null ? 'vanaf ' + euro(f.priceMin) : '') + (f.priceMin != null && f.priceMax != null ? ' ' : '') + (f.priceMax != null ? 'tot ' + euro(f.priceMax) : '')]);
+    if (f.postcodes.length) rows.push(['Postcodes', f.postcodes.join(', ')]);
+    if (f.plotMin != null || f.plotMax != null) rows.push(['Grond', span(f.plotMin, f.plotMax, ' m²')]);
+    if (f.livingMin != null || f.livingMax != null) rows.push(['Bewoonbaar', span(f.livingMin, f.livingMax, ' m²')]);
+    if (f.bedMin != null || f.bedMax != null) rows.push(['Slaapkamers', span(f.bedMin, f.bedMax, '')]);
+    if (rows.length) rows.push(['Onbekende waarden', f.unknown ? 'worden meegenomen' : 'worden weggelaten']);
+    return rows;
   }
   function refreshDialog() {
-    var b = buildYaml(), r = repoInfo();
-    $('subYaml').value = b.yaml;
-    $('subSummary').textContent = summarize(b);
-    $('subCreate').href = 'https://github.com/' + r.owner + '/' + r.repo + '/new/main?filename=' +
-      encodeURIComponent('config/subscriptions/' + slug(b.name) + '.yaml') + '&value=' + encodeURIComponent(b.yaml);
+    var s = subscription(), rows = summaryRows(s), html = '';
+    if (!rows.length) html = '<li class="wide">Alle nieuwe woningen, er staan geen filters aan.</li>';
+    rows.forEach(function (r) { html += '<li><span>' + esc(r[0]) + '</span><span>' + esc(r[1]) + '</span></li>'; });
+    if (s.f.agency) html += '<li class="wide">Het kantoorfilter geldt alleen op de pagina, niet in de mail.</li>';
+    $('subSummary').innerHTML = html;
+    if (!subscribeReady) {
+      var r = repoInfo();
+      showError('Instellen vanuit de pagina is nog niet geactiveerd. De beheerder vindt de stappen in de README van <a href="https://github.com/' +
+        esc(r.owner) + '/' + esc(r.repo) + '" target="_blank" rel="noopener">de repository</a>.', true);
+      $('subCreate').disabled = true;
+    }
   }
-  $('mailBtn').addEventListener('click', function () { refreshDialog(); $('mailDialog').showModal(); });
+  function showError(msg, asHtml) {
+    var el = $('subError');
+    if (!msg) { el.hidden = true; el.textContent = ''; return; }
+    if (asHtml) el.innerHTML = msg; else el.textContent = msg;
+    el.hidden = false;
+  }
+
+  // The address is sealed here, in the browser, with the site's public key:
+  // ephemeral key (32) | nonce (24) | crypto_box output. The Worker and the
+  // repository only ever see the result; src/house_alert/sealed.py opens it.
+  function loadNacl() {
+    return new Promise(function (resolve, reject) {
+      if (window.nacl) return resolve(window.nacl);
+      var s = document.createElement('script');
+      s.src = NACL_SRC;
+      s.onload = function () { window.nacl ? resolve(window.nacl) : reject(new Error('versleuteling niet beschikbaar')); };
+      s.onerror = function () { reject(new Error('kon de versleuteling niet laden')); };
+      document.head.appendChild(s);
+    });
+  }
+  function b64decode(s) { var bin = atob(s), out = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i); return out; }
+  function b64encode(bytes) { var bin = ''; for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]); return btoa(bin); }
+  function seal(nacl, text, publicKeyB64) {
+    var pk = b64decode(publicKeyB64), eph = nacl.box.keyPair(), nonce = nacl.randomBytes(nacl.box.nonceLength);
+    var ct = nacl.box(new TextEncoder().encode(text), nonce, pk, eph.secretKey);
+    var out = new Uint8Array(eph.publicKey.length + nonce.length + ct.length);
+    out.set(eph.publicKey, 0); out.set(nonce, eph.publicKey.length); out.set(ct, eph.publicKey.length + nonce.length);
+    return 'enc:' + b64encode(out);
+  }
+
+  function submitSubscription() {
+    var to = $('subTo').value.trim(), s = subscription(), btn = $('subCreate');
+    showError('');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(to)) { showError('Vul een geldig e-mailadres in.'); $('subTo').focus(); return; }
+    btn.disabled = true; btn.textContent = 'Bezig…';
+    loadNacl()
+      .then(function (nacl) {
+        s.body.to = seal(nacl, to, SUBSCRIBE_KEY);
+        return fetch(SUBSCRIBE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(s.body) });
+      })
+      .then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (data) {
+          if (!res.ok || !data.ok) throw new Error(data.error || ('fout ' + res.status));
+          $('subDoneText').textContent = 'Klaar. Vanaf morgenochtend krijg je de mail "' + data.name + '" op ' + to + ', telkens er nieuwe woningen zijn die aan je filters voldoen.';
+          $('subForm').hidden = true; $('subDone').hidden = false;
+        });
+      })
+      .catch(function (err) { showError('Dat is niet gelukt: ' + err.message + '. Probeer het zo nog eens.'); })
+      .then(function () { btn.disabled = !subscribeReady; btn.textContent = 'Mail instellen'; });
+  }
+
+  $('mailBtn').addEventListener('click', function () {
+    $('subForm').hidden = false; $('subDone').hidden = true;
+    showError(''); $('subCreate').disabled = !subscribeReady;
+    refreshDialog(); $('mailDialog').showModal();
+  });
   (function () {
     var r = repoInfo();
     $('refreshLink').href = 'https://github.com/' + r.owner + '/' + r.repo + '/actions/workflows/daily.yml';
   })();
   $('subClose').addEventListener('click', function () { $('mailDialog').close(); });
-  $('subName').addEventListener('input', refreshDialog);
-  $('subTo').addEventListener('input', refreshDialog);
-  $('subCopy').addEventListener('click', function () {
-    var ta = $('subYaml');
-    var done = function () { $('subCopy').textContent = 'Gekopieerd ✓'; setTimeout(function () { $('subCopy').textContent = 'Kopieer YAML'; }, 1500); };
-    if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(done, function () { ta.select(); document.execCommand('copy'); done(); });
-    else { ta.select(); document.execCommand('copy'); done(); }
-  });
+  $('subDoneClose').addEventListener('click', function () { $('mailDialog').close(); });
+  $('subCreate').addEventListener('click', submitSubscription);
+  $('subTo').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); submitSubscription(); } });
+  $('subName').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); $('subTo').focus(); } });
 
   // ---------------------------------------------------------------- load
   F.fromHash();

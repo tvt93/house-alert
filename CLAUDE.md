@@ -26,6 +26,8 @@ subscription. Python, no services, no database; the state is JSON files in git.
 | `geo.py` | street → Nominatim point; else postcode / city centroid from bundled table |
 | `filters.py` | `Listing` + `Criteria` → keep or reject, with a reason |
 | `mail/` | photo-card digest rendering and SMTP delivery |
+| `sealed.py` | `enc:` recipients: the address sealed by the page, opened with `MAIL_KEY` |
+| `worker/subscribe.js` | Cloudflare Worker behind "Dagelijkse mail instellen": validates, renders YAML, commits |
 | `site.py` | `ListingStore` → `docs/listings.json` |
 
 ## Conventions that matter
@@ -56,7 +58,11 @@ subscription. Python, no services, no database; the state is JSON files in git.
 - **Email addresses never go in files.** The repo is public (Pages on a free plan).
   Subscriptions say `$MAIL_TO`; the workflow maps each recipient secret to an env var by
   name. Never pass `toJSON(secrets)`: GitHub's workflow protections hold such runs for
-  manual approval, which silently kills the schedule.
+  manual approval, which silently kills the schedule. Subscriptions made from the page
+  carry `enc:...` instead: the address sealed in the browser with the public key in
+  `docs/index.html` (`SUBSCRIBE_KEY`), opened by `sealed.py` with the `MAIL_KEY` secret.
+  The page cannot commit by itself; `worker/subscribe.js` (Cloudflare Worker) does that
+  with a contents-only token, and it is the only place that writes subscription files.
 - **Every real-world parsing trap gets a regression test** using the markup shape that
   actually caused it. See `tests/test_location.py`, `tests/test_index_pages.py`,
   `tests/test_street.py` and the price-then-postcode case in `tests/test_extract.py`.

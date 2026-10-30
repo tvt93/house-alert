@@ -11,6 +11,7 @@ from typing import Any
 
 import yaml
 
+from . import sealed
 from .models import Agency
 
 log = logging.getLogger(__name__)
@@ -129,11 +130,25 @@ class Subscription:
         return bool(self.recipients)
 
 
+MAIL_KEY = "MAIL_KEY"   # the private key that opens `enc:` recipients
+
+
 def resolve_recipient(raw: str, secrets: dict[str, str] | None = None) -> str | None:
-    """A recipient is an address, or `$NAME` for an environment variable or
-    Actions secret of that name - which is how an address stays out of a
-    public repository."""
+    """A recipient is an address, `$NAME` for an environment variable or
+    Actions secret of that name, or `enc:...`: the address sealed by the
+    overview page with the site's public key and opened here with the
+    private key in MAIL_KEY. Both keep the address out of a public repository.
+    None when it cannot be resolved (no such variable, no key, wrong key)."""
     raw = raw.strip()
+    if sealed.is_sealed(raw):
+        key = os.environ.get(MAIL_KEY) or (secrets or {}).get(MAIL_KEY) or ""
+        if not key.strip():
+            return None
+        try:
+            return sealed.open_sealed(raw, key).strip() or None
+        except sealed.SealError as exc:
+            log.warning("sealed recipient could not be opened: %s", exc)
+            return None
     m = re.fullmatch(r"\$\{?([A-Z][A-Z0-9_]*)\}?", raw)
     if not m:
         return raw or None
@@ -165,7 +180,8 @@ def load_subscriptions(directory: Path | None = None,
                     if addr.strip():
                         recipients.append(addr.strip())
             else:
-                unresolved.append(entry)
+                # An enc: token is long and meaningless in a report; name what it needs.
+                unresolved.append(f"enc:… (needs {MAIL_KEY})" if sealed.is_sealed(entry) else entry)
         subs.append(Subscription(
             name=str(raw.get("name") or path.stem),
             recipients=recipients,

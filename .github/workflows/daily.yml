@@ -56,6 +56,8 @@ jobs:
           MAIL_TO_PARTNER: ${{ secrets.MAIL_TO_PARTNER }}
           MAIL_TO_2: ${{ secrets.MAIL_TO_2 }}
           MAIL_TO_3: ${{ secrets.MAIL_TO_3 }}
+          # Opens the "enc:" recipients that the overview page seals in the browser.
+          MAIL_KEY: ${{ secrets.MAIL_KEY }}
           HOUSE_ALERT_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
           # Only the 06:15 run (or a manual run that asks for it) sends mail.
           NO_EMAIL: ${{ ((github.event_name == 'schedule' && github.event.schedule != '15 6 * * *') || (github.event_name == 'workflow_dispatch' && !inputs.send_mail)) && '--no-email' || '' }}

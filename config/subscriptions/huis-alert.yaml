@@ -1,0 +1,51 @@
+# Dagelijkse mail, ingesteld vanaf de overzichtspagina op 2026-10-30.
+# Het adres is versleuteld met de sleutel van de site; alleen de mailrun (MAIL_KEY) kan het lezen.
+# Verwijder dit bestand om de mail te stoppen.
+
+name: 'Huis-alert'
+to:
+  - 'enc:nIKHuQABZySdO7mf7jqwTXANczwIsZV48W80x73wgnEJy8Ro0oXHRxn/+UZBH6VmoIxDJlUrVQ4yqwX313XV4/N9oU8s2zocLPv/OyqTcdStjQwOcDodB/yOR6JKo7x2TA=='
+enabled: true
+
+property_types:
+  - house
+  - land
+
+price:
+  min: 
+  max: 
+  include_unknown: true
+
+bedrooms:
+  min: 4
+  max: 
+  include_unknown: true
+
+living_area_m2:
+  min: 200
+  max: 
+  include_unknown: true
+
+plot_area_m2:
+  min: 600
+  max: 
+  include_unknown: true
+
+postcodes: []
+
+municipalities:
+  include: []
+  exclude: []
+
+exclude_keywords:
+  - garagebox
+  - staanplaats
+  - parkeerplaats
+  - opbrengsteigendom
+  - nieuwbouwproject
+  - handelspand
+
+highlight_keywords:
+  - tuin
+  - zuidgericht
+  - te renoveren

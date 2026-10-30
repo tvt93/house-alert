@@ -1,6 +1,7 @@
 from house_alert.extract import (
     _num,
     extract_listing,
+    address_title,
     guess_property_type,
     looks_like_listing_url,
 )
@@ -288,3 +289,52 @@ def test_call_to_action_headings_never_become_the_title():
     listing = extract_listing("https://entree.be/pand/kerkstraat-5-9000-gent/1", html, source="Entree")
     assert listing is not None
     assert listing.title == "Maak uw entree"
+
+
+def test_compound_garage_word_is_parking_but_a_garage_door_is_not():
+    assert guess_property_type("Privégarage te koop in Wevelgem", "") == "parking"
+    assert guess_property_type("Dubbelgarage in centrum Kortrijk", "") == "parking"
+    assert guess_property_type("Woning met privégarage", "") == "house"
+    assert guess_property_type("Nieuwe garagepoort te koop", "") == "unknown"
+
+
+MVASTGOED = """<html><head><title>Te koop: Afgesloten garage te koop in de Hoveniersstraat te Kortrijk !  - Kortrijk 8500</title>
+<script type="application/ld+json">{"@context":"http://schema.org","@type":"Residence",
+"name":"Kortrijk Hoveniersstraat 40","description":"Bent u op zoek naar een veilige garage in Kortrijk?",
+"geo":{"@type":"GeoCoordinates","latitude":"50.82286","longitude":"3.26555",
+"address":{"@type":"PostalAddress","streetAddress":"Hoveniersstraat 40","postalCode":"8500","addressRegion":"Kortrijk","addressCountry":"BE"}}}</script>
+</head><body><header><nav><a href="/">Home</a></nav></header>
+<h1 class="wrap__heading"><span>Afgesloten garage te koop in de Hoveniersstraat te Kortrijk ! </span></h1>
+<h2 class="detail__price">€ 38 500</h2>
+<h2 class="wrap__heading">Over deze woning</h2>
+<p>Bent u op zoek naar een veilige garage in Kortrijk?</p>
+<footer>Luxemburgstraat 16B, 9140 Temse</footer></body></html>"""
+
+
+def test_address_only_title_yields_to_the_h1():
+    # Skarabee structured data names the listing by its address and the page
+    # has no og:title; only the h1 says a garage is for sale.
+    listing = extract_listing("https://www.mvastgoed.be/nl/kortrijk-hoveniersstraat-40/7674049",
+                              MVASTGOED, source="M Vastgoed")
+    assert listing is not None
+    assert listing.title.startswith("Afgesloten garage te koop")
+    assert listing.property_type == "parking"
+    assert listing.street == "Hoveniersstraat 40"
+
+
+def test_address_only_title_stays_when_the_h1_names_nothing():
+    html = MVASTGOED.replace("Afgesloten garage te koop in de Hoveniersstraat te Kortrijk ! ",
+                             "Kortrijk Hoveniersstraat 40")
+    listing = extract_listing("https://www.mvastgoed.be/nl/kortrijk-hoveniersstraat-40/7674049",
+                              html, source="M Vastgoed")
+    assert listing is not None
+    assert listing.title == "Kortrijk Hoveniersstraat 40"
+
+
+def test_address_title_detector():
+    assert address_title("Kortrijk Hoveniersstraat 40")
+    assert address_title("Harelbeke Overleiestraat 75/A 12")
+    assert address_title("Kortrijk Koning Leopold III-laan 6 1")
+    assert not address_title("Charmant pareltje in hartje Gent")
+    assert not address_title("Te koop Kerkstraat 28 Destelbergen")
+    assert not address_title("Woning Kerkstraat 28")

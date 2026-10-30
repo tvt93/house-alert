@@ -10281,7 +10281,7 @@
    "postal_code": "8000",
    "street": "",
    "price": 75000,
-   "property_type": "land",
+   "property_type": "parking",
    "bedrooms": null,
    "living_area_m2": null,
    "plot_area_m2": 12,
@@ -11676,7 +11676,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-wallemeers-32-2/7692900",
    "source": "M Vastgoed",
-   "title": "Roeselare Wallemeers 32 2",
+   "title": "Energiezuinig Appartement EPC C te koop in Roeselare",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Wallemeers 32",
@@ -19929,7 +19929,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/izegem-brugstraat-4/7693063",
    "source": "M Vastgoed",
-   "title": "Izegem Brugstraat 4",
+   "title": "Handelspand met woonst op toplocatie te koop te Izegem",
    "city": "Izegem",
    "postal_code": "8870",
    "street": "Brugstraat 4",
@@ -20104,7 +20104,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/wervik-oude-beselarestraat-311/7692438",
    "source": "M Vastgoed",
-   "title": "Wervik Oude Beselarestraat 311",
+   "title": "Uniek landhuis in Kruiseke te koop ! EPC C",
    "city": "Wervik",
    "postal_code": "8940",
    "street": "Oude Beselarestraat 311",
@@ -27015,7 +27015,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-handelskaai-1a-22/7692142",
    "source": "M Vastgoed",
-   "title": "Kortrijk Handelskaai 1/A 22",
+   "title": "lichtrijke studio te koop perfect als investering of eigenwoonst.",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Handelskaai 1",
@@ -40300,7 +40300,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/anzegem-beukenhofstraat-71c-003/7691659",
    "source": "M Vastgoed",
-   "title": "Anzegem Beukenhofstraat 71/C 003",
+   "title": "Gelijkvloers 2-slaapkamer appartement te Anzegem",
    "city": "Anzegem",
    "postal_code": "8570",
    "street": "Beukenhofstraat 71",
@@ -42963,7 +42963,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-koning-leopold-iii-laan-6-1/7688149",
    "source": "M Vastgoed",
-   "title": "Kortrijk Koning Leopold III-laan 6 1",
+   "title": "Instapklaar gelijkvloers appartement aan het Leopold III park in Kortrijk te koop !",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Koning Leopold III-laan 6",
@@ -43038,7 +43038,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/harelbeke-harlemboislaan-6/7679243",
    "source": "M Vastgoed",
-   "title": "Harelbeke Harlemboislaan 6",
+   "title": "Alleenstaande villa met 4 slaapkamers en zonnige tuin te Harelbeke op 1005 m²",
    "city": "Harelbeke",
    "postal_code": "8530",
    "street": "Harlemboislaan 6",
@@ -43723,7 +43723,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/lauwe-spoorwegstraat-5/7661149",
    "source": "M Vastgoed",
-   "title": "Lauwe Spoorwegstraat 5",
+   "title": "Opbrengsteigendom met 6 units en 6 parkeerplaatsen in Lauwe - “EPC B - conform elektriciteit - huurpotentieel tot ca. €60.600/jaar",
    "city": "Lauwe",
    "postal_code": "8930",
    "street": "Spoorwegstraat 5",
@@ -43950,12 +43950,12 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-jan-breydellaan-29/7685083",
    "source": "M Vastgoed",
-   "title": "Kortrijk Jan Breydellaan 29",
+   "title": "Garage te koop op zeer interessante ligging te Kortrijk ! Jan Breydellaan !",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Jan Breydellaan 29",
    "price": 35000,
-   "property_type": "unknown",
+   "property_type": "parking",
    "bedrooms": null,
    "living_area_m2": null,
    "plot_area_m2": null,
@@ -44127,7 +44127,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/menen-kortrijkstraat-31-0101/7672373",
    "source": "M Vastgoed",
-   "title": "Menen Kortrijkstraat 31 0101",
+   "title": "Ruim Instapklaar appartement met 3 slaapkamers !",
    "city": "Menen",
    "postal_code": "8930",
    "street": "Kortrijkstraat 31",
@@ -44452,7 +44452,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-meensesteenweg-181-31/7685103",
    "source": "M Vastgoed",
-   "title": "Roeselare Meensesteenweg 181 31",
+   "title": "Lichtrijk 2-slaapkamerappartement met parkzicht, zonnig terras en ruime zolder en EPC A!",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Meensesteenweg 181",
@@ -44552,7 +44552,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-meensesteenweg-226/7642472",
    "source": "M Vastgoed",
-   "title": "Roeselare Meensesteenweg 226",
+   "title": "Woning nabij het centrum van Roeselare met 3 slaapkamers en zonnige tuin",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Meensesteenweg 226",
@@ -45132,7 +45132,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-lindenstraat-62-007/7685900",
    "source": "M Vastgoed",
-   "title": "Roeselare Lindenstraat 62 007",
+   "title": "Lichtrijke studio van 40m² op toplocatie in Roeselare",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Lindenstraat 62",
@@ -45436,7 +45436,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-mandellaan-58/7622308",
    "source": "M Vastgoed",
-   "title": "Roeselare Mandellaan 58",
+   "title": "Knusse rijwoning nabij het centrum van Roeselare !",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Mandellaan 58",
@@ -46344,12 +46344,12 @@
   {
    "url": "https://www.mvastgoed.be/nl/harelbeke-overleiestraat-75a-12/7635129",
    "source": "M Vastgoed",
-   "title": "Harelbeke Overleiestraat 75/A 12",
+   "title": "Garage te koop nabij het centrum van Harelbeke!",
    "city": "Harelbeke",
    "postal_code": "8530",
    "street": "Overleiestraat 75",
    "price": 25000,
-   "property_type": "unknown",
+   "property_type": "parking",
    "bedrooms": null,
    "living_area_m2": null,
    "plot_area_m2": null,
@@ -46619,7 +46619,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/wervik-ten-brielenlaan-58/7650689",
    "source": "M Vastgoed",
-   "title": "Wervik Ten Brielenlaan 58",
+   "title": "Volledig gerenoveerde woning (2025) te koop !",
    "city": "Wervik",
    "postal_code": "8940",
    "street": "Ten Brielenlaan 58",
@@ -47002,7 +47002,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/heule-gullegemsestraat-87/7640955",
    "source": "M Vastgoed",
-   "title": "Heule Gullegemsestraat 87",
+   "title": "Woning te Heule met 5 slaapkamers op toplocatie!",
    "city": "Heule",
    "postal_code": "8501",
    "street": "Gullegemsestraat 87",
@@ -47254,7 +47254,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/gullegem-koningin-fabiolastraat-49-202/7690809",
    "source": "M Vastgoed",
-   "title": "Gullegem Koningin Fabiolastraat 49 202",
+   "title": "Prachtig ruim appartement in centrum Gullegem ! *** NONO INSPIRED ***",
    "city": "Gullegem",
    "postal_code": "8560",
    "street": "Koningin Fabiolastraat 49",
@@ -47531,7 +47531,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-vooruitgangsstraat-10/7679089",
    "source": "M Vastgoed",
-   "title": "Kortrijk Vooruitgangsstraat 10",
+   "title": "Woning te Kortrijk nabij het centrum met garage op TOPLOCATIE !",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Vooruitgangsstraat 10",
@@ -47706,7 +47706,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/anzegem-kruisweg-11-103/7672367",
    "source": "M Vastgoed",
-   "title": "Anzegem Kruisweg 11 103",
+   "title": "TOPPER te Anzegem !! appartement volledig Instapklaar!",
    "city": "Anzegem",
    "postal_code": "8570",
    "street": "Kruisweg 11",
@@ -47956,7 +47956,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/rekkem-dronckaertstraat-26/7672394",
    "source": "M Vastgoed",
-   "title": "Rekkem Dronckaertstraat 26",
+   "title": "Instapklare woning te Rekkem met 3 slaapkamers en EPC B!",
    "city": "Rekkem",
    "postal_code": "8930",
    "street": "Dronckaertstraat 26",
@@ -48516,7 +48516,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-burgemeester-vercruysselaan-18-21/7690879",
    "source": "M Vastgoed",
-   "title": "Kortrijk Burgemeester Vercruysselaan 18 21",
+   "title": "Lichtrijk 2-slaapkamer appartement nabij de Leie ! EPC B !",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Burgemeester Vercruysselaan 18",
@@ -48641,7 +48641,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-loodwitstraat-35/7669431",
    "source": "M Vastgoed",
-   "title": "Kortrijk Loodwitstraat 35",
+   "title": "TOPPER : Bachelorwoning / TOP investering met EPC B te Kortrijk ! *** NONO INSPIRED ***",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Loodwitstraat 35",
@@ -49297,7 +49297,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/zwevegem-deerlijkstraat-15/7672241",
    "source": "M Vastgoed",
-   "title": "Zwevegem Deerlijkstraat 15",
+   "title": "Ideale starterswoning te Zwevegem nabij het centrum met Garage!",
    "city": "Zwevegem",
    "postal_code": "8550",
    "street": "Deerlijkstraat 15",
@@ -49730,7 +49730,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/desselgem-gentseweg-31/7649731",
    "source": "M Vastgoed",
-   "title": "Desselgem Gentseweg 31",
+   "title": "Ruime gezinswoning in de regio Waregem te koop !",
    "city": "Desselgem",
    "postal_code": "8792",
    "street": "Gentseweg 31",
@@ -51625,7 +51625,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/deerlijk-tulpenlaan-117/7667805",
    "source": "M Vastgoed",
-   "title": "Deerlijk Tulpenlaan 117",
+   "title": "Energiezuinig handelspand van 64 m2 op commerciële ligging!",
    "city": "Deerlijk",
    "postal_code": "8540",
    "street": "Tulpenlaan 117",
@@ -51750,7 +51750,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-mandellaan-76/7622322",
    "source": "M Vastgoed",
-   "title": "Roeselare Mandellaan 76",
+   "title": "Top gerenoveerde rijwoning Roeselare !",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Mandellaan 76",
@@ -51929,7 +51929,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/wevelgem-artoisstraat-62/7676884",
    "source": "M Vastgoed",
-   "title": "Wevelgem Artoisstraat 62",
+   "title": "Trendy halfopen bebouwing met tuin en uitweg te Wevelgem ! *** NONO INSPIRED***",
    "city": "Wevelgem",
    "postal_code": "8560",
    "street": "Artoisstraat 62",
@@ -52104,7 +52104,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/geluwe-beselarestraat-3234/7642628",
    "source": "M Vastgoed",
-   "title": "Geluwe Beselarestraat 32/34",
+   "title": "Handelspand - recent ingerichte beenhouwerij te koop !",
    "city": "Geluwe",
    "postal_code": "8940",
    "street": "Beselarestraat 3234",
@@ -52631,7 +52631,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/izegem-lindestraat-53/7665879",
    "source": "M Vastgoed",
-   "title": "Izegem Lindestraat 53",
+   "title": "Woning met 5 slaapkamers, garage en tuin te Izegem!",
    "city": "Izegem",
    "postal_code": "8870",
    "street": "Lindestraat 53",
@@ -53111,7 +53111,7 @@
    "postal_code": "8560",
    "street": "Hoogstraat 57",
    "price": 325000,
-   "property_type": "unknown",
+   "property_type": "parking",
    "bedrooms": null,
    "living_area_m2": null,
    "plot_area_m2": null,
@@ -53690,12 +53690,12 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-hoveniersstraat-40/7674049",
    "source": "M Vastgoed",
-   "title": "Kortrijk Hoveniersstraat 40",
+   "title": "Afgesloten garage te koop in de Hoveniersstraat te Kortrijk !",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Hoveniersstraat 40",
    "price": 38500,
-   "property_type": "unknown",
+   "property_type": "parking",
    "bedrooms": null,
    "living_area_m2": null,
    "plot_area_m2": null,
@@ -55411,7 +55411,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-leiestraat-31/7568827",
    "source": "M Vastgoed",
-   "title": "Kortrijk Leiestraat 31",
+   "title": "Instapklaar handelspand in het centrum van Kortrijk !",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Leiestraat 31",
@@ -55663,12 +55663,12 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-bruanestraat-90a/7674746",
    "source": "M Vastgoed",
-   "title": "Roeselare Bruanestraat 90/A",
+   "title": "Prachtige loftwoning op een centrale ligging te Roeselare !",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Bruanestraat 90",
    "price": 685000,
-   "property_type": "unknown",
+   "property_type": "house",
    "bedrooms": 2,
    "living_area_m2": 520,
    "plot_area_m2": 723,
@@ -56498,7 +56498,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/heestert-vierkeerstraat-57/7686655",
    "source": "M Vastgoed",
-   "title": "Heestert Vierkeerstraat 57",
+   "title": "Woning te Heestert met 3 slaapkamers op TOPLIGGING met unieke verzichten op 428m²!",
    "city": "Heestert",
    "postal_code": "8551",
    "street": "Vierkeerstraat 57",
@@ -57333,12 +57333,12 @@
   {
    "url": "https://www.mvastgoed.be/nl/waregem-molenstraat-71/7685723",
    "source": "M Vastgoed",
-   "title": "Waregem Molenstraat 71",
+   "title": "Topper te Waregem op rustige ligging met zonnepanelen EPC B en praktijkruimte",
    "city": "Waregem",
    "postal_code": "8790",
    "street": "Molenstraat 71",
    "price": 349000,
-   "property_type": "house",
+   "property_type": "commercial",
    "bedrooms": 1,
    "living_area_m2": 176,
    "plot_area_m2": 315,
@@ -57435,7 +57435,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/desselgem-pompoenstraat-20/7657923",
    "source": "M Vastgoed",
-   "title": "Desselgem Pompoenstraat 20",
+   "title": "Kloeke half open bebouwing in Desselgem met tuin, terras en garage !",
    "city": "Desselgem",
    "postal_code": "8792",
    "street": "Pompoenstraat 20",
@@ -57735,7 +57735,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/menen-koningstraat-1/7657471",
    "source": "M Vastgoed",
-   "title": "Menen Koningstraat 1",
+   "title": "UNIEK en ruime KARAKTERVOLLE woning met handelspand nabij de Grote Markt !",
    "city": "Menen",
    "postal_code": "8930",
    "street": "Koningstraat 1",
@@ -57835,7 +57835,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/waregem-spitaalstraat-29/7661564",
    "source": "M Vastgoed",
-   "title": "Waregem Spitaalstraat 29",
+   "title": "Exclusieve Villa te Waregem!",
    "city": "Waregem",
    "postal_code": "8790",
    "street": "Spitaalstraat 29",
@@ -58185,7 +58185,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-oudenaardsesteenweg-255/7672361",
    "source": "M Vastgoed",
-   "title": "Kortrijk Oudenaardsesteenweg 255",
+   "title": "Unieke woning te Kortrijk met zonnige aangelegde tuin, Garage en 4 ruime slaapkamers!",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Oudenaardsesteenweg 255",
@@ -58439,7 +58439,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/middelkerke-jules-van-den-heuvelstraat-22-0404/7681049",
    "source": "M Vastgoed",
-   "title": "Middelkerke Jules Van den Heuvelstraat 22 0404",
+   "title": "Ruime studio met slaaphoek op topligging.",
    "city": "Middelkerke",
    "postal_code": "8430",
    "street": "Jules Van den Heuvelstraat 22",
@@ -58739,7 +58739,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/menen-schansstraat-52/7677637",
    "source": "M Vastgoed",
-   "title": "Menen Schansstraat 52",
+   "title": "Ruime en recent gerenoveerde gezinswoning met garage te koop !",
    "city": "Menen",
    "postal_code": "8930",
    "street": "Schansstraat 52",
@@ -59271,7 +59271,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/gullegem-koningin-fabiolastraat-49-201/7690633",
    "source": "M Vastgoed",
-   "title": "Gullegem Koningin Fabiolastraat 49 201",
+   "title": "Fantastisch superruim leefappartement in hartje van Gullegem ! *** NONO INSPIRED ***",
    "city": "Gullegem",
    "postal_code": "8560",
    "street": "Koningin Fabiolastraat 49",
@@ -60077,7 +60077,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-herdersstraat-119/7677534",
    "source": "M Vastgoed",
-   "title": "Kortrijk Herdersstraat 119",
+   "title": "Instapklare gerenoveerde halfopen bebouwing op rustige ligging nabij het Astridpark !",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Herdersstraat 119",
@@ -60556,7 +60556,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/rumbeke-steelantstraat-7/7657888",
    "source": "M Vastgoed",
-   "title": "Rumbeke Steelantstraat 7",
+   "title": "Mooi perceel bouwgrond in Rumbeke te koop !",
    "city": "Rumbeke",
    "postal_code": "8800",
    "street": "Steelantstraat 7",
@@ -61091,7 +61091,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/heule-mellestraat-175-11/7661767",
    "source": "M Vastgoed",
-   "title": "Heule Mellestraat 175 1.1",
+   "title": "Ruim appartement met groot terras en garage te Heule ! EPC 112 B !",
    "city": "Heule",
    "postal_code": "8501",
    "street": "Mellestraat 175",
@@ -61618,7 +61618,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/wevelgem-artoisstraat-41/7655742",
    "source": "M Vastgoed",
-   "title": "Wevelgem Artoisstraat 41",
+   "title": "Ruime karakterwoning met garage te koop in Wevelgem !",
    "city": "Wevelgem",
    "postal_code": "8560",
    "street": "Artoisstraat 41",
@@ -62124,7 +62124,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/ingelmunster-stationsstraat-20-01/7685710",
    "source": "M Vastgoed",
-   "title": "Ingelmunster Stationsstraat 20 01",
+   "title": "Instapklaar handelspand/kantoorruimte te Ingelmunster met Parkeerplaats! – Volledig gerenoveerd en uitstekend gelegen!",
    "city": "Ingelmunster",
    "postal_code": "8770",
    "street": "Stationsstraat 20",
@@ -63317,7 +63317,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kuurne-korianderplein-18/7660221",
    "source": "M Vastgoed",
-   "title": "Kuurne Korianderplein 18",
+   "title": "BEN-woning op topligging met 3 slaapkamers en carport te Kuurne E-peil 20",
    "city": "Kuurne",
    "postal_code": "8520",
    "street": "Korianderplein 18",
@@ -63596,7 +63596,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kuurne-saffraanweg-12/7654652",
    "source": "M Vastgoed",
-   "title": "Kuurne Saffraanweg 12",
+   "title": "Recente woning met open zicht en rustige ligging te Kuurne !",
    "city": "Kuurne",
    "postal_code": "8520",
    "street": "Saffraanweg 12",
@@ -63948,7 +63948,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-noordlaan-43-12/7689680",
    "source": "M Vastgoed",
-   "title": "Roeselare Noordlaan 43 12",
+   "title": "Instapklaar appartement met garage en privé parkeerplaats te koop in Roeselare !",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Noordlaan 43",
@@ -64808,12 +64808,12 @@
   {
    "url": "https://www.mvastgoed.be/nl/gullegem-koningin-fabiolastraat-49/7622203",
    "source": "M Vastgoed",
-   "title": "Gullegem Koningin Fabiolastraat 49",
+   "title": "Garage te koop op uitstekende ligging in Gullegem",
    "city": "Gullegem",
    "postal_code": "8560",
    "street": "Koningin Fabiolastraat 49",
    "price": 27500,
-   "property_type": "unknown",
+   "property_type": "parking",
    "bedrooms": null,
    "living_area_m2": null,
    "plot_area_m2": 40,
@@ -64858,7 +64858,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/heule-moorseelsestraat-194/7662957",
    "source": "M Vastgoed",
-   "title": "Heule Moorseelsestraat 194",
+   "title": "Woning met potentieel te koop in Heule !",
    "city": "Heule",
    "postal_code": "8501",
    "street": "Moorseelsestraat 194",
@@ -65060,7 +65060,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-president-kennedypark-13-c13/7568882",
    "source": "M Vastgoed",
-   "title": "Kortrijk President Kennedypark 13 C13",
+   "title": "Uniek, functioneel en onmiddellijk instapklaar kantoor op toplocatie in President Kennedypark te Kortrijk",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "President Kennedypark 13",
@@ -65614,7 +65614,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortemark-ieperstraat-73d/7689161",
    "source": "M Vastgoed",
-   "title": "Kortemark Ieperstraat 73/D",
+   "title": "Verrassend ruime nieuwbouwwoning te Kortemark",
    "city": "Kortemark",
    "postal_code": "8610",
    "street": "Ieperstraat 73",
@@ -66324,7 +66324,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/otegem-eikenlaan-40/7679226",
    "source": "M Vastgoed",
-   "title": "Otegem Eikenlaan 40",
+   "title": "Half open bebouwing op een rustige ligging in Otegem te koop !",
    "city": "Otegem",
    "postal_code": "8553",
    "street": "Eikenlaan 40",
@@ -66785,7 +66785,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/ingelmunster-hinnebilkstraat-1b-201/7685435",
    "source": "M Vastgoed",
-   "title": "Ingelmunster Hinnebilkstraat 1/B 201",
+   "title": "Energiezuinig Appartement EPC B te koop in hartje Ingelmunster met 2 slaapkamers en Garage!",
    "city": "Ingelmunster",
    "postal_code": "8770",
    "street": "Hinnebilkstraat 1",
@@ -67341,7 +67341,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-hoogleedsesteenweg-410/7642443",
    "source": "M Vastgoed",
-   "title": "Roeselare Hoogleedsesteenweg 410",
+   "title": "Unieke Villa te Roeselare op 1941m² en 381m² bewoonbare oppervlakte!",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Hoogleedsesteenweg 410",
@@ -68201,7 +68201,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/geluwe-ieperstraat-30-0001/7656311",
    "source": "M Vastgoed",
-   "title": "Geluwe Ieperstraat 30 00.01",
+   "title": "Instapklaar gelijkvloers appartement met garage te koop in Geluwe !",
    "city": "Geluwe",
    "postal_code": "8940",
    "street": "Ieperstraat 30",
@@ -69695,7 +69695,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/heule-bozestraat-109-12/7681020",
    "source": "M Vastgoed",
-   "title": "Heule Bozestraat 109 12",
+   "title": "Ruim appartement met 3 slaapkamer en garage in Heule te koop!",
    "city": "Heule",
    "postal_code": "8501",
    "street": "Bozestraat 109",
@@ -70173,7 +70173,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortemark-ieperstraat-73c/7689154",
    "source": "M Vastgoed",
-   "title": "Kortemark Ieperstraat 73/C",
+   "title": "Prachtige ruime nieuwbouwwoning te Kortemark !",
    "city": "Kortemark",
    "postal_code": "8610",
    "street": "Ieperstraat 73",
@@ -70198,7 +70198,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/oostrozebeke-hoogstraat-9/7679953",
    "source": "M Vastgoed",
-   "title": "Oostrozebeke Hoogstraat 9",
+   "title": "Veelzijdig handelshuis met ruime woonst van 433 m², privétuin en magazijn van 135m² te Oostrozebeke",
    "city": "Oostrozebeke",
    "postal_code": "8780",
    "street": "Hoogstraat 9",
@@ -70273,7 +70273,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-brugsestraat-72/7211637",
    "source": "M Vastgoed",
-   "title": "Kortrijk Brugsestraat 72",
+   "title": "Stadswoning te Koop vlakbij het Astridpark in Kortrijk",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Brugsestraat 72",
@@ -71631,7 +71631,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-hoveniersstraat-40-31/7691426",
    "source": "M Vastgoed",
-   "title": "Kortrijk Hoveniersstraat 40 31",
+   "title": "Stijlvol gerenoveerd 3-slaapkamerappartement van 128 m² met garage op topligging in Kortrijk *** NONO INSPIRED ***",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Hoveniersstraat 40",
@@ -71781,7 +71781,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-minister-vanden-peereboomlaan-84-42/7687303",
    "source": "M Vastgoed",
-   "title": "Kortrijk Minister Vanden Peereboomlaan 84 42",
+   "title": "Fantastisch appartement met 3 terrassen op topligging te Kortrijk ! *** NONO INSPIRED ***",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Minister Vanden Peereboomlaan 84",
@@ -72031,7 +72031,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/harelbeke-elfde-julistraat-150-20/7659320",
    "source": "M Vastgoed",
-   "title": "Harelbeke Elfde-Julistraat 150 20",
+   "title": "Lichtrijk appartement met 2 slaapkamers te koop in Harelbeke. EPC B",
    "city": "Harelbeke",
    "postal_code": "8530",
    "street": "Elfde-Julistraat 150",
@@ -72081,7 +72081,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/izegem-roeselaarsestraat-652/7690698",
    "source": "M Vastgoed",
-   "title": "Izegem Roeselaarsestraat 652",
+   "title": "Centraal gelegen woning met ruime garage/opslagplaats te Izegem !",
    "city": "Izegem",
    "postal_code": "8870",
    "street": "Roeselaarsestraat 652",
@@ -73600,7 +73600,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kuurne-kongostraat-5-6/7685747",
    "source": "M Vastgoed",
-   "title": "Kuurne Kongostraat 5 6",
+   "title": "Gerenoveerd appartement met 2 slaapkamers en Garage te Kuurne!",
    "city": "Kuurne",
    "postal_code": "8520",
    "street": "Kongostraat 5",
@@ -74383,7 +74383,7 @@
   {
    "url": "http://www.cannoodt.be/huis/gent/wespstraat-5-0",
    "source": "Cannoodt",
-   "title": "Wespstraat 5",
+   "title": "Huis Te koop Gent | € 323.000",
    "city": "Gent",
    "postal_code": "9000",
    "street": "Wespstraat 5",
@@ -74508,12 +74508,12 @@
   {
    "url": "https://www.mvastgoed.be/nl/kuurne-sint-michielsweg-29-21/7662600",
    "source": "M Vastgoed",
-   "title": "Kuurne Sint-Michielsweg 29 21",
+   "title": "Lichtrijk instapklaar appartement EPC B te Kuurne met 3 slaapkamers en autostaanplaats!",
    "city": "Kuurne",
    "postal_code": "8520",
    "street": "Sint-Michielsweg 29",
    "price": 176000,
-   "property_type": "unknown",
+   "property_type": "apartment",
    "bedrooms": 3,
    "living_area_m2": 109,
    "plot_area_m2": 120,
@@ -74739,7 +74739,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/deerlijk-tulpenlaan-211/7689538",
    "source": "M Vastgoed",
-   "title": "Deerlijk Tulpenlaan 211",
+   "title": "Gelijkvloers appartement van 108m² nabij het centrum in Deerlijk!",
    "city": "Deerlijk",
    "postal_code": "8540",
    "street": "Tulpenlaan 211",
@@ -75341,7 +75341,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/roeselare-mandellaan-471/7685704",
    "source": "M Vastgoed",
-   "title": "Roeselare Mandellaan 471",
+   "title": "Unieke Villa te Roeselare op 2258m² met 28 zonnepanelen en 432m² bewoonbare oppervlakte!",
    "city": "Roeselare",
    "postal_code": "8800",
    "street": "Mandellaan 471",
@@ -75798,7 +75798,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/waregem-roterijstraat-10a/7676610",
    "source": "M Vastgoed",
-   "title": "Waregem Roterijstraat 10/A",
+   "title": "Fantastisch gelegen woning te Waregem !",
    "city": "Waregem",
    "postal_code": "8790",
    "street": "Roterijstraat 10",
@@ -76304,7 +76304,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/kortrijk-vennestraat-39/7667600",
    "source": "M Vastgoed",
-   "title": "Kortrijk Vennestraat 39",
+   "title": "Goed gelegen woning in Kortrijk met ruime zolder, zonnige tuin en dubbele garage !",
    "city": "Kortrijk",
    "postal_code": "8500",
    "street": "Vennestraat 39",
@@ -76431,7 +76431,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/tielt-velodroomstraat-45/7657424",
    "source": "M Vastgoed",
-   "title": "Tielt Velodroomstraat 45",
+   "title": "Woning met potentieel in Tielt te koop !",
    "city": "Tielt",
    "postal_code": "8700",
    "street": "Velodroomstraat 45",
@@ -77661,7 +77661,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/moen-moenplaats-5/7672382",
    "source": "M Vastgoed",
-   "title": "Moen Moenplaats 5",
+   "title": "Centrumwoning met 4 slaapkamers en zonnige tuin te Moen!",
    "city": "Moen",
    "postal_code": "8552",
    "street": "Moenplaats 5",
@@ -78065,7 +78065,7 @@
   {
    "url": "https://www.mvastgoed.be/nl/izegem-stationsstraat-21/7690003",
    "source": "M Vastgoed",
-   "title": "Izegem Stationsstraat 21",
+   "title": "Instapklare woning met 4 slaapkamers, ruime zolder en 16 zonnepanelen in Izegem!",
    "city": "Izegem",
    "postal_code": "8870",
    "street": "Stationsstraat 21",

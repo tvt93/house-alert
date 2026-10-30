@@ -52,8 +52,10 @@ TYPE_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
 # A garage or parking space sold on its own. Only the title and URL decide,
 # and only when they name no other type: "woning met dubbele garage" is a
 # house, "Inpandige autostaanplaats nabij station Gent-Sint-Pieters" is not.
+# The word may close a compound ("privégarage", "dubbelgarage", "parkeergarage")
+# but never open one: a "garagepoort" is a door, not a garage.
 PARKING_WORD = re.compile(
-    r"\b(?:garage(?:s|box|boxen|complex)?|parkeergarage|autostaanplaats(?:en)?|"
+    r"(?<![\w-])[^\W\d_]*?(?:garage(?:s|box|boxen|complex)?|autostaanplaats(?:en)?|"
     r"staanplaats(?:en)?|parkeerplaats(?:en)?|parking(?:s)?|parkeerplek(?:ken)?|"
     r"carport(?:s)?|autobox(?:en)?)\b", re.IGNORECASE)
 # "... met garage", "tuin en carport", "incl. staanplaats", "3 slpks, garage,
@@ -869,24 +871,53 @@ SECTION_HEADING = re.compile(
     r"\buw\b|\bu\b|waard|schatting|nieuwsbrief|blog|nieuws", re.IGNORECASE)
 
 
-def _property_heading(soup: BeautifulSoup) -> str:
+def address_title(title: str) -> bool:
+    """Is the title nothing but an address? Skarabee sites (mvastgoed.be)
+    name the listing "Kortrijk Hoveniersstraat 40" in their structured data,
+    with a unit number tacked on at times ("Harelbeke Overleiestraat 75/A 12");
+    the heading on the page says what is for sale."""
+    text = re.sub(r"\s+", " ", title or "").strip()
+    if not text or len(text) > 80:
+        return False
+    low = text.lower()
+    if any(kw in low for _, keywords in TYPE_KEYWORDS for kw in keywords) \
+            or PARKING_WORD.search(low):
+        return False
+    m = STREET.search(text)
+    if not m or not _STREET_ENDS.search(m.group(1)):
+        return False
+    # Before the street: at most the town. After it: unit markers and digits.
+    before = text[:m.start()].strip()
+    after = text[m.end():].strip()
+    return len(before.split()) <= 3 and not re.search(r"\d", before) \
+        and not re.search(r"[^\W\d_]{3,}", after)
+
+
+def _property_heading(soup: BeautifulSoup, tags: tuple[str, ...] = ("h1", "h2", "h3")) -> str:
     """The first heading outside the chrome that names the property: at
-    least three words, a property word, not the address line, not a section
-    label. entree.be puts the address in the h1 and the real title in the
-    second h2, after an "Interesse in dit pand?" form heading."""
+    least three words, a property (or parking) word, not the address line,
+    not a section label. entree.be puts the address in the h1 and the real
+    title in the second h2, after an "Interesse in dit pand?" form heading."""
     chrome = {id(n) for n in chrome_nodes(soup)}
-    for tag in ("h1", "h2", "h3"):
+    for tag in tags:
         for node in soup.find_all(tag):
             if id(node) in chrome or any(id(p) in chrome for p in node.parents):
                 continue
             text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
-            if len(text.split()) < 3 or SECTION_HEADING.search(text):
+            if len(text.split()) < 3:
+                continue
+            # An h1 is never a section label; "Garage te koop op zeer
+            # interessante ligging te Kortrijk" must not fail on "ligging".
+            if tag != "h1" and SECTION_HEADING.search(text):
                 continue
             if re.search(POSTAL_CITY, text) or BARE_PLACE_TITLE.match(text):
                 continue
             low = text.lower()
-            if any(kw in low for _, keywords in TYPE_KEYWORDS for kw in keywords):
+            if any(kw in low for _, keywords in TYPE_KEYWORDS for kw in keywords) \
+                    or PARKING_WORD.search(low):
                 return text
+    if tags != ("h1", "h2", "h3"):
+        return ""
     # No heading names a type ("wonen in werelderfgoed Begijnhof"): take the
     # one the page's own price sits right under.
     for node in soup.find_all(["h1", "h2", "h3"]):
@@ -1452,6 +1483,11 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
         # Older entree.be pages carry the site slogan ("Maak uw entree", or a
         # bare "Array") as og:title; the property is named further down.
         listing.title = _property_heading(soup) or listing.title
+    if listing.title and address_title(listing.title):
+        # mvastgoed.be has no og:title and names the listing by its address
+        # in the structured data; the h1 ("Afgesloten garage te koop in de
+        # Hoveniersstraat") says what it is, which the type guess needs.
+        listing.title = _property_heading(soup, tags=("h1",)) or listing.title
 
     # Drop the cards, teasers and "similar properties" strips before reading any
     # numbers off the page, so nothing here can pick up a neighbour's price.

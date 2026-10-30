@@ -1,0 +1,51 @@
+# Dagelijkse mail, ingesteld vanaf de overzichtspagina op 2026-10-30.
+# Het adres is versleuteld met de sleutel van de site; alleen de mailrun (MAIL_KEY) kan het lezen.
+# Verwijder dit bestand om de mail te stoppen.
+
+name: 'Test vanaf de pagina'
+to:
+  - 'enc:sxd/wb6f1uUdFDfHiSj9bWVbm2dDEhZ2TVi07HF2vySaRqILp0+GVC36w6/PhPlvTBommraSb/XpLvEdD7LRLtl6jzGvkv6Eh7Rh+vaVlyIJjSD9YaUXig=='
+enabled: true
+
+property_types:
+  - house
+
+price:
+  min: 
+  max: 500000
+  include_unknown: true
+
+bedrooms:
+  min: 3
+  max: 
+  include_unknown: true
+
+living_area_m2:
+  min: 
+  max: 
+  include_unknown: true
+
+plot_area_m2:
+  min: 
+  max: 
+  include_unknown: true
+
+postcodes:
+  - '9000'
+
+municipalities:
+  include: []
+  exclude: []
+
+exclude_keywords:
+  - garagebox
+  - staanplaats
+  - parkeerplaats
+  - opbrengsteigendom
+  - nieuwbouwproject
+  - handelspand
+
+highlight_keywords:
+  - tuin
+  - zuidgericht
+  - te renoveren

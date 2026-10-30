@@ -348,16 +348,16 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
       <div class="sum-title">Filters in deze mail</div>
       <ul class="sum-list" id="subSummary"></ul>
     </div>
-    <p class="note">Je adres wordt in je browser versleuteld voor het verstuurd wordt en is alleen leesbaar op het moment dat de mail vertrekt.</p>
+    <p class="note">Je adres wordt in je browser versleuteld en is alleen leesbaar op het moment dat de mail vertrekt. De aanvraag gaat via GitHub: daar klik je enkel op de groene knop <b>Create</b> (een gratis GitHub-account is nodig). Binnen een paar minuten is de mail actief.</p>
     <p class="note err" id="subError" hidden></p>
     <div class="df">
       <button type="button" class="btn" id="subClose">Sluiten</button>
-      <button type="button" class="btn primary" id="subCreate">Mail instellen</button>
+      <button type="button" class="btn primary" id="subCreate">Mail instellen →</button>
     </div>
   </div>
   <div class="db" id="subDone" hidden>
     <div class="summary ok" id="subDoneText"></div>
-    <p class="note">Wil je de mail later stoppen of aanpassen? Laat het de beheerder van de pagina weten.</p>
+    <p class="note">Geen nieuw tabblad gezien? <a id="subDoneLink" href="#" target="_blank" rel="noopener">Open de aanvraag hier</a>. Wil je de mail later stoppen of aanpassen? Zet een reactie op datzelfde ticket.</p>
     <div class="df">
       <button type="button" class="btn primary" id="subDoneClose">Sluiten</button>
     </div>
@@ -372,11 +372,10 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
 
   // ------------------------------------------------------------ constants
   var REPO_FALLBACK = { owner: 'tvt93', repo: 'house-alert' };
-  // "Dagelijkse mail instellen" posts to this Cloudflare Worker (worker/subscribe.js),
-  // which commits the subscription file. The address is sealed in the browser with
-  // SUBSCRIBE_KEY (public key from `house-alert keygen`); only the mail run can open it.
-  // Both empty = the dialog explains that setting up from the page is not active yet.
-  var SUBSCRIBE_URL = '';
+  // "Dagelijkse mail instellen" opens a prefilled GitHub issue that the subscribe
+  // workflow turns into a subscription file. The address is sealed in the browser
+  // with SUBSCRIBE_KEY (public key from `house-alert keygen`); only the mail run,
+  // holding the private key, can open it.
   var SUBSCRIBE_KEY = '0JP8jPbMMnvtkxzpSvufrlM2YohAPGqy0UsiF+W6q3A=';
   var NACL_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.3/nacl-fast.min.js';
   var TYPE_LABEL ={ house: 'Woning', apartment: 'Appartement', land: 'Grond', commercial: 'Handel', parking: 'Garage', unknown: 'Onbekend' };
@@ -668,7 +667,7 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
     if (m && seg) return { owner: m[1], repo: seg };
     return REPO_FALLBACK;
   }
-  var subscribeReady = !!(SUBSCRIBE_URL && SUBSCRIBE_KEY);
+  var subscribeReady = !!SUBSCRIBE_KEY;
 
   // What the mail will filter on: the page's filters minus the ones that
   // only make sense on the page (status, days, agency, sort).
@@ -712,21 +711,18 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
     if (s.f.agency) html += '<li class="wide">Het kantoorfilter geldt alleen op de pagina, niet in de mail.</li>';
     $('subSummary').innerHTML = html;
     if (!subscribeReady) {
-      var r = repoInfo();
-      showError('Instellen vanuit de pagina is nog niet geactiveerd. De beheerder vindt de stappen in de README van <a href="https://github.com/' +
-        esc(r.owner) + '/' + esc(r.repo) + '" target="_blank" rel="noopener">de repository</a>.', true);
+      showError('Instellen vanuit de pagina is nog niet geactiveerd (de sleutel van de site ontbreekt in de pagina).');
       $('subCreate').disabled = true;
     }
   }
-  function showError(msg, asHtml) {
+  function showError(msg) {
     var el = $('subError');
     if (!msg) { el.hidden = true; el.textContent = ''; return; }
-    if (asHtml) el.innerHTML = msg; else el.textContent = msg;
-    el.hidden = false;
+    el.textContent = msg; el.hidden = false;
   }
 
   // The address is sealed here, in the browser, with the site's public key:
-  // ephemeral key (32) | nonce (24) | crypto_box output. The Worker and the
+  // ephemeral key (32) | nonce (24) | crypto_box output. The issue and the
   // repository only ever see the result; src/house_alert/sealed.py opens it.
   function loadNacl() {
     return new Promise(function (resolve, reject) {
@@ -748,25 +744,40 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
     return 'enc:' + b64encode(out);
   }
 
+  // The request travels as a GitHub issue: a readable summary for people and,
+  // in an HTML comment GitHub does not render, the same request as JSON for
+  // the subscribe workflow (house-alert subscribe-from-issue).
+  function issueUrl(s) {
+    var r = repoInfo(), rows = summaryRows(s);
+    var lines = rows.length ? rows.map(function (x) { return '- ' + x[0] + ': ' + x[1]; }) : ['- Alle nieuwe woningen, geen filters'];
+    var body = '### ' + s.body.name + '\n\n' + lines.join('\n') + '\n- Naar: een versleuteld adres\n\n' +
+      'Aangemaakt op de overzichtspagina. Klik hieronder op **Create**; de mail wordt dan automatisch ingesteld en dit ticket sluit vanzelf.\n\n' +
+      '<!-- house-alert ' + JSON.stringify(s.body) + ' -->\n';
+    return 'https://github.com/' + r.owner + '/' + r.repo + '/issues/new?title=' +
+      encodeURIComponent('Dagelijkse mail: ' + s.body.name) + '&body=' + encodeURIComponent(body);
+  }
+
   function submitSubscription() {
     var to = $('subTo').value.trim(), s = subscription(), btn = $('subCreate');
     showError('');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(to)) { showError('Vul een geldig e-mailadres in.'); $('subTo').focus(); return; }
+    // Open the tab now, inside the click, so popup blockers leave it alone;
+    // it gets its address once the sealing is done.
+    var tab = null;
+    try { tab = window.open('', '_blank'); } catch (e) {}
     btn.disabled = true; btn.textContent = 'Bezig…';
     loadNacl()
       .then(function (nacl) {
         s.body.to = seal(nacl, to, SUBSCRIBE_KEY);
-        return fetch(SUBSCRIBE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(s.body) });
+        var url = issueUrl(s);
+        if (tab) tab.location = url;
+        $('subDoneLink').href = url;
+        $('subDoneText').textContent = 'Bijna klaar. GitHub is geopend met je aanvraag "' + s.body.name + '": klik daar op de groene knop Create. ' +
+          'Daarna krijg je vanaf morgenochtend de mail op ' + to + ', telkens er nieuwe woningen zijn die aan je filters voldoen.';
+        $('subForm').hidden = true; $('subDone').hidden = false;
       })
-      .then(function (res) {
-        return res.json().catch(function () { return {}; }).then(function (data) {
-          if (!res.ok || !data.ok) throw new Error(data.error || ('fout ' + res.status));
-          $('subDoneText').textContent = 'Klaar. Vanaf morgenochtend krijg je de mail "' + data.name + '" op ' + to + ', telkens er nieuwe woningen zijn die aan je filters voldoen.';
-          $('subForm').hidden = true; $('subDone').hidden = false;
-        });
-      })
-      .catch(function (err) { showError('Dat is niet gelukt: ' + err.message + '. Probeer het zo nog eens.'); })
-      .then(function () { btn.disabled = !subscribeReady; btn.textContent = 'Mail instellen'; });
+      .catch(function (err) { if (tab) tab.close(); showError('Dat is niet gelukt: ' + err.message + '. Probeer het zo nog eens.'); })
+      .then(function () { btn.disabled = !subscribeReady; btn.textContent = 'Mail instellen →'; });
   }
 
   $('mailBtn').addEventListener('click', function () {

@@ -82,6 +82,27 @@ def cmd_keygen(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_subscribe_from_issue(args: argparse.Namespace) -> int:
+    """Turn the body of a "Dagelijkse mail" issue into a subscription file.
+    Prints the outcome for the workflow to relay onto the issue; a refusal is
+    exit code 3 with the reason on stdout, so it reaches the person who asked."""
+    import os
+    from .subscribe import SubscribeError, from_issue
+
+    body = Path(args.body_file).read_text(encoding="utf-8")
+    try:
+        path = from_issue(body, CONFIG_DIR / "subscriptions")
+    except SubscribeError as exc:
+        print(str(exc))
+        return 3
+    out = os.environ.get("GITHUB_OUTPUT")
+    if out:
+        with open(out, "a", encoding="utf-8") as fh:
+            fh.write(f"file={path.as_posix()}\n")
+    print(path.as_posix())
+    return 0
+
+
 def cmd_detect(args: argparse.Namespace) -> int:
     agencies = load_agencies(only=args.only)
     detected: dict[str, str] = {}
@@ -481,6 +502,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_key = sub.add_parser("keygen", help="key pair for addresses the overview page seals (enc: recipients)")
     p_key.set_defaults(func=cmd_keygen)
+
+    p_issue = sub.add_parser("subscribe-from-issue",
+                             help="write the subscription a 'Dagelijkse mail' issue asks for")
+    p_issue.add_argument("--body-file", required=True, help="file holding the issue body")
+    p_issue.set_defaults(func=cmd_subscribe_from_issue)
 
     return parser
 

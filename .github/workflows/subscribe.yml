@@ -1,0 +1,80 @@
+name: daily mail from an issue
+
+# The overview page's "Dagelijkse mail instellen" button opens a prefilled
+# issue. This turns it into config/subscriptions/<name>.yaml, commits the
+# file and closes the issue with a note. The address in the issue is sealed
+# (enc:...); only the mail run can read it, with the MAIL_KEY secret.
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+# Shares the daily run's group so the two never commit at the same time.
+concurrency:
+  group: daily-digest
+  cancel-in-progress: false
+
+jobs:
+  subscribe:
+    if: startsWith(github.event.issue.title, 'Dagelijkse mail:')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ISSUE: ${{ github.event.issue.number }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -e .
+
+      - name: Write the subscription file
+        id: write
+        env:
+          BODY: ${{ github.event.issue.body }}
+        run: |
+          printf '%s' "$BODY" > /tmp/issue-body.md
+          set +e
+          house-alert subscribe-from-issue --body-file /tmp/issue-body.md > /tmp/result.txt
+          code=$?
+          set -e
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          {
+            echo 'message<<EOF'
+            cat /tmp/result.txt
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+          cat /tmp/result.txt
+
+      - name: Commit the file
+        if: steps.write.outputs.code == '0'
+        run: |
+          git config user.name  "house-alert[bot]"
+          git config user.email "house-alert@users.noreply.github.com"
+          git add config/subscriptions/
+          git commit -m "Dagelijkse mail ingesteld vanaf de pagina (#$ISSUE)"
+          git pull --rebase
+          git push
+
+      - name: Confirm on the issue
+        if: steps.write.outputs.code == '0'
+        run: |
+          gh issue comment "$ISSUE" --body "Ingesteld. Vanaf morgenochtend komt deze mail, telkens er nieuwe woningen zijn die aan de filters voldoen. Wil je hem later stoppen of aanpassen? Laat het hier weten."
+          gh issue close "$ISSUE" --reason completed
+
+      - name: Explain the refusal on the issue
+        if: steps.write.outputs.code == '3'
+        env:
+          WHY: ${{ steps.write.outputs.message }}
+        run: |
+          gh issue comment "$ISSUE" --body "Dit kon niet ingesteld worden: $WHY. Probeer het opnieuw via de knop Dagelijkse mail op de overzichtspagina."
+          gh issue close "$ISSUE" --reason "not planned"

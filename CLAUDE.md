@@ -27,7 +27,7 @@ subscription. Python, no services, no database; the state is JSON files in git.
 | `filters.py` | `Listing` + `Criteria` → keep or reject, with a reason |
 | `mail/` | photo-card digest rendering and SMTP delivery |
 | `sealed.py` | `enc:` recipients: the address sealed by the page, opened with `MAIL_KEY` |
-| `worker/subscribe.js` | Cloudflare Worker behind "Dagelijkse mail instellen": validates, renders YAML, commits |
+| `subscribe.py` | "Dagelijkse mail instellen": the issue body the page prefilled → a subscription file (run by `subscribe.yml`) |
 | `site.py` | `ListingStore` → `docs/listings.json` |
 
 ## Conventions that matter
@@ -61,8 +61,9 @@ subscription. Python, no services, no database; the state is JSON files in git.
   manual approval, which silently kills the schedule. Subscriptions made from the page
   carry `enc:...` instead: the address sealed in the browser with the public key in
   `docs/index.html` (`SUBSCRIBE_KEY`), opened by `sealed.py` with the `MAIL_KEY` secret.
-  The page cannot commit by itself; `worker/subscribe.js` (Cloudflare Worker) does that
-  with a contents-only token, and it is the only place that writes subscription files.
+  The page cannot commit by itself: it opens a prefilled GitHub issue, and the
+  `subscribe` workflow turns it into the file (`subscribe.py`). No service outside
+  GitHub is involved; the user explicitly declined one (Cloudflare) on 2026-10-30.
 - **Every real-world parsing trap gets a regression test** using the markup shape that
   actually caused it. See `tests/test_location.py`, `tests/test_index_pages.py`,
   `tests/test_street.py` and the price-then-postcode case in `tests/test_extract.py`.

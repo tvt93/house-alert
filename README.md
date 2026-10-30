@@ -53,9 +53,10 @@ framework — Leaflet for the map, everything else is plain HTML.
   included by default; untick the box to make every filter strict. A garage or
   parking space sold on its own is its own type (*Garage*), hidden by default.
 - Filters live in the URL, so a filtered view can be bookmarked or sent to someone.
-- **Dagelijkse mail** turns the current filters into a daily mail right from the page: a
-  name for the selection, an e-mail address, done. No GitHub account needed; see
-  *Setting up a mail from the page* below for the one-time wiring.
+- **Dagelijkse mail** turns the current filters into a daily mail: a name for the
+  selection, an e-mail address, and one click on *Create* in the GitHub form that opens
+  prefilled (a free GitHub account is all it takes). A workflow writes the subscription
+  file within a minute; see *Setting up a mail from the page* below.
 
 ## Daily mail: subscriptions
 
@@ -166,36 +167,21 @@ One-time setup on GitHub:
 
 ### Setting up a mail from the page
 
-The page is static, so something has to commit the subscription file on its behalf. That
-something is `worker/subscribe.js`: a Cloudflare Worker (free tier, one file, no build
-step) that validates the request, renders the YAML and commits it with a token that can
-touch nothing but this repository's contents. The address is encrypted in the browser
-before it leaves, so neither the Worker nor the repository ever holds it readably.
+The page is static, so it cannot write the subscription file itself. It opens a GitHub
+issue instead, prefilled with a readable summary of the filters and, in a hidden comment,
+the same request as JSON. The `subscribe` workflow (`.github/workflows/subscribe.yml`)
+hands the body to `house-alert subscribe-from-issue`, which validates it and writes
+`config/subscriptions/<name>.yaml`; the workflow commits the file, confirms on the issue
+and closes it. The address is encrypted in the browser before it leaves, so neither the
+issue nor the repository ever holds it readably. Nothing outside GitHub is involved.
 
-1. **Keys.** `house-alert keygen` prints a pair. The public one goes into
-   `SUBSCRIBE_KEY` in `docs/index.html`; the private one becomes the Actions secret
-   `MAIL_KEY`. Keep it: addresses sealed with the public key can only be opened with it.
-2. **GitHub token.** *Settings → Developer settings → Fine-grained tokens*: this repository
-   only, permission *Contents: read and write*, nothing else. Note the expiry (a year at
-   most) and renew it in the Worker when it lapses.
-3. **Worker.** From the `worker/` folder (needs a free Cloudflare account; the first
-   command opens the browser to log in):
+One-time: `house-alert keygen` prints a key pair. The public one goes into
+`SUBSCRIBE_KEY` in `docs/index.html`; the private one becomes the Actions secret
+`MAIL_KEY`. Keep it: addresses sealed with the public key can only be opened with it.
 
-   ```powershell
-   npx wrangler login
-   npx wrangler deploy                   # prints the Worker URL
-   npx wrangler secret put GITHUB_TOKEN  # paste the token from step 2
-   ```
-
-   `wrangler.toml` already sets `GITHUB_REPO`, `ALLOWED_ORIGIN` and `MAX_SUBSCRIPTIONS`
-   (default 20: the total number of files the Worker will ever create, since anyone who
-   finds the page can use the button). The dashboard route works too: *Workers & Pages →
-   Create*, paste `subscribe.js`, add the same variables under *Settings → Variables*.
-4. **Page.** Put the Worker's URL in `SUBSCRIBE_URL` next to `SUBSCRIBE_KEY`, commit.
-   Until both are filled the dialog says the feature is not active yet.
-
-Each click creates `config/subscriptions/<name>.yaml` (a repeated name gets `-2`, `-3`).
-Stopping a mail is deleting its file; the next morning run is the first that mails it.
+A repeated name gets `-2`, `-3`; at most 20 subscription files are created this way,
+since anyone with a GitHub account can open an issue. Stopping a mail is deleting its
+file. A subscription made today is first mailed tomorrow morning.
 
 The first run fetches every listing currently online (up to 80 new pages per agency per
 run, so a site with a long sitemap catches up over a few runs) and takes

@@ -1,8 +1,8 @@
 """Recipient addresses sealed for the mailing run.
 
-The overview page lets anyone set up a daily mail without touching GitHub,
-but the repository is public, so the address they type must not land in a
-file readably. The page encrypts it in the browser with the public key
+The overview page lets anyone set up a daily mail with one click on a
+prefilled GitHub issue, but the repository is public, so the address they
+type must not land in the issue or in a file readably. The page encrypts it in the browser with the public key
 embedded in the page; the subscription file stores `enc:<base64>`; only the
 Actions run, which holds the private key in the MAIL_KEY secret, can read it.
 

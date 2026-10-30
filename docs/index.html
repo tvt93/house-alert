@@ -232,7 +232,6 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
   </div>
   <button type="button" class="btn only-mobile" id="filterToggle">Filters</button>
   <button type="button" class="btn primary" id="mailBtn">✉ <span>Dagelijkse mail</span></button>
-  <a class="btn ghost icon" id="refreshLink" href="#" target="_blank" rel="noopener" title="De gegevens worden rond middernacht, om 8u en rond de middag ververst. Klik om nu een run te starten (Run workflow op GitHub).">↻</a>
   <button type="button" class="btn ghost icon" id="themeBtn" title="Licht/donker">◐</button>
 </header>
 
@@ -785,10 +784,6 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
     showError(''); $('subCreate').disabled = !subscribeReady;
     refreshDialog(); $('mailDialog').showModal();
   });
-  (function () {
-    var r = repoInfo();
-    $('refreshLink').href = 'https://github.com/' + r.owner + '/' + r.repo + '/actions/workflows/daily.yml';
-  })();
   $('subClose').addEventListener('click', function () { $('mailDialog').close(); });
   $('subDoneClose').addEventListener('click', function () { $('mailDialog').close(); });
   $('subCreate').addEventListener('click', submitSubscription);

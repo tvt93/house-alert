@@ -142,9 +142,9 @@ default, and forgets sold or vanished listings a month after that was establishe
 | 11:00 (around noon in Brussels) | scan, re-check, refresh the page |
 
 A mail covers everything found since the previous mail, so nothing found at midnight
-or noon is lost; it waits in the queue for the morning. The ↻ button on the page opens
-the workflow on GitHub, where *Run workflow* starts a refresh on demand (tick *send_mail*
-to mail right away). Each run commits the updated `state/` and `docs/listings.json` back
+or noon is lost; it waits in the queue for the morning. A refresh on demand is *Run
+workflow* on the Actions tab of the repository (tick *send_mail* to mail right away).
+Each run commits the updated `state/` and `docs/listings.json` back
 to the repo, and GitHub Pages redeploys the page from `docs/` on its own.
 
 One-time setup on GitHub:

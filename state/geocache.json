@@ -5875,6 +5875,11 @@
    "level": "address",
    "lon": 3.2581331655027954
   },
+  "kortrijkstraat 52b/301|9800|deinze": {
+   "lat": 50.977435033106424,
+   "level": "street",
+   "lon": 3.52813408021641
+  },
   "kortrijkstraat 57|8770|ingelmunster": {
    "lat": 50.9090758,
    "lon": 3.2598471

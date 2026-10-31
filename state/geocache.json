@@ -2445,6 +2445,11 @@
    "level": "address",
    "lon": 3.7215748044197494
   },
+  "eeklostraat 200a|9030|mariakerke": {
+   "lat": 51.078951827575615,
+   "level": "address",
+   "lon": 3.6906251763796334
+  },
   "eeklostraat 21|9940|ertvelde": {
    "lat": 51.17866123326934,
    "level": "address",
@@ -4992,6 +4997,11 @@
    "lat": 50.94223035370367,
    "level": "address",
    "lon": 3.471097515506646
+  },
+  "kasteelstraat 33|8870|izegem": {
+   "lat": 50.91900870491074,
+   "level": "street",
+   "lon": 3.217979648523264
   },
   "kasteelstraat 40|9600|renaix": {
    "lat": 50.7472425,
@@ -8613,6 +8623,11 @@
    "level": "address",
    "lon": 2.724363456017365
   },
+  "pauwel vander scheldenstraat 23|9700|oudenaarde": {
+   "lat": 50.85051938020676,
+   "level": "address",
+   "lon": 3.604736324730587
+  },
   "pedreguer 1|03750|denia": {
    "level": "none"
   },
@@ -8945,6 +8960,11 @@
    "lat": 50.93578139985073,
    "level": "address",
    "lon": 4.0258523872289125
+  },
+  "posthoornstraat 67|9050|gent ledeberg": {
+   "lat": 51.04175929277577,
+   "level": "address",
+   "lon": 3.7428241269959064
   },
   "potaardeberg 22||merelbeke": {
    "lat": 50.9907648730705,
@@ -9341,6 +9361,11 @@
    "lat": 50.7376614577303,
    "level": "address",
    "lon": 3.6048343431129046
+  },
+  "rodebergstraat 79|8954|westouter": {
+   "lat": 50.783521413809936,
+   "level": "address",
+   "lon": 2.744947578614741
   },
   "rodenrijt 27|3930|hamont-achel": {
    "lat": 51.262834536688885,
@@ -9785,6 +9810,11 @@
   "scandinaviestraat 198|9000|gent": {
    "lat": 51.0699109,
    "lon": 3.7390122
+  },
+  "scandinaviëstraat 289|9000|gent": {
+   "lat": 51.06981834559624,
+   "level": "address",
+   "lon": 3.739749689542682
   },
   "schaapscheerderstraat 5|9041|oostakker": {
    "lat": 51.10661857474005,
@@ -11538,6 +11568,11 @@
    "lat": 51.03218855642969,
    "level": "address",
    "lon": 3.7072025717443107
+  },
+  "voskenslaan 384|9000|gent": {
+   "lat": 51.02788617102756,
+   "level": "address",
+   "lon": 3.7079583613392395
   },
   "voskenslaan 392|9000|gent": {
    "lat": 51.027756501002806,

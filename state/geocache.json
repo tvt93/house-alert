@@ -9116,6 +9116,11 @@
    "lat": 50.9065138,
    "lon": 3.8992002
   },
+  "puinstraat 61|9000|gent": {
+   "lat": 51.05242732214938,
+   "level": "address",
+   "lon": 3.7383528609219474
+  },
   "putkapelstraat 23|9051|sint-denijs-westrem": {
    "lat": 51.02217808400187,
    "level": "address",

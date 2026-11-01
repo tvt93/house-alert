@@ -3917,6 +3917,11 @@
    "level": "address",
    "lon": 3.716567913762806
   },
+  "henegouwenstraat 42a/0301|9000|gent": {
+   "lat": 51.05188429323541,
+   "level": "street",
+   "lon": 3.727154000311269
+  },
   "hennepstraat 32|8400|oostende": {
    "lat": 51.21909329508298,
    "level": "address",
@@ -4605,6 +4610,11 @@
    "lat": 51.03701899496178,
    "level": "address",
    "lon": 3.7404300030941373
+  },
+  "jacques eggermontstraat 4|9050|ledeberg": {
+   "lat": 51.03731182283173,
+   "level": "address",
+   "lon": 3.74082671732821
   },
   "jakob van caeneghemstraat 6|9000|gent": {
    "lat": 51.06118172089085,
@@ -6667,6 +6677,11 @@
    "level": "address",
    "lon": 3.715260782620301
   },
+  "maalbroekstraat 5|9520|sint-lievens-houtem": {
+   "lat": 50.94124700769013,
+   "level": "address",
+   "lon": 3.858007665947508
+  },
   "maaltebruggestraat 81|9000|gent": {
    "lat": 51.030351941575056,
    "level": "address",
@@ -7038,6 +7053,11 @@
    "lat": 50.852505739619076,
    "level": "address",
    "lon": 3.227274683853242
+  },
+  "mellestraat 59|9090|melle": {
+   "lat": 51.0224567,
+   "level": "address",
+   "lon": 3.758841
   },
   "mellestraat 98|9050|gentbrugge": {
    "lat": 51.02023989321609,
@@ -8245,6 +8265,16 @@
    "lat": 51.101380309696474,
    "level": "address",
    "lon": 3.7610903420780435
+  },
+  "oude houtlei 13c /203|9000|gent": {
+   "lat": 51.05167368371988,
+   "level": "street",
+   "lon": 3.7170246870705568
+  },
+  "oude houtlei 13c/402|9000|gent": {
+   "lat": 51.05167368371988,
+   "level": "street",
+   "lon": 3.7170246870705568
   },
   "oude ieperstraat 26|8560|gullegem": {
    "lat": 50.835784362921295,
@@ -9778,6 +9808,11 @@
    "level": "address",
    "lon": 3.598668701834703
   },
+  "sallemeulekouter 10|9820|merelbeke": {
+   "lat": 50.97623612978448,
+   "level": "address",
+   "lon": 3.7381333200826767
+  },
   "salviastraat 74|9040|sint-amandsberg": {
    "lat": 51.06156949070853,
    "level": "address",
@@ -10352,6 +10387,11 @@
    "lat": 50.946040090391456,
    "level": "address",
    "lon": 3.1438792936581166
+  },
+  "sparrenstraat 2|9870|zulte": {
+   "lat": 50.9479486731204,
+   "level": "address",
+   "lon": 3.5062081385103085
   },
   "spellewerkstraat 120|9030|mariakerke": {
    "lat": 51.07149214018749,

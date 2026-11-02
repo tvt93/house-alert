@@ -240,6 +240,11 @@
   "ankerstraat 81|9300|aalst": {
    "level": "none"
   },
+  "ankerstraat 81||sint-niklaas": {
+   "lat": 51.165965278541165,
+   "level": "address",
+   "lon": 4.1469170975222225
+  },
   "annonciadenstraat 21|9000|gent": {
    "lat": 51.05006878360272,
    "level": "address",
@@ -1551,6 +1556,11 @@
    "level": "address",
    "lon": 3.265348946144878
   },
+  "burgemeester vandenbogaerdelaan 10|8870|izegem": {
+   "lat": 50.91572290962509,
+   "level": "address",
+   "lon": 3.211691298157318
+  },
   "burgemeester vandenbogaerdelaan 54|8870|izegem": {
    "lat": 50.9136714819787,
    "level": "address",
@@ -1678,6 +1688,11 @@
    "lat": 51.040916035754805,
    "level": "address",
    "lon": 3.7217148743027155
+  },
+  "charles de kerchovelaan 25|9000|gent": {
+   "lat": 51.041297396475024,
+   "level": "address",
+   "lon": 3.7209680029451184
   },
   "charles de kerchovelaan 447|9000|gent": {
    "lat": 51.038779379258,
@@ -2363,6 +2378,11 @@
    "level": "address",
    "lon": 3.8281486
   },
+  "dries 73a|9630|sint-denijs-boekel": {
+   "lat": 50.87498021778259,
+   "level": "address",
+   "lon": 3.7024730124553655
+  },
   "dries 99||bambrugge": {
    "lat": 50.9098106,
    "level": "address",
@@ -2607,6 +2627,11 @@
    "lat": 50.738278405069785,
    "level": "street",
    "lon": 3.623283328248513
+  },
+  "elzelaarstraat 41|2070|beveren-kruibeke-zwijndrecht": {
+   "lat": 51.217557797215356,
+   "level": "address",
+   "lon": 4.338175727193395
   },
   "elzelestraat 43|9600|ronse": {
    "lat": 50.746741566596036,
@@ -3627,6 +3652,11 @@
    "level": "address",
    "lon": 3.7344201216744852
   },
+  "gustaaf callierlaan 225|9000|gent": {
+   "lat": 51.04014726535997,
+   "level": "address",
+   "lon": 3.7348029953619544
+  },
   "gustave royerslaan 108|9600|renaix": {
    "lat": 50.7419253,
    "lon": 3.5918937
@@ -3774,6 +3804,11 @@
    "lat": 51.06608190429887,
    "level": "address",
    "lon": 3.7065570353857047
+  },
+  "hazel 22||lede": {
+   "lat": 50.958873036483325,
+   "level": "address",
+   "lon": 3.8987005734672118
   },
   "hazelaarstraat 53|8870|izegem": {
    "lat": 50.911499828128825,
@@ -4816,6 +4851,11 @@
    "lat": 51.004807205844116,
    "level": "address",
    "lon": 3.8868698236238166
+  },
+  "jozef duthoystraat 117|8790|waregem": {
+   "lat": 50.8818096737406,
+   "level": "address",
+   "lon": 3.419374740968212
   },
   "jozef ii-straat 22|8400|oostende": {
    "lat": 51.229052845105926,
@@ -5890,6 +5930,11 @@
    "level": "address",
    "lon": 3.6377221106702837
   },
+  "kortrijksesteenweg 185|9830|sint-martens-latem": {
+   "lat": 51.008320090711344,
+   "level": "address",
+   "lon": 3.632441330520577
+  },
   "kortrijksesteenweg 208|9830|sint-martens-latem": {
    "lat": 51.00484930808722,
    "level": "address",
@@ -6114,6 +6159,11 @@
    "lat": 51.02925736296951,
    "level": "address",
    "lon": 3.7195486475741704
+  },
+  "krijgslaan 21|9000|gent": {
+   "lat": 51.03465194497501,
+   "level": "address",
+   "lon": 3.7204443864745094
   },
   "krijgslaan 87|9000|gent": {
    "lat": 51.03332147477101,
@@ -7336,6 +7386,11 @@
    "level": "address",
    "lon": 3.8809011091414747
   },
+  "moerstraat 61||wetteren": {
+   "lat": 51.00493810284118,
+   "level": "address",
+   "lon": 3.8813208917536
+  },
   "moeskroensesteenweg 24|8511|aalbeke": {
    "lat": 50.78274921262716,
    "level": "address",
@@ -8188,6 +8243,11 @@
    "level": "address",
    "lon": 3.2557566807113965
   },
+  "ooststraat 62|8630|veurne": {
+   "lat": 51.0731201801462,
+   "level": "address",
+   "lon": 2.666125102994341
+  },
   "oostveld kouter 16|9920|lievegem": {
    "lat": 51.10117126577424,
    "level": "address",
@@ -8522,6 +8582,11 @@
    "lat": 51.02496976735337,
    "level": "address",
    "lon": 3.7094224456024616
+  },
+  "oudenaardsesteenweg 42||kruisem": {
+   "lat": 50.887955547344234,
+   "level": "address",
+   "lon": 3.5420486943447664
   },
   "oudenaardsesteenweg 476|9420|erpe-mere": {
    "lat": 50.92196627524038,
@@ -9258,6 +9323,11 @@
   "provincieweg 111/201|9552|herzele borsbeke": {
    "lat": 50.9065138,
    "lon": 3.8992002
+  },
+  "provincieweg 571||herzele": {
+   "lat": 50.89656597433881,
+   "level": "address",
+   "lon": 3.8445939536826708
   },
   "puinstraat 61|9000|gent": {
    "lat": 51.05242732214938,
@@ -10745,6 +10815,11 @@
    "level": "address",
    "lon": 3.6411755044037992
   },
+  "stationsstraat 132|9810|nazareth": {
+   "lat": 50.9599821875262,
+   "level": "address",
+   "lon": 3.6288285607977375
+  },
   "stationsstraat 17|2590|berlaar": {
    "lat": 51.11649443718029,
    "level": "address",
@@ -11497,6 +11572,11 @@
    "level": "address",
    "lon": 2.8759069736591183
   },
+  "vennelaan 13|9830|sint-martens-latem": {
+   "lat": 51.0185453836798,
+   "level": "address",
+   "lon": 3.632543098868537
+  },
   "vennestraat 41|8500|courtrai": {
    "lat": 50.83251433416128,
    "level": "address",
@@ -11868,6 +11948,11 @@
    "lat": 51.107104672477355,
    "level": "address",
    "lon": 3.7017436165261355
+  },
+  "vuurkruiserslaan 0|8870|izegem": {
+   "lat": 50.92271605041493,
+   "level": "street",
+   "lon": 3.191065585101098
   },
   "waaiberglaan 5|8700|aarsele": {
    "lat": 51.0003838,

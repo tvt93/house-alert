@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import smtplib
 import sys
 from datetime import date
 from pathlib import Path
@@ -381,6 +382,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         print("\ndry run: nothing emailed, state not updated, site not exported")
         return 0
 
+    failed = 0
     if seeding:
         store.mark_mailed(fresh)
         print(f"\nseeded {len(fresh)} listings from {len(result.per_agency)} agencies; "
@@ -388,8 +390,12 @@ def cmd_run(args: argparse.Namespace) -> int:
     elif args.no_email:
         print(f"\nno email this run; {len(pending)} listings stay queued for the next mail")
     else:
-        _deliver(subscriptions, pending, today, len(agencies), len(result.unreachable))
-        store.mark_mailed(pending)
+        failed = _deliver(subscriptions, pending, today, len(agencies), len(result.unreachable))
+        if failed:
+            print(f"\n{failed} mail(s) failed; {len(pending)} listings stay queued "
+                  f"for the next mail", file=sys.stderr)
+        else:
+            store.mark_mailed(pending)
 
     for url in result.all_seen_urls:
         seen.record(Listing(url=url, source="scan"))
@@ -399,11 +405,21 @@ def cmd_run(args: argparse.Namespace) -> int:
     store.save()
     target = export_site(store, agency_count=len(agencies), unreachable=len(result.unreachable))
     print(f"state: {len(seen)} seen URLs ({pruned} pruned), {len(store)} listings on {target}")
-    return 0
+    # State and site are saved either way; a failed mail still fails the run
+    # so it shows up red in Actions.
+    return 1 if failed else 0
 
 
 def _deliver(subscriptions: list[Subscription], fresh: list[Listing], today: date,
-             agency_count: int, unreachable: int) -> None:
+             agency_count: int, unreachable: int) -> int:
+    """Send one digest per subscription; returns how many sends failed.
+
+    Anything that goes wrong while sending (missing settings, SMTP refusing the
+    login, a network error) is reported and counted rather than raised, so the
+    scan's results are still saved and the listings stay queued for the next
+    mail instead of being lost.
+    """
+    failed = 0
     for sub in subscriptions:
         # Re-evaluate per subscription: matched_keywords live on the listing
         # and must reflect this subscription's highlight words.
@@ -422,7 +438,12 @@ def _deliver(subscriptions: list[Subscription], fresh: list[Listing], today: dat
             send(subject_for(matches, today, sub.name), html, text, recipients=sub.recipients)
             print(f"'{sub.name}': emailed {len(matches)} listings to {', '.join(sub.recipients)}")
         except MailConfigError as exc:
+            failed += 1
             print(f"'{sub.name}': mail not configured, nothing sent: {exc}", file=sys.stderr)
+        except (smtplib.SMTPException, OSError) as exc:
+            failed += 1
+            print(f"'{sub.name}': sending failed, nothing sent: {exc}", file=sys.stderr)
+    return failed
 
 
 # ------------------------------------------------------------------ parser

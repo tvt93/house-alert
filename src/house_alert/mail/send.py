@@ -52,12 +52,19 @@ class MailSettings:
                 "missing mail settings: " + ", ".join(missing)
                 + " (copy .env.example to .env, or set them as Actions secrets)"
             )
+        # GitHub Actions hands the job an empty string for every secret that
+        # was never set, so "unset" and "" must both mean "use the default".
+        port_text = os.environ.get("SMTP_PORT", "").strip() or "587"
+        try:
+            port = int(port_text)
+        except ValueError:
+            raise MailConfigError(f"SMTP_PORT must be a number, got {port_text!r}") from None
         return cls(
-            host=os.environ.get("SMTP_HOST", "smtp.gmail.com").strip(),
-            port=int(os.environ.get("SMTP_PORT", "587")),
+            host=os.environ.get("SMTP_HOST", "").strip() or "smtp.gmail.com",
+            port=port,
             user=user,
             password=password,
-            sender=os.environ.get("MAIL_FROM", user).strip(),
+            sender=os.environ.get("MAIL_FROM", "").strip() or user,
             recipients=recipients,
         )
 

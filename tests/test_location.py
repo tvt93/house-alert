@@ -119,3 +119,38 @@ def test_multi_word_city_from_title():
     )
     assert listing is not None
     assert listing.city == "Sint-Martens-Latem"
+
+
+# infinimo.be writes the map link town-first: /maps/place/Drongen+9031+Ernest
+# Solvynsdreef+36. Read as "postcode town", the word after the postcode is the
+# start of the street, and an earlier version filed the house in "Ernest".
+INFINIMO_PAGE = """
+<html><head><meta property="og:title" content="Te koop in 9031 Drongen | Infinimo"></head>
+<body>
+  <h1>Woning te Drongen - Ernest Solvynsdreef 36</h1>
+  <div>€ 582.000 4 slaapkamer(s) 196m² vloeroppervlakte</div>
+  <h2>Bebouwing</h2><dl><dt>Vloeroppervlakte</dt><dd>196 m²</dd></dl>
+  <h2>Terrein</h2><dl><dt>Terrein opp.</dt><dd>474 m²</dd></dl>
+  <h2>Financiële info</h2><dl><dt>Kadastraal inkomen</dt><dd>€ 924</dd><dt>Prijs</dt><dd>€ 582.000</dd></dl>
+  <h2>Locatie</h2>
+  <a href="https://www.google.com/maps/place/Drongen+9031+Ernest Solvynsdreef+36/@51.03,3.63,09z">Ernest Solvynsdreef 36, Drongen</a>
+</body></html>
+"""
+
+
+def test_town_first_map_link_names_the_town_not_the_street():
+    listing = extract_listing("https://www.infinimo.be/te-koop/woning/drongen-9031/21612",
+                              INFINIMO_PAGE, source="Infinimo")
+    assert listing is not None
+    assert (listing.postal_code, listing.city) == ("9031", "Drongen")
+    assert listing.street == "Ernest Solvynsdreef 36"
+
+
+def test_unknown_hamlet_after_the_postcode_is_still_accepted():
+    from house_alert.extract import address_place
+
+    # The table lists municipalities, not every hamlet; nothing before the
+    # postcode names a town here, so the hamlet stands.
+    assert address_place("Kappetragel 1, 9052 Zwijnaarde") == ("9052", "Zwijnaarde")
+    assert address_place("Drongen 9031 Ernest Solvynsdreef 36") == ("9031", "Drongen")
+    assert address_place("Steenweg 5, 9880 Lotenhulle") == ("9880", "Lotenhulle")

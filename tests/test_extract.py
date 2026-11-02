@@ -338,3 +338,19 @@ def test_address_title_detector():
     assert not address_title("Charmant pareltje in hartje Gent")
     assert not address_title("Te koop Kerkstraat 28 Destelbergen")
     assert not address_title("Woning Kerkstraat 28")
+
+
+def test_floor_area_and_terrain_area_are_the_living_and_plot_area():
+    # infinimo.be prints "196m² vloeroppervlakte" in the banner, and the facts
+    # table says "Vloeroppervlakte 196 m²" and "Terrein opp. 474 m²".
+    page = """<html><body><h1>Woning te Drongen - Ernest Solvynsdreef 36</h1>
+      <div>€ 582.000 4 slaapkamer(s) 196m² vloeroppervlakte</div>
+      <p>Alle vermelde vloeroppervlaktes zijn indicatief.</p>
+      <dl><dt>Vloeroppervlakte</dt><dd>196 m²</dd><dt>Terrein opp.</dt><dd>474 m²</dd>
+          <dt>Prijs</dt><dd>€ 582.000</dd></dl>
+    </body></html>"""
+    listing = extract_listing("https://x.be/te-koop/woning/drongen-9031/21612", page, source="X")
+    assert listing is not None
+    assert listing.living_area_m2 == 196
+    assert listing.plot_area_m2 == 474
+    assert listing.price == 582000

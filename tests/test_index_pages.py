@@ -82,3 +82,28 @@ def test_a_labelled_price_always_wins_over_the_index_heuristic():
     listing = extract_listing("https://x.be/te-koop/villa-1", LABELLED_PAGE, source="X")
     assert listing is not None
     assert listing.price == 675000
+
+
+# infinimo.be/aanbod/te-koop/gent-9000: the page is headed by a count, the
+# search form above the grid says "Prijs" right before a euro sign (so the
+# labelled-price shortcut fires), and every card price sits inside its link.
+INFINIMO_TOWN_PAGE = """
+<html><head><title>47 Panden te koop in Gent | Infinimo</title>
+<meta property="og:title" content="47 Panden te koop in Gent | Infinimo"></head>
+<body>
+  <form><label for="priceMin">Prijs € <span>Minimum</span></label>
+        <label for="priceMax">tot € <span>maximum</span></label></form>
+  <h1>47 Panden te koop in Gent</h1>
+  <a href="/te-koop/woning/gent-9000/21001"><h3>Onderstraat 23C, Gent</h3>
+     <span>€ 1.600.000</span><span>2 slaapkamers</span></a>
+  <a href="/te-koop/appartement/gent-9000/21002"><h3>Kortrijksesteenweg 12, Gent</h3>
+     <span>€ 545.000</span><span>3 slaapkamers</span></a>
+  <a href="/te-koop/woning/gent-9000/21003"><h3>Hoogpoort 4, Gent</h3>
+     <span>€ 595.000</span><span>4 slaapkamers</span></a>
+</body></html>
+"""
+
+
+def test_a_page_headed_by_a_property_count_is_rejected():
+    assert extract_listing("https://x.be/te-koop/panden-gent",
+                           INFINIMO_TOWN_PAGE, source="Infinimo") is None

@@ -3,7 +3,7 @@
 Personal project. **No connection to Verity work of any kind.** Also unrelated to
 `personal-planning` — separate repo, separate purpose, nothing shared.
 
-Every house that comes online at ~87 estate agencies around Ghent and Kortrijk, on one
+Every house that comes online at ~96 estate agencies around Ghent and Kortrijk, on one
 page — as a list and on a map — plus one email every morning per recipient with the new
 ones that match their filters. It reads the agencies' own websites directly, so listings
 show up as soon as the agency publishes them, usually before they reach the big portals.
@@ -14,7 +14,7 @@ show up as soon as the agency publishes them, usually before they reach the big 
 ## How it works
 
 ```
-config/agencies.yaml   87 agencies around Ghent and Kortrijk
+config/agencies.yaml   96 agencies around Ghent and Kortrijk
         │
         ├─ discover     robots.txt → sitemap.xml → listing detail URLs
         │               (falls back to crawling the "te koop" index)

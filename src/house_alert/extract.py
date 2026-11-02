@@ -120,12 +120,24 @@ CATEGORY_PATH = re.compile(
     r"|/lk-[^/]*/?$"
     r"|/(?:huis|huizen|woning|woningen|appartement|appartementen|villa|villas|"
     r"grond|bouwgrond|gronden|garage|garages|kantoor|kantoren|handelspand|"
-    r"opbrengsteigendom|bedrijfsvastgoed|nieuwbouw|projecten|luxevastgoed)/?$",
+    r"opbrengsteigendom|bedrijfsvastgoed|nieuwbouw|projecten|luxevastgoed)/?$"
+    # infinimo.be keeps its whole catalogue at /aanbod/te-koop: a path that
+    # stops at the sale word is the index, never one property.
+    r"|/(?:te-koop|te-huur|kopen|huren|aanbod)/?$",
     re.IGNORECASE)
 # "/te-koop/9000-gent": a town filter, when the slug is that postcode's town.
 # cdf.be writes "/te-koop/2335-stijlvol-appartement-in-..." with a reference
 # number in the same position, which the table tells apart from a postcode.
 POSTCODE_TOWN_TAIL = re.compile(r"/([1-9]\d{3})-([a-z-]+)/?$")
+# The same filter with the postcode last: infinimo.be/aanbod/te-koop/gent-9000,
+# or several merged towns as /evergem--sleidinge-9940.
+TOWN_POSTCODE_TAIL = re.compile(r"/([a-z-]+)-([1-9]\d{3})/?$")
+
+# A heading that counts properties ("47 Panden te koop in Gent") belongs to a
+# catalogue page, whatever its URL looks like.
+COUNT_HEADING = re.compile(
+    r"^\s*\d+\s+(?:panden|woningen|eigendommen|resultaten|properties|results)\b",
+    re.IGNORECASE)
 
 PRICE_FLOOR = 25_000
 PRICE_CEILING = 5_000_000
@@ -314,15 +326,21 @@ def looks_like_listing_url(url: str) -> bool:
 def is_town_filter_path(path: str) -> bool:
     """Does the path end in "<postcode>-<town>" where the town really belongs
     to that postcode? Then it filters a catalogue by town, it is not a house."""
-    m = POSTCODE_TOWN_TAIL.search(path.lower())
-    if not m:
-        return False
+    path = path.lower()
+    m = POSTCODE_TOWN_TAIL.search(path)
+    if m:
+        postcode, towns = m.group(1), [m.group(2)]
+    else:
+        m = TOWN_POSTCODE_TAIL.search(path)
+        if not m:
+            return False
+        postcode, towns = m.group(2), m.group(1).split("--")
     from .geo import postcode_table
-    entry = postcode_table().get(m.group(1))
+    entry = postcode_table().get(postcode)
     if not entry:
         return False
-    slug = m.group(2).replace("-", " ")
-    return any(slug == str(name).lower().replace("-", " ") for name in entry.get("names", []))
+    names = {str(name).lower().replace("-", " ") for name in entry.get("names", [])}
+    return any(town.replace("-", " ") in names for town in towns)
 
 
 def guess_property_type(title: str = "", url: str = "", description: str = "") -> str:
@@ -1070,7 +1088,16 @@ def address_place(text: str) -> tuple[str, str]:
     m = re.search(POSTAL_CITY, text)
     if m and is_known_postcode(m.group(1)) and m.group(3).lower() not in NOT_A_CITY:
         # "9840 Nazareth-De Pinte": the fused name runs past the hyphen.
-        return m.group(1), _whole_place(f"{m.group(2) or ''}{m.group(3)}".strip(), text[m.end():m.end() + 40])
+        city = _whole_place(f"{m.group(2) or ''}{m.group(3)}".strip(), text[m.end():m.end() + 40])
+        # infinimo.be links the map as "Drongen 9031 Ernest Solvynsdreef 36":
+        # the town comes first and the word after the postcode starts the
+        # street. A name the table knows before the postcode wins over an
+        # unknown one after it; an unknown hamlet after it is still accepted.
+        before = CITY_POSTAL.search(text)
+        town_first = bool(before) and before.group(3) == m.group(1) and is_known_place(
+            f"{before.group(1) or ''}{before.group(2)}".strip())
+        if is_known_place(city) or not town_first:
+            return m.group(1), city
     m = CITY_POSTAL.search(text)
     if m and is_known_postcode(m.group(3)):
         city = f"{m.group(1) or ''}{m.group(2)}".strip()
@@ -1155,6 +1182,10 @@ def _from_text(text: str, listing: Listing) -> None:
             r"bewoonbare\s+opp\w*\D{0,15}([\d.,]{2,8})",
             r"bewoonbaar\D{0,15}([\d.,]{2,8})\s*m",
             r"woonopp\w*\D{0,15}([\d.,]{2,8})",
+            # infinimo.be: "196m² vloeroppervlakte" in the banner and
+            # "Vloeroppervlakte 196 m²" among the facts.
+            r"vloeropp\w*\D{0,15}([\d.,]{2,8})",
+            r"([\d.,]{2,8})\s*m²?\s*vloeropp",
             r"([\d.,]{2,8})\s*m²?\s*bewoonbaar",
             r"living\s+area\D{0,15}([\d.,]{2,8})",
         ))
@@ -1165,7 +1196,7 @@ def _from_text(text: str, listing: Listing) -> None:
             r"grondopp\w*\D{0,15}([\d.,]{2,9})",
             r"perceelopp\w*\D{0,15}([\d.,]{2,9})",
             r"opp\w*\s+perceel\D{0,15}([\d.,]{2,9})",
-            r"terreinopp\w*\D{0,15}([\d.,]{2,9})",
+            r"terrein\s*opp\w*\D{0,15}([\d.,]{2,9})",      # infinimo.be: "Terrein opp. 474 m²"
             r"totale\s+opp\w*\D{0,15}([\d.,]{2,9})",
         ))
         listing.plot_area_m2 = _plausible_area(_int(raw), 20, 200_000)
@@ -1488,6 +1519,12 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
         # in the structured data; the h1 ("Afgesloten garage te koop in de
         # Hoveniersstraat") says what it is, which the type guess needs.
         listing.title = _property_heading(soup, tags=("h1",)) or listing.title
+
+    # infinimo.be/aanbod/te-koop/gent-9000 is headed "47 Panden te koop in
+    # Gent": a count of properties is a catalogue, however the page is priced.
+    headings = [listing.title or ""] + [h.get_text(" ", strip=True) for h in soup.find_all("h1")]
+    if any(COUNT_HEADING.match(h) for h in headings):
+        return None
 
     # Drop the cards, teasers and "similar properties" strips before reading any
     # numbers off the page, so nothing here can pick up a neighbour's price.

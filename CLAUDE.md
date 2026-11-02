@@ -7,7 +7,7 @@ sibling `personal-planning` repo; they share no code and should not learn about 
 
 ## What it is
 
-New house listings scraped from the websites of ~87 estate agencies in the Ghent and
+New house listings scraped from the websites of ~96 estate agencies in the Ghent and
 Kortrijk regions, shown on a GitHub Pages site (list + map) and emailed daily per
 subscription. Python, no services, no database; the state is JSON files in git.
 

@@ -131,3 +131,6 @@ agencies:
       - https://www.engelvoelkers.com/be/nl/eigendom/res/koop/huis/vlaams-gewest/gent
       - https://www.engelvoelkers.com/be/nl/eigendom/res/koop/appartement/vlaams-gewest/gent
       - https://www.engelvoelkers.com/be/nl/eigendom/res/koop/huis/vlaams-gewest/kortrijk
+  # ------------------------------------------------- added Nov 2026 (user list)
+  - { name: Infinimo,                 url: "https://www.infinimo.be", platform: omnicasa }
+  - { name: i-moov,                   url: "https://www.i-moov.be", platform: skarabee }

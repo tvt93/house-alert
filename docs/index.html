@@ -194,6 +194,7 @@ dialog p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
 dialog .db { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 12px; }
 dialog .db[hidden] { display: none; }
 dialog .df { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+dialog .df .left { margin-right: auto; }
 .summary { font-size: 13px; background: var(--accent-soft); color: var(--accent); border-radius: 8px; padding: 8px 10px; }
 .summary.ok { font-size: 14px; padding: 12px; line-height: 1.5; }
 .sum-title { font-weight: 600; margin-bottom: 4px; }
@@ -357,9 +358,10 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
       <div class="sum-title">Filters in deze mail</div>
       <ul class="sum-list" id="subSummary"></ul>
     </div>
-    <p class="note">Je adres wordt in je browser versleuteld en is alleen leesbaar op het moment dat de mail vertrekt. De aanvraag gaat via GitHub: daar klik je enkel op de groene knop <b>Create</b> (een gratis GitHub-account is nodig). Binnen een paar minuten is de mail actief. <a id="subListLink">Bestaande mails bekijken</a></p>
+    <p class="note">Je adres wordt in je browser versleuteld en is alleen leesbaar op het moment dat de mail vertrekt. De aanvraag gaat via GitHub: daar klik je enkel op de groene knop <b>Create</b> (een gratis GitHub-account is nodig). Binnen een paar minuten is de mail actief.</p>
     <p class="note err" id="subError" hidden></p>
     <div class="df">
+      <button type="button" class="btn left" id="subListBtn">Bestaande mails</button>
       <button type="button" class="btn" id="subClose">Sluiten</button>
       <button type="button" class="btn primary" id="subCreate">Mail instellen →</button>
     </div>
@@ -383,7 +385,7 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
   </div>
   <div class="db" id="subDone" hidden>
     <div class="summary ok" id="subDoneText"></div>
-    <p class="note">Geen nieuw tabblad gezien? <a id="subDoneLink" href="#" target="_blank" rel="noopener">Open de aanvraag hier</a>. Stoppen of aanpassen kan later via <b>Dagelijkse mail → Bestaande mails bekijken</b>.</p>
+    <p class="note">Geen nieuw tabblad gezien? <a id="subDoneLink" href="#" target="_blank" rel="noopener">Open de aanvraag hier</a>. Stoppen of aanpassen kan later via <b>Dagelijkse mail → Bestaande mails</b>.</p>
     <div class="df">
       <button type="button" class="btn primary" id="subDoneClose">Sluiten</button>
     </div>
@@ -913,17 +915,26 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
       .then(function () { btn.disabled = !subscribeReady; btn.textContent = 'Mail stoppen →'; });
   }
 
-  $('mailBtn').addEventListener('click', function () {
+  // The button shows how many mails are active once the list is known.
+  function labelSubListBtn() {
+    loadSubscriptions().then(function (list) {
+      $('subListBtn').textContent = 'Bestaande mails' + (list.length ? ' (' + list.length + ')' : '');
+    }).catch(function () {});
+  }
+  function openMailDialog(panel) {
     showPanel('subForm');
     showError(''); $('subCreate').disabled = !subscribeReady;
-    refreshDialog(); $('mailDialog').showModal();
-  });
+    refreshDialog(); labelSubListBtn();
+    if (panel === 'subList') openSubList();
+    if (!$('mailDialog').open) $('mailDialog').showModal();
+  }
+  $('mailBtn').addEventListener('click', function () { openMailDialog('subForm'); });
   $('subClose').addEventListener('click', function () { $('mailDialog').close(); });
   $('subDoneClose').addEventListener('click', function () { $('mailDialog').close(); });
   $('subCreate').addEventListener('click', submitSubscription);
   $('subTo').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); submitSubscription(); } });
   $('subName').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); $('subTo').focus(); } });
-  $('subListLink').addEventListener('click', function (e) { e.preventDefault(); openSubList(); });
+  $('subListBtn').addEventListener('click', openSubList);
   $('subListBack').addEventListener('click', function () { showPanel('subForm'); });
   $('subItems').addEventListener('click', function (e) {
     var b = e.target.closest('[data-stop]');
@@ -936,6 +947,8 @@ dialog .btn[disabled] { opacity: .55; cursor: default; }
   // ---------------------------------------------------------------- load
   F.fromHash();
   try { if (localStorage.getItem('view') === 'map' && !location.hash) document.querySelector('.seg button[data-view=map]').click(); } catch (e) {}
+  // .../house-alert/#mails opens straight onto the list of active mails.
+  if (/(^|&)mails(=|&|$)/.test(location.hash.slice(1))) openMailDialog('subList');
 
   fetch('listings.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })

@@ -354,3 +354,58 @@ def test_floor_area_and_terrain_area_are_the_living_and_plot_area():
     assert listing.living_area_m2 == 196
     assert listing.plot_area_m2 == 474
     assert listing.price == 582000
+
+
+def _wolff_page(status: str, with_sizes: bool = True) -> str:
+    # wolff.be: a Next.js front end over the Skarabee API. The surfaces are an
+    # icon plus a bare number, the "Meer panden" strip shares the property's
+    # markup, and "in optie" is only printed on the overview card.
+    sizes = '"sizes":{"liveable_area":{"size":230},"plot_area":{"size":1027}},' if with_sizes else ""
+    blob = (
+        '{"props":{"pageProps":{"properties":[{"id":"1","description_title":"Half open bebouwing in Melsele"}],'
+        '"property":{"id":"9065390","type":"house","status":"' + status + '",'
+        '"price":{"currency":"EUR","amount":649000,"hidden":false},' + sizes +
+        '"bedrooms":4,"epc_value":242,'
+        '"description_title":"Lichtrijke villa met tuin in Sint-Denijs-Westrem",'
+        '"location":{"hidden":false,"city":"Sint-Denijs-Westrem","postal_code":"9051",'
+        '"number":2,"street":"Neststraat","geo":{"latitude":51.02397,"longitude":3.666584}}}}}}'
+    )
+    return f"""<html><head>
+      <meta property="og:title" content="Lichtrijke villa met tuin in Sint-Denijs-Westrem | Wolff Vastgoed">
+      <meta property="og:site_name" content="Wolff Vastgoed">
+      <script id="__NEXT_DATA__" type="application/json">{blob}</script>
+    </head><body>
+      <h1>Lichtrijke villa met tuin in Sint-Denijs-Westrem</h1>
+      <p>Neststraat 2, 9051 Sint-Denijs-Westrem</p><p>€ 649.000</p>
+      <div><p>1027 m<sup>2</sup></p><p>230 m<sup>2</sup></p><p>4</p></div>
+      <h1>Meer panden</h1>
+      <a href="/aanbod/te-koop/melsele/x/1"><h3>Half open bebouwing in Melsele</h3><p>€ 395.000</p></a>
+    </body></html>"""
+
+
+def test_next_data_property_fills_surfaces_pin_and_title():
+    url = "https://www.wolff.be/aanbod/te-koop/sint-denijs-westrem/woning-in-neststraat-2/9065390"
+    listing = extract_listing(url, _wolff_page("available"), source="Wolff")
+    assert listing is not None
+    assert listing.living_area_m2 == 230
+    assert listing.plot_area_m2 == 1027
+    assert listing.bedrooms == 4
+    assert listing.epc_kwh == 242
+    assert listing.price == 649000
+    assert listing.property_type == "house"
+    assert listing.street == "Neststraat 2"
+    assert listing.postal_code == "9051"
+    assert (listing.lat, listing.lon, listing.geo) == (51.02397, 3.666584, "address")
+    # Not the neighbour's card from the "Meer panden" strip.
+    assert listing.title == "Lichtrijke villa met tuin in Sint-Denijs-Westrem"
+
+
+def test_next_data_status_counts_when_the_page_text_says_nothing():
+    from house_alert.extract import detect_status
+    assert detect_status(_wolff_page("available")) == "available"
+    assert detect_status(_wolff_page("option")) == "option"
+    assert detect_status(_wolff_page("sold")) == "sold"
+    # An unknown status word falls through to the page text.
+    assert detect_status(_wolff_page("prospect")) == "available"
+    url = "https://www.wolff.be/aanbod/te-koop/sint-denijs-westrem/woning-in-neststraat-2/9065390"
+    assert extract_listing(url, _wolff_page("option"), source="Wolff") is None

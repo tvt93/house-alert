@@ -377,6 +377,110 @@ def is_parking(text: str) -> bool:
                for m in PARKING_WORD.finditer(text))
 
 
+# ----------------------------------------------------------- Next.js data
+
+# wolff.be: a Next.js front end over the Skarabee API. The page prints the
+# surfaces as an icon and a bare number ("1027 m²") with no label the text
+# patterns could read, never says "in optie" on the detail page (only the
+# overview card does), and its "Meer panden" strip is in the same markup as
+# the property. Everything sits in the ``__NEXT_DATA__`` blob instead, under
+# props.pageProps.property; the strip is a sibling list and is ignored.
+NEXT_DATA = re.compile(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', re.DOTALL)
+
+NEXT_STATUS = {
+    "available": "available",
+    "option": "option",
+    "reserved": "option",
+    "sold": "sold",
+    "rented": "sold",
+}
+NEXT_TYPES = {
+    "house": "house",
+    "apartment": "apartment",
+    "land": "land",
+    "parking": "parking",
+    "garage": "parking",
+}
+
+
+def next_data_property(html: str) -> dict[str, Any] | None:
+    """The page's own property record from a Next.js data blob, when the
+    page has one in the Skarabee shape (a ``sizes`` or ``location`` dict)."""
+    m = NEXT_DATA.search(html)
+    if not m:
+        return None
+    try:
+        data = json.loads(m.group(1))
+    except (json.JSONDecodeError, TypeError):
+        return None
+    prop = (data.get("props") or {}).get("pageProps", {}).get("property") if isinstance(data, dict) else None
+    if not isinstance(prop, dict):
+        return None
+    if not any(isinstance(prop.get(k), dict) for k in ("sizes", "location", "price")):
+        return None
+    return prop
+
+
+def _from_next_property(prop: dict[str, Any], listing: Listing) -> None:
+    """Fill the listing from a Skarabee-shaped Next.js property record."""
+    price = prop.get("price")
+    if isinstance(price, dict) and not price.get("hidden") and listing.price is None:
+        amount = _int(str(price.get("amount") or ""))
+        if amount and PRICE_FLOOR <= amount <= PRICE_CEILING:
+            listing.price = amount
+
+    sizes = prop.get("sizes") if isinstance(prop.get("sizes"), dict) else {}
+    for key, attr, low, high in (
+        ("liveable_area", "living_area_m2", 15, 2000),
+        ("plot_area", "plot_area_m2", 20, 200_000),
+    ):
+        entry = sizes.get(key)
+        size = entry.get("size") if isinstance(entry, dict) else entry
+        if size is not None and getattr(listing, attr) is None:
+            setattr(listing, attr, _plausible_area(_int(str(size)), low, high))
+
+    bedrooms = _int(str(prop.get("bedrooms") or ""))
+    if bedrooms is not None and 0 < bedrooms <= 20 and listing.bedrooms is None:
+        listing.bedrooms = bedrooms
+
+    epc = _int(str(prop.get("epc_value") or ""))
+    if epc is not None and 0 < epc < 2000 and listing.epc_kwh is None:
+        listing.epc_kwh = epc
+
+    # The record's own title. og:title says "... | Wolff Vastgoed", which the
+    # generic-title rule took for the site's and replaced with the first
+    # heading naming a property: a card from the "Meer panden" strip.
+    own_title = str(prop.get("description_title") or "").strip()
+    if own_title:
+        listing.title = own_title
+
+    kind = str(prop.get("type") or "").lower()
+    if kind in NEXT_TYPES:
+        listing.property_type = NEXT_TYPES[kind]
+    elif kind.startswith(("professional", "commercial", "office", "industrial")):
+        listing.property_type = "commercial"
+
+    loc = prop.get("location")
+    if isinstance(loc, dict) and not loc.get("hidden"):
+        postcode = str(loc.get("postal_code") or "").strip()
+        city = str(loc.get("city") or "").strip()
+        if postcode.isdigit() and len(postcode) == 4 and not listing.postal_code:
+            listing.postal_code = postcode
+        if city and not listing.city:
+            listing.city = city
+        street = str(loc.get("street") or "").strip()
+        number = str(loc.get("number") or "").strip()
+        if street and number and not listing.street:
+            listing.street = f"{street} {number}"
+        geo = loc.get("geo") if isinstance(loc.get("geo"), dict) else {}
+        try:
+            lat, lon = float(geo.get("latitude")), float(geo.get("longitude"))
+        except (TypeError, ValueError):
+            lat = lon = None
+        if lat is not None and listing.lat is None and plausible_position(lat, lon, listing.postal_code):
+            listing.lat, listing.lon, listing.geo = lat, lon, "address"
+
+
 # ------------------------------------------------------------------- JSON-LD
 
 def jsonld_objects(soup: BeautifulSoup) -> list[dict[str, Any]]:
@@ -1467,6 +1571,13 @@ def detect_status(html: str, url: str = "") -> str:
     """
     if url and SOLD_IN_URL.search(urlparse(url).path):
         return "sold"
+    # wolff.be marks "in optie" on the overview card only; the detail page's
+    # data blob carries the status the text never prints.
+    prop = next_data_property(html)
+    if prop is not None:
+        known = NEXT_STATUS.get(str(prop.get("status") or "").lower())
+        if known is not None:
+            return known
     soup = BeautifulSoup(html, "lxml")
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
@@ -1510,6 +1621,9 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
     offices_at = chrome_places(soup)
     office_hard |= _from_jsonld(jsonld_objects(BeautifulSoup(html, "lxml")), listing)
     office |= office_hard
+    next_prop = next_data_property(html)
+    if next_prop is not None:
+        _from_next_property(next_prop, listing)
 
     if not listing.title or BARE_PLACE_TITLE.match(listing.title):
         # aclea-vastgoed.be titles every page "9950 - Lievegem"; the heading
@@ -1595,7 +1709,8 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
     if listing.image_url:
         listing.image_url = urljoin(url, listing.image_url)
 
-    listing.property_type = guess_property_type(listing.title, url, listing.description)
+    if listing.property_type == "unknown":       # a data blob may have said already
+        listing.property_type = guess_property_type(listing.title, url, listing.description)
 
     # The agency's own map pin, when the structured data carried none.
     if listing.lat is None:

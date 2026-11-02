@@ -355,6 +355,11 @@
    "level": "address",
    "lon": 4.023231887617436
   },
+  "astridlaan 24|8792|desselgem": {
+   "lat": 50.8861354915512,
+   "level": "address",
+   "lon": 3.3592495249106147
+  },
   "august nobelsstraat 9|9100|sint-niklaas": {
    "lat": 51.16086381122071,
    "level": "address",
@@ -1150,6 +1155,11 @@
    "lat": 50.9759552,
    "lon": 3.9541687
   },
+  "bredestraat kouter 2|9920|lievegem": {
+   "lat": 51.10088918082327,
+   "level": "address",
+   "lon": 3.6130430655300865
+  },
   "bressers-blanchaertlaan 4|9051|sint-denijs-westrem": {
    "lat": 51.02266537033422,
    "level": "address",
@@ -1273,6 +1283,11 @@
    "lat": 50.859124821909155,
    "level": "address",
    "lon": 3.270765479570157
+  },
+  "brugsesteenweg 450b|9030|gent": {
+   "lat": 51.06995472956469,
+   "level": "address",
+   "lon": 3.6826910773055035
   },
   "brugsesteenweg 477|8520|kuurne": {
    "lat": 50.87230047017804,
@@ -1923,6 +1938,11 @@
    "lat": 50.86056369657134,
    "level": "address",
    "lon": 3.324871117327492
+  },
+  "de volderstraat 44|9800|deinze": {
+   "lat": 50.97867359178339,
+   "level": "address",
+   "lon": 3.5421159924460723
   },
   "de wieleman 18|9890|gavere": {
    "lat": 50.91860184058035,
@@ -3133,6 +3153,11 @@
    "level": "address",
    "lon": 3.2958781421003103
   },
+  "gentstraat 68|9800|deinze": {
+   "lat": 50.980259708322876,
+   "level": "address",
+   "lon": 3.5341239394876967
+  },
   "gentweg 60|9890|vurste": {
    "lat": 50.9426124566745,
    "level": "address",
@@ -3502,6 +3527,11 @@
   "grotesteenweg-noord 97/001|9000|gent": {
    "lat": 51.0168818,
    "lon": 3.7086461
+  },
+  "guido gezellelaan 129|9800|deinze": {
+   "lat": 50.98028447557521,
+   "level": "address",
+   "lon": 3.5335599942724776
   },
   "guido gezellestraat 1|8750|wingene": {
    "lat": 51.05813294787484,
@@ -4138,6 +4168,11 @@
    "level": "address",
    "lon": 5.255160201916373
   },
+  "hogenhovestraat 1c|8700|aarsele": {
+   "lat": 50.98950553274087,
+   "level": "address",
+   "lon": 3.4202450876809007
+  },
   "hogestraat 30|8830|hooglede": {
    "lat": 50.97984362018723,
    "level": "address",
@@ -4560,6 +4595,9 @@
    "lat": 50.792374230512,
    "level": "address",
    "lon": 3.2044608674230166
+  },
+  "industriepark 3|9052|zwijnaarde": {
+   "level": "none"
   },
   "industrieweg 196|9030|mariakerke": {
    "lat": 51.0874280297104,
@@ -6002,6 +6040,11 @@
    "level": "address",
    "lon": 3.202067885854706
   },
+  "krekelstraat 27|9800|deinze": {
+   "lat": 50.971531085872336,
+   "level": "address",
+   "lon": 3.54150344808368
+  },
   "krekelstraat 29|9840|de pinte zevergem": {
    "lat": 50.995130639033306,
    "level": "address",
@@ -6410,6 +6453,11 @@
    "lat": 51.12346259937925,
    "level": "address",
    "lon": 2.6776506921673784
+  },
+  "leopold ii-laan 29|8400|oostende": {
+   "lat": 51.2311915060897,
+   "level": "address",
+   "lon": 2.9130693413941873
   },
   "leopold iii-straat 1|9620|zottegem": {
    "lat": 50.888814796280435,
@@ -7317,6 +7365,11 @@
    "lat": 51.02222563097119,
    "level": "address",
    "lon": 3.9549246229972543
+  },
+  "molenkouterstraat 67|9870|machelen": {
+   "lat": 50.958646937058056,
+   "level": "address",
+   "lon": 3.498091460839503
   },
   "molenlaan 6|8810|lichtervelde": {
    "lat": 51.024200215898055,
@@ -9447,6 +9500,11 @@
    "level": "address",
    "lon": 3.7567424070388937
   },
+  "robert rinskopflaan 72|9050|gent gentbrugge": {
+   "lat": 51.037158682586224,
+   "level": "address",
+   "lon": 3.758205357232646
+  },
   "rode broeckstraat 197|9600|ronse": {
    "lat": 50.7376614577303,
    "level": "address",
@@ -9924,6 +9982,9 @@
   "schaperijstraat 88|9900|eeklo": {
    "lat": 51.1776069,
    "lon": 3.5802769
+  },
+  "scheeplosserstraat 50|9040|sint-amandsberg": {
+   "level": "none"
   },
   "scheiddam 22|9150|beveren-kruibeke-zwijndrecht": {
    "lat": 51.17276455135502,
@@ -10576,6 +10637,11 @@
    "lat": 50.90967369973075,
    "level": "address",
    "lon": 3.424155460587299
+  },
+  "staggestraat 1c|9800|vinkt": {
+   "lat": 51.00705098365999,
+   "level": "address",
+   "lon": 3.4785268309316075
   },
   "stasegemdorp 6|8530|harelbeke": {
    "lat": 50.83205684573458,
@@ -12291,6 +12357,11 @@
    "lat": 51.095753280478164,
    "level": "address",
    "lon": 3.2190761747998735
+  },
+  "zandstraat 26|9900|eeklo": {
+   "lat": 51.18200207691012,
+   "level": "address",
+   "lon": 3.5612075725435584
   },
   "zandstraat 7|9032|wondelgem": {
    "lat": 51.077109293816314,

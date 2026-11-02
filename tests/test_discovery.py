@@ -71,3 +71,28 @@ def test_infinimo_town_pages_and_catalogue_root_are_not_listings():
     # style), and so is a slug that merely ends in four digits.
     assert looks_like_listing_url(
         "https://carloeggermont.be/pand/villa-naar-een-ontwerp-van-architect-geo-bontinck-1935/")
+
+
+def test_infinimo_type_filters_under_a_town_are_not_listings():
+    # The sitemap lists eight type filters under each of 49 town pages; the
+    # ones ending in a type word the category rule did not know ate 62 of
+    # the 80 fetches of the first run.
+    for url in (
+        "https://www.infinimo.be/aanbod/te-koop/aalter-9880/studio",
+        "https://www.infinimo.be/aanbod/te-koop/aalter-9880/garage/parking",
+        "https://www.infinimo.be/aanbod/te-koop/assenede-9960/nieuwbouw",
+        "https://www.infinimo.be/aanbod/te-koop/assenede-9960/opbrengsteigendom",
+    ):
+        assert not looks_like_listing_url(url), url
+    assert looks_like_listing_url("https://www.infinimo.be/te-koop/studio/gent-9000/21300")
+    assert looks_like_listing_url("https://www.infinimo.be/te-koop/garageparking/gent-9000/21301")
+
+
+def test_town_filter_reads_encoded_spaces_and_merged_municipalities():
+    for url in (
+        "https://www.infinimo.be/aanbod/te-koop/nazareth-de%20pinte-9810",
+        "https://www.infinimo.be/aanbod/te-koop/maarkedal-9680%20",
+        "https://www.infinimo.be/aanbod/te-koop/de%20pinte--nazareth-de%20pinte-9840",
+        "https://www.infinimo.be/aanbod/te-koop/merelbeke-melle-9090",
+    ):
+        assert not looks_like_listing_url(url), url

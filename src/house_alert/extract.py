@@ -18,7 +18,7 @@ import json
 import math
 import re
 from typing import Any
-from urllib.parse import parse_qs, unquote_plus, urljoin, urlparse
+from urllib.parse import parse_qs, unquote, unquote_plus, urljoin, urlparse
 
 from bs4 import BeautifulSoup, NavigableString, Tag
 
@@ -120,7 +120,9 @@ CATEGORY_PATH = re.compile(
     r"|/lk-[^/]*/?$"
     r"|/(?:huis|huizen|woning|woningen|appartement|appartementen|villa|villas|"
     r"grond|bouwgrond|gronden|garage|garages|kantoor|kantoren|handelspand|"
-    r"opbrengsteigendom|bedrijfsvastgoed|nieuwbouw|projecten|luxevastgoed)/?$"
+    r"opbrengsteigendom|bedrijfsvastgoed|nieuwbouw|projecten|luxevastgoed|"
+    # infinimo.be: /aanbod/te-koop/aalter-9880/studio and .../garage/parking
+    r"studio|studios|parking|parkings|loft|lofts|penthouse|penthouses)/?$"
     # infinimo.be keeps its whole catalogue at /aanbod/te-koop: a path that
     # stops at the sale word is the index, never one property.
     r"|/(?:te-koop|te-huur|kopen|huren|aanbod)/?$",
@@ -326,7 +328,8 @@ def looks_like_listing_url(url: str) -> bool:
 def is_town_filter_path(path: str) -> bool:
     """Does the path end in "<postcode>-<town>" where the town really belongs
     to that postcode? Then it filters a catalogue by town, it is not a house."""
-    path = path.lower()
+    # infinimo.be spells "nazareth-de%20pinte-9810" and "maarkedal-9680%20".
+    path = re.sub(r"\s+", "-", unquote(path).strip().lower())
     m = POSTCODE_TOWN_TAIL.search(path)
     if m:
         postcode, towns = m.group(1), [m.group(2)]
@@ -335,12 +338,16 @@ def is_town_filter_path(path: str) -> bool:
         if not m:
             return False
         postcode, towns = m.group(2), m.group(1).split("--")
-    from .geo import postcode_table
+    from .geo import postcode_table, postcodes_for_place
     entry = postcode_table().get(postcode)
     if not entry:
         return False
     names = {str(name).lower().replace("-", " ") for name in entry.get("names", [])}
-    return any(town.replace("-", " ") in names for town in towns)
+    if any(town.replace("-", " ") in names for town in towns):
+        return True
+    # "merelbeke-melle-9090": a merged municipality the table knows only by
+    # its parts; postcodes_for_place unites them.
+    return any(postcode in postcodes_for_place(town) for town in towns)
 
 
 def guess_property_type(title: str = "", url: str = "", description: str = "") -> str:

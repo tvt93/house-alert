@@ -1124,6 +1124,11 @@
    "level": "address",
    "lon": 3.7384910119371733
   },
+  "brakelmeersstraat 14|9830|sint-martens-latem": {
+   "lat": 51.02517078129946,
+   "level": "address",
+   "lon": 3.6158920799875154
+  },
   "brakelsesteenweg 109|9300|aalst": {
    "level": "none"
   },
@@ -2972,6 +2977,16 @@
    "level": "address",
    "lon": 3.707272907499286
   },
+  "gaverlandstraat 29|9031|drongen": {
+   "lat": 51.033550024339384,
+   "level": "address",
+   "lon": 3.6083546451135615
+  },
+  "gaverlandstraat 5|9031|drongen": {
+   "lat": 51.03431848009001,
+   "level": "address",
+   "lon": 3.6118097576898585
+  },
   "gaverse 11|9940|evergem": {
    "lat": 51.102160884255895,
    "level": "address",
@@ -3850,6 +3865,11 @@
    "level": "address",
    "lon": 3.411074777805718
   },
+  "heidebergenpark 2|9830|sint-martens-latem": {
+   "lat": 51.02359566165533,
+   "level": "address",
+   "lon": 3.6277083199544338
+  },
   "heidestraat 123||de klinge": {
    "lat": 51.2521746,
    "level": "address",
@@ -3956,6 +3976,11 @@
    "lat": 50.9227775,
    "level": "address",
    "lon": 4.0786488
+  },
+  "hellestraat 43|9800|astene": {
+   "lat": 50.991093779990926,
+   "level": "address",
+   "lon": 3.5677417111798944
   },
   "hemelaerstraat 14|9100|sint-niklaas": {
    "lat": 51.16434417457244,
@@ -4967,6 +4992,11 @@
    "level": "address",
    "lon": 4.391664923914893
   },
+  "kapitteldreef 51|9830|sint-martens-latem": {
+   "lat": 51.0080489594857,
+   "level": "address",
+   "lon": 3.6186194001550245
+  },
   "kappetragel 1|9052|zwijnaarde": {
    "lat": 51.00326096220108,
    "level": "address",
@@ -5512,6 +5542,11 @@
    "lat": 50.99835442849714,
    "level": "address",
    "lon": 3.6851053565139478
+  },
+  "klossestraat 15|9840|de pinte": {
+   "lat": 51.00673426742745,
+   "level": "street",
+   "lon": 3.6741999549860243
   },
   "kluizendorpstraat 19|9940|evergem": {
    "lat": 51.154546567468145,
@@ -8542,6 +8577,11 @@
    "level": "address",
    "lon": 3.3876722238685297
   },
+  "overheet|9290|berlare": {
+   "lat": 51.01565791188678,
+   "level": "street",
+   "lon": 4.020146647668161
+  },
   "overleiestraat 56|8530|harelbeke": {
    "lat": 50.85972008005478,
    "level": "address",
@@ -9504,6 +9544,11 @@
    "lat": 51.037158682586224,
    "level": "address",
    "lon": 3.758205357232646
+  },
+  "rode beukendreef 22|9831|deurle": {
+   "lat": 51.01288626244943,
+   "level": "address",
+   "lon": 3.6089185292944777
   },
   "rode broeckstraat 197|9600|ronse": {
    "lat": 50.7376614577303,
@@ -11935,6 +11980,11 @@
    "level": "address",
    "lon": 3.1209912966915665
   },
+  "warandedreef 11|9831|deurle": {
+   "lat": 51.00777312437625,
+   "level": "address",
+   "lon": 3.6142221891152957
+  },
   "warandedreef warandedreef 11|9831|deurle": {
    "lat": 51.0096494,
    "lon": 3.6123493
@@ -12040,6 +12090,11 @@
    "lat": 51.19276712297243,
    "level": "address",
    "lon": 3.2669402369097735
+  },
+  "wellingstraat 137|9070|heusden": {
+   "lat": 51.00723589414721,
+   "level": "address",
+   "lon": 3.8106681014480497
   },
   "wereldhof 15||menen": {
    "lat": 50.79829239389247,

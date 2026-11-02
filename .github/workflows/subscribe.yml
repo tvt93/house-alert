@@ -1,9 +1,13 @@
 name: daily mail from an issue
 
-# The overview page's "Dagelijkse mail instellen" button opens a prefilled
-# issue. This turns it into config/subscriptions/<name>.yaml, commits the
-# file and closes the issue with a note. The address in the issue is sealed
-# (enc:...); only the mail run can read it, with the MAIL_KEY secret.
+# The overview page's "Dagelijkse mail" dialog opens a prefilled issue, both
+# to set up a mail ("Dagelijkse mail: <name>") and to stop one ("Dagelijkse
+# mail stoppen: <name>"). This turns the first into config/subscriptions/
+# <name>.yaml and removes the file for the second, rewrites the page's
+# overview (docs/subscriptions.json), commits and closes the issue with a
+# note. Addresses in the issue are sealed (enc:...); only this run and the
+# mail run can read them, with the MAIL_KEY secret. Stopping is only honoured
+# when the sealed address in the issue is that mail's recipient.
 
 on:
   issues:
@@ -20,7 +24,7 @@ concurrency:
 
 jobs:
   subscribe:
-    if: startsWith(github.event.issue.title, 'Dagelijkse mail:')
+    if: startsWith(github.event.issue.title, 'Dagelijkse mail')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -37,10 +41,18 @@ jobs:
 
       - run: pip install -e .
 
-      - name: Write the subscription file
+      - name: Write or remove the subscription file
         id: write
         env:
           BODY: ${{ github.event.issue.body }}
+          # Needed to check, when stopping a mail, that the address in the
+          # issue is the one the mail goes to. The issue body is only parsed
+          # as data; nothing in it is executed or echoed back.
+          MAIL_KEY: ${{ secrets.MAIL_KEY }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_TO_PARTNER: ${{ secrets.MAIL_TO_PARTNER }}
+          MAIL_TO_2: ${{ secrets.MAIL_TO_2 }}
+          MAIL_TO_3: ${{ secrets.MAIL_TO_3 }}
         run: |
           printf '%s' "$BODY" > /tmp/issue-body.md
           set +e
@@ -55,20 +67,32 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           cat /tmp/result.txt
 
-      - name: Commit the file
+      - name: Commit the change
         if: steps.write.outputs.code == '0'
+        env:
+          ACTION: ${{ steps.write.outputs.action }}
         run: |
           git config user.name  "house-alert[bot]"
           git config user.email "house-alert@users.noreply.github.com"
-          git add config/subscriptions/
-          git commit -m "Dagelijkse mail ingesteld vanaf de pagina (#$ISSUE)"
+          git add config/subscriptions/ docs/subscriptions.json
+          if [ "$ACTION" = "unsubscribe" ]; then
+            git commit -m "Dagelijkse mail gestopt vanaf de pagina (#$ISSUE)"
+          else
+            git commit -m "Dagelijkse mail ingesteld vanaf de pagina (#$ISSUE)"
+          fi
           git pull --rebase
           git push
 
       - name: Confirm on the issue
         if: steps.write.outputs.code == '0'
+        env:
+          ACTION: ${{ steps.write.outputs.action }}
         run: |
-          gh issue comment "$ISSUE" --body "Ingesteld. Vanaf morgenochtend komt deze mail, telkens er nieuwe woningen zijn die aan de filters voldoen. Wil je hem later stoppen of aanpassen? Laat het hier weten."
+          if [ "$ACTION" = "unsubscribe" ]; then
+            gh issue comment "$ISSUE" --body "Gestopt. Deze mail komt niet meer. Een nieuwe instellen kan altijd via de knop Dagelijkse mail op de overzichtspagina."
+          else
+            gh issue comment "$ISSUE" --body "Ingesteld. Vanaf morgenochtend komt deze mail, telkens er nieuwe woningen zijn die aan de filters voldoen. Stoppen kan later via Dagelijkse mail > Bestaande mails op de overzichtspagina."
+          fi
           gh issue close "$ISSUE" --reason completed
 
       - name: Explain the refusal on the issue
@@ -76,5 +100,5 @@ jobs:
         env:
           WHY: ${{ steps.write.outputs.message }}
         run: |
-          gh issue comment "$ISSUE" --body "Dit kon niet ingesteld worden: $WHY. Probeer het opnieuw via de knop Dagelijkse mail op de overzichtspagina."
+          gh issue comment "$ISSUE" --body "Dit kon niet uitgevoerd worden: $WHY. Probeer het opnieuw via de knop Dagelijkse mail op de overzichtspagina."
           gh issue close "$ISSUE" --reason "not planned"

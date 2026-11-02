@@ -106,7 +106,7 @@ def criteria_from_dict(raw: dict[str, Any]) -> Criteria:
 def load_criteria(path: Path | None = None) -> Criteria:
     """Criteria from one YAML file. Subscription files also work here: the
     `name` and `to` keys are simply ignored."""
-    path = path or CONFIG_DIR / "subscriptions" / "default.yaml"
+    path = path or CONFIG_DIR / "subscription-example.yaml"
     if not path.exists():
         raise ConfigError(f"criteria file not found: {path}")
     raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}

@@ -11,10 +11,11 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .config import REPO_ROOT
+from .config import CONFIG_DIR, REPO_ROOT
 from .extract import in_belgium
 from .models import Listing
 from .store import ListingStore
+from .subscribe import export_overview
 
 SITE_DIR = REPO_ROOT / "docs"
 
@@ -56,4 +57,8 @@ def export_site(
         json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n",
         encoding="utf-8",
     )
+    # The page's "Bestaande mails" overview: names and filters, never addresses.
+    subs_dir = CONFIG_DIR / "subscriptions"
+    if subs_dir.is_dir():
+        export_overview(subs_dir, out_dir / "subscriptions.json")
     return target

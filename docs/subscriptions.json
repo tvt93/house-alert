@@ -1,0 +1,26 @@
+{
+ "generated": "2026-11-02",
+ "subscriptions": [
+  {
+   "slug": "huis-alert",
+   "name": "Huis-alert",
+   "created": "2026-10-30",
+   "property_types": [
+    "house",
+    "land"
+   ],
+   "postcodes": [],
+   "include_unknown": true,
+   "price": {},
+   "bedrooms": {
+    "min": 4
+   },
+   "living_area_m2": {
+    "min": 200
+   },
+   "plot_area_m2": {
+    "min": 600
+   }
+  }
+ ]
+}

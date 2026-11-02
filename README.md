@@ -60,7 +60,10 @@ framework — Leaflet for the map, everything else is plain HTML.
 
 ## Daily mail: subscriptions
 
-Each file in `config/subscriptions/` is one email. `default.yaml` documents every field.
+Each file in `config/subscriptions/` is one email. `config/subscription-example.yaml`
+documents every field; copy it into the folder to add a mail by hand, delete a file
+there to stop one. The page lists the active mails under *Dagelijkse mail → Bestaande
+mails* (names and filters only, from `docs/subscriptions.json`) and can stop one from there.
 
 ```yaml
 name: Thijs
@@ -174,6 +177,12 @@ hands the body to `house-alert subscribe-from-issue`, which validates it and wri
 `config/subscriptions/<name>.yaml`; the workflow commits the file, confirms on the issue
 and closes it. The address is encrypted in the browser before it leaves, so neither the
 issue nor the repository ever holds it readably. Nothing outside GitHub is involved.
+
+Stopping a mail works the same way in reverse: *Bestaande mails* in the dialog lists the
+active subscriptions and opens an issue titled `Dagelijkse mail stoppen: <name>` carrying
+the slug and, sealed, the address the mail goes to. The workflow opens that address with
+`MAIL_KEY` and removes the file only when it is one of the mail's recipients, so knowing
+the address is what proves the mail is yours. Both paths rewrite `docs/subscriptions.json`.
 
 One-time: `house-alert keygen` prints a key pair. The public one goes into
 `SUBSCRIBE_KEY` in `docs/index.html`; the private one becomes the Actions secret

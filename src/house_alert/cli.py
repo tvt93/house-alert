@@ -84,23 +84,28 @@ def cmd_keygen(args: argparse.Namespace) -> int:
 
 
 def cmd_subscribe_from_issue(args: argparse.Namespace) -> int:
-    """Turn the body of a "Dagelijkse mail" issue into a subscription file.
-    Prints the outcome for the workflow to relay onto the issue; a refusal is
-    exit code 3 with the reason on stdout, so it reaches the person who asked."""
+    """Turn the body of a "Dagelijkse mail" issue into a subscription file,
+    or remove the file a "Dagelijkse mail stoppen" issue points at (when the
+    sealed address in it is that mail's recipient). Either way the page's
+    overview (docs/subscriptions.json) is rewritten. Prints the outcome for
+    the workflow to relay onto the issue; a refusal is exit code 3 with the
+    reason on stdout, so it reaches the person who asked."""
     import os
-    from .subscribe import SubscribeError, from_issue
+    from .subscribe import SubscribeError, export_overview, handle_issue
 
     body = Path(args.body_file).read_text(encoding="utf-8")
+    directory = CONFIG_DIR / "subscriptions"
     try:
-        path = from_issue(body, CONFIG_DIR / "subscriptions")
+        action, path = handle_issue(body, directory)
     except SubscribeError as exc:
         print(str(exc))
         return 3
+    export_overview(directory, SITE_DIR / "subscriptions.json")
     out = os.environ.get("GITHUB_OUTPUT")
     if out:
         with open(out, "a", encoding="utf-8") as fh:
-            fh.write(f"file={path.as_posix()}\n")
-    print(path.as_posix())
+            fh.write(f"file={path.as_posix()}\naction={action}\n")
+    print(f"{action} {path.as_posix()}")
     return 0
 
 

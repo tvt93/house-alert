@@ -1,12 +1,14 @@
-# One file here = one daily email. Copy this file to add another recipient
-# with different filters; delete it to stop that mail. The overview page can
-# write these files for you: see the "Dagelijkse mail" button.
+# Template for a daily mail. Copy this file into config/subscriptions/ (one file
+# there = one daily email, any name) and fill in the recipient and the filters;
+# delete a file there to stop that mail. This file itself is not a
+# subscription: only config/subscriptions/ is read by the mail run. The
+# overview page can write those files for you: see the "Dagelijkse mail" button.
 #
 # Every filter is optional: leave a field blank (or delete it) and that check
 # is skipped entirely. `house-alert run --dry-run -v` prints what matched and
 # what was filtered out, and why.
 
-name: Standaard
+name: Voorbeeld
 
 # Recipients. "$NAME" reads the address from an environment variable or a
 # GitHub Actions secret of that name, so the address itself never sits in the

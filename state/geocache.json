@@ -15,6 +15,11 @@
    "level": "address",
    "lon": 3.2581081828998877
   },
+  "aalbeeksesteenweg 64|8500|kortrijk": {
+   "lat": 50.82120530832527,
+   "level": "address",
+   "lon": 3.2578989751110425
+  },
   "aalbekekerkstraat 16|8511|aalbeke": {
    "lat": 50.779665516011285,
    "level": "address",
@@ -531,6 +536,11 @@
    "lat": 50.949723688992314,
    "level": "address",
    "lon": 3.141854787223101
+  },
+  "bautschoot 86|9160|lokeren": {
+   "lat": 51.139905203824036,
+   "level": "address",
+   "lon": 3.956709394607469
   },
   "bavikhoofsestraat 120|8710|wielsbeke": {
    "lat": 50.88746728113294,
@@ -1169,6 +1179,11 @@
    "lat": 51.10088918082327,
    "level": "address",
    "lon": 3.6130430655300865
+  },
+  "breedstraat 94|9100|sint-niklaas": {
+   "lat": 51.1676958,
+   "level": "address",
+   "lon": 4.1620619
   },
   "bressers-blanchaertlaan 4|9051|sint-denijs-westrem": {
    "lat": 51.02266537033422,
@@ -2370,6 +2385,11 @@
    "level": "address",
    "lon": 3.460888731047032
   },
+  "driekoningenstraat 50|9100|sint-niklaas": {
+   "lat": 51.17329959326364,
+   "level": "address",
+   "lon": 4.14079465713391
+  },
   "dries 12|3400|landen": {
    "lat": 50.75427672559751,
    "level": "address",
@@ -3300,6 +3320,11 @@
    "lat": 50.74236381821909,
    "level": "address",
    "lon": 3.5944185918827714
+  },
+  "gontrode heirweg 44|9820|merelbeke": {
+   "lat": 51.01758327006518,
+   "level": "address",
+   "lon": 3.7635208701337546
   },
   "gouvernementstraat 1a|9000|gent": {
    "lat": 51.05203800774118,
@@ -5492,6 +5517,11 @@
    "lat": 51.1363619807884,
    "level": "address",
    "lon": 4.203247969520656
+  },
+  "kleine houtakker 1b|9090|merelbeke-melle": {
+   "lat": 51.02409300958393,
+   "level": "address",
+   "lon": 3.7785577445467786
   },
   "kleine klijtstraat 14|8540|deerlijk": {
    "lat": 50.8494326,
@@ -7879,6 +7909,11 @@
    "lat": 50.85155354587337,
    "level": "address",
    "lon": 3.305214679417457
+  },
+  "nieuwstraat 2/21|8300|knokke-heist": {
+   "lat": 51.333936764939665,
+   "level": "street",
+   "lon": 3.281544634332366
   },
   "nieuwstraat 45|8792|desselgem": {
    "lat": 50.88764303290178,
@@ -10452,6 +10487,11 @@
    "level": "address",
    "lon": 2.654294496621473
   },
+  "sint-jacobsnieuwweg 5|8900|ieper": {
+   "lat": 50.849470689139814,
+   "level": "address",
+   "lon": 2.8886683419347987
+  },
   "sint-jacobsstraat 16|8900|ieper": {
    "lat": 50.850634667318005,
    "level": "address",
@@ -11940,6 +11980,11 @@
    "lat": 51.08585510074343,
    "level": "address",
    "lon": 3.8132618806021563
+  },
+  "voordries 5||oosterzele": {
+   "lat": 50.94910554157705,
+   "level": "street",
+   "lon": 3.8053208153134905
   },
   "voordries 81|9860|oosterzele": {
    "lat": 50.95374986653565,

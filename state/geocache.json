@@ -2574,6 +2574,11 @@
    "lat": 51.0525377,
    "lon": 3.6998023
   },
+  "einde were 93|9000|gent": {
+   "lat": 51.05247517532084,
+   "level": "address",
+   "lon": 3.6992142905921392
+  },
   "eindeken 6|9970|kaprijke": {
    "lat": 51.21746564928947,
    "level": "address",
@@ -6038,6 +6043,11 @@
    "level": "address",
    "lon": 3.2581331655027954
   },
+  "kortrijkstraat 52b/201|9800|deinze": {
+   "lat": 50.977435033106424,
+   "level": "street",
+   "lon": 3.52813408021641
+  },
   "kortrijkstraat 52b/301|9800|deinze": {
    "lat": 50.977435033106424,
    "level": "street",
@@ -9354,6 +9364,11 @@
    "level": "address",
    "lon": 3.389599107104508
   },
+  "raapbreukstraat 59|2200|herentals": {
+   "lat": 51.18875832078721,
+   "level": "address",
+   "lon": 4.842910170770311
+  },
   "raapstraat 34|9100|sint-niklaas": {
    "lat": 51.17128769310246,
    "level": "address",
@@ -11330,6 +11345,11 @@
    "level": "address",
    "lon": 3.529875694146129
   },
+  "torenplein 2|3500|hasselt": {
+   "lat": 50.92890065723732,
+   "level": "address",
+   "lon": 5.340558327069145
+  },
   "torenstraat 1|9310|aalst": {
    "lat": 50.94865245580875,
    "level": "address",
@@ -11727,6 +11747,11 @@
   "vijverwegel 93|9090|melle": {
    "lat": 51.0146649,
    "lon": 3.7745094
+  },
+  "vinkenlaan 25|8870|izegem": {
+   "lat": 50.92675503609616,
+   "level": "address",
+   "lon": 3.237348066764348
   },
   "vinkenstraat 18|8820|torhout": {
    "lat": 51.058457822400946,

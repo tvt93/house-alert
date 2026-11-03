@@ -79,19 +79,24 @@ jobs:
       - name: Commit updated state and site data
         if: ${{ !inputs.dry_run }}
         run: |
-          if git diff --quiet -- state/ docs/listings.json; then
+          # Everything the run writes must be listed here: a file left
+          # modified but unstaged (docs/subscriptions.json, whose "generated"
+          # date changes on the first run of a day) made "git pull --rebase"
+          # refuse, and the run's state - with the mailed flags - was lost.
+          FILES="state/ docs/listings.json docs/subscriptions.json"
+          if git diff --quiet -- $FILES; then
             echo "nothing changed"
             exit 0
           fi
           git config user.name  "house-alert[bot]"
           git config user.email "house-alert@users.noreply.github.com"
-          git add state/ docs/listings.json
+          git add $FILES
           git commit -m "chore(state): listings as of $(date -u '+%F %H:%M') UTC"
           # If something else touched the state meanwhile, the freshest scan
           # (this one) wins; the files are regenerated every run anyway.
-          if ! git pull --rebase; then
-            git checkout --theirs -- state/ docs/listings.json
-            git add state/ docs/listings.json
+          if ! git pull --rebase --autostash; then
+            git checkout --theirs -- $FILES
+            git add $FILES
             GIT_EDITOR=true git rebase --continue
           fi
           git push

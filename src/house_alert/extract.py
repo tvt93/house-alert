@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import unicodedata
 from typing import Any
 from urllib.parse import parse_qs, unquote, unquote_plus, urljoin, urlparse
 
@@ -134,6 +135,15 @@ POSTCODE_TOWN_TAIL = re.compile(r"/([1-9]\d{3})-([a-z-]+)/?$")
 # The same filter with the postcode last: infinimo.be/aanbod/te-koop/gent-9000,
 # or several merged towns as /evergem--sleidinge-9940.
 TOWN_POSTCODE_TAIL = re.compile(r"/([a-z-]+)-([1-9]\d{3})/?$")
+# immobeguin.be narrows a town filter by a category of its own naming:
+# /te-koop/8530-harelbeke/investering, .../luxe, .../commercieel,
+# .../kmo-industrieel, .../parkings-garages. Such a tail is a word or two of
+# letters; a detail slug names the house and ends in its number.
+CATEGORY_TAIL = re.compile(r"/[a-z]+(?:-[a-z]+)?/?$")
+# The catalogue words a town filter hangs directly under. With one of these
+# right in front, "/te-koop/9600-ronse" is a town page even when the bundled
+# table knows 9600 only as Renaix (or 7711 only as Dottignies).
+SALE_SEGMENT = re.compile(r"/(?:te-koop|te-huur|kopen|huren|aanbod|nl|fr|en)$")
 
 # A heading that counts properties ("47 Panden te koop in Gent") belongs to a
 # catalogue page, whatever its URL looks like.
@@ -327,9 +337,22 @@ def looks_like_listing_url(url: str) -> bool:
 
 def is_town_filter_path(path: str) -> bool:
     """Does the path end in "<postcode>-<town>" where the town really belongs
-    to that postcode? Then it filters a catalogue by town, it is not a house."""
+    to that postcode? Then it filters a catalogue by town, it is not a house.
+
+    A category word hung under such a town ("/8530-harelbeke/investering")
+    is the same filter narrowed once more, so it is stripped first.
+    """
     # infinimo.be spells "nazareth-de%20pinte-9810" and "maarkedal-9680%20".
-    path = re.sub(r"\s+", "-", unquote(path).strip().lower())
+    path = _fold(re.sub(r"\s+", "-", unquote(path).strip().lower())).rstrip("/")
+    if _town_filter(path):
+        return True
+    tail = CATEGORY_TAIL.search(path)
+    if tail and tail.start() > 0:
+        return _town_filter(path[:tail.start()])
+    return False
+
+
+def _town_filter(path: str) -> bool:
     m = POSTCODE_TOWN_TAIL.search(path)
     if m:
         postcode, towns = m.group(1), [m.group(2)]
@@ -342,12 +365,27 @@ def is_town_filter_path(path: str) -> bool:
     entry = postcode_table().get(postcode)
     if not entry:
         return False
-    names = {str(name).lower().replace("-", " ") for name in entry.get("names", [])}
+    names = {_fold(str(name).lower()).replace("-", " ") for name in entry.get("names", [])}
     if any(town.replace("-", " ") in names for town in towns):
         return True
     # "merelbeke-melle-9090": a merged municipality the table knows only by
     # its parts; postcodes_for_place unites them.
-    return any(postcode in postcodes_for_place(town) for town in towns)
+    if any(postcode in postcodes_for_place(town) for town in towns):
+        return True
+    # The table names some towns in one language only (9600 Renaix, 7711
+    # Dottignies): a short name straight under the catalogue word is still a
+    # town page. cdf.be's "/te-koop/2335-stijlvol-appartement-in-..." keeps
+    # its reference number apart from a postcode by naming the property.
+    if m.re is POSTCODE_TOWN_TAIL and SALE_SEGMENT.search(path[:m.start()]):
+        town = towns[0]
+        return town.count("-") <= 2 and guess_property_type(url=town) == "unknown"
+    return False
+
+
+def _fold(text: str) -> str:
+    """Strip accents so "péruwelz" and "peruwelz" compare equal."""
+    return "".join(ch for ch in unicodedata.normalize("NFKD", text)
+                   if not unicodedata.combining(ch))
 
 
 def guess_property_type(title: str = "", url: str = "", description: str = "") -> str:

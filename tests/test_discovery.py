@@ -96,3 +96,30 @@ def test_town_filter_reads_encoded_spaces_and_merged_municipalities():
         "https://www.infinimo.be/aanbod/te-koop/merelbeke-melle-9090",
     ):
         assert not looks_like_listing_url(url), url
+
+
+def test_immobeguin_town_and_category_filters_are_not_listings():
+    # immobeguin.be hangs its own category words under each town page
+    # (/8530-harelbeke/investering, /luxe, /commercieel, /kmo-industrieel,
+    # /parkings-garages). 117 such pages sat in the store, all carrying the
+    # first card of the catalogue: the same castle, price and photo. The
+    # bundled table knows 9600 only as Renaix and 7711 only as Dottignies,
+    # and spells Péruwelz with its accent.
+    for url in (
+        "https://www.immobeguin.be/te-koop/8530-harelbeke/investering",
+        "https://www.immobeguin.be/te-koop/9870-zulte/luxe",
+        "https://www.immobeguin.be/te-koop/7500-tournai/commercieel",
+        "https://www.immobeguin.be/te-koop/8800-roeselare/kmo-industrieel",
+        "https://www.immobeguin.be/te-koop/8500-kortrijk/parkings-garages",
+        "https://www.immobeguin.be/te-koop/8530-harelbeke",
+        "https://www.immobeguin.be/te-koop/9600-ronse",
+        "https://www.immobeguin.be/te-koop/7711-dottenijs",
+        "https://www.immobeguin.be/te-koop/7600-p%C3%A9ruwelz",
+        "https://www.smarthouses.be/te-koop/8000-brugge/garage-parking",
+    ):
+        assert not looks_like_listing_url(url), url
+    # The detail pages sit one level deeper and end in the property number.
+    assert looks_like_listing_url(
+        "https://www.immobeguin.be/te-koop/9870-zulte/woningen/woningen-75360")
+    assert looks_like_listing_url(
+        "https://www.immobeguin.be/te-koop/9080-zaffelare/luxe/kasteel-van-zaffelare-op-46-hectare-73154")

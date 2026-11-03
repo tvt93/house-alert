@@ -5424,6 +5424,11 @@
    "level": "address",
    "lon": 3.1705430856350243
   },
+  "ketelpoort 34|9000|gent": {
+   "lat": 51.0486505286269,
+   "level": "address",
+   "lon": 3.7203737578343965
+  },
   "ketelvest 33|9000|gent": {
    "lat": 51.04932398470685,
    "level": "address",
@@ -5940,6 +5945,11 @@
    "level": "address",
    "lon": 3.632441330520577
   },
+  "kortrijksesteenweg 186|9830|sint-martens-latem": {
+   "lat": 51.00599283081477,
+   "level": "address",
+   "lon": 3.6254478960803134
+  },
   "kortrijksesteenweg 208|9830|sint-martens-latem": {
    "lat": 51.00484930808722,
    "level": "address",
@@ -6338,6 +6348,11 @@
    "lat": 51.04682363305236,
    "level": "address",
    "lon": 3.735977861607023
+  },
+  "langenakkerlaan 28|9080|lochristi": {
+   "lat": 51.09807823888835,
+   "level": "address",
+   "lon": 3.856809385778172
   },
   "langendam 52|9940|sleidinge": {
    "lat": 51.12974554515717,
@@ -7043,6 +7058,11 @@
    "level": "address",
    "lon": 3.3974542782669124
   },
+  "markt 9|9700|oudenaarde": {
+   "lat": 50.843480681318056,
+   "level": "address",
+   "lon": 3.604765705687252
+  },
   "markt 9||lo-reninge": {
    "lat": 50.98005097716438,
    "level": "address",
@@ -7734,6 +7754,11 @@
    "level": "address",
    "lon": 3.721837708573198
   },
+  "nederpolder 16|9000|gent": {
+   "lat": 51.05347432618923,
+   "level": "address",
+   "lon": 3.728181096014177
+  },
   "nederweg 2|8870|izegem": {
    "lat": 50.920642331275424,
    "level": "address",
@@ -7763,6 +7788,11 @@
    "lat": 51.077438359825116,
    "level": "address",
    "lon": 4.445787169810951
+  },
+  "nevelse warande 29|9831|sint-martens-latem": {
+   "lat": 51.00705380334536,
+   "level": "address",
+   "lon": 3.6106972431198514
   },
   "nieuwbrugkaai 41|9000|gent": {
    "lat": 51.05481669218401,
@@ -8267,6 +8297,11 @@
    "lat": 51.18096206739992,
    "level": "address",
    "lon": 3.5886171680500056
+  },
+  "oostveldstraat 306|9900|eeklo": {
+   "lat": 51.18400088647474,
+   "level": "address",
+   "lon": 3.6011285052089126
   },
   "opperije 83|9700|ename": {
    "lat": 50.84662210370328,
@@ -9218,6 +9253,11 @@
    "lat": 51.04175929277577,
    "level": "address",
    "lon": 3.7428241269959064
+  },
+  "poststraat 23a|9860|oosterzele": {
+   "lat": 50.92322984794297,
+   "level": "address",
+   "lon": 3.7901308262312807
   },
   "potaardeberg 22||merelbeke": {
    "lat": 50.9907648730705,
@@ -11057,6 +11097,11 @@
    "level": "address",
    "lon": 3.573388873612152
   },
+  "steltloperstraat 24|9000|gent": {
+   "lat": 51.0377341255214,
+   "level": "address",
+   "lon": 3.691489264053966
+  },
   "stenenmuurstraat 0|9112|sinaai-waas": {
    "lat": 51.1714246,
    "lon": 4.0483004
@@ -11496,6 +11541,11 @@
    "lat": 50.830361422411514,
    "level": "address",
    "lon": 3.275935262242463
+  },
+  "vaartstraat 3|8770|ingelmunster": {
+   "lat": 50.91472632060451,
+   "level": "address",
+   "lon": 3.263043323884386
   },
   "vakstraat 9|8700|tielt": {
    "lat": 50.99673141896096,

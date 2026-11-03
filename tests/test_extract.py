@@ -409,3 +409,88 @@ def test_next_data_status_counts_when_the_page_text_says_nothing():
     assert detect_status(_wolff_page("prospect")) == "available"
     url = "https://www.wolff.be/aanbod/te-koop/sint-denijs-westrem/woning-in-neststraat-2/9065390"
     assert extract_listing(url, _wolff_page("option"), source="Wolff") is None
+
+
+OXIMO_FACTS = """<html><head><meta name="description" content="Huis te koop te Ledeberg (Gent)"></head>
+<body><header class="site-header"><img src="/images/logo.svg" alt=""></header>
+<main id="property-detail" class="property-detail">
+  <h1>Huis te koop te Ledeberg (Gent)</h1>
+  <div class="property-detail__price"><p>Direct hebben</p><p><span>€449.000</span></p></div>
+  <div class="property-detail__address"><p>Locatie</p><p><span>Langestraat  136</span></p></div>
+  <div class="property-detail__images" data-fancybox="gallery" data-src="/uploads/assets/_cache/da/01/limit-8f53c963.webp">
+    <img src="/uploads/assets/_cache/da/01/fit-8f53c963.webp" alt="">
+    <div style="display:none"><a data-fancybox="gallery" href="/uploads/assets/_cache/88/a0/limit-d7283c1b.webp"><img src="/uploads/assets/_cache/88/a0/limit-d7283c1b.webp" alt=""></a></div>
+  </div>
+  <div class="info-icon"><div class="info-icon__icon"><img src="/images/icons/living-area.svg" alt=""></div><p>
+    <span>150m<sup>2</sup></span> bew. opp.</p></div>
+  <div class="info-icon"><div class="info-icon__icon"><img src="/images/icons/total-area.svg" alt=""></div><p>
+    <span>100m<sup>2</sup></span> grond opp.</p></div>
+  <div class="info-icon"><p><span>4</span> slaapkamers</p></div>
+  <div class="info-icon"><p><span>1</span> badkamer</p></div>
+  <div class="info-icon"><p>EPC <span>C</span></p></div>
+</main></body></html>"""
+
+
+def test_oximo_number_first_facts_and_gallery_picture():
+    # oximo.be: no og:image, no JSON-LD; the facts strip is one block per
+    # fact with the number first and the label abbreviated, so flattened it
+    # reads "150m 2 bew. opp. 100m 2 grond opp." and a label-first pattern
+    # takes the plot's 100 for the living area. The photo is only in the
+    # gallery block.
+    listing = extract_listing("https://www.oximo.be/nl/immo-te-koop/huis/ledeberg-gent/57719886",
+                              OXIMO_FACTS, source="Oximo")
+    assert listing is not None
+    assert listing.price == 449000
+    assert listing.bedrooms == 4
+    assert listing.living_area_m2 == 150
+    assert listing.plot_area_m2 == 100
+    assert listing.epc_kwh is None            # "EPC C" is a label, not a figure
+    assert listing.street == "Langestraat 136"
+    assert listing.image_url == "https://www.oximo.be/uploads/assets/_cache/da/01/fit-8f53c963.webp"
+
+
+def test_label_first_facts_keep_their_own_numbers():
+    # The number-first reading must not fire on an ordinary facts list, where
+    # "150 m²" sits right before the next label: that 150 is the living area,
+    # never the plot.
+    page = """<html><body><h1>Woning te koop in Gent</h1><p>Vraagprijs € 300.000</p>
+      <ul><li>Bewoonbare opp. 150 m²</li><li>Grond opp. 300 m²</li><li>3 slaapkamers</li></ul>
+      <div class="team"><img src="/img/agent-portrait.jpg" alt=""></div>
+    </body></html>"""
+    listing = extract_listing("https://x.be/te-koop/1", page, source="X")
+    assert listing is not None
+    assert listing.living_area_m2 == 150
+    assert listing.plot_area_m2 == 300
+    assert listing.image_url == ""            # no gallery, no picture: never a guess
+
+
+IRRES_KENMERKEN = """<html><head><meta property="og:title" content="Solide laagbouw villa in Latem"></head>
+<body><nav class="navbar"><a title="Slaapkamers" href="/filter">3</a></nav>
+<h1>Solide laagbouw villa op westgericht perceel in het centrum van Latem</h1>
+<p>Vennelaan 13, 9830 Sint-Martens-Latem</p><p>€ 848.000</p>
+<h2>Kenmerken</h2>
+<ul>
+  <li data-value="Terrein oppervlakte"><svg class="w-6"></svg><p class="pl-6">832 m²</p></li>
+  <li data-value="Bewoonbare oppervlakte"><svg class="w-6"></svg><p class="pl-6">200 m²</p></li>
+  <li data-value="Oriëntatie"><svg class="w-6"></svg><p class="pl-6">Westen</p></li>
+  <li data-value="Slaapkamers"><svg class="w-6"></svg><p class="pl-6">3</p></li>
+  <li data-value="Badkamers"><svg class="w-6"></svg><p class="pl-6">1</p></li>
+  <li data-value="Bouwjaar"><svg class="w-6"></svg><p class="pl-6">1983</p></li>
+  <li data-value="EPC"><svg class="w-6"></svg><p class="pl-6">468 kWh/m²</p></li>
+  <li data-value="Beschikbaarheid"><svg class="w-6"></svg><p class="pl-6">Bij akte</p></li>
+</ul></body></html>"""
+
+
+def test_irres_facts_labelled_by_attribute():
+    # irres.be: an icon and a bare value per fact, the label only in
+    # data-value. "832 m²" has no word next to it that says plot, "3" nothing
+    # that says bedrooms; the attribute does. The nav link with a title is
+    # chrome and must not count.
+    listing = extract_listing("https://irres.be/pand/9094522/solide-laagbouw-villa", IRRES_KENMERKEN,
+                              source="Irres")
+    assert listing is not None
+    assert listing.bedrooms == 3
+    assert listing.living_area_m2 == 200
+    assert listing.plot_area_m2 == 832
+    assert listing.epc_kwh == 468
+    assert listing.price == 848000

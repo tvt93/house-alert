@@ -1342,7 +1342,7 @@ def _from_text(text: str, listing: Listing) -> None:
 
     if listing.plot_area_m2 is None:
         raw = _first(text, (
-            r"grondopp\w*\D{0,15}([\d.,]{2,9})",
+            r"grond\s*opp\w*\D{0,15}([\d.,]{2,9})",
             r"perceelopp\w*\D{0,15}([\d.,]{2,9})",
             r"opp\w*\s+perceel\D{0,15}([\d.,]{2,9})",
             r"terrein\s*opp\w*\D{0,15}([\d.,]{2,9})",      # infinimo.be: "Terrein opp. 474 m²"
@@ -1359,6 +1359,98 @@ def _from_text(text: str, listing: Listing) -> None:
         ))
         epc = _int(raw)
         listing.epc_kwh = epc if epc is not None and 0 < epc <= 1500 else None
+
+
+# oximo.be prints its facts strip as one block per fact, the number first and
+# the label abbreviated: "<span>150m<sup>2</sup></span> bew. opp.",
+# "<span>100m<sup>2</sup></span> grond opp.". Flattened to one line that is
+# "150m 2 bew. opp. 100m 2 grond opp.", where a label-first pattern reads the
+# plot's 100 as the living area. Read per line of `block_text` instead, with
+# the number anchored to the start of its own block: only then is the number
+# right before a label that label's value, and not the previous fact's.
+FACT_LINE_LIVING = re.compile(
+    r"^([\d.,]{2,8})\s*m\s*(?:²|2)?\s*(?:bew\.?|bewoonbare)\s*opp", re.IGNORECASE | re.MULTILINE)
+FACT_LINE_PLOT = re.compile(
+    r"^([\d.,]{2,9})\s*m\s*(?:²|2)?\s*(?:grond|perceel)\s*opp", re.IGNORECASE | re.MULTILINE)
+
+
+def _from_fact_lines(lines: str, listing: Listing) -> None:
+    """Surfaces printed as "<number> m² <label>", one fact per block."""
+    if listing.living_area_m2 is None:
+        m = FACT_LINE_LIVING.search(lines)
+        listing.living_area_m2 = _plausible_area(_int(m.group(1)) if m else None, 15, 2000)
+    if listing.plot_area_m2 is None:
+        m = FACT_LINE_PLOT.search(lines)
+        listing.plot_area_m2 = _plausible_area(_int(m.group(1)) if m else None, 20, 200_000)
+
+
+# irres.be prints its "Kenmerken" strip as an icon plus a bare value, and
+# names the fact only in an attribute: <li data-value="Slaapkamers"><p>3</p>,
+# <li data-value="Terrein oppervlakte"><p>832 m²</p>. Nothing in the text
+# then stands next to the number, so the label is read off the attribute.
+FACT_LABEL_ATTRS = ("data-value", "data-label", "data-title", "data-key", "aria-label", "title")
+FACT_LABELS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("bedrooms", re.compile(r"^(?:aantal\s+)?slaapkamers?$|^bedrooms?$", re.IGNORECASE)),
+    ("living_area_m2", re.compile(r"^(?:bewoonbare?|woon|vloer)\s*opp\w*$|^living\s+area$", re.IGNORECASE)),
+    ("plot_area_m2", re.compile(r"^(?:terrein|grond|perceel)\s*opp\w*$|^(?:oppervlakte\s+)?(?:perceel|terrein)$", re.IGNORECASE)),
+    ("epc_kwh", re.compile(r"^epc(?:\s*\(?kwh/m²\)?)?$|^e-?peil$", re.IGNORECASE)),
+)
+FACT_VALUE = re.compile(r"^\s*([\d.,]{1,9})\s*(?:m²|m2|m|kwh/m²|kwh)?\s*$", re.IGNORECASE)
+
+
+def _from_labelled_attrs(soup: BeautifulSoup, listing: Listing) -> None:
+    """Facts whose label is an attribute of the element holding the value."""
+    chrome = {id(n) for n in chrome_nodes(soup)}
+    for node in soup.find_all(lambda t: any(t.has_attr(a) for a in FACT_LABEL_ATTRS)):
+        if id(node) in chrome or any(id(p) in chrome for p in node.parents):
+            continue
+        labels = [str(node.get(a) or "").strip() for a in FACT_LABEL_ATTRS]
+        text = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+        m = FACT_VALUE.match(text)
+        if not m:
+            continue
+        for field_name, pattern in FACT_LABELS:
+            if getattr(listing, field_name) is not None:
+                continue
+            if any(pattern.match(label) for label in labels if label):
+                value = _int(m.group(1))
+                if field_name == "bedrooms":
+                    value = value if value is not None and value <= 20 else None
+                elif field_name == "living_area_m2":
+                    value = _plausible_area(value, 15, 2000)
+                elif field_name == "plot_area_m2":
+                    value = _plausible_area(value, 20, 200_000)
+                else:
+                    value = value if value is not None and 0 < value <= 1500 else None
+                setattr(listing, field_name, value)
+
+
+# Containers that hold the property's photos. A page without og:image or
+# structured data (oximo.be) still shows the house in a gallery block; the
+# first picture in one is the listing's picture. Icons, logos and inline
+# data URIs are not pictures.
+GALLERY_CLASS = re.compile(
+    r"gallery|galerij|images|photo|foto|slider|carousel|hero|lightbox|fancybox|swiper",
+    re.IGNORECASE)
+
+
+def gallery_image(soup: BeautifulSoup) -> str:
+    """The first photo inside a gallery-like container outside the chrome."""
+    chrome = {id(n) for n in chrome_nodes(soup)}
+    for img in soup.find_all("img"):
+        src = str(img.get("src") or img.get("data-src") or "").strip()
+        low = src.lower()
+        if not src or low.startswith("data:") or low.endswith(".svg") or "logo" in low:
+            continue
+        if any(id(p) in chrome for p in img.parents):
+            continue
+        for node in img.parents:
+            if node is None or node.name in ("body", "html", "[document]"):
+                break
+            tokens = " ".join(node.get("class") or []) + " " + str(node.get("id") or "")
+            if GALLERY_CLASS.search(tokens) or node.has_attr("data-fancybox"):
+                return src
+    return ""
 
 
 def _locate(listing: Listing, text: str,
@@ -1689,6 +1781,7 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
     # numbers off the page, so nothing here can pick up a neighbour's price.
     strip_priced_links(soup)
     text = re.sub(r"\s+", " ", soup.get_text(" ", strip=True))
+    lines = block_text(soup)
 
     # A Product/Offer block is structured data about *one* property; with it
     # the price count below means a "similar properties" strip, not a grid.
@@ -1700,6 +1793,8 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
     if "te huur" in lowered_title and "te koop" not in lowered_title:
         return None
 
+    _from_labelled_attrs(soup, listing)
+    _from_fact_lines(lines, listing)
     _from_text(text, listing)
 
     # entree.be prints "€ 1.600" for a rental with nothing that says rent: the
@@ -1739,11 +1834,13 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
             or find_street(labelled, listing.city, exclude=office_hard)
             or (slug_street if slug_street.lower() not in office_hard else "")
             or find_street(listing.title, listing.city, exclude=office_hard)
-            or find_street(block_text(soup), listing.city, listing.postal_code,
+            or find_street(lines, listing.city, listing.postal_code,
                            exclude=office, near_place=True)
             or ""
         )
 
+    if not listing.image_url:
+        listing.image_url = gallery_image(soup)
     if listing.image_url:
         listing.image_url = urljoin(url, listing.image_url)
 

@@ -333,3 +333,55 @@ def test_lettered_number_falls_back_to_the_bare_number_in_the_register(tmp_path)
     l2 = Listing(url="https://x.be/2", source="X", street="Grote Steenweg 105B", postal_code="9840", city="Nazareth-De Pinte")
     g.locate(l2)
     assert (l2.lat, l2.lon) == (50.98307, 3.68018)
+
+
+def test_misspelt_street_is_corrected_by_the_register_suggestion(tmp_path):
+    # irres.be: "Ferdinand Lousbergkaai 104, 9000 Gent", one letter short of
+    # the register's "Ferdinand Lousbergskaai". Every exact lookup misses;
+    # the register's suggestion for a prefix of the name is a letter away
+    # and in the same town, so the house is looked up under that spelling.
+    from house_alert.geo import _edit_distance
+    from house_alert.models import Listing
+    calls = []
+
+    class Fake(Geocoder):
+        def _wallonia(self, street, postcode, city, street_only=False):
+            return None
+
+        def _nominatim(self, street, postcode, city, street_only=False):
+            calls.append(("osm", street))
+            return None
+
+        def _flanders(self, street, postcode, city, street_only=False):
+            calls.append(("vl", street, street_only))
+            if street == "Ferdinand Lousbergskaai 104" and not street_only:
+                return (51.04597, 3.73972)
+            return None
+
+        def _suggestion(self, query):
+            calls.append(("sugg", query))
+            return ["Ferdinand Lousbergskaai, Gent"] if query.startswith("Ferdinand Lousberg,") else []
+
+    g = Fake(cache_path=tmp_path / "c.json")
+    l = Listing(url="https://irres.be/pand/8990604", source="Irres",
+                street="Ferdinand Lousbergkaai 104", postal_code="9000", city="Gent")
+    assert g.locate(l) is True
+    assert (l.lat, l.lon, l.geo) == (51.04597, 3.73972, "address")
+    assert ("sugg", "Ferdinand Lousbergka, 9000 Gent") in calls
+    assert calls[-1] == ("vl", "Ferdinand Lousbergskaai 104", False)
+    assert g.entries[cache_key("Ferdinand Lousbergkaai 104", "9000", "Gent")]["level"] == "address"
+
+    # A suggestion that is another street (Kerkstraat -> Kerklaan), or in
+    # another town, is never taken: the postcode centroid is the honest answer.
+    class Other(Fake):
+        def _suggestion(self, query):
+            return ["Kerklaan, Destelbergen"] if "Kerk" in query else ["Ferdinand Lousbergskaai, Deinze"]
+
+    g2 = Other(cache_path=tmp_path / "d.json")
+    l2 = Listing(url="https://x.be/2", source="X", street="Kerkstraat 28", postal_code="9070", city="Destelbergen")
+    g2.locate(l2)
+    assert l2.geo == "postcode"
+    l3 = Listing(url="https://x.be/3", source="X", street="Ferdinand Lousbergkaai 104", postal_code="9000", city="Gent")
+    g2.locate(l3)
+    assert l3.geo == "postcode"
+    assert _edit_distance("lousbergkaai", "lousbergskaai") == 1

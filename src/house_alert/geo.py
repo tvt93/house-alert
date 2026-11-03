@@ -38,6 +38,8 @@ NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 NOMINATIM_DELAY = 1.1          # policy says at least 1 s between requests
 FLANDERS_URL = "https://geo.api.vlaanderen.be/geolocation/v4/Location"
 FLANDERS_DELAY = 0.3           # no stated policy; stay well clear of bursts
+FLANDERS_SUGGEST_URL = "https://geo.api.vlaanderen.be/geolocation/v4/Suggestion"
+SUGGEST_ATTEMPTS = 4           # prefixes tried per misspelt street
 WALLONIA_URL = "https://geoservices.wallonie.be/geocodeWS/geocode"
 WALLONIA_DELAY = 0.3
 DEFAULT_MAX_REQUESTS = 300     # per run; whatever is left is picked up tomorrow
@@ -288,8 +290,94 @@ class Geocoder:
             if result is not None:
                 self.entries[key] = {"lat": result[0], "lon": result[1], "level": level}
                 return result[0], result[1], level
+
+        # Nothing knows the street as written. irres.be writes "Ferdinand
+        # Lousbergkaai 104" for the register's "Ferdinand Lousbergskaai":
+        # one letter off, and every exact lookup above answers nothing. The
+        # register's own suggestions complete a prefix of the name; a
+        # suggestion a letter or two away from the agency's spelling, in the
+        # listing's town, is the same street, and the number is looked up
+        # again under that name.
+        if self._flanders in registers and name:
+            corrected = self._flanders_suggest(name, postcode, city)
+            if corrected == "error":
+                return None
+            if corrected:
+                log.info("street %r read as %r (%s %s)", name, corrected, postcode, city)
+                number = street[len(name):].strip()
+                retry = (
+                    (self._flanders, f"{corrected} {number}".strip(), False, "address"),
+                    (self._flanders, bare_number(f"{corrected} {number}".strip()), False, "address"),
+                    (self._flanders, corrected, True, "street"),
+                )
+                for ask, what, street_only, level in retry:
+                    if not what:
+                        continue
+                    if self.budget_left == 0:
+                        return None
+                    result = ask(what, postcode, city, street_only=street_only)
+                    if result == "error":
+                        return None
+                    if result is not None:
+                        self.entries[key] = {"lat": result[0], "lon": result[1], "level": level}
+                        return result[0], result[1], level
         self.entries[key] = {"level": "none"}
         return None
+
+    def _flanders_suggest(self, name: str, postcode: str, city: str) -> str | None:
+        """The register's spelling of a street name it does not know as
+        written, or None. Prefixes of the name are offered, two letters
+        shorter each time and never below three fifths of it; the first
+        suggestion that names a street in the listing's town and differs
+        from the agency's spelling by a letter or two is taken."""
+        shortest = max(4, (len(name) * 3) // 5)
+        length = len(name) - 2
+        for _ in range(SUGGEST_ATTEMPTS):
+            if length < shortest:
+                break
+            if self.budget_left == 0:
+                return None
+            prefix = name[:length].rstrip()
+            found = self._suggestion(f"{prefix}, {postcode} {city}".strip(", "))
+            if found == "error":
+                return "error"
+            for suggestion in found:
+                street_part, _, town = str(suggestion).partition(",")
+                street_part, town = street_part.strip(), town.strip()
+                if not street_part or _street_key(street_part) == _street_key(name):
+                    continue
+                if not _names_town({"town": town}, postcode, city):
+                    continue
+                if _edit_distance(_street_key(street_part), _street_key(name)) <= _tolerance(name):
+                    return street_part
+            length -= 2
+        return None
+
+    def _suggestion(self, query: str) -> list[str] | str:
+        """One call to the Flemish geolocation suggestion service: the street
+        names (with their municipality) that complete the query."""
+        if self._client is None:
+            self._client = httpx.Client(
+                timeout=20.0,
+                headers={"User-Agent": USER_AGENT, "Accept-Language": "nl-BE,nl;q=0.9"},
+            )
+        wait = FLANDERS_DELAY - (time.monotonic() - self._last_flanders_at)
+        if wait > 0:
+            time.sleep(wait)
+        self._last_flanders_at = time.monotonic()
+        self.requests_made += 1
+        try:
+            resp = self._client.get(FLANDERS_SUGGEST_URL, params={"q": query, "c": 5})
+        except httpx.HTTPError as exc:
+            log.debug("flanders suggestion failed for %s: %s", query, exc)
+            return "error"
+        if resp.status_code != 200:
+            return "error"
+        try:
+            found = resp.json().get("SuggestionResult") or []
+        except (ValueError, AttributeError):
+            return "error"
+        return [str(x) for x in found if isinstance(x, str)]
 
     # -------------------------------------------------------- nominatim
 
@@ -399,6 +487,26 @@ class Geocoder:
         if street_only:
             return accept_street_hit(hits, street, postcode, city)
         return accept_hit(hits, postcode, city)
+
+
+def _edit_distance(a: str, b: str) -> int:
+    """Levenshtein distance: letters inserted, dropped or swapped."""
+    if a == b:
+        return 0
+    previous = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        current = [i]
+        for j, cb in enumerate(b, 1):
+            current.append(min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + (ca != cb)))
+        previous = current
+    return previous[-1]
+
+
+def _tolerance(name: str) -> int:
+    """How far a register spelling may be from the agency's and still be the
+    same street: one letter, two for a long name. "Kerkstraat" is never
+    "Kerklaan" (distance 4)."""
+    return 2 if len(_street_key(name)) >= 12 else 1
 
 
 def street_name(street: str) -> str:

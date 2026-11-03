@@ -1865,7 +1865,9 @@
    "lon": 3.3291304599366915
   },
   "dampoorstraat 82|9000|gent": {
-   "level": "none"
+   "lat": 51.05684434942918,
+   "level": "address",
+   "lon": 3.7373903915069593
   },
   "dampoortstraat 243|8310|sint-kruis": {
    "lat": 51.22008773914317,
@@ -2761,7 +2763,9 @@
    "level": "none"
   },
   "ferdinand lousbergkaai 104|9000|gent": {
-   "level": "none"
+   "lat": 51.04596522028318,
+   "level": "address",
+   "lon": 3.739719662804585
   },
   "ferdinand lousbergskaai 104|9000|gent": {
    "lat": 51.04596522028318,
@@ -10881,7 +10885,9 @@
    "lon": 4.64965997294683
   },
   "stationsstraat 1|8700|tielt": {
-   "level": "none"
+   "lat": 50.99398473460101,
+   "level": "address",
+   "lon": 3.325651089612351
   },
   "stationsstraat 1|8780|oostrozebeke": {
    "lat": 50.919824300605875,
@@ -12469,7 +12475,9 @@
    "lon": 3.7147947298909623
   },
   "winston churchillaan 69|1180|ukkel": {
-   "level": "none"
+   "lat": 50.81193417704591,
+   "level": "address",
+   "lon": 4.352387298050054
   },
   "wipstraat 27|2845|niel": {
    "lat": 51.113277749940146,

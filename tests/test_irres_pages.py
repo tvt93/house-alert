@@ -92,6 +92,18 @@ def test_breadcrumb_unit_suffix_is_dropped_from_the_street():
     assert listing.street == "Nederpolder 16"
 
 
+def test_untitled_page_is_named_by_its_breadcrumb_address():
+    # irres.be/pand/9099452: the agency typed no title; the page shows the
+    # town, the price and the facts. The address beats "Irres" in a mail.
+    page = irres_page("FOR_SALE", street="Casselrylaan 35").replace(
+        '<p class="text-2xl">Charmante te renoveren gezinswoning op uiterst bereikbare '
+        'ligging in Sint-Denijs-Westrem</p>', '')
+    listing = extract_listing("https://irres.be/pand/9099452/9099452", page, source="Irres")
+    assert listing is not None
+    assert listing.title == "Casselrylaan 35, 9051 Sint-Denijs-Westrem"
+    assert listing.street == "Casselrylaan 35"
+
+
 def test_plain_breadcrumbs_say_nothing():
     page = """<html><body><h1>Woning te koop in Gent</h1><p>€ 300.000</p><p>3 slaapkamers</p>
     <script type="application/ld+json">{"@type":"BreadcrumbList","itemListElement":[

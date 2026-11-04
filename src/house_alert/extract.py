@@ -1867,6 +1867,10 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
         # Older entree.be pages carry the site slogan ("Maak uw entree", or a
         # bare "Array") as og:title; the property is named further down.
         listing.title = _property_heading(soup) or _title_above_price(soup) or listing.title
+        if crumb.get("street") and generic_title(listing.title, _meta(soup, "og:site_name"), url):
+            # irres.be pages the agency never titled: town, price, nothing
+            # else. The breadcrumb address beats the site name in a mail.
+            listing.title = f"{crumb['street']}, {crumb['postal_code']} {crumb['city']}"
     if listing.title and address_title(listing.title):
         # mvastgoed.be has no og:title and names the listing by its address
         # in the structured data; the h1 ("Afgesloten garage te koop in de

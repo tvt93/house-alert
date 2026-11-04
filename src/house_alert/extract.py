@@ -646,6 +646,50 @@ def _from_jsonld(objects: list[dict[str, Any]], listing: Listing) -> set[str]:
     return office
 
 
+# irres.be names the page in its BreadcrumbList as the CMS sees it:
+# "FOR_SALE_ORDER_ENDED - 9051 Sint-Denijs-Westrem - Pieter Pauwel Rubenslaan 1".
+# The page itself never says the mandate ended, prints no "verkocht", and
+# keeps its price and facts; the sitemap lists 774 such pages next to the
+# 45 for sale. The token is the only place the truth is written.
+CRUMB_NAME = re.compile(     # the parts are set off by " - "; towns hyphenate without spaces
+    r"^([A-Z][A-Z_]+[A-Z])\s+-\s+([1-9]\d{3})\s+([^\W\d_]\S*(?:\s\S+)*?)\s+-\s+(\S.*)$")
+CRUMB_STATUS = (
+    (re.compile(r"ENDED|SOLD|RENTED|VERKOCHT|VERHUURD"), "sold"),
+    (re.compile(r"OPTION|RESERVED|COMPROMIS"), "option"),
+    (re.compile(r"^FOR_(?:SALE|RENT)$"), "available"),
+)
+
+
+def breadcrumb_facts(objects: list[dict[str, Any]]) -> dict[str, str]:
+    """What the last breadcrumb item says about the page: a status word, the
+    postcode, town and street, when it has the shape above. Empty otherwise."""
+    for obj in objects:
+        types = obj.get("@type") or ""
+        types = " ".join(types) if isinstance(types, list) else str(types)
+        if "breadcrumblist" not in types.lower():
+            continue
+        items = obj.get("itemListElement")
+        if not isinstance(items, list) or not items:
+            continue
+        last = items[-1]
+        name = str(last.get("name") or "") if isinstance(last, dict) else ""
+        m = CRUMB_NAME.match(name.strip())
+        if not m:
+            continue
+        token, postcode, city, street = m.groups()
+        status = next((s for pat, s in CRUMB_STATUS if pat.search(token)), "")
+        return {"status": status, "postal_code": postcode,
+                "city": _clean_ws(city), "street": _clean_ws(street)}
+    return {}
+
+
+def breadcrumb_status(html: str) -> str:
+    """The status the structured breadcrumb states, or "" when it says nothing."""
+    if "BreadcrumbList" not in html:
+        return ""
+    return breadcrumb_facts(jsonld_objects(BeautifulSoup(html, "lxml"))).get("status", "")
+
+
 # -------------------------------------------------------------------- street
 
 def _clean_ws(value: str) -> str:
@@ -1102,6 +1146,34 @@ def _property_heading(soup: BeautifulSoup, tags: tuple[str, ...] = ("h1", "h2", 
     return ""
 
 
+def _title_above_price(soup: BeautifulSoup) -> str:
+    """The sentence printed right above the page's own price, when no heading
+    names the property. irres.be heads the listing with the town alone and
+    puts the title in a paragraph: h2 "Sint-Denijs-Westrem", p "Charmante te
+    renoveren gezinswoning ...", p "€ 495.000". The address line that other
+    sites print there ("Vennelaan 13, 9830 Sint-Martens-Latem") is not a title."""
+    chrome = {id(n) for n in chrome_nodes(soup)}
+    for node in soup.find_all(["p", "div", "span", "h1", "h2", "h3", "h4"]):
+        if not re.match(r"€\s*\d", node.get_text(" ", strip=True)):
+            continue
+        if id(node) in chrome or any(id(p) in chrome for p in node.parents):
+            continue
+        before = node.find_previous_sibling()
+        if before is None or before.name in ("a", "img", "svg", "ul", "ol", "table"):
+            continue
+        text = re.sub(r"\s+", " ", before.get_text(" ", strip=True))
+        # A sentence, not a label or a question: "op uiterst bereikbare
+        # ligging" is a title, "Vraagprijs:" and "Interesse?" are not.
+        if len(text.split()) < 3 or len(text) > 160 or text.endswith(("?", ":")) \
+                or re.search(r"prijs|price|prix", text, re.IGNORECASE):
+            continue
+        if re.search(POSTAL_CITY, text) or BARE_PLACE_TITLE.match(text) \
+                or address_title(text) or re.search(r"[1-9]\d{3}", text):
+            continue
+        return text
+    return ""
+
+
 def _address_case(text: str) -> str:
     """'wittemolenstraat 158 - 9040 SINT-AMANDSBERG' -> 'Wittemolenstraat 158 - 9040 Sint-Amandsberg'."""
     return re.sub(
@@ -1430,17 +1502,34 @@ def _from_labelled_attrs(soup: BeautifulSoup, listing: Listing) -> None:
 # first picture in one is the listing's picture. Icons, logos and inline
 # data URIs are not pictures.
 GALLERY_CLASS = re.compile(
-    r"gallery|galerij|images|photo|foto|slider|carousel|hero|lightbox|fancybox|swiper",
+    r"gallery|galerij|images|photo|foto|slider|carousel|hero|lightbox|fancybox|swiper|fullscreen",
     re.IGNORECASE)
+
+
+def _image_source(img: Tag) -> str:
+    """The picture an <img> shows: src, a lazy-load data-src, or the first
+    candidate of a srcset when src is only a transparent placeholder
+    (irres.be: src="data:image/svg+xml,...", srcset="/uploads_c/....jpg 360w")."""
+    for attr in ("src", "data-src", "data-lazy-src", "data-original"):
+        src = str(img.get(attr) or "").strip()
+        if src and not src.lower().startswith("data:"):
+            return src
+    for attr in ("srcset", "data-srcset", "data-lazy-srcset"):
+        srcset = str(img.get(attr) or "").strip()
+        if srcset:
+            first = srcset.split(",")[0].strip().split()
+            if first and not first[0].lower().startswith("data:"):
+                return first[0]
+    return ""
 
 
 def gallery_image(soup: BeautifulSoup) -> str:
     """The first photo inside a gallery-like container outside the chrome."""
     chrome = {id(n) for n in chrome_nodes(soup)}
     for img in soup.find_all("img"):
-        src = str(img.get("src") or img.get("data-src") or "").strip()
+        src = _image_source(img)
         low = src.lower()
-        if not src or low.startswith("data:") or low.endswith(".svg") or "logo" in low:
+        if not src or low.endswith(".svg") or "logo" in low:
             continue
         if any(id(p) in chrome for p in img.parents):
             continue
@@ -1708,6 +1797,12 @@ def detect_status(html: str, url: str = "") -> str:
         known = NEXT_STATUS.get(str(prop.get("status") or "").lower())
         if known is not None:
             return known
+    # irres.be keeps the page of a house whose mandate ended, price and all,
+    # and only its breadcrumb data says so ("FOR_SALE_ORDER_ENDED - ...").
+    # A breadcrumb that says "for sale" still yields to a banner in the text.
+    crumb = breadcrumb_status(html)
+    if crumb in ("sold", "option"):
+        return crumb
     soup = BeautifulSoup(html, "lxml")
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
@@ -1749,8 +1844,15 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
     office_hard = chrome_streets(soup, strong_only=True)
     office = chrome_streets(soup)
     offices_at = chrome_places(soup)
-    office_hard |= _from_jsonld(jsonld_objects(BeautifulSoup(html, "lxml")), listing)
+    objects = jsonld_objects(BeautifulSoup(html, "lxml"))
+    office_hard |= _from_jsonld(objects, listing)
     office |= office_hard
+    crumb = breadcrumb_facts(objects)
+    if crumb:
+        # irres.be: "FOR_SALE - 9000 Gent - Nederpolder 16" is the one place
+        # a page without og:title or map link states its address.
+        listing.postal_code = listing.postal_code or crumb["postal_code"]
+        listing.city = listing.city or crumb["city"]
     next_prop = next_data_property(html)
     if next_prop is not None:
         _from_next_property(next_prop, listing)
@@ -1764,7 +1866,7 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
     if listing.title and generic_title(listing.title, _meta(soup, "og:site_name"), url):
         # Older entree.be pages carry the site slogan ("Maak uw entree", or a
         # bare "Array") as og:title; the property is named further down.
-        listing.title = _property_heading(soup) or listing.title
+        listing.title = _property_heading(soup) or _title_above_price(soup) or listing.title
     if listing.title and address_title(listing.title):
         # mvastgoed.be has no og:title and names the listing by its address
         # in the structured data; the h1 ("Afgesloten garage te koop in de
@@ -1834,6 +1936,9 @@ def extract_listing(url: str, html: str, source: str) -> Listing | None:
             or find_street(labelled, listing.city, exclude=office_hard)
             or (slug_street if slug_street.lower() not in office_hard else "")
             or find_street(listing.title, listing.city, exclude=office_hard)
+            # The breadcrumb's "Nederpolder 16 - 0201" names the unit after
+            # the number; the house is what the registers know.
+            or re.sub(r"\s+-\s+[\w/]+$", "", crumb.get("street", "")).strip()
             or find_street(lines, listing.city, listing.postal_code,
                            exclude=office, near_place=True)
             or ""

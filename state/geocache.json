@@ -547,6 +547,11 @@
    "level": "address",
    "lon": 3.324145175431943
   },
+  "bedevaartstraat 45|8700|tielt": {
+   "lat": 50.98827369758708,
+   "level": "address",
+   "lon": 3.33287430211072
+  },
   "beekjufferstraat 18|8501|heule": {
    "lat": 50.83716718483323,
    "level": "address",
@@ -799,6 +804,11 @@
   "bergstraat 2|8511|aalbeke": {
    "lat": 50.778223,
    "lon": 3.2303316
+  },
+  "bernstraat 10|2660|hoboken": {
+   "lat": 51.16071012776063,
+   "level": "address",
+   "lon": 4.34953232982569
   },
   "bernt 19|9940|sleidinge": {
    "lat": 51.124608551716555,
@@ -2206,6 +2216,11 @@
    "level": "address",
    "lon": 4.0879965
   },
+  "donklaan 37|9290|berlare": {
+   "lat": 51.03333428983977,
+   "level": "address",
+   "lon": 3.9830805619679697
+  },
   "donkvijverstraat 65|9120|beveren-waas": {
    "lat": 51.212948713835296,
    "level": "address",
@@ -3147,6 +3162,11 @@
   "gentsesteenweg 64|8500|kortrijk": {
    "lat": 50.832702,
    "lon": 3.2769736
+  },
+  "gentsestraat 3b|8870|izegem": {
+   "lat": 50.91766422899124,
+   "level": "address",
+   "lon": 3.2152874188849263
   },
   "gentsestraat 76|8530|harelbeke": {
    "lat": 50.859161989303225,
@@ -4558,6 +4578,11 @@
    "lat": 50.8254870102785,
    "level": "address",
    "lon": 3.279703538377973
+  },
+  "hugo verrieststraat 4|8770|ingelmunster": {
+   "lat": 50.92257735404934,
+   "level": "address",
+   "lon": 3.251242375934092
   },
   "hullekenstraat 88||dendermonde": {
    "lat": 51.02568155172689,
@@ -8475,6 +8500,11 @@
    "lat": 50.7442697,
    "lon": 3.5927505
   },
+  "osystraat 48|2060|antwerpen": {
+   "lat": 51.22278544576323,
+   "level": "address",
+   "lon": 4.418981985659288
+  },
   "otegemplaats 2|8550|zwevegem": {
    "lat": 50.8084407,
    "lon": 3.4235726
@@ -10788,6 +10818,11 @@
    "level": "address",
    "lon": 3.3435469156488375
   },
+  "spilstraat 32|8980|zonnebeke": {
+   "lat": 50.86397130458104,
+   "level": "address",
+   "lon": 3.008537409891971
+  },
   "spinnerijstraat 14|8793|sint-eloois-vijve": {
    "lat": 50.90701029725847,
    "level": "address",
@@ -10938,6 +10973,11 @@
    "lat": 50.9599821875262,
    "level": "address",
    "lon": 3.6288285607977375
+  },
+  "stationsstraat 16|8500|kortrijk": {
+   "lat": 50.825354068596155,
+   "level": "address",
+   "lon": 3.2641025269946384
   },
   "stationsstraat 17|2590|berlaar": {
    "lat": 51.11649443718029,
@@ -11109,6 +11149,11 @@
    "lat": 50.83513719746815,
    "level": "address",
    "lon": 3.3327988103232795
+  },
+  "steenhuisdreef 49|9031|drongen": {
+   "lat": 51.053181480556574,
+   "level": "address",
+   "lon": 3.666332490364813
   },
   "steenovenstraat 19b|8760|meulebeke": {
    "lat": 50.96095008228367,
@@ -12826,6 +12871,11 @@
    "lat": 50.825748957466345,
    "level": "address",
    "lon": 3.271836110127402
+  },
+  "zwevegemsestraat 49|8500|kortrijk": {
+   "lat": 50.82442301401309,
+   "level": "address",
+   "lon": 3.2733253259430817
   },
   "zwevegemstraat 113|8550|zwevegem": {
    "lat": 50.8161803,

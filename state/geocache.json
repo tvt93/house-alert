@@ -113,6 +113,11 @@
    "level": "address",
    "lon": 3.6866337434959484
   },
+  "aelmeersstraat 1|9070|heusden": {
+   "lat": 51.03387844408452,
+   "level": "address",
+   "lon": 3.79425472850255
+  },
   "akkerstraat 63|9000|gent": {
    "lat": 51.05525956308002,
    "level": "address",
@@ -1681,6 +1686,11 @@
    "lat": 50.99892060920899,
    "level": "address",
    "lon": 3.7851477940147
+  },
+  "casselrylaan 35|9800|astene": {
+   "lat": 50.9871615420628,
+   "level": "address",
+   "lon": 3.5834100361974732
   },
   "cauwerburg 184||temse": {
    "lat": 51.121769093218944,
@@ -4848,6 +4858,11 @@
    "level": "address",
    "lon": 3.747857787176782
   },
+  "jean-baptiste de ghellincklaan 0|9051|sint-denijs-westrem": {
+   "lat": 51.02225082318271,
+   "level": "street",
+   "lon": 3.6793675843392837
+  },
   "jean-baptiste de ghellincklaan 19|9051|sint-denijs-westrem": {
    "lat": 51.02067634016599,
    "level": "address",
@@ -4943,6 +4958,11 @@
   "jules persynplein 1|9185|lochristi": {
    "lat": 51.170503,
    "lon": 3.8591665
+  },
+  "jules soenenstraat 7|9800|deinze": {
+   "lat": 50.9854033,
+   "level": "address",
+   "lon": 3.534489
   },
   "justus lipsiusstraat 20|3000|leuven": {
    "lat": 50.879394585800334,
@@ -5786,6 +5806,11 @@
    "lat": 51.10914037427274,
    "level": "address",
    "lon": 3.8185884656994693
+  },
+  "koning-albertlaan 78|9080|lochristi": {
+   "lat": 51.102435469183376,
+   "level": "address",
+   "lon": 3.8284008874134186
   },
   "koningalbertlaan 22|9080|lochristi": {
    "level": "none"
@@ -7480,6 +7505,11 @@
    "level": "address",
    "lon": 3.395150009748681
   },
+  "moeistraat 5|9830|sint-martens-latem": {
+   "lat": 51.00834667242736,
+   "level": "address",
+   "lon": 3.6343522779901165
+  },
   "moerstraat 106||wetteren": {
    "lat": 51.00468684727824,
    "level": "address",
@@ -9146,6 +9176,11 @@
    "lat": 50.89027182125318,
    "level": "address",
    "lon": 3.24506422952987
+  },
+  "pieter pauwel rubenslaan 1|9051|sint-denijs-westrem": {
+   "lat": 51.01876760132008,
+   "level": "address",
+   "lon": 3.6834825116863854
   },
   "pijplap 104|8560|gullegem": {
    "lat": 50.84496519025541,
@@ -12095,6 +12130,11 @@
    "lat": 51.027756501002806,
    "level": "address",
    "lon": 3.708175151804676
+  },
+  "vossenstraat 45|9070|destelbergen": {
+   "lat": 51.03791510837729,
+   "level": "address",
+   "lon": 3.8193295251236363
   },
   "vraag makelaar x|9600|renaix": {
    "level": "none"

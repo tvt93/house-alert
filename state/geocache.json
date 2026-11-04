@@ -6087,6 +6087,11 @@
    "level": "address",
    "lon": 3.2581331655027954
   },
+  "kortrijkstraat 52b/101|9800|deinze": {
+   "lat": 50.977435033106424,
+   "level": "street",
+   "lon": 3.52813408021641
+  },
   "kortrijkstraat 52b/201|9800|deinze": {
    "lat": 50.977435033106424,
    "level": "street",
@@ -6874,6 +6879,11 @@
    "level": "address",
    "lon": 4.364051169431331
   },
+  "luchthavenlaan 31|9051|gent sint-denijs-westrem": {
+   "lat": 51.02287794632921,
+   "level": "address",
+   "lon": 3.6763199705303133
+  },
   "luipaardstraat 38|8550|zwevegem": {
    "lat": 50.8165584169616,
    "level": "address",
@@ -6923,6 +6933,11 @@
    "lat": 51.01747358745951,
    "level": "address",
    "lon": 3.7042023012305187
+  },
+  "maasstraat 21|2800|mechelen": {
+   "lat": 51.04176274609447,
+   "level": "address",
+   "lon": 4.479117807565657
   },
   "maenhoutstraat 80|9830|sint-martens-latem": {
    "lat": 51.01470232045363,
@@ -9247,6 +9262,11 @@
    "lat": 50.77096444332107,
    "level": "address",
    "lon": 3.43837089070483
+  },
+  "pontstraat 98|8580|avelgem": {
+   "lat": 50.771943320372664,
+   "level": "address",
+   "lon": 3.4376128925582043
   },
   "poosmeersstraat 15|9230|wetteren": {
    "lat": 51.01793912573974,

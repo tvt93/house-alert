@@ -632,6 +632,11 @@
    "level": "address",
    "lon": 3.3196656744727546
   },
+  "beeklaan 40|8530|harelbeke": {
+   "lat": 50.85776046629359,
+   "level": "address",
+   "lon": 3.3223531729500717
+  },
   "beeklaan 4|8530|harelbeke": {
    "lat": 50.85692512642827,
    "level": "address",
@@ -1865,6 +1870,11 @@
    "level": "address",
    "lon": 3.721634675439817
   },
+  "constantin meunierstraat 36|9600|ronse": {
+   "lat": 50.736819960849274,
+   "level": "street",
+   "lon": 3.595354538181912
+  },
   "cottagelaan 27|8670|oostduinkerke": {
    "lat": 51.13430206988302,
    "level": "address",
@@ -2699,6 +2709,11 @@
    "lat": 51.03685090528874,
    "level": "address",
    "lon": 3.6256983687427895
+  },
+  "elslopark 1|9940|evergem": {
+   "lat": 51.11702592742163,
+   "level": "address",
+   "lon": 3.7234492267605965
   },
   "elsschot 24|2221|heist-op-den-berg": {
    "lat": 51.03859984547858,
@@ -4883,6 +4898,11 @@
    "level": "address",
    "lon": 3.2636863582085893
   },
+  "jan van aelbroecklaan 55|9050|gentbrugge": {
+   "lat": 51.02991398856103,
+   "level": "address",
+   "lon": 3.7702584053741464
+  },
   "jan van eyckplein 6|8000|brugge": {
    "lat": 51.211845270065396,
    "level": "address",
@@ -5018,6 +5038,11 @@
    "lat": 51.06920453873514,
    "level": "address",
    "lon": 3.6864822347432606
+  },
+  "kaai 44|8620|nieuwpoort": {
+   "lat": 51.132969123716485,
+   "level": "address",
+   "lon": 2.747214963840249
   },
   "kaaiplaats 3|8630|veurne": {
    "lat": 51.07105909001563,
@@ -5621,6 +5646,11 @@
   "kleine klijtstraat 14|8540|deerlijk": {
    "lat": 50.8494326,
    "lon": 3.3848567
+  },
+  "kleine marijve 15|9600|ronse": {
+   "lat": 50.74592086240874,
+   "level": "address",
+   "lon": 3.6089789291499508
   },
   "kleine pontestraat 79|8510|marke": {
    "lat": 50.80151056286137,
@@ -7256,6 +7286,11 @@
    "level": "address",
    "lon": 3.2154031997290535
   },
+  "marktstraat 23|8710|wielsbeke": {
+   "lat": 50.908633104311726,
+   "level": "address",
+   "lon": 3.370262687643792
+  },
   "marktstraat 2|8510|marke": {
    "lat": 50.80715288198236,
    "level": "address",
@@ -7599,6 +7634,11 @@
    "lat": 51.00493810284118,
    "level": "address",
    "lon": 3.8813208917536
+  },
+  "moeskroensesteenweg 213|8511|aalbeke": {
+   "lat": 50.7703722574566,
+   "level": "address",
+   "lon": 3.2258514418326527
   },
   "moeskroensesteenweg 24|8511|aalbeke": {
    "lat": 50.78274921262716,
@@ -8158,6 +8198,11 @@
    "lat": 51.12162949840643,
    "level": "address",
    "lon": 3.7997460829912977
+  },
+  "noord-edestraat 48|8450|bredene": {
+   "lat": 51.22297226439015,
+   "level": "address",
+   "lon": 2.963429424109066
   },
   "noorderlaan 20 bus 1|8790|waregem": {
    "lat": 50.88975195973748,
@@ -9526,6 +9571,11 @@
    "lat": 51.0256641,
    "lon": 3.5580719
   },
+  "priester daensstraat 7|8570|vichte": {
+   "lat": 50.84457115685446,
+   "level": "address",
+   "lon": 3.4046954175806534
+  },
   "priesterage 20|9140|temse": {
    "lat": 51.11543294752436,
    "level": "address",
@@ -10017,6 +10067,11 @@
    "lat": 50.74370325411766,
    "level": "address",
    "lon": 3.6294921446435264
+  },
+  "route de frasnes 108|7860|lessines": {
+   "lat": 50.711605212933065,
+   "level": "address",
+   "lon": 3.8198173707330865
   },
   "route de frasnes 111|7860|lessen": {
    "lat": 50.71139,
@@ -11666,6 +11721,11 @@
    "level": "address",
    "lon": 4.1386926042668115
   },
+  "torhoutsesteenweg 198|8400|oostende": {
+   "lat": 51.21886074265725,
+   "level": "address",
+   "lon": 2.907933262318256
+  },
   "torhoutstraat 16|8750|zwevezele": {
    "lat": 51.04329595934131,
    "level": "address",
@@ -11968,6 +12028,11 @@
    "level": "address",
    "lon": 3.3584602392707663
   },
+  "vichtesteenweg 145|8540|deerlijk": {
+   "lat": 50.84628731342319,
+   "level": "address",
+   "lon": 3.379726974389974
+  },
   "vichtesteenweg 86|8540|deerlijk": {
    "lat": 50.85016763710387,
    "level": "address",
@@ -12017,6 +12082,11 @@
    "lat": 51.168888885513965,
    "level": "address",
    "lon": 3.855664844561825
+  },
+  "vierweegsestraat 1-3|9032|wondelgem": {
+   "lat": 51.0903127121288,
+   "level": "street",
+   "lon": 3.717316745412171
   },
   "vijf eikenstraat 7|8780|oostrozebeke": {
    "lat": 50.9447738809598,
@@ -12162,6 +12232,11 @@
    "lat": 51.05613121684052,
    "level": "address",
    "lon": 3.700435190245885
+  },
+  "vlasrootstraat 119|9190|stekene": {
+   "lat": 51.19721385658387,
+   "level": "address",
+   "lon": 4.069074252654904
   },
   "vlierlaan 8|8500|kortrijk": {
    "lat": 50.82430987095439,
@@ -12551,6 +12626,11 @@
    "lat": 50.79829239389247,
    "level": "address",
    "lon": 3.110729381082692
+  },
+  "werkenstraat 20|8600|vladslo": {
+   "lat": 51.04650976930112,
+   "level": "address",
+   "lon": 2.9186923012995725
   },
   "wervikstraat 70|8940|geluwe": {
    "lat": 50.80790788328161,

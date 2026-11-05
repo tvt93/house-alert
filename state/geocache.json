@@ -735,6 +735,11 @@
    "level": "address",
    "lon": 3.2890162466968413
   },
+  "bellegemsestraat 17|8510|bellegem": {
+   "lat": 50.777893066380656,
+   "level": "address",
+   "lon": 3.281318226271386
+  },
   "bellegemsestraat 70a|8510|bellegem": {
    "lat": 50.777315308941525,
    "level": "address",
@@ -1659,6 +1664,11 @@
   "calle levant 5|03599|calpe": {
    "level": "none"
   },
+  "camiel ameyestraat 30|8870|izegem": {
+   "lat": 50.92090831828282,
+   "level": "address",
+   "lon": 3.206016352661249
+  },
   "camiel de stoopstraat 51||kortrijk": {
    "lat": 50.79972414100474,
    "level": "address",
@@ -2429,6 +2439,11 @@
    "lat": 50.88903131066277,
    "level": "address",
    "lon": 3.460888731047032
+  },
+  "driekerkenstraat 120|8501|bissegem": {
+   "lat": 50.81835832672309,
+   "level": "address",
+   "lon": 3.231176447960846
   },
   "driekoningenstraat 50|9100|sint-niklaas": {
    "lat": 51.17329959326364,
@@ -6259,6 +6274,11 @@
    "level": "address",
    "lon": 3.4633607931988766
   },
+  "krekelmotestraat 32|8870|izegem": {
+   "lat": 50.920239299453534,
+   "level": "address",
+   "lon": 3.2000026507917885
+  },
   "krekelstraat 180|8870|izegem": {
    "lat": 50.914171078294906,
    "level": "address",
@@ -6999,6 +7019,11 @@
    "level": "address",
    "lon": 3.634557836578581
   },
+  "lysbrugstraat 27a|8770|ingelmunster": {
+   "lat": 50.91352460086118,
+   "level": "address",
+   "lon": 3.265838903464646
+  },
   "lysbrugstraat 29a|8770|ingelmunster": {
    "lat": 50.91357549598821,
    "level": "street",
@@ -7215,6 +7240,11 @@
   "marktplein 6|8530|harelbeke": {
    "lat": 50.8573557,
    "lon": 3.3104876
+  },
+  "marktstraat 10|8870|izegem": {
+   "lat": 50.91822069434716,
+   "level": "address",
+   "lon": 3.2151549911665898
   },
   "marktstraat 18|8510|marke": {
    "lat": 50.807623296204476,
@@ -11241,6 +11271,11 @@
    "level": "address",
    "lon": 3.6709974666745477
   },
+  "steenakker 220/b|9000|gent": {
+   "lat": 51.0190109,
+   "level": "address",
+   "lon": 3.7254139
+  },
   "steenakkerstraat 2|9070|destelbergen": {
    "lat": 51.02915456609383,
    "level": "address",
@@ -11481,6 +11516,16 @@
    "lat": 51.041124787132134,
    "level": "address",
    "lon": 3.729712200984894
+  },
+  "ter reigerie 21 14|8800|roeselare": {
+   "lat": 50.95906758202272,
+   "level": "street",
+   "lon": 3.102629027522953
+  },
+  "ter reigerie 21 1|8800|roeselare": {
+   "lat": 50.95906758202272,
+   "level": "street",
+   "lon": 3.102629027522953
   },
   "ter reigerie 21|8800|roeselare": {
    "lat": 50.95943742125367,
@@ -12372,6 +12417,11 @@
    "lon": 3.2928193974059323
   },
   "wapenplein 6 bus 0401|8400|oostende": {
+   "lat": 51.232249361925,
+   "level": "address",
+   "lon": 2.917217615894054
+  },
+  "wapenplein 6|8400|oostende": {
    "lat": 51.232249361925,
    "level": "address",
    "lon": 2.917217615894054

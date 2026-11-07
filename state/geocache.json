@@ -1318,6 +1318,11 @@
    "level": "address",
    "lon": 3.9620900307214053
   },
+  "brouwerijstraat 17|9770|kruisem": {
+   "lat": 50.90863928812056,
+   "level": "address",
+   "lon": 3.5257049011520456
+  },
   "brouwerijstraat 28||": {
    "lat": 50.72456001258116,
    "level": "address",
@@ -8614,6 +8619,11 @@
    "level": "address",
    "lon": 3.541698666098697
   },
+  "nazarethstraat 43a+|9840|nazareth-de pinte": {
+   "lat": 50.9856415,
+   "level": "address",
+   "lon": 3.6386978
+  },
   "nederholbeekstraat 65|9680|etikhove": {
    "lat": 50.80606572954793,
    "level": "address",
@@ -13263,6 +13273,11 @@
    "lat": 50.82430987095439,
    "level": "address",
    "lon": 3.2910521254337612
+  },
+  "vlinderstraat 30|9050|gent ledeberg": {
+   "lat": 51.033519995719956,
+   "level": "address",
+   "lon": 3.746753048217384
   },
   "vloesberg 7880|7880|vloesberg": {
    "level": "none"

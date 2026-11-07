@@ -5174,6 +5174,11 @@
    "level": "address",
    "lon": 3.704970841215386
   },
+  "hutsepotstraat 192|9052|gent": {
+   "lat": 51.00885758020592,
+   "level": "address",
+   "lon": 3.702148007344031
+  },
   "hutsepotstraat 196|9052|gent": {
    "lat": 51.00894687020372,
    "level": "address",
@@ -6429,6 +6434,11 @@
    "lat": 50.85611734960495,
    "level": "address",
    "lon": 3.2850749230710665
+  },
+  "koning leopold iii-laan 30|8500|kortrijk": {
+   "lat": 50.8416173538575,
+   "level": "address",
+   "lon": 3.2666583150053334
   },
   "koning ridderdijk 31|8434|westende": {
    "lat": 51.17025025245083,
@@ -10400,6 +10410,11 @@
   "processiestraat 96|1740|ternat": {
    "level": "none"
   },
+  "processieweg 4|8560|gullegem": {
+   "lat": 50.84113307663518,
+   "level": "address",
+   "lon": 3.2040708769580366
+  },
   "proosdijstraat 9|8500|kortrijk": {
    "lat": 50.833862281811385,
    "level": "address",
@@ -12295,6 +12310,11 @@
    "lat": 50.83513719746815,
    "level": "address",
    "lon": 3.3327988103232795
+  },
+  "steenhouwersstraat 11|8800|roeselare": {
+   "lat": 50.94833454048072,
+   "level": "address",
+   "lon": 3.1315799782671743
   },
   "steenhuisdreef 49|9031|drongen": {
    "lat": 51.053181480556574,
@@ -14281,6 +14301,11 @@
    "lat": 50.998891646328666,
    "level": "address",
    "lon": 3.74130117597359
+  },
+  "zwingelkotstraat 19|8710|wielsbeke": {
+   "lat": 50.90684391049712,
+   "level": "address",
+   "lon": 3.3625931207269066
   },
   "zwingelstraat 24|8930|menen": {
    "lat": 50.79599518951046,

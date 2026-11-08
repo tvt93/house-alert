@@ -7665,6 +7665,11 @@
    "level": "address",
    "lon": 4.364051169431331
   },
+  "lucas munichstraat 104|9000|gent": {
+   "lat": 51.05565277558658,
+   "level": "address",
+   "lon": 3.738171103489185
+  },
   "luchthavenlaan 31|9051|gent sint-denijs-westrem": {
    "lat": 51.02287794632921,
    "level": "address",
@@ -8795,6 +8800,11 @@
    "lat": 50.85155354587337,
    "level": "address",
    "lon": 3.305214679417457
+  },
+  "nieuwstraat 2/12|8300|knokke-heist": {
+   "lat": 51.333936764939665,
+   "level": "street",
+   "lon": 3.281544634332366
   },
   "nieuwstraat 2/21|8300|knokke-heist": {
    "lat": 51.333936764939665,

@@ -10736,6 +10736,11 @@
    "level": "address",
    "lon": 3.2242556979857113
   },
+  "rijselsestraat 40||kortrijk": {
+   "lat": 50.82732150559204,
+   "level": "address",
+   "lon": 3.2617314722165003
+  },
   "rijselsestraat 43||kortrijk": {
    "lat": 50.82727347864082,
    "level": "address",
@@ -13481,6 +13486,11 @@
    "lat": 51.03791510837729,
    "level": "address",
    "lon": 3.8193295251236363
+  },
+  "vossestaart 38|9830|sint-martens-latem": {
+   "lat": 51.03231301839087,
+   "level": "address",
+   "lon": 3.6240011106670114
   },
   "vraag makelaar x|9600|renaix": {
    "level": "none"

@@ -85,6 +85,20 @@ STATUS_OPTION = re.compile(
     r"\b(?:in\s+optie|onder\s+optie|optie\s+genomen|onder\s+bod|onder\s+voorbehoud|compromis|"
     r"in\s+onderhandeling|gereserveerd|reserved|under\s+offer|sous\s+option|sous\s+compromis)\b",
     re.IGNORECASE)
+# The listing's own title is about this house, so there the words count in
+# full: crevits.be keeps a sold house online with "RECENT VERKOCHT. Exclusieve
+# driegevelvilla ..." as its title, and a project with no unit left as
+# "VOLLEDIG UITVERKOCHT. Botanique." kensington.be shouts a bare "OPTIE" in
+# the title ("Woning met tuin OPTIE - geen bezoek mogelijk"); in lower case
+# the word is a feature ("optie op garage"), so only the shouted form counts.
+# opt-immo.be and flame-estate.be title a house under option "Woning met
+# optie - Stationsstraat 9, 8740 Pittem" (the page's label says "Optie" and
+# its price "Met optie"); "met optie op/tot ..." is a purchase option on
+# something else and stays out.
+TITLE_SOLD = re.compile(
+    r"\b(?:uit)?(?:verkocht|verhuurd)\b(?!\s+onder\s+voorbehoud)|\b(?:sold|rented|vendu|lou[ée])\b",
+    re.IGNORECASE)
+TITLE_OPTION = re.compile(r"\bOPTIE\b|(?i:\bmet\s+optie\b(?!\s+(?:op|tot|om)\b))")
 
 # URL path fragments that mark a page as a listing detail page.
 LISTING_URL_HINTS = (
@@ -1786,7 +1800,8 @@ def detect_status(html: str, url: str = "") -> str:
     that says "verkocht" settles it. Otherwise only the listing's own banner
     counts: the title, the headings, and the first stretch of body text once
     the site chrome is gone - a "recent verkocht" strip in a sidebar must
-    not sink a live listing.
+    not sink a live listing, while the same words at the head of the title
+    ("RECENT VERKOCHT. Exclusieve driegevelvilla ...") are about this house.
     """
     if url and SOLD_IN_URL.search(urlparse(url).path):
         return "sold"
@@ -1815,11 +1830,14 @@ def detect_status(html: str, url: str = "") -> str:
         *[h.get_text(" ", strip=True) for h in soup.find_all(["h1", "h2"])[:6]],
     ]))
     body = re.sub(r"\s+", " ", soup.get_text(" ", strip=True))[:800]
-    for text in (strong, body):
-        if STATUS_OPTION.search(text):
-            return "option"
-        if STATUS_SOLD.search(text):
-            return "sold"
+    if STATUS_OPTION.search(strong) or TITLE_OPTION.search(strong):
+        return "option"
+    if TITLE_SOLD.search(strong):
+        return "sold"
+    if STATUS_OPTION.search(body):
+        return "option"
+    if STATUS_SOLD.search(body):
+        return "sold"
     return "available"
 
 

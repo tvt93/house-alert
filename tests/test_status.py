@@ -100,3 +100,27 @@ def test_store_due_for_check_unmailed_and_prune(tmp_path):
     reloaded = ListingStore.load(tmp_path / "l.json")
     assert reloaded.listings[option.id].status == "option"
     assert reloaded.listings[never.id].mailed is True
+
+
+def test_sold_or_option_at_the_head_of_the_title_counts():
+    # crevits.be keeps sold houses online with the status leading the title,
+    # the very phrase that is a menu item in other sites' navigation.
+    assert detect_status(page("RECENT VERKOCHT. Exclusieve driegevelvilla met aangelegde tuin",
+                              "<p>Prijs op aanvraag</p>", chrome="Te koop | Recent verkocht")) == "sold"
+    assert detect_status(page("Recent verkocht. Sfeervol appartement met twee slaapkamers",
+                              "<p>€ 325.000</p>")) == "sold"
+    assert detect_status(page("VOLLEDIG UITVERKOCHT. Botanique. Exclusief wonen aan het Citadelpark.",
+                              "<p>Prijs op aanvraag</p>")) == "sold"
+    # kensington.be: a shouted OPTIE in the title; a lower-case "optie" is a feature.
+    assert detect_status(page("Te koop te 9270 Laarne : Woning met tuin OPTIE - geen bezoek mogelijk",
+                              "<p>€ 395.000</p>")) == "option"
+    assert detect_status(page("Woning met tuin en optie op garage", "<p>€ 395.000</p>")) == "available"
+    # opt-immo.be / flame-estate.be: "met optie" in the title is the status.
+    assert detect_status(page("Woning met optie - Stationsstraat 9, 8740 Pittem",
+                              "<p>Vraagprijs: Met optie</p>")) == "option"
+    assert detect_status(page("Woning te koop | met optie / reservatie - Streepbosstraat 19, 9031 Drongen",
+                              "<p>€ 895.000</p>")) == "option"
+    assert detect_status(page("Appartement met optie tot aankoop van garage", "<p>€ 295.000</p>")) == "available"
+    # The description still does not count when it merely mentions tenants.
+    assert detect_status(page("Investeringsopportuniteit - 2 verhuurde handelspanden te koop",
+                              "<p>€ 595.000</p>")) == "available"

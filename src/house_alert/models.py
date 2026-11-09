@@ -56,6 +56,41 @@ def listing_id(url: str) -> str:
 # sits inside a slug segment, and this rule stays out of slugs.
 PROPERTY_NUMBER = re.compile(r"/(\d{5,})(?=/|$)")
 
+# The suffix a CMS appends when a slug is taken: WordPress "-2", "-3"
+# (carloeggermont.be), Omnicasa "-0", "-1" (cannoodt.be).
+SLUG_COPY_SUFFIX = re.compile(r"-\d{1,2}$")
+# Something in the address that names a unit inside the building: two of
+# those at one number are two homes, not one listed twice.
+UNIT_MARKER = re.compile(r"\bbus\b|/|\bapp\b|\bverd|\bgelijkvloers|\d[a-z]?\.\d|\b[a-z]\d\.\d", re.IGNORECASE)
+STREET_NUMBER = re.compile(r"(\S+\s+\d+[a-z]?)(?:\s|$)")
+
+
+def twin_key(url: str, street: str, postal_code: str, city: str, price: int | None,
+             title: str, *facts: object) -> tuple | None:
+    """The key two rows share when one property was published twice.
+
+    carloeggermont.be had Ingelandgat 4 as /pand/<slug>/ and /pand/<slug>-2/:
+    two WordPress posts, both live, no redirect between them, new photos on
+    the second. The URL alone cannot say they are one house (a "-2" slug is
+    also how a second, different post gets named), and the address alone
+    cannot either (identical new-build units share street, number, price
+    and title). Both together can: the same slug but for a copy suffix, on
+    the same site, for the same street number, place, price, title and
+    facts. Rows without a priced house at a numbered address get no key -
+    a project's unnamed units all look alike - and so do addresses that
+    name a unit inside the building.
+    """
+    if price is None or not street or not title:
+        return None
+    m = STREET_NUMBER.search(street)
+    if m is None or UNIT_MARKER.search(street):
+        return None
+    path = re.sub(r"^https?://(www\.)?", "", url.split("#")[0].partition("?")[0], flags=re.IGNORECASE)
+    host, _, path = path.lower().rstrip("/").partition("/")
+    family = SLUG_COPY_SUFFIX.sub("", path)
+    return (host, family, m.group(1).lower(), postal_code or city.lower(), price,
+            re.sub(r"\W+", " ", title.lower()).strip(), *facts)
+
 
 @dataclass
 class Agency:
@@ -111,6 +146,14 @@ class Listing:
     @property
     def id(self) -> str:
         return listing_id(self.url)
+
+    @property
+    def twin(self) -> tuple | None:
+        """Key shared by a second publication of this same property (see
+        `twin_key`); None when the row cannot safely be told from a neighbour."""
+        return twin_key(self.url, self.street, self.postal_code, self.city, self.price,
+                        self.title, self.property_type, self.bedrooms,
+                        self.living_area_m2, self.plot_area_m2)
 
     @property
     def price_display(self) -> str:

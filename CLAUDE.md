@@ -61,8 +61,11 @@ subscription. Python, no services, no database; the state is JSON files in git.
   redirects to *another* listing on the same site (`scan.moved_to`) is a relisting under a new
   number: the scan stores the page under the target URL or skips it when the target is known,
   and the re-check folds the old row into the new one (`ListingStore.supersede`) or marks it
-  gone. Address-based merging was considered and rejected: identical new-build units share
-  street, number, facts and title and differ only in price.
+  gone. A property published twice under a copied slug (WordPress `-2`, Omnicasa `-0`/`-1`;
+  carloeggermont.be, cannoodt.be) is one row via `Listing.twin`: same site, same slug but for
+  the suffix, same street number, place, price, title and facts; the live row stays
+  (`store.merge_twin`). Address-based merging alone was considered and rejected: identical
+  new-build units share street, number, facts and title and differ only in price.
 - **Mail covers the queue, not the run.** `Listing.mailed` is set by a mailing run; the
   midnight and noon runs pass `--no-email` and leave new listings queued for the morning.
 - **Email addresses never go in files.** The repo is public (Pages on a free plan).

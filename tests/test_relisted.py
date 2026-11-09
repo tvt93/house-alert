@@ -143,6 +143,62 @@ def test_recheck_marks_a_move_to_an_unknown_number_gone():
     assert old.status == "gone" and old.id in store.listings
 
 
+PALACE = "https://carloeggermont.be/pand/uitzonderlijk-18de-eeuws-stadspaleis-met-een-indrukwekkende-bvo-van-810-m%c2%b2/"
+PALACE_COPY = "https://carloeggermont.be/pand/uitzonderlijk-18de-eeuws-stadspaleis-met-een-indrukwekkende-bvo-van-810-m%c2%b2-2/"
+
+
+def palace(url: str, **kwargs) -> Listing:
+    base = dict(url=url, source="Carlo Eggermont", title="Uitzonderlijk 18de-eeuws stadspaleis | Carlo Eggermont",
+                street="Ingelandgat 4", postal_code="9000", city="Gent", price=2750000,
+                property_type="house", bedrooms=8, plot_area_m2=423)
+    base.update(kwargs)
+    return Listing(**base)
+
+
+def test_twin_is_the_same_property_under_a_copied_slug():
+    # carloeggermont.be published Ingelandgat 4 twice: /pand/<slug>/ and the
+    # WordPress copy /pand/<slug>-2/, both live, no redirect, new photos.
+    assert palace(PALACE).twin == palace(PALACE_COPY, image_url="other.jpg").twin
+    assert palace(PALACE).twin is not None
+    # Same slug family but another price, address or fact: not the same house.
+    assert palace(PALACE).twin != palace(PALACE_COPY, price=2500000).twin
+    assert palace(PALACE).twin != palace(PALACE_COPY, street="Ingelandgat 6").twin
+    assert palace(PALACE).twin != palace(PALACE_COPY, bedrooms=7).twin
+    # Same house data on an unrelated slug: another post, left alone.
+    assert palace(PALACE).twin != palace("https://carloeggermont.be/pand/stadspaleis-aan-het-ingelandgat/").twin
+    # Nothing to compare on: unpriced project units, unit markers, no street.
+    assert palace(PALACE, price=None).twin is None
+    assert palace(PALACE, street="Zultseweg 182 / A0.2").twin is None
+    assert palace(PALACE, street="").twin is None
+
+
+def test_store_add_keeps_one_row_for_a_republished_property():
+    store = ListingStore(path=Path("unused"), listings={})
+    first = palace(PALACE, mailed=True)
+    store.add(first, today=date(2026, 10, 27))
+    assert not store.add(palace(PALACE_COPY), today=date(2026, 11, 2))
+    assert list(store.listings.values()) == [first]
+    # When the first post is gone, the live copy takes over with the history.
+    first.status = "gone"
+    copy = palace(PALACE_COPY)
+    assert store.add(copy, today=date(2026, 11, 2))
+    assert list(store.listings.values()) == [copy]
+    assert copy.first_seen == "2026-10-27" and copy.mailed
+
+
+def test_store_load_folds_a_republished_property(tmp_path):
+    import json
+    path = tmp_path / "listings.json"
+    rows = [palace(PALACE, first_seen="2026-10-27", mailed=True, lat=51.05, lon=3.71, geo="address").to_dict(),
+            palace(PALACE_COPY, first_seen="2026-10-27", geo="postcode", lat=51.0, lon=3.7).to_dict(),
+            palace("https://carloeggermont.be/pand/herenhuis-2/", street="Kortrijksesteenweg 1",
+                   first_seen="2026-10-28").to_dict()]
+    path.write_text(json.dumps({"version": 1, "listings": rows}), encoding="utf-8")
+    kept = sorted(ListingStore.load(path).listings.values(), key=lambda l: l.url)
+    assert [l.street for l in kept] == ["Kortrijksesteenweg 1", "Ingelandgat 4"]
+    assert kept[1].mailed and kept[1].geo == "address"
+
+
 def test_store_load_folds_two_spellings_of_one_page(tmp_path):
     import json
     path = tmp_path / "listings.json"

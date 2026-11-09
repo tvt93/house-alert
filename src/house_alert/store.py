@@ -133,6 +133,24 @@ def merge_duplicate(a: Listing, b: Listing) -> Listing:
     return first
 
 
+STATUS_RANK = {"available": 3, "option": 2, "sold": 1, "gone": 0}
+
+
+def merge_twin(a: Listing, b: Listing) -> Listing:
+    """Two rows for one property published twice (same `Listing.twin`): the
+    live one stays - a copy is usually made when the first post is taken
+    down - and it inherits the house's history: on the market since the
+    earlier row saw it, mailed if either was, best point on the map."""
+    keep, other = sorted((a, b), key=lambda l: (-STATUS_RANK.get(l.status, 0),
+                                                 l.first_seen or "9999-12-31", l.url))
+    if other.first_seen and (not keep.first_seen or other.first_seen < keep.first_seen):
+        keep.first_seen = other.first_seen
+    keep.mailed = keep.mailed or other.mailed
+    if GEO_RANK.get(other.geo, 0) > GEO_RANK.get(keep.geo, 0):
+        keep.lat, keep.lon, keep.geo = other.lat, other.lon, other.geo
+    return keep
+
+
 @dataclass
 class ListingStore:
     """Every listing parsed in the retention window, with its coordinates.
@@ -159,6 +177,20 @@ class ListingStore:
         for item in (Listing.from_dict(d) for d in raw.get("listings") or []):
             known = listings.get(item.id)
             listings[item.id] = merge_duplicate(known, item) if known else item
+        # One property published twice under a copied slug: one row.
+        by_twin: dict[tuple, Listing] = {}
+        for item in list(listings.values()):
+            key = item.twin
+            if key is None:
+                continue
+            other = by_twin.get(key)
+            if other is None:
+                by_twin[key] = item
+                continue
+            kept = merge_twin(other, item)
+            dropped = item if kept is other else other
+            del listings[dropped.id]
+            by_twin[key] = kept
         return cls(path=path, listings=listings)
 
     def save(self) -> None:
@@ -180,8 +212,22 @@ class ListingStore:
             return False
         if not listing.first_seen:
             listing.first_seen = (today or date.today()).isoformat()
+        twin = self.twin_of(listing)
+        if twin is not None:
+            # The same property again under a copied slug. The live row is
+            # kept; when that is the newcomer (the first post was taken
+            # down), it replaces the old row and inherits its history.
+            if merge_twin(twin, listing) is twin:
+                return False
+            del self.listings[twin.id]
         self.listings[listing.id] = listing
         return True
+
+    def twin_of(self, listing: Listing) -> Listing | None:
+        key = listing.twin
+        if key is None:
+            return None
+        return next((l for l in self.listings.values() if l.twin == key), None)
 
     def add_all(self, listings: list[Listing], today: date | None = None) -> int:
         return sum(self.add(l, today) for l in listings)

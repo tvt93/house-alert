@@ -186,6 +186,25 @@ class ListingStore:
     def add_all(self, listings: list[Listing], today: date | None = None) -> int:
         return sum(self.add(l, today) for l in listings)
 
+    def supersede(self, old: Listing, target_url: str) -> bool:
+        """`old`'s page now redirects to `target_url`: the house was relisted
+        under a new number (irres.be). When the new number is stored, the old
+        row goes and the new one inherits what the house's history says - it
+        has been on the market since the old row first saw it, and a mail
+        that showed the old row has shown this house. Returns True when the
+        rows were folded together; False leaves `old` in place (as "gone",
+        which the caller set) for the new number to turn up on its own."""
+        target = self.listings.get(listing_id(target_url))
+        if target is None or target is old:
+            return False
+        if old.first_seen and (not target.first_seen or old.first_seen < target.first_seen):
+            target.first_seen = old.first_seen
+        target.mailed = target.mailed or old.mailed
+        if GEO_RANK.get(old.geo, 0) > GEO_RANK.get(target.geo, 0):
+            target.lat, target.lon, target.geo = old.lat, old.lon, old.geo
+        self.listings.pop(old.id, None)
+        return True
+
     def needing_address_lookup(self) -> list[Listing]:
         """Listings with a street we have not yet resolved to a point."""
         return [l for l in self.listings.values()

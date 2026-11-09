@@ -18,9 +18,9 @@ from urllib.parse import urlparse
 from .extract import in_belgium
 from .geo import postcodes_for_place
 from .models import Agency, Listing, listing_id
-from .net import Fetcher
+from .net import Fetched, Fetcher
 from .platforms import GenericScraper, scraper_for
-from .store import SeenStore
+from .store import ListingStore, SeenStore
 
 log = logging.getLogger(__name__)
 
@@ -101,20 +101,54 @@ def scan_agency(
         result.dead_urls = fresh
         return result
 
+    taken: set[str] = set()
     for url in fresh:
-        html = fetcher.get(url)
+        got = fetcher.fetch(url)
         result.fetched += 1
-        if html is None:
+        if got.text is None:
             result.dead_urls.append(url)
             continue
-        listing = scraper.parse(url, html, source=agency.name)
-        if listing is None or not in_region(agency, listing):
+        page_url = url
+        target = moved_to(got)
+        if target is not None:
+            # The site answered with another listing's page: irres.be relists
+            # a house under a new number and redirects the old URL to it. The
+            # page is the target's; the asked URL is only an alias of it and
+            # is recorded as seen so it is not fetched again.
+            result.dead_urls.append(url)
+            if listing_id(target) in store.entries or listing_id(target) in taken:
+                continue
+            page_url = target
+        listing = scraper.parse(page_url, got.text, source=agency.name)
+        if listing is None or not in_region(agency, listing) or listing.id in taken:
             result.dead_urls.append(url)
             continue
+        taken.add(listing.id)
         result.listings.append(listing)
 
     strip_shared_street(result.listings)
     return result
+
+
+def moved_to(got: Fetched) -> str | None:
+    """The other listing URL a page redirected to, if that is what happened.
+
+    A relisted house keeps its old URL alive as a redirect to the new number
+    (irres.be: /pand/9064127/... -> /pand/9098257/...). That is neither
+    "gone" (the redirect stays at listing depth) nor the same page (another
+    identity), and storing what came back under the asked URL is how one
+    house ended up on the map under two numbers. A bounce to the index, a
+    locale switch or a canonical slug (same identity) is not a move, and
+    neither is a redirect to another site.
+    """
+    if not got.final_url or got.final_url == got.url or got.redirected_away:
+        return None
+    if listing_id(got.final_url) == listing_id(got.url):
+        return None
+    host = lambda u: urlparse(u).netloc.lower().removeprefix("www.")  # noqa: E731
+    if host(got.final_url) != host(got.url):
+        return None
+    return got.final_url
 
 
 def recheck_status(
@@ -123,6 +157,7 @@ def recheck_status(
     today: date | None = None,
     workers: int = 8,
     agencies: list[Agency] | None = None,
+    store: ListingStore | None = None,
 ) -> Counter:
     """Visit stored listings again to see whether they are still for sale.
 
@@ -132,10 +167,17 @@ def recheck_status(
     request per second while several sites are visited at once. With
     `agencies`, a host's own platform reads the status where the generic
     banner search would not (engelvoelkers.com states it in its data blob).
+
+    A page that now redirects to another listing of the same site has been
+    relisted under a new number. The old row is "gone" either way; when the
+    new number is already in `store`, the old row is folded into it
+    (`ListingStore.supersede`) so the house is shown once, and the result
+    counts it as "superseded".
     """
     today = today or date.today()
     changes: Counter = Counter()
     readers = {urlparse(a.url).netloc.removeprefix("www."): scraper_for(a) for a in agencies or []}
+    moved: list[tuple[Listing, str]] = []
 
     def visit(group: list[Listing]) -> Counter:
         local: Counter = Counter()
@@ -146,8 +188,12 @@ def recheck_status(
             if got.status_code is None:
                 local["unreachable"] += 1          # network trouble: try again another day
                 continue
+            target = moved_to(got)
             if got.status_code in (404, 410) or got.redirected_away:
                 new = "gone"
+            elif target is not None:
+                new = "gone"
+                moved.append((listing, target))
             elif got.text is None:
                 local["unreachable"] += 1
                 continue
@@ -166,6 +212,10 @@ def recheck_status(
     with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
         for local in pool.map(visit, by_host.values()):
             changes.update(local)
+    if store is not None:
+        for old, target in moved:
+            if store.supersede(old, target):
+                changes["superseded"] += 1
     return changes
 
 

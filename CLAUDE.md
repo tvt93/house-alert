@@ -53,6 +53,16 @@ subscription. Python, no services, no database; the state is JSON files in git.
   forever. The one exception is `scan.recheck_status`: stored listings are re-visited
   every couple of days (capped per run) purely to read their status banner, because a
   sold house keeps its page. Fields are never re-extracted on that visit.
+- **One house, one row.** `models.listing_id` is the identity: host without `www`, path
+  without query, and when the path holds a bare number of five or more digits, that number
+  alone (the last one, because project sites nest `/<project>/<slug>/<unit>`). Slugs are
+  decoration sites rewrite freely (irres.be serves `/pand/<id>/<id>` and `/pand/<id>/<slug>`,
+  vlaemynck appends `-0`). Both stores recompute keys on load and fold duplicates. A page that
+  redirects to *another* listing on the same site (`scan.moved_to`) is a relisting under a new
+  number: the scan stores the page under the target URL or skips it when the target is known,
+  and the re-check folds the old row into the new one (`ListingStore.supersede`) or marks it
+  gone. Address-based merging was considered and rejected: identical new-build units share
+  street, number, facts and title and differ only in price.
 - **Mail covers the queue, not the run.** `Listing.mailed` is set by a mailing run; the
   midnight and noon runs pass `--no-email` and leave new listings queued for the morning.
 - **Email addresses never go in files.** The repo is public (Pages on a free plan).

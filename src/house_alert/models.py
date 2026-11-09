@@ -26,6 +26,15 @@ def listing_id(url: str) -> str:
     A "binnenkort te koop" page that becomes "te koop" keeps its slug and
     moves one path segment up (Rosseel), while the old page stays online:
     the segment is read as te-koop so the house does not appear twice.
+    A property number in the path is the identity when there is one: a bare
+    segment of five or more digits (irres.be/pand/9064127/<slug>, immo-zone
+    .be/te-koop/<town>/<slug>/95750, vlaemynck.be/.../11204347/<slug>). The
+    slug around it is decoration the sites rewrite freely - irres serves the
+    same house as /pand/9064127/9064127 and under its title, immo-zone
+    renamed a slug, vlaemynck appended "-0" - and each spelling had put the
+    house on the map once more. The *last* such segment counts because
+    project sites nest the unit under the project (immoboss.be/nl/aanbod/
+    <project>/<slug>/<unit>), and the units are different homes.
     """
     path, _, query = url.split("#")[0].partition("?")
     path = re.sub(r"^https?://(www\.)?", "", path, flags=re.IGNORECASE)
@@ -35,7 +44,17 @@ def listing_id(url: str) -> str:
         canonical = canonical.split("/", 1)[0] + f"?view=detail&id={m.group(1)}"
     elif m:
         canonical += f"?id={m.group(1)}"
+    else:
+        numbers = PROPERTY_NUMBER.findall(canonical)
+        if numbers:
+            canonical = canonical.split("/", 1)[0] + f"#{numbers[-1]}"
     return hashlib.sha1(canonical.encode()).hexdigest()[:16]
+
+
+# A whole path segment of digits, long enough not to be a postcode (4) or a
+# page number. Dewaele's "-d8900-26207-258488" tail is not one: the number
+# sits inside a slug segment, and this rule stays out of slugs.
+PROPERTY_NUMBER = re.compile(r"/(\d{5,})(?=/|$)")
 
 
 @dataclass

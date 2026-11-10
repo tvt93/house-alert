@@ -355,6 +355,11 @@
    "level": "address",
    "lon": 4.329876928192412
   },
+  "antwerpsestraat 71|2845|niel": {
+   "lat": 51.108980074882226,
+   "level": "address",
+   "lon": 4.330239047750279
+  },
   "apostelhuizen 28|9000|centrum gent": {
    "lat": 51.050977506374466,
    "level": "address",
@@ -2274,6 +2279,11 @@
    "level": "address",
    "lon": 3.8030939031182367
   },
+  "dendermondesteenweg 5||destelbergen": {
+   "lat": 51.051918664698526,
+   "level": "address",
+   "lon": 3.7564815525976147
+  },
   "dendermondesteenweg 6|9070|destelbergen": {
    "lat": 51.051694146614174,
    "level": "address",
@@ -2762,6 +2772,11 @@
    "lat": 51.0792863,
    "level": "address",
    "lon": 2.5792864
+  },
+  "duinkerkestraat 12|8620|nieuwpoort": {
+   "lat": 51.12868791348268,
+   "level": "address",
+   "lon": 2.749189426821436
   },
   "dynastielaan 34|8660|de panne": {
    "lat": 51.0969147032904,
@@ -4725,6 +4740,11 @@
    "level": "address",
    "lon": 3.7109670445014817
   },
+  "hoedhaarstraat 15|9160|lokeren": {
+   "lat": 51.09912596244479,
+   "level": "address",
+   "lon": 3.9943587689417743
+  },
   "hoefijzer 6|9880|aalter": {
    "lat": 51.09173332258874,
    "level": "address",
@@ -5792,6 +5812,11 @@
    "lat": 51.050587358744316,
    "level": "address",
    "lon": 3.7409234746533215
+  },
+  "kasteellaan 188|9000|gent": {
+   "lat": 51.051316835590285,
+   "level": "address",
+   "lon": 3.7410581725842507
   },
   "kasteellaan 421|9000|gent": {
    "lat": 51.0544893838281,
@@ -7516,6 +7541,11 @@
    "level": "address",
    "lon": 3.7635988446522273
   },
+  "lijnstraat 63|9831|deurle": {
+   "lat": 51.000912586101975,
+   "level": "address",
+   "lon": 3.6159525821691765
+  },
   "lijnwaadstraat 52|9000|gent": {
    "lat": 51.06874852030056,
    "level": "address",
@@ -8787,6 +8817,11 @@
   "nieuwevaart 211 / b|9000|gent": {
    "lat": 51.0677043,
    "lon": 3.7214666
+  },
+  "nieuwewandeling 18|9000|gent": {
+   "lat": 51.055545514979485,
+   "level": "address",
+   "lon": 3.7074589377175666
   },
   "nieuwlandstraat 4|8400|oostende": {
    "lat": 51.21843043409352,
@@ -10889,6 +10924,11 @@
    "level": "address",
    "lon": 3.2092264880544326
   },
+  "roeselarestraat 329|8560|wevelgem": {
+   "lat": 50.82060545360901,
+   "level": "address",
+   "lon": 3.1764361386414617
+  },
   "roger vansteenbruggestraat 105|8790|waregem": {
    "lat": 50.891238075880054,
    "level": "address",
@@ -11953,6 +11993,11 @@
    "lat": 51.054080463346665,
    "level": "address",
    "lon": 3.7385576791639026
+  },
+  "spanjestraat 210|8800|roeselare": {
+   "lat": 50.94587606588398,
+   "level": "address",
+   "lon": 3.143780682466897
   },
   "spanjestraat 235|8800|roeselare": {
    "lat": 50.9460428863574,

@@ -1902,6 +1902,11 @@
    "level": "address",
    "lon": 3.7217148743027155
   },
+  "charles de kerchovelaan 13|9000|gent": {
+   "lat": 51.04149504449257,
+   "level": "address",
+   "lon": 3.720603235564797
+  },
   "charles de kerchovelaan 25|9000|gent": {
    "lat": 51.041297396475024,
    "level": "address",
@@ -2333,6 +2338,11 @@
    "lat": 50.98201566307676,
    "level": "address",
    "lon": 3.4484486597293134
+  },
+  "dentergemstraat 50|9800|deinze": {
+   "lat": 50.9791752289202,
+   "level": "address",
+   "lon": 3.444123849137397
   },
   "dentergemstraat 50|9800|wontergem": {
    "lat": 50.979175139035576,
@@ -6547,6 +6557,11 @@
    "level": "address",
    "lon": 3.702651257656212
   },
+  "koningin fabiolapark 63|9820|merelbeke-melle": {
+   "lat": 51.00708494508344,
+   "level": "address",
+   "lon": 3.759124642432877
+  },
   "koningin fabiolapark 72|9820|merelbeke-melle": {
    "lat": 51.00752416624709,
    "level": "address",
@@ -6966,6 +6981,11 @@
    "lat": 50.91358693450737,
    "level": "address",
    "lon": 3.202067885854706
+  },
+  "krekelstraat 27|8870|izegem": {
+   "lat": 50.91608983384274,
+   "level": "address",
+   "lon": 3.2133478020812785
   },
   "krekelstraat 27|9800|deinze": {
    "lat": 50.971531085872336,
@@ -8470,6 +8490,11 @@
    "lat": 50.902533269677946,
    "level": "address",
    "lon": 3.589410671609818
+  },
+  "molenstraat 27|9550|herzele": {
+   "lat": 50.88030205302399,
+   "level": "address",
+   "lon": 3.90182630084784
   },
   "molenstraat 2a|9940|ertvelde": {
    "lat": 51.176578762687726,
@@ -11655,6 +11680,11 @@
    "lat": 51.04681543657089,
    "level": "address",
    "lon": 3.7332168422777032
+  },
+  "sint-antoniuskaai 17|9000|gent": {
+   "lat": 51.06000029254142,
+   "level": "address",
+   "lon": 3.71564727022175
   },
   "sint-baafsstraat 65|8000|brugge": {
    "lat": 51.1983566,

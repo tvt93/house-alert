@@ -10123,6 +10123,11 @@
    "level": "address",
    "lon": 3.3076222961827977
   },
+  "peter benoitlaan 50|9050|gentbrugge": {
+   "lat": 51.02988557367709,
+   "level": "address",
+   "lon": 3.7610148824955463
+  },
   "peter benoitlaan 58|8630|veurne": {
    "lat": 51.0702505656566,
    "level": "address",
@@ -10497,6 +10502,11 @@
    "level": "address",
    "lon": 3.752300616963917
   },
+  "prins leopoldstraat 32|9700|oudenaarde": {
+   "lat": 50.84814211750617,
+   "level": "address",
+   "lon": 3.611430853231048
+  },
   "prins roselaan 75|8400|oostende": {
    "lat": 51.2099018015148,
    "level": "address",
@@ -10578,6 +10588,11 @@
    "lat": 51.17128769310246,
    "level": "address",
    "lon": 4.161148401308129
+  },
+  "rabotstraat 81|9000|gent": {
+   "lat": 51.05904349738226,
+   "level": "address",
+   "lon": 3.713560474655773
   },
   "raf verhaeststraat 67|9050|gent gentbrugge": {
    "lat": 51.03385436210001,

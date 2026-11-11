@@ -6199,6 +6199,11 @@
    "level": "address",
    "lon": 3.7194444137475533
   },
+  "klaproosstraat 35|8800|roeselare": {
+   "lat": 50.947490281784916,
+   "level": "address",
+   "lon": 3.1486211835948565
+  },
   "kleempstraat 6|9300|aalst": {
    "level": "none"
   },

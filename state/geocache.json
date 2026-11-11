@@ -4860,6 +4860,11 @@
    "level": "address",
    "lon": 3.4354522871653272
   },
+  "holstraat 59|9000|gent": {
+   "lat": 51.05334963404778,
+   "level": "address",
+   "lon": 3.7145708845741434
+  },
   "holstraat 74|8790|waregem": {
    "lat": 50.883098712048465,
    "level": "address",
@@ -11730,6 +11735,11 @@
    "level": "address",
    "lon": 3.671506544892478
   },
+  "sint-dorotheastraat 60|9040|sint-amandsberg": {
+   "lat": 51.07068173399391,
+   "level": "address",
+   "lon": 3.7575665835456364
+  },
   "sint-elisabethplein 1/a|9000|gent": {
    "lat": 51.05703497167928,
    "level": "street",
@@ -13438,6 +13448,11 @@
    "lat": 50.910965522956275,
    "level": "address",
    "lon": 3.2152016508050463
+  },
+  "vlasgaardstraat 58|9000|gent": {
+   "lat": 51.056349071405144,
+   "level": "address",
+   "lon": 3.7006333403957012
   },
   "vlasgaardstraat 60|9000|gent": {
    "lat": 51.05613121684052,

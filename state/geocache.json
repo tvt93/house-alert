@@ -7998,6 +7998,11 @@
    "lat": 50.9007032,
    "lon": 3.1995902
   },
+  "marie de plothostraat 1|8540|deerlijk": {
+   "lat": 50.85534782021178,
+   "level": "address",
+   "lon": 3.367910527243583
+  },
   "markegemsesteenweg 131|8720|dentergem": {
    "lat": 50.95977156087658,
    "level": "address",
@@ -8768,6 +8773,11 @@
   },
   "murla 1|03792|murla": {
    "level": "none"
+  },
+  "muziekweg 5|9890|semmerzake": {
+   "lat": 50.944662261080104,
+   "level": "address",
+   "lon": 3.665455091192611
   },
   "nachtegaalstraat 4|8870|izegem": {
    "lat": 50.92734529212783,

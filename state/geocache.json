@@ -732,6 +732,11 @@
    "level": "street",
    "lon": 3.992301
   },
+  "beekstraat 6|9170|sint-pauwels": {
+   "lat": 51.19369561773037,
+   "level": "address",
+   "lon": 4.098150333545433
+  },
   "beekweg 20|8510|rollegem": {
    "lat": 50.765778413930896,
    "level": "address",
@@ -986,6 +991,11 @@
    "lat": 50.98821676828999,
    "level": "address",
    "lon": 3.838737017162106
+  },
+  "biezenstraat 26|9400|ninove": {
+   "lat": 50.83738003038712,
+   "level": "address",
+   "lon": 4.022419622388814
   },
   "biezenstraat 8|9810|nazareth": {
    "lat": 50.977334774013244,
@@ -1576,6 +1586,11 @@
    "lat": 51.1026962,
    "lon": 3.9998894
   },
+  "brugstraat 9|8720|oeselgem": {
+   "lat": 50.9347055004732,
+   "level": "address",
+   "lon": 3.4325769435731144
+  },
   "bruilofstraat 42|9050|gent": {
    "level": "none"
   },
@@ -2051,6 +2066,11 @@
    "lat": 51.18270787947107,
    "level": "address",
    "lon": 4.389438266178921
+  },
+  "d'uitseweg 5||erembodegem": {
+   "lat": 50.9185389,
+   "level": "address",
+   "lon": 4.0543954
   },
   "dadizelestraat 147|8930|menen": {
    "lat": 50.81503617568116,
@@ -3355,6 +3375,11 @@
    "level": "address",
    "lon": 3.8510012
   },
+  "ganzendries 213|9000|gent": {
+   "lat": 51.03430263596594,
+   "level": "address",
+   "lon": 3.7106327109459367
+  },
   "ganzeplas 49|9880|aalter": {
    "lat": 51.068779572419864,
    "level": "address",
@@ -3995,6 +4020,11 @@
    "lat": 50.82780520520377,
    "level": "address",
    "lon": 3.2647276298396566
+  },
+  "grote markt 53||kortrijk": {
+   "lat": 50.82780529642518,
+   "level": "address",
+   "lon": 3.2647277696512886
   },
   "grote markt 92|9060|zelzate": {
    "lat": 51.19936604930701,
@@ -5254,6 +5284,16 @@
    "level": "address",
    "lon": 3.1172185005155133
   },
+  "ieperstraat 137a|8830|hooglede": {
+   "lat": 50.965233698543166,
+   "level": "address",
+   "lon": 3.063001319186138
+  },
+  "ieperstraat 138|8930|menen": {
+   "lat": 50.79864028101725,
+   "level": "address",
+   "lon": 3.1126015469629875
+  },
   "ieperstraat 22a|8610|kortemark": {
    "lat": 51.023672367929734,
    "level": "address",
@@ -5548,6 +5588,11 @@
    "lat": 51.229052845105926,
    "level": "address",
    "lon": 2.9181258161261825
+  },
+  "jozef verhaeghestraat 13|8501|bissegem": {
+   "lat": 50.818931628415235,
+   "level": "address",
+   "lon": 3.22982081971588
   },
   "jozef vervaenestraat 20|9050|ledeberg": {
    "lat": 51.03252002906719,
@@ -6400,6 +6445,11 @@
    "level": "address",
    "lon": 3.3047674268319267
   },
+  "kokelarestraat 121|8870|izegem": {
+   "lat": 50.9104091962775,
+   "level": "address",
+   "lon": 3.186366461622453
+  },
   "kokerstraat 31|9000|gent": {
    "lat": 51.05755361755375,
    "level": "address",
@@ -6812,6 +6862,11 @@
    "level": "address",
    "lon": 3.7076668868960003
   },
+  "kortrijksestraat 22|8870|izegem": {
+   "lat": 50.91458325458277,
+   "level": "address",
+   "lon": 3.215566458611075
+  },
   "kortrijkseweg 131|8790|waregem": {
    "lat": 50.8796752,
    "lon": 3.3587276
@@ -7209,6 +7264,11 @@
    "lat": 51.03291498941949,
    "level": "address",
    "lon": 3.559091698641508
+  },
+  "landmansstraat 30|8800|roeselare": {
+   "lat": 50.894170098584326,
+   "level": "address",
+   "lon": 3.118827862377992
   },
   "landmansstraat 30|8800|roulers": {
    "lat": 50.8941543,
@@ -9877,6 +9937,11 @@
    "level": "address",
    "lon": 4.082200056126888
   },
+  "pannehoeve 46|3290|diest": {
+   "lat": 51.03850272641684,
+   "level": "address",
+   "lon": 5.100008901602981
+  },
   "papegaaistraat 70||gent": {
    "lat": 51.050795461498026,
    "level": "address",
@@ -10152,6 +10217,11 @@
    "lat": 51.07485393367207,
    "level": "address",
    "lon": 3.698258747334668
+  },
+  "petrus meirestraat 1|9030|mariakerke": {
+   "lat": 51.07834323452871,
+   "level": "address",
+   "lon": 3.675034881387594
   },
   "petrus van nuffelstraat 32|9300|aalst": {
    "lat": 50.94960196683869,
@@ -10735,6 +10805,11 @@
    "lat": 50.923700363234516,
    "level": "address",
    "lon": 4.0139572129829935
+  },
+  "reutelbekestraat 25|8940|geluwe": {
+   "lat": 50.8121505835802,
+   "level": "address",
+   "lon": 3.0802751851606085
   },
   "reynaertstraat 29e||wielsbeke": {
    "lat": 50.9128949761587,
@@ -11380,6 +11455,11 @@
    "lat": 51.010280758159276,
    "level": "address",
    "lon": 2.609006630073959
+  },
+  "saint-sauveurstraat 206|9600|ronse": {
+   "lat": 50.73466493337914,
+   "level": "address",
+   "lon": 3.5981816386251415
   },
   "saint-sauveurstraat 66|9600|renaix": {
    "lat": 50.73870637936028,
@@ -14385,6 +14465,11 @@
    "lat": 50.74907351502341,
    "level": "address",
    "lon": 3.5869627356670573
+  },
+  "zonnestraat 28|8930|menen": {
+   "lat": 50.79529573755232,
+   "level": "address",
+   "lon": 3.1087473948851763
   },
   "zonnestraat 42|9600|renaix": {
    "lat": 50.749584999150585,

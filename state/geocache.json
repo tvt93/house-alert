@@ -612,6 +612,11 @@
    "level": "address",
    "lon": 3.956709394607469
   },
+  "bavegemstraat 18|8552|moen": {
+   "lat": 50.76437278891942,
+   "level": "address",
+   "lon": 3.3862841810120905
+  },
   "bavikhoofsestraat 120|8710|wielsbeke": {
    "lat": 50.88746728113294,
    "level": "address",
@@ -3783,6 +3788,11 @@
    "lat": 50.74236381821909,
    "level": "address",
    "lon": 3.5944185918827714
+  },
+  "gontrode heirweg 183|9090|melle": {
+   "lat": 51.00125863299386,
+   "level": "address",
+   "lon": 3.785233959499195
   },
   "gontrode heirweg 44|9820|merelbeke": {
    "lat": 51.01758327006518,
@@ -9173,6 +9183,11 @@
    "lat": 51.062982334742216,
    "level": "address",
    "lon": 3.7017102032165194
+  },
+  "octaaf soudanstraat 16|9051|sint-denijs-westrem": {
+   "lat": 51.01978347092867,
+   "level": "address",
+   "lon": 3.67617455365354
   },
   "odiel spruyttestraat 18|8870|izegem": {
    "lat": 50.9101052527624,

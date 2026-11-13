@@ -425,6 +425,11 @@
    "level": "address",
    "lon": 4.023231887617436
   },
+  "asterstraat 12|9920|lievegem": {
+   "lat": 51.10562716038769,
+   "level": "address",
+   "lon": 3.6349601626787345
+  },
   "astridlaan 24|8792|desselgem": {
    "lat": 50.8861354915512,
    "level": "address",
@@ -2193,6 +2198,11 @@
   },
   "de haan molendreef 43|8421|de-haan": {
    "level": "none"
+  },
+  "de horeman 18|2370|arendonk": {
+   "lat": 51.32282078664137,
+   "level": "address",
+   "lon": 5.093635079669458
   },
   "de la haute cour 5|7620|jollain-merlin": {
    "level": "none"
@@ -4208,6 +4218,11 @@
    "lat": 50.89986629836286,
    "level": "address",
    "lon": 3.413731991553559
+  },
+  "gullegemsesteenweg 117|8501|bissegem": {
+   "lat": 50.827622152923,
+   "level": "address",
+   "lon": 3.2210862083336758
   },
   "gullegemsesteenweg 80|8501|bissegem": {
    "lat": 50.82616056056491,
@@ -7974,6 +7989,11 @@
    "lat": 51.3402241,
    "lon": 3.2325407
   },
+  "mageleinstraat 21|9000|gent": {
+   "lat": 51.052923464417816,
+   "level": "address",
+   "lon": 3.7247810467255698
+  },
   "mageleinstraat 28|9000|gent": {
    "lat": 51.053179195839455,
    "level": "address",
@@ -8625,6 +8645,11 @@
    "lat": 51.024200215898055,
    "level": "address",
    "lon": 3.1502570658361115
+  },
+  "molenpark 14|9930|zomergem": {
+   "lat": 51.11211314685808,
+   "level": "address",
+   "lon": 3.5571667848800357
   },
   "molenstraat 114|9800|deinze": {
    "lat": 50.96981195951201,
@@ -9538,6 +9563,11 @@
    "level": "address",
    "lon": 3.6011285052089126
   },
+  "open veld 4||kortrijk": {
+   "lat": 50.840175924570524,
+   "level": "address",
+   "lon": 3.2742288708569514
+  },
   "opperije 83|9700|ename": {
    "lat": 50.84662210370328,
    "level": "address",
@@ -10121,6 +10151,11 @@
    "lat": 51.127517224456916,
    "level": "street",
    "lon": 4.213510874622839
+  },
+  "pastoor de clerckstraat 10|3020|herent": {
+   "lat": 50.9015813944489,
+   "level": "address",
+   "lon": 4.626120483040967
   },
   "pastoor de nevestraat 2|9900|eeklo": {
    "lat": 51.18654069690725,
@@ -12869,6 +12904,11 @@
    "level": "address",
    "lon": 3.398227285255608
   },
+  "tempelhof 38|8000|brugge": {
+   "lat": 51.224260756716745,
+   "level": "address",
+   "lon": 3.203888830198106
+  },
   "tempeliersstraat 10|8780|oostrozebeke": {
    "lat": 50.91816768332291,
    "level": "address",
@@ -13348,6 +13388,11 @@
    "lat": 50.82632754006996,
    "level": "address",
    "lon": 3.27440081117815
+  },
+  "vekestraat 23|1982|zemst": {
+   "lat": 50.96355672430601,
+   "level": "address",
+   "lon": 4.4997229842540305
   },
   "veldbrugstraat 48|9060|zelzate": {
    "lat": 51.19469422858729,

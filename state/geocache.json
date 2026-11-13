@@ -210,6 +210,11 @@
    "level": "address",
    "lon": 4.039331183849639
   },
+  "albert sercustraat 10|8800|roeselare": {
+   "lat": 50.92819443280354,
+   "level": "address",
+   "lon": 3.153749214001295
+  },
   "albertstraat 10|2018|antwerpen": {
    "lat": 51.20562700297272,
    "level": "address",
@@ -281,6 +286,11 @@
    "lat": 50.85301695006682,
    "level": "address",
    "lon": 3.3095031810631665
+  },
+  "ankerslaan 25|9050|gentbrugge": {
+   "lat": 51.038611275354484,
+   "level": "address",
+   "lon": 3.749811836019505
   },
   "ankerstraat 81|9300|aalst": {
    "level": "none"
@@ -721,6 +731,11 @@
    "lat": 50.856952326177414,
    "level": "address",
    "lon": 3.319916020649469
+  },
+  "beekstraat 12|2140|antwerpen": {
+   "lat": 51.21852589227297,
+   "level": "address",
+   "lon": 4.436519947088557
   },
   "beekstraat 27|9940|wippelgem": {
    "lat": 51.140671097912374,
@@ -2454,6 +2469,11 @@
    "level": "address",
    "lon": 3.0537493317493167
   },
+  "dirk martensstraat 58|9300|aalst": {
+   "lat": 50.941502057488755,
+   "level": "address",
+   "lon": 4.032210775550015
+  },
   "distelbosstraat 1|8531|hulste": {
    "lat": 50.8776096283652,
    "level": "address",
@@ -2783,6 +2803,11 @@
    "level": "address",
    "lon": 3.6990255546069664
   },
+  "du roy de blicquylaan 45a/bus 001 45a/001|1933|zaventem": {
+   "lat": 50.84404872493074,
+   "level": "street",
+   "lon": 4.515352286900739
+  },
   "dubbelhofstraat 7|9111|sint-niklaas": {
    "lat": 51.1398132283034,
    "level": "address",
@@ -2992,6 +3017,11 @@
    "lat": 51.21415999669766,
    "level": "address",
    "lon": 2.9116951677074914
+  },
+  "elisabethlaan 7|8500|kortrijk": {
+   "lat": 50.83623,
+   "level": "address",
+   "lon": 3.2616902
   },
   "ellestraat 36|9680|maarkedal": {
    "lat": 50.81437085803279,
@@ -3967,6 +3997,11 @@
    "lat": 51.07056915833533,
    "level": "address",
    "lon": 3.4686822422581303
+  },
+  "grote heimelinkstraat 182|9100|sint-niklaas": {
+   "lat": 51.18219450094862,
+   "level": "address",
+   "lon": 4.162167075865646
   },
   "grote herreweg 129|9690|kluisbergen": {
    "lat": 50.772597793863454,
@@ -5220,6 +5255,11 @@
    "level": "address",
    "lon": 3.287441255516266
   },
+  "hundelgemsesteenweg 10 a|9820|merelbeke": {
+   "lat": 51.0269062,
+   "level": "address",
+   "lon": 3.7463569
+  },
   "hundelgemsesteenweg 156 2|9820|merelbeke-melle": {
    "lat": 50.99606523254843,
    "level": "street",
@@ -5618,6 +5658,11 @@
    "lat": 51.0263370925745,
    "level": "address",
    "lon": 3.750035476007507
+  },
+  "jules de saint-genoisstraat 147|9050|gentbrugge": {
+   "lat": 51.02719929174412,
+   "level": "address",
+   "lon": 3.7556500850794294
   },
   "jules de saint-genoisstraat 81|9050|gent gentbrugge": {
    "lat": 51.0293949,
@@ -6420,6 +6465,11 @@
    "level": "street",
    "lon": 3.6741999549860243
   },
+  "kluizenaarstraat 17|9000|gent": {
+   "lat": 51.06211391392019,
+   "level": "address",
+   "lon": 3.717187118837378
+  },
   "kluizendorpstraat 19|9940|evergem": {
    "lat": 51.154546567468145,
    "level": "address",
@@ -6626,6 +6676,11 @@
    "lat": 51.038771268816184,
    "level": "address",
    "lon": 3.702651257656212
+  },
+  "koningin fabiolalaan 90|9000|gent": {
+   "lat": 51.03914087523202,
+   "level": "address",
+   "lon": 3.7009606752431816
   },
   "koningin fabiolapark 63|9820|merelbeke-melle": {
    "lat": 51.00708494508344,
@@ -7041,6 +7096,11 @@
    "lat": 50.88336695086843,
    "level": "address",
    "lon": 3.4633607931988766
+  },
+  "kreekstraat 7/a|9060|zelzate": {
+   "lat": 51.203998440721065,
+   "level": "street",
+   "lon": 3.8186768372513082
   },
   "krekelmotestraat 32|8870|izegem": {
    "lat": 50.920239299453534,
@@ -7504,10 +7564,20 @@
    "level": "address",
    "lon": 3.195413424671339
   },
+  "lendedreef 81|8570|vichte": {
+   "lat": 50.83774608811609,
+   "level": "address",
+   "lon": 3.3881282354670494
+  },
   "lendeleedsestraat 2|8870|izegem": {
    "lat": 50.91582057466378,
    "level": "address",
    "lon": 3.223497379669276
+  },
+  "lenniksebaan 958|1070|anderlecht": {
+   "lat": 50.816345100835285,
+   "level": "address",
+   "lon": 4.258692056634701
   },
   "leo de béthunelaan 74|9300|aalst": {
    "lat": 50.93080264520016,
@@ -8272,6 +8342,11 @@
    "level": "address",
    "lon": 3.700868892536818
   },
+  "meiweg 6|8930|menen": {
+   "lat": 50.80583838516432,
+   "level": "address",
+   "lon": 3.1194152859137443
+  },
   "melkerij 6|9970|kaprijke": {
    "lat": 51.217465612753635,
    "level": "address",
@@ -8752,6 +8827,11 @@
    "lat": 50.992053347928234,
    "level": "address",
    "lon": 3.6058370166085543
+  },
+  "moststraat 10|8840|oostnieuwkerke": {
+   "lat": 50.94119008308904,
+   "level": "address",
+   "lon": 3.077704563716952
   },
   "motestraat 13|8530|harelbeke": {
    "lat": 50.83942096971644,
@@ -10193,6 +10273,11 @@
    "level": "address",
    "lon": 3.23115151943783
   },
+  "peperstraat 90||wetteren": {
+   "lat": 51.007581067108994,
+   "level": "address",
+   "lon": 3.8724961757767544
+  },
   "perkamentstraat 9||gent": {
    "lat": 51.055900305248535,
    "level": "address",
@@ -11629,6 +11714,11 @@
    "level": "address",
    "lon": 3.4015528627294094
   },
+  "schoenmakersstraat 10|9041|oostakker": {
+   "lat": 51.079400303557705,
+   "level": "address",
+   "lon": 3.763034813351537
+  },
   "schoolstraat 11|9810|nazareth-de": {
    "lat": 50.9490407,
    "lon": 3.5646765
@@ -11897,6 +11987,11 @@
   "sint-hilariusstraat 6|8930|menen": {
    "lat": 50.7888267,
    "lon": 3.1258696
+  },
+  "sint-hubrechtsstraat 23|8800|roeselare": {
+   "lat": 50.94834686614218,
+   "level": "address",
+   "lon": 3.1323672565823446
   },
   "sint-idesbaldusstraat 10|8630|veurne": {
    "lat": 51.07715438292744,
@@ -12272,6 +12367,11 @@
    "lat": 51.07931226480542,
    "level": "address",
    "lon": 3.7128991000342415
+  },
+  "sportlaan 22|8810|lichtervelde": {
+   "lat": 51.028862576157316,
+   "level": "address",
+   "lon": 3.131842251667277
   },
   "sportstraat 76|9000|gent": {
    "lat": 51.0423012032132,
@@ -13299,6 +13399,11 @@
    "level": "address",
    "lon": 3.2873687215362857
   },
+  "verbindingsstraat 101|1800|vilvoorde": {
+   "lat": 50.94019380453533,
+   "level": "address",
+   "lon": 4.436536467096672
+  },
   "verbindingsstraat 44|9060|zelzate": {
    "lat": 51.19665947958809,
    "level": "address",
@@ -14151,6 +14256,11 @@
    "lat": 51.060915299466444,
    "level": "address",
    "lon": 2.901589055232245
+  },
+  "wijngaardstraat 13|2800|mechelen": {
+   "lat": 51.015018833827924,
+   "level": "address",
+   "lon": 4.470642682483171
   },
   "wijngaardstraat 6|8500|kortrijk": {
    "lat": 50.82570066569485,

@@ -1324,6 +1324,11 @@
    "level": "address",
    "lon": 3.7200417693648933
   },
+  "brankardierstraat 2|9000|gent": {
+   "lat": 51.05137472234701,
+   "level": "address",
+   "lon": 3.705005559962475
+  },
   "bredestraat 42||wanzele": {
    "lat": 50.9759552,
    "lon": 3.9541687
@@ -5589,6 +5594,11 @@
    "lat": 50.92953057720469,
    "level": "address",
    "lon": 3.164580956163047
+  },
+  "johannes schrantstraat 102|9000|gent": {
+   "lat": 51.05435971243346,
+   "level": "address",
+   "lon": 3.701326935898574
   },
   "johannes schrantstraat 1|9000|gent": {
    "lat": 51.0541173376021,

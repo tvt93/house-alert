@@ -2249,6 +2249,11 @@
    "level": "address",
    "lon": 3.324871117327492
   },
+  "de vierschaar 2|8860|lendelede": {
+   "lat": 50.88475206482119,
+   "level": "address",
+   "lon": 3.2316430440352257
+  },
   "de volderstraat 44|9800|deinze": {
    "lat": 50.97867359178339,
    "level": "address",
@@ -6756,6 +6761,11 @@
    "lat": 51.11900145417679,
    "level": "address",
    "lon": 2.63275059226203
+  },
+  "koninklijke baan 194|8670|koksijde": {
+   "lat": 51.11898575128416,
+   "level": "address",
+   "lon": 2.631799586991129
   },
   "koninklijke baan 66|8670|koksijde": {
    "lat": 51.12177962140089,

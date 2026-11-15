@@ -11110,6 +11110,11 @@
    "level": "address",
    "lon": 3.1923566783135815
   },
+  "robert de preesterstraat 73|9700|oudenaarde welden": {
+   "lat": 50.86544248369566,
+   "level": "street",
+   "lon": 3.635010057162083
+  },
   "robert orlentpromenade 11|8620|nieuwpoort": {
    "lat": 51.137716899388444,
    "level": "address",

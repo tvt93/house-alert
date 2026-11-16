@@ -4562,6 +4562,11 @@
    "level": "address",
    "lon": 3.705208702800509
   },
+  "heilig hartlaan 49|9300|aalst": {
+   "lat": 50.94932566444907,
+   "level": "address",
+   "lon": 4.044550269986925
+  },
   "heilig-hartstraat 12|9040|sint-amandsberg": {
    "lat": 51.05382489672537,
    "level": "address",
@@ -4909,6 +4914,11 @@
    "lat": 51.04705185323546,
    "level": "address",
    "lon": 3.7293919267641042
+  },
+  "hoge heerweg 14b|9100|sint-niklaas": {
+   "lat": 51.146408998239984,
+   "level": "address",
+   "lon": 4.176959452770797
   },
   "hogeheerweg 20|9051|sint-denijs-westrem": {
    "lat": 51.02142259086388,
@@ -5576,6 +5586,11 @@
    "level": "address",
    "lon": 3.747857787176782
   },
+  "jean béthunestraat 88|9040|sint-amandsberg": {
+   "lat": 51.0530752599053,
+   "level": "address",
+   "lon": 3.7484211374290397
+  },
   "jean-baptiste de ghellincklaan 0|9051|sint-denijs-westrem": {
    "lat": 51.02225082318271,
    "level": "street",
@@ -6072,6 +6087,16 @@
    "lat": 50.85959424418532,
    "level": "address",
    "lon": 3.2714994169530436
+  },
+  "kattestraat 38|9300|aalst": {
+   "lat": 50.93989882355567,
+   "level": "address",
+   "lon": 4.0368095438552105
+  },
+  "kattestraat 61|9300|aalst": {
+   "lat": 50.94021222378473,
+   "level": "address",
+   "lon": 4.036693081870618
   },
   "kauwekijnstraat 4|8900|ieper": {
    "lat": 50.85289186102167,
@@ -7896,6 +7921,11 @@
    "level": "address",
    "lon": 3.714031718978338
   },
+  "lostraat 74||gent": {
+   "lat": 51.03809254231291,
+   "level": "address",
+   "lon": 3.7130686381550655
+  },
   "louche 36|7850|edingen": {
    "lat": 50.6793557,
    "level": "address",
@@ -7954,6 +7984,11 @@
    "lat": 51.02287794632921,
    "level": "address",
    "lon": 3.6763199705303133
+  },
+  "luikersteenweg 244d|3500|hasselt": {
+   "lat": 50.91353059123816,
+   "level": "address",
+   "lon": 5.350880718639804
   },
   "luipaardstraat 38|8550|zwevegem": {
    "lat": 50.8165584169616,
@@ -8964,6 +8999,11 @@
    "level": "address",
    "lon": 3.622595300841665
   },
+  "nederholbeekstraat 65|9680|maarkedal": {
+   "lat": 50.806065820342035,
+   "level": "address",
+   "lon": 3.622595441280918
+  },
   "nederkouter 121|9000|gent": {
    "lat": 51.046863353594155,
    "level": "address",
@@ -9445,6 +9485,11 @@
    "lat": 51.0579061,
    "level": "address",
    "lon": 3.7009926
+  },
+  "oordegemsesteenweg 19||wetteren": {
+   "lat": 51.000945878216264,
+   "level": "address",
+   "lon": 3.885249920939501
   },
   "oordegemsesteenweg 28||wetteren": {
    "lat": 51.00125265823905,
@@ -10196,6 +10241,11 @@
    "lat": 51.18654069690725,
    "level": "address",
    "lon": 3.5625324170544177
+  },
+  "pastoor de nevestraat 8|9900|eeklo": {
+   "lat": 51.18665266059108,
+   "level": "address",
+   "lon": 3.562684820224172
   },
   "pastoriekouter 19|8501|bissegem": {
    "lat": 50.8209048100756,
@@ -11602,6 +11652,11 @@
    "level": "address",
    "lon": 3.1376141175575385
   },
+  "rumbeeksesteenweg 404|8800|rumbeke": {
+   "lat": 50.93464758296114,
+   "level": "address",
+   "lon": 3.147834981709103
+  },
   "rumbeeksesteenweg 406|8800|rumbeke": {
    "lat": 50.93458719764855,
    "level": "address",
@@ -11986,6 +12041,11 @@
    "level": "address",
    "lon": 3.2007892
   },
+  "sint-baafsstraat 65|8200|sint-andries": {
+   "lat": 51.19836874449671,
+   "level": "address",
+   "lon": 3.2007974468506455
+  },
   "sint-bavostraat 1|8710|sint-baafs-vijve": {
    "lat": 50.9093532,
    "level": "street",
@@ -12203,6 +12263,11 @@
    "lat": 50.935345719836,
    "level": "address",
    "lon": 3.1543736893844234
+  },
+  "sint-petrus en paulusstraat 32|8800|roeselare": {
+   "lat": 50.935671356312085,
+   "level": "address",
+   "lon": 3.1542171498005387
   },
   "sint-pietershofstraat 68|9070|destelbergen": {
    "lat": 51.0598561243594,
@@ -12776,6 +12841,11 @@
    "level": "address",
    "lon": 3.3281384351212293
   },
+  "steenovenstraat 19b|8760|tielt": {
+   "lat": 50.96095017216696,
+   "level": "address",
+   "lon": 3.3281384331277746
+  },
   "steenovenstraat 26|8520|kuurne": {
    "lat": 50.856397759003684,
    "level": "address",
@@ -12862,6 +12932,11 @@
    "lat": 50.83141452160216,
    "level": "street",
    "lon": 3.304771425948084
+  },
+  "stijn streuvelsstraat 1|9600|ronse": {
+   "lat": 50.752270144085024,
+   "level": "address",
+   "lon": 3.6260457757579267
   },
   "stijn streuvelsstraat 7|8570|anzegem": {
    "lat": 50.81696270186619,
@@ -13121,6 +13196,11 @@
    "lat": 50.781270798958325,
    "level": "address",
    "lon": 3.047723059825293
+  },
+  "toekomststraat 1|8940|wervik": {
+   "lat": 50.78148227758239,
+   "level": "address",
+   "lon": 3.0479630418952133
   },
   "toekomststraat 2|9890|gavere": {
    "lat": 50.91327132591109,

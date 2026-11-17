@@ -543,6 +543,11 @@
    "level": "address",
    "lon": 4.064036122008693
   },
+  "balei 25||sint-lievens-houtem": {
+   "lat": 50.918771109863066,
+   "level": "address",
+   "lon": 3.8765486855968843
+  },
   "baljuwstraat 12|8720|dentergem": {
    "lat": 50.96494339971452,
    "level": "address",
@@ -5606,6 +5611,11 @@
    "level": "address",
    "lon": 3.5932980718395355
   },
+  "jan van rijswijcklaan 125|2018|antwerpen": {
+   "lat": 51.195277320754364,
+   "level": "address",
+   "lon": 4.404449267176756
+  },
   "jan zonder vreesstraat 15|9000|gent": {
    "lat": 51.03690515824328,
    "level": "address",
@@ -8019,6 +8029,11 @@
    "lat": 50.827678155420315,
    "level": "address",
    "lon": 4.364051169431331
+  },
+  "loveld 3|9270|laarne": {
+   "lat": 51.031450718551824,
+   "level": "address",
+   "lon": 3.8285400849829747
   },
   "lucas munichstraat 104|9000|gent": {
    "lat": 51.05565277558658,

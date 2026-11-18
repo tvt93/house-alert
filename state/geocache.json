@@ -1532,6 +1532,11 @@
    "level": "address",
    "lon": 3.6824299653802366
   },
+  "brugsesteenweg 469|8520|kuurne": {
+   "lat": 50.87158631798098,
+   "level": "address",
+   "lon": 3.271238404402809
+  },
   "brugsesteenweg 477|8520|kuurne": {
    "lat": 50.87230047017804,
    "level": "address",
@@ -10413,6 +10418,11 @@
   },
   "pedreguer 1|03750|denia": {
    "level": "none"
+  },
+  "peerstraat 184|9000|gent": {
+   "lat": 51.06441989362398,
+   "level": "address",
+   "lon": 3.6905170311772126
   },
   "peeshoek 18|9790|elsegem": {
    "lat": 50.8220115516998,

@@ -235,6 +235,11 @@
    "level": "address",
    "lon": 3.593924031315185
   },
+  "alfons dessenislaan 2|9830|sint-martens-latem": {
+   "lat": 50.999672078023416,
+   "level": "address",
+   "lon": 3.630244978781907
+  },
   "alhama de murcia 4|30849|alhama de murcia": {
    "level": "none"
   },
@@ -3991,6 +3996,11 @@
    "lat": 51.13078472881081,
    "level": "address",
    "lon": 2.7100870825987573
+  },
+  "groene dreef 1|9830|sint-martens-latem": {
+   "lat": 51.022550077594026,
+   "level": "address",
+   "lon": 3.6209322649326143
   },
   "groene-herdersgoed 3|8800|rumbeke": {
    "lat": 50.93660876160221,
@@ -9281,6 +9291,11 @@
    "level": "street",
    "lon": 3.281544634332366
   },
+  "nieuwstraat 34||wetteren": {
+   "lat": 51.002799346586286,
+   "level": "address",
+   "lon": 3.8807713821933394
+  },
   "nieuwstraat 45|8792|desselgem": {
    "lat": 50.88764303290178,
    "level": "address",
@@ -13000,6 +13015,11 @@
    "lat": 51.21484877587442,
    "level": "address",
    "lon": 2.9384027117481026
+  },
+  "steenstraat 1|9820|merelbeke": {
+   "lat": 50.97548620395591,
+   "level": "address",
+   "lon": 3.7699835608360255
   },
   "steenstraat 2|1570|vollezele": {
    "lat": 50.76269280409082,

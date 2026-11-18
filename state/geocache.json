@@ -1697,6 +1697,11 @@
    "level": "address",
    "lon": 3.7853658319374905
   },
+  "brusselsesteenweg 194|9230|wetteren": {
+   "lat": 50.98723383278695,
+   "level": "address",
+   "lon": 3.838289090555519
+  },
   "brusselsesteenweg 252||lebbeke": {
    "lat": 50.98283844092445,
    "level": "address",
@@ -2409,6 +2414,11 @@
    "level": "address",
    "lon": 3.7526944280704932
   },
+  "dendermondsesteenweg 422|9040|sint-amandsberg": {
+   "lat": 51.051769697878804,
+   "level": "address",
+   "lon": 3.7558729415232346
+  },
   "dendermondsesteenweg 82|9000|gent": {
    "lat": 51.05479247016045,
    "level": "address",
@@ -2574,6 +2584,11 @@
    "level": "address",
    "lon": 4.245992920770888
   },
+  "doolaegepark 8|9070|heusden": {
+   "lat": 51.04060808186809,
+   "level": "address",
+   "lon": 3.7957349764675623
+  },
   "doornakkerstraat 25|9040|sint-amandsberg": {
    "lat": 51.05448291228101,
    "level": "address",
@@ -2693,6 +2708,11 @@
    "lat": 50.93298126352799,
    "level": "address",
    "lon": 3.0125254309095224
+  },
+  "dorpsstraat 127|9190|stekene": {
+   "lat": 51.201900004429476,
+   "level": "address",
+   "lon": 4.036705940100911
   },
   "dorpsstraat 17|9052|gent": {
    "lat": 51.00085403200703,
@@ -2847,6 +2867,11 @@
    "lat": 50.7729564179362,
    "level": "address",
    "lon": 3.1710684285963593
+  },
+  "dronckaertstraat 402|8930|lauwe": {
+   "lat": 50.787388794204915,
+   "level": "address",
+   "lon": 3.196131365217681
   },
   "dronckaertstraat 577|8930|lauwe": {
    "lat": 50.79388889206224,
@@ -8492,6 +8517,11 @@
    "level": "address",
    "lon": 2.593131316924679
   },
+  "meidoornlaan 53|9230|wetteren": {
+   "lat": 50.99221280805966,
+   "level": "address",
+   "lon": 3.8816568989599616
+  },
   "meikeverlaan 19|9032|wondelgem": {
    "lat": 51.0789034635372,
    "level": "address",
@@ -9225,6 +9255,11 @@
    "lat": 50.88843337779952,
    "level": "address",
    "lon": 3.357857010281616
+  },
+  "nieuwstraat 138|8792|waregem": {
+   "lat": 50.88843346768525,
+   "level": "address",
+   "lon": 3.357857008348116
   },
   "nieuwstraat 14/a|9100|sint-niklaas": {
    "lat": 51.163349,
@@ -13909,6 +13944,11 @@
    "lat": 51.09789551479674,
    "level": "address",
    "lon": 3.765878245860283
+  },
+  "vlaamsekaai 89|9000|gent": {
+   "lat": 51.04503177753526,
+   "level": "address",
+   "lon": 3.7428964894066135
   },
   "vlaanderenlaan 60|8530|harelbeke": {
    "lat": 50.84301400366043,

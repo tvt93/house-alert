@@ -21,7 +21,7 @@ subscription. Python, no services, no database; the state is JSON files in git.
 | `state/listings.json` | the parsed listings of the last 180 days, with coordinates |
 | `state/geocache.json` | Nominatim answers, including misses, so nothing is asked twice |
 | `docs/` | the Pages site: `index.html` (static app) + `listings.json` (exported each run) |
-| `platforms/` | discovery: which URLs on a site are listing detail pages; a platform may also own parsing and status reading (`engelvoelkers.py` reads a Next.js data blob) |
+| `platforms/` | discovery: which URLs on a site are listing detail pages; a platform may also own parsing and status reading (`engelvoelkers.py` reads a Next.js data blob; `foundbaker.py` reads the paged catalogue cards and the hero block) |
 | `extract.py` | one detail page → a `Listing`; JSON-LD first, Dutch heuristics second |
 | `geo.py` | street → Nominatim point; else postcode / city centroid from bundled table |
 | `filters.py` | `Listing` + `Criteria` → keep or reject, with a reason |

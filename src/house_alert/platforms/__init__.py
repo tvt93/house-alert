@@ -19,6 +19,7 @@ from urllib.parse import parse_qs, urlparse
 from ..models import Agency
 from .base import GenericScraper
 from .engelvoelkers import EngelVoelkersScraper
+from .foundbaker import FoundBakerScraper
 
 
 class WhiseScraper(GenericScraper):
@@ -75,6 +76,7 @@ SCRAPERS: dict[str, type[GenericScraper]] = {
     OmnicasaScraper.name: OmnicasaScraper,
     SkarabeeScraper.name: SkarabeeScraper,
     EngelVoelkersScraper.name: EngelVoelkersScraper,
+    FoundBakerScraper.name: FoundBakerScraper,
 }
 
 

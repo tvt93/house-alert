@@ -134,3 +134,6 @@ agencies:
   # ------------------------------------------------- added Nov 2026 (user list)
   - { name: Infinimo,                 url: "https://www.infinimo.be", platform: omnicasa }
   - { name: i-moov,                   url: "https://www.i-moov.be", platform: skarabee }
+  # nationwide, one Drupal site: the catalogue is /nl/te-koop (paged), read
+  # card by card because half the detail pages sit at /nl/<slug>.
+  - { name: "Found & Baker",            url: "https://www.found-baker.com", platform: foundbaker, postcodes: ["8", "9"] }

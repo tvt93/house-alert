@@ -196,6 +196,11 @@
    "level": "address",
    "lon": 2.6704040625422163
   },
+  "albert i promenade 25|8400|oostende": {
+   "lat": 51.2351216,
+   "level": "address",
+   "lon": 2.9174554
+  },
   "albert i-laan 173j|8620|nieuwpoort": {
    "lat": 51.1493419,
    "lon": 2.7186706
@@ -12346,6 +12351,11 @@
    "level": "address",
    "lon": 4.217151897903283
   },
+  "scheldeweg 61|9090|merelbeke-melle": {
+   "lat": 50.98414530144027,
+   "level": "address",
+   "lon": 3.7864066447138787
+  },
   "schelleakker 82|2620|hemiksem": {
    "lat": 51.14069433070043,
    "level": "address",
@@ -14490,6 +14500,11 @@
    "lat": 51.064258604358464,
    "level": "address",
    "lon": 3.7126038891121214
+  },
+  "vogelhoekstraat 29|9050|gentbrugge": {
+   "lat": 51.02565596793848,
+   "level": "address",
+   "lon": 3.767862207089182
   },
   "vogelweelde 1|8950|heuvelland": {
    "lat": 50.745892946140444,

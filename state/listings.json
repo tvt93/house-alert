@@ -77,6 +77,31 @@
    "id": "f549388a7474cced"
   },
   {
+   "url": "https://www.immostad.com/nl/aanbod/4493471-17552-karaktervolle-woning-met-4-slaapkamers-garage-en-tuin-op-438-m2-ref17552",
+   "source": "Immostad",
+   "title": "Karaktervolle woning met 4 slaapkamers, garage en tuin op 438 m². (Ref.17552)",
+   "city": "",
+   "postal_code": "",
+   "street": "",
+   "price": null,
+   "property_type": "house",
+   "bedrooms": 4,
+   "living_area_m2": 438,
+   "plot_area_m2": 438,
+   "epc_kwh": 800,
+   "image_url": "https://www.immostad.com/img/property/895bf51813788a04844a9636da927dd5fe25f1ae282c0c019248fcca6a56da3d.jpg?q=80&fm=jpg&s=d38a47e917d9f3257ad571b10e9d22a6",
+   "description": "",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": null,
+   "lon": null,
+   "geo": "",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "efe35c3febc039b1"
+  },
+  {
    "url": "https://www.i-moov.be/nl/aanbod/7712307/kopen-grond-lievegem",
    "source": "i-moov",
    "title": "Grond te koop - Verkortingsweg 66, 9920 Lievegem",
@@ -302,6 +327,31 @@
    "id": "cc0227486be04e70"
   },
   {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7921505/te-koop-commercieel-liv-de-molens-uw-handelszaak-in-het-hartje-van-deinze",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7921505 | Liv-De Mol...",
+   "city": "Deinze",
+   "postal_code": "9800",
+   "street": "Tolpoortstraat 40",
+   "price": 229000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 78,
+   "epc_kwh": null,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7921505/640/9b2d5f19f117464b8f81e1f73cf3d445.jpg",
+   "description": "7921505 | Tolpoortstraat 40, 9800 Deinze, België | Ligging\"Liv- De Molens\" is een residentieel woonproject, gelegen langs de Leie en midden in een groot park te Deinze. Ont...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 50.980100777930794,
+   "lon": 3.529926202854661,
+   "geo": "street",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "cb471ff2dab1372e"
+  },
+  {
    "url": "https://www.i-moov.be/nl/aanbod/7712322/kopen-herenhuis-woning-gent",
    "source": "i-moov",
    "title": "Herenhuis te koop - Kasteellaan 297, 9000 Gent",
@@ -350,6 +400,56 @@
    "checked": "2026-11-20",
    "mailed": true,
    "id": "c94648d1681a5bbf"
+  },
+  {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7930618/te-koop-commercieel-handelsruimte-met-vast-rendement-in-het-centrum-van-gent",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7930618 | Handelsrui...",
+   "city": "Gent",
+   "postal_code": "9000",
+   "street": "Sint-Michielsstraat 13/A",
+   "price": 450000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": null,
+   "epc_kwh": null,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7930618/640/7ddfd54b73804bfb91c5e2c74a29073a.jpg",
+   "description": "7930618 | Sint-Michielsstraat 13/A, 9000 Gent, België | LiggingDe handelsruimte maakt deel uit van de residentie \"Collegehof\" en is gelegen in de Sint Michielsstraat te Gent.",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.053933777670366,
+   "lon": 3.7180516840972615,
+   "geo": "street",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "c26141e4a596dc4d"
+  },
+  {
+   "url": "https://vastgoeddevos.be/huis/te-koop/grammene-9800/oude-heirbaan-10-hlvmp",
+   "source": "Vastgoed De Vos",
+   "title": "Huis te koop in Grammene | Vastgoed De Vos",
+   "city": "Grammene",
+   "postal_code": "9800",
+   "street": "Oude Heirbaan 10",
+   "price": null,
+   "property_type": "house",
+   "bedrooms": null,
+   "living_area_m2": 150,
+   "plot_area_m2": null,
+   "epc_kwh": null,
+   "image_url": "https://hubr.fra1.cdn.digitaloceanspaces.com/production-hubr-group/estate-manager/51714/conversions/Z3M6Ly9tYXNvbi1wcm9kdWN0aW9uLXVwbG9hZHMvcHJvZHVjdGlvbi9hcHAvbW9kZWxzL2RvY3VtZW50LzE2MDg3MTcvcGljdHVyZV82NjE4NzMzXzY1MjAxODQ1LmpwZw-large.jpg",
+   "description": "In Grammene bevindt zich deze halfopen bebouwing op een perceel van 479 m².Met verschillende invalswegen en het centrum van Deinze en de nodige voorzieningen op",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 50.97888946409625,
+   "lon": 3.474174401955231,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "bd3a3928de76c4e8"
   },
   {
    "url": "https://www.bordes.be/panden/4484273-rustig-gelegen-bungalow-met-dubbele-garage-aan-de-velden-van-gontrode",
@@ -527,6 +627,56 @@
    "id": "adc4693db99e9d34"
   },
   {
+   "url": "https://www.dewaele.com/nl/te-koop/8400-oostende/appartement/fantastisch-gelegen-appartement-met-2-aangename-terrassen-d8400-26153-269313",
+   "source": "Dewaele",
+   "title": "Appartement te koop in Oostende",
+   "city": "Oostende",
+   "postal_code": "8400",
+   "street": "Koningsstraat 94",
+   "price": 430000,
+   "property_type": "apartment",
+   "bedrooms": 2,
+   "living_area_m2": 88,
+   "plot_area_m2": null,
+   "epc_kwh": 72,
+   "image_url": "https://s3.eu-central-1.amazonaws.com/iam-property-pictures-02/b66c493e-0653-4faa-b339-581d603e72db/thumbnail3451175.jpg",
+   "description": "2 slaapkamers • 88.0 m² • Contacteer Dewaele voor meer info.",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.2280475,
+   "lon": 2.908451,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "acbbc6846ef2ebb8"
+  },
+  {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7939558/te-koop-commercieel-perfect-gelegen-in-het-hart-van-oudenaarde",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7939558 | Perfect ge...",
+   "city": "Oudenaarde",
+   "postal_code": "9700",
+   "street": "Woeker 10",
+   "price": 419000,
+   "property_type": "commercial",
+   "bedrooms": 3,
+   "living_area_m2": null,
+   "plot_area_m2": null,
+   "epc_kwh": 30,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7939558/640/4317b72051c049d3bddc23d58ecfae00.jpg",
+   "description": "7939558 | Woeker 10, 9700 Oudenaarde, België | LiggingTrevo4 bevindt zich op een unieke locatie aan het Liedtspark en het cultureel centrum De Woeker, in het levendige...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 50.84532920742292,
+   "lon": 3.60594124211217,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "ab407f3d46ad09ff"
+  },
+  {
    "url": "https://www.dewaele.com/nl/te-koop/8560-moorsele/bedrijfsvastgoed/handelspand-met-woonst-te-koop-in-het-centrum-van-moorsele-t8500-26147-138927",
    "source": "Dewaele",
    "title": "Handelspand met woonst te koop in Moorsele",
@@ -627,6 +777,31 @@
    "id": "9ab4fd89a0a12e1c"
   },
   {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7937755/te-koop-commercieel-te-renoveren-handelsruimte-met-garage-in-centrum-heusden",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7937755 | Te renover...",
+   "city": "Destelbergen",
+   "postal_code": "9070",
+   "street": "Tramstraat 32/0001",
+   "price": 199000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 115,
+   "epc_kwh": 833,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7937755/640/7c619556b89746b9abadaa5054002884.jpg",
+   "description": "7937755 | Tramstraat  32/0001, 9070 Destelbergen, België | LIGGING\nGelegen in de Tramstraat, één van de hoofdstraten van Heusden, geniet dit handelspand van een zichtbare en strategische...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.03029155159478,
+   "lon": 3.801664040298122,
+   "geo": "street",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "9706db5a998c50f4"
+  },
+  {
    "url": "https://www.found-baker.com/nl/te-koop/charmant-herenhuis",
    "source": "Found & Baker",
    "title": "Charmant herenhuis",
@@ -652,6 +827,31 @@
    "id": "96fd6fd53976455a"
   },
   {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7920133/te-koop-commercieel-te-koop-de-verloren-hoet-unieke-kans-te-hansbeke",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7920133 | Te koop: D...",
+   "city": "Deinze",
+   "postal_code": "9850",
+   "street": "Hansbekedorp 40",
+   "price": 395000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 640,
+   "epc_kwh": 485,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7920133/640/1feb52f115854f9cb59d960155387f02.jpg",
+   "description": "7920133 | Hansbekedorp 40, 9850 Deinze, België | Te koop: karaktervol handelspand/restaurant in hartje Hansbeke – Hansbekedorp 40\nUnieke vastgoedkans in het centrum van Hansb...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.07580156913724,
+   "lon": 3.5356318084973024,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "93130c4966cd3e63"
+  },
+  {
    "url": "https://www.fundament.be/nl/aanbod/4519641/woning-te-koop-in-8930-lauwe",
    "source": "Fundament",
    "title": "Volledig te renoveren rijwoning met zuidgerichte tuin en uitweg",
@@ -675,6 +875,56 @@
    "checked": "2026-11-20",
    "mailed": true,
    "id": "8d8a9491ceb268a6"
+  },
+  {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7921504/te-koop-commercieel-handelsruimte-met-centrale-ligging-te-sint-martens-latem",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7921504 | Handelsrui...",
+   "city": "Sint-Martens-Latem",
+   "postal_code": "9830",
+   "street": "Kortrijksesteenweg 139",
+   "price": 5000000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": 1296,
+   "plot_area_m2": null,
+   "epc_kwh": null,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7921504/640/44b4a71b3e664f089765deb1ed7f7cb6.jpg",
+   "description": "7921504 | Kortrijksesteenweg  139, 9830 Sint-Martens-Latem, België | Deze handelsruimte maakt deel uit van het prestigieuze project Gouwy en geniet van een centrale ligging in Sint-Martens-Latem, een gemeente die bekend...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.01036123512152,
+   "lon": 3.6377221106702837,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "8b654eaa00caa280"
+  },
+  {
+   "url": "https://www.vastgoedkantoordevriese.be/te-koop-benedenwoning-appartement-gullegem/details-pand/7712715",
+   "source": "Vastgoedkantoor Devriese",
+   "title": "Benedenwoning te koop - Bissegemstraat 21, 8560 Gullegem",
+   "city": "Gullegem",
+   "postal_code": "8560",
+   "street": "Bissegemstraat 21",
+   "price": 239000,
+   "property_type": "commercial",
+   "bedrooms": 2,
+   "living_area_m2": 100,
+   "plot_area_m2": null,
+   "epc_kwh": null,
+   "image_url": "https://skarabeecmsfilestore.cdn.360.zabun.be/Public/FileStore.ashx?noError=true&reference=255177036210026153190080189127117087122103072189&width=1200&height=630&watermark=243206093140252088129210112209223071051150218058",
+   "description": "Op zoek naar comfortabel wonen op een uitstekende locatie? Dit ruime en lichtrijke gelijkvloerse appartement bevindt zich pal in het centrum van Gullegem, op wandelafstand van winkels, horeca en andere dagelijkse voorzieningen.Met een totale bewoonba",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 50.84248385900302,
+   "lon": 3.2055905165579204,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "8ad472bf916026c6"
   },
   {
    "url": "https://www.i-moov.be/nl/aanbod/7712285/kopen-woning-merelbeke-melle",
@@ -777,6 +1027,31 @@
    "id": "7d4b832a2b501f5f"
   },
   {
+   "url": "https://kleyo.be/te-koop/2800-Mechelen/instapklare-open-bebouwing-met-vier-slaapkamers-en-garage-te-koop-in-mechelen/c918c340-5c4d-4738-9d18-c68ae2db5dad",
+   "source": "Kleyo",
+   "title": "Instapklare open bebouwing met vier slaapkamers en garage te koop in…",
+   "city": "Mechelen",
+   "postal_code": "2800",
+   "street": "Zwartkloosterstraat 1",
+   "price": 445000,
+   "property_type": "house",
+   "bedrooms": 1,
+   "living_area_m2": 143,
+   "plot_area_m2": null,
+   "epc_kwh": 353,
+   "image_url": "https://listing-images.kleyo.be/live/_1200x630_crop_center-center_82_none/image-27-bylnur.jpg?mtime=1795170948",
+   "description": "Modern en instapklaar wonen Ben je op zoek naar een instapklare open bebouwing te koop in Mechelen? Deze uitstekend onderhouden woonst met een bewoonbare…",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.00896990803481,
+   "lon": 4.473089160669901,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "7b5202bb5fe42af5"
+  },
+  {
    "url": "https://www.immodavinci.be/residentieel/detail/7947911/te-koop-appartement-penthouse-met-3-slaapkamers-2-badkamers-en-dakterras-in-gent",
    "source": "Immo Da Vinci",
    "title": "Immo Da Vinci | Appartement | 7947911 | Penthouse...",
@@ -852,6 +1127,81 @@
    "id": "77adeccf43fa312d"
   },
   {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7920136/te-koop-commercieel-liv-de-molens-uw-handelszaak-in-het-hartje-van-deinze",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7920136 | Liv-De Mol...",
+   "city": "Deinze",
+   "postal_code": "9800",
+   "street": "Tolpoortstraat 40",
+   "price": 229000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 78,
+   "epc_kwh": null,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7920136/640/d9bc74abe7944d0abc9a5b6281ab627a.jpg",
+   "description": "7920136 | Tolpoortstraat 40, 9800 Deinze, België | Ligging\"Liv- De Molens\" is een residentieel woonproject, gelegen langs de Leie en midden in een groot park te Deinze. Ont...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 50.980100777930794,
+   "lon": 3.529926202854661,
+   "geo": "street",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "74beb83ba2091c95"
+  },
+  {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7932865/te-koop-industrieel-magazijnen-kantoren-en-conciergewoning-in-beernem",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Industrieel | 7932865 | Magazijnen...",
+   "city": "Beernem",
+   "postal_code": "8730",
+   "street": "Wellingstraat 109B",
+   "price": 5000000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 33390,
+   "epc_kwh": null,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7932865/640/db87fdb43a594734ab6f1f06ca8ecdd1.png",
+   "description": "7932865 | Wellingstraat 109B, 8730 Beernem, België | Voormalig slachthuis op ca. 3,3 ha langs de Wellingstraat in Beernem (regio Brugge). Het complex ligt vlak bij de autosnelweg en is vlot bereikbaar vo...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.125814552989,
+   "lon": 3.29879195298863,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "738f6aa1893f2cca"
+  },
+  {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7940023/te-koop-commercieel-te-renoveren-handelspand-met-woonfunctie-in-gent",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7940023 | TE RENOVER...",
+   "city": "Gent",
+   "postal_code": "9000",
+   "street": "Voormuide 79",
+   "price": 595000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 123,
+   "epc_kwh": 774,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7940023/640/4c4ddd2422f048b1aab3acb08cb71065.jpg",
+   "description": "7940023 | Voormuide 79, 9000 Gent, België | LIGGINGHet pand bevindt zich aan de Voormuide 79, in de levendige en karaktervolle Muidewijk te Gent. Deze buurt kenmerkt zich...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.069109158050566,
+   "lon": 3.729442916119435,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "6d8bc14eec20d225"
+  },
+  {
    "url": "https://www.immo-zone.be/te-koop/lede/bouwgrond-van-271-m-voor-gesloten-bebouwing-in-lede/97436",
    "source": "Immo Zone",
    "title": "Te koop: Bouwgrond van 271 m² voor gesloten bebouwing in Lede",
@@ -877,6 +1227,31 @@
    "id": "6d5dfc22f0c304e7"
   },
   {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7918797/te-koop-kantoor-centraal-gelegen-groepspraktijk-of-zakelijk-pand-met-parking",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Kantoor | 7918797 | Centraal g...",
+   "city": "Ronse",
+   "postal_code": "9600",
+   "street": "Engelsenlaan 70",
+   "price": 960000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 2947,
+   "epc_kwh": null,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7918797/640/8280318f976949b185f2db681880ea93.jpg",
+   "description": "7918797 | Engelsenlaan 70, 9600 Ronse, België | Ligging\nDit medisch centrum, groepspraktijk of kantorencomplex is gelegen op een absolute toplocatie in Rons...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 50.74422868424319,
+   "lon": 3.588083369605399,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "6bc594b341f0ecd8"
+  },
+  {
    "url": "https://www.mvastgoed.be/nl/zillebeke-komenseweg-73/7712034",
    "source": "M Vastgoed",
    "title": "Zillebeke Komenseweg 73",
@@ -900,6 +1275,31 @@
    "checked": "2026-11-20",
    "mailed": true,
    "id": "6290af706155c73c"
+  },
+  {
+   "url": "https://kleyo.be/te-koop/1800-Vilvoorde/energiezuinige-woning-met-drie-slaapkamers-en-een-tuin-te-koop-in-vilvoorde/4b4ddf88-0520-449f-a047-678dee704b9f",
+   "source": "Kleyo",
+   "title": "Energiezuinige woning met drie slaapkamers en een tuin te koop in…",
+   "city": "Vilvoorde",
+   "postal_code": "1800",
+   "street": "Groenstraat 124",
+   "price": 425000,
+   "property_type": "house",
+   "bedrooms": 1,
+   "living_area_m2": 134,
+   "plot_area_m2": null,
+   "epc_kwh": 194,
+   "image_url": "https://listing-images.kleyo.be/live/_1200x630_crop_center-center_82_none/image-12-fpff1o.jpg?mtime=1794914680",
+   "description": "Instapklare en energiezuinige woning met tuin Ben je op zoek naar een instapklare woning te koop in Vilvoorde? Deze verzorgde woning met een bewoonbare…",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 50.93285304473598,
+   "lon": 4.432114596246698,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "60d46339b37017ed"
   },
   {
    "url": "https://carloeggermont.be/pand/karaktervolle-en-poetische-herenwoning-met-stadstuin-3-slaapkamers-en-2-badkamers-aan-een-aangenaam-en-groen-plein-in-het-centrum-gent/",
@@ -952,6 +1352,56 @@
    "id": "5db969006c7cdb62"
   },
   {
+   "url": "https://kleyo.be/te-koop/9000-Gent/lichtrijk-hoekappartement-met-twee-slaapkamers-te-koop-in-gent/2b6187a2-5768-4ff4-98a5-3b658b22fd84",
+   "source": "Kleyo",
+   "title": "Lichtrijk hoekappartement met twee slaapkamers te koop in Gent",
+   "city": "Gent",
+   "postal_code": "9000",
+   "street": "Rijsenbergstraat 145",
+   "price": 375000,
+   "property_type": "apartment",
+   "bedrooms": 1,
+   "living_area_m2": 87,
+   "plot_area_m2": null,
+   "epc_kwh": 156,
+   "image_url": "https://listing-images.kleyo.be/live/_1200x630_crop_center-center_82_none/image-6-g592f9.jpg?mtime=1795096897",
+   "description": "Instapklaar met groen uitzicht  Ben je op zoek naar een energiezuinig appartement te koop in Gent? Deze instapklare woonst van 94 m² biedt een prachtig…",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.041675452173706,
+   "lon": 3.702443998326238,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "5b717830b1a737c4"
+  },
+  {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7945659/te-koop-commercieel-commerciele-handelsruimte-nabij-het-winkelcentrum-dok-noord",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7945659 | Commerciël...",
+   "city": "Gent",
+   "postal_code": "9000",
+   "street": "Sint-Salvatorstraat 83",
+   "price": 175000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 61,
+   "epc_kwh": 213,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7945659/640/29541f49c6f64f2c9447bb059c520504.png",
+   "description": "7945659 | Sint-Salvatorstraat 83, 9000 Gent, België | LiggingCentraal gelegen in de Sint-Salvatorstraat vlakbij het shopping center Dok Noord te Gent. Een mak...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.06512106284965,
+   "lon": 3.728858229751899,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "57c93feded0bd5e3"
+  },
+  {
    "url": "https://www.dewaele.com/nl/te-koop/8380-dudzele/huis/d8300-f1722-243385",
    "source": "Dewaele",
    "title": "Huis dossieropbouw in Dudzele",
@@ -975,6 +1425,31 @@
    "checked": "2026-11-20",
    "mailed": true,
    "id": "4f7b8ad6f03a8233"
+  },
+  {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7942147/te-koop-kantoor-gandhon-nieuwbouwproject-nabij-gent-sint-pieters",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Kantoor | 7942147 | Gandhon: N...",
+   "city": "Gent",
+   "postal_code": "9000",
+   "street": "Raketstraat 9",
+   "price": 335500,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": null,
+   "epc_kwh": null,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7942147/640/8ba5b5c8fd084e8faf749bd45176ca3b.jpg",
+   "description": "7942147 | Raketstraat 9, 9000 Gent, België | Ligging - omgeving:Aan het St Pietersstation in de Raketstraat – Meersstraat, bevindt zich het project Gandhon, een ontwi...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.04028271361408,
+   "lon": 3.711585182786714,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "4e0ecb1f76806181"
   },
   {
    "url": "https://www.wijsvastgoed.be/detail/te-koop-appartement-zelzate/7711584",
@@ -1127,6 +1602,31 @@
    "id": "47e7fcc62da0e3e7"
   },
   {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7921913/te-koop-commercieel-app-te-koop-met-2-slpk-en-handelsmogelijkheid-in-gentbrugge",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7921913 | App te koo...",
+   "city": "Gent Gentbrugge",
+   "postal_code": "9050",
+   "street": "Raf Verhaeststraat 67",
+   "price": 230000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": 88,
+   "plot_area_m2": null,
+   "epc_kwh": 322,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7921913/640/1f366eea4a984c1bbfb89a4e15a246d6.jpg",
+   "description": "7921913 | Raf Verhaeststraat 67, 9050 Gent Gentbrugge, België | LiggingDit gelijkvloers appartement bevindt zich in een kleinschalige residentie in een rustige straat in Gentbrugge. U geniet van een vlo...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.03385436210001,
+   "lon": 3.763673310956603,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "3fcabc7cae26ce89"
+  },
+  {
    "url": "https://www.immostad.com/nl/aanbod/4504049-17572-karaktervolle-te-renoveren-hoekwoning-met-3-slaapkamers-te-knokke-heist-met-veel-potentieel-ref17572",
    "source": "Immostad",
    "title": "Karaktervolle te renoveren hoekwoning met 3 slaapkamers te Knokke-Heist met veel potentieel. (Ref.17572)",
@@ -1254,6 +1754,31 @@
    "id": "34a7e8e48262398f"
   },
   {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7923749/te-koop-commercieel-handelswoning-te-koop-in-het-centrum-van-sint-denijs-westrem",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7923749 | Handelswon...",
+   "city": "Gent Sint-Denijs-Westrem",
+   "postal_code": "9051",
+   "street": "Sint-Dionysiusstraat 54",
+   "price": 362500,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 115,
+   "epc_kwh": 254,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7923749/640/41b969984211447987c221a90534c661.png",
+   "description": "7923749 | Sint-Dionysiusstraat  54, 9051 Gent Sint-Denijs-Westrem, België | Altijd al gedroomd van een eigen handelszaak op een zichtbare toplocatie? Dit is jouw kans. In het hart van Sint-Denijs-Westrem komt...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.018455495492944,
+   "lon": 3.6705593467913435,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "348452ec512e88b8"
+  },
+  {
    "url": "https://www.vlaemynck.be/te-koop/izegem/woning/11231701/instapklare-bel-etagewoning-met-garage-terras-en-zonnige-tuin",
    "source": "Vlaemynck",
    "title": "Instapklare bel-etagewoning met garage, terras en zonnige tuin | Vlaemynck",
@@ -1327,6 +1852,31 @@
    "checked": "2026-11-20",
    "mailed": true,
    "id": "2f668c13877822a4"
+  },
+  {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7939777/te-koop-kantoor-centraal-gelegen-handelsruimte-met-vast-rendement-te-gent",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Kantoor | 7939777 | Centraal g...",
+   "city": "Gent",
+   "postal_code": "9000",
+   "street": "Antwerpsesteenweg 61",
+   "price": 460000,
+   "property_type": "commercial",
+   "bedrooms": null,
+   "living_area_m2": null,
+   "plot_area_m2": 209,
+   "epc_kwh": 199,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7939777/640/31cd7dea6cb242ca94c7516db4390d96.jpg",
+   "description": "7939777 | Antwerpsesteenweg  61, 9000 Gent, België | LiggingDe commerciële ruimte is gelegen aan de Antwerpsesteenweg nabij het centrum van Gent. Op wandelafstand van het sta...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.05864583592342,
+   "lon": 3.7436086768576105,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "2c2ca78b3048310c"
   },
   {
    "url": "https://www.bordes.be/panden/4518866-instapklare-woning-met-riante-tuin",
@@ -1454,6 +2004,31 @@
    "id": "17e405ccc8dc019a"
   },
   {
+   "url": "https://www.immodavinci.be/bedrijfsvastgoed/detail/7924099/te-koop-commercieel-perfect-gelegen-in-het-hart-van-oudenaarde",
+   "source": "Immo Da Vinci",
+   "title": "Immo Da Vinci | Commercieel | 7924099 | Perfect ge...",
+   "city": "Oudenaarde",
+   "postal_code": "9700",
+   "street": "Woeker 8",
+   "price": 399000,
+   "property_type": "commercial",
+   "bedrooms": 3,
+   "living_area_m2": null,
+   "plot_area_m2": null,
+   "epc_kwh": 30,
+   "image_url": "https://r2.storagewhise.eu/cryptximmobilienbvba/Pictures/7924099/640/4317b72051c049d3bddc23d58ecfae00.jpg",
+   "description": "7924099 | Woeker 8, 9700 Oudenaarde, België | LiggingTrevo4 bevindt zich op een unieke locatie aan het Liedtspark en het cultureel centrum De Woeker, in het levendige...",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 50.84544712903258,
+   "lon": 3.6057987532039926,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "175e5f4641913f17"
+  },
+  {
    "url": "https://www.ld-vastgoed.be/nl/component/properties/?view=detail&id=800",
    "source": "LD-Vastgoed",
    "title": "Rustig en aangenaam gelegen woning met stadskoer te koop te SINT-AMANDSBERG (9040)",
@@ -1527,6 +2102,31 @@
    "checked": "2026-11-20",
    "mailed": true,
    "id": "0aecab68d3011de1"
+  },
+  {
+   "url": "https://www.huysewinkel.be/te-koop/heusden/multifunctionele-villa-met-zwembad-en-weids-uitzicht/9114579",
+   "source": "Huysewinkel",
+   "title": "Multifunctionele villa met zwembad en weids uitzicht | Huysewinkel",
+   "city": "Heusden",
+   "postal_code": "9070",
+   "street": "Vossenstraat 45",
+   "price": 835000,
+   "property_type": "house",
+   "bedrooms": 5,
+   "living_area_m2": 386,
+   "plot_area_m2": 967,
+   "epc_kwh": null,
+   "image_url": "https://www.huysewinkel.be/_media/property_images/image/1795194084/fit/1600/1600/682473.jpg",
+   "description": "",
+   "matched_keywords": [],
+   "first_seen": "2026-11-20",
+   "lat": 51.03792,
+   "lon": 3.81933,
+   "geo": "address",
+   "status": "available",
+   "checked": "2026-11-20",
+   "mailed": false,
+   "id": "09c11eac04fb0b5b"
   },
   {
    "url": "https://www.smarthouses.be/te-koop/8790-waregem/huis/subliem-gelegen-woning-op-988m2-met-4slpks-en-garage-7945771",
@@ -10812,7 +11412,7 @@
    "lon": 3.7179235,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b7359d7cf0e431f3"
   },
@@ -10837,7 +11437,7 @@
    "lon": 3.635010057162083,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b1914bcd2ac1bc07"
   },
@@ -10862,7 +11462,7 @@
    "lon": 3.7133422680314467,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a940361ac9dfbdd7"
   },
@@ -10887,7 +11487,7 @@
    "lon": 3.671045154685954,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a645f8f23b066c12"
   },
@@ -10912,7 +11512,7 @@
    "lon": 3.3032959,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a5fa2ead527bf8da"
   },
@@ -10937,7 +11537,7 @@
    "lon": 2.9393407540075063,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8b0f906c593c5376"
   },
@@ -10962,7 +11562,7 @@
    "lon": 3.2334,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "7d276fff6d700e0f"
   },
@@ -10987,7 +11587,7 @@
    "lon": 3.2007892,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "79e612cf23c7a563"
   },
@@ -11012,7 +11612,7 @@
    "lon": 3.758205357232646,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3aeb9b76ed0e19b3"
   },
@@ -11037,7 +11637,7 @@
    "lon": 3.5981816386251415,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0319323d040419f2"
   },
@@ -15870,7 +16470,7 @@
    "lon": 3.445586,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fb088919d5f256a0"
   },
@@ -15895,7 +16495,7 @@
    "lon": 3.2489468,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "f9529cb92ca34def"
   },
@@ -15920,7 +16520,7 @@
    "lon": 3.1764361386414617,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "f616d8a72cc0bbf9"
   },
@@ -15945,7 +16545,7 @@
    "lon": 3.0955,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "f3b327570d091d03"
   },
@@ -15970,7 +16570,7 @@
    "lon": 3.34969273784325,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "e4d6353ce27a114f"
   },
@@ -15995,7 +16595,7 @@
    "lon": 3.7564815525976147,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "e0559ea70cc02e31"
   },
@@ -16019,8 +16619,8 @@
    "lat": 50.8127,
    "lon": 3.3385,
    "geo": "postcode",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "df1b612557ed72d0"
   },
@@ -16045,7 +16645,7 @@
    "lon": 3.7566774,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "dd20948cb8649d0c"
   },
@@ -16069,8 +16669,8 @@
    "lat": 51.15016,
    "lon": 3.84304,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "da119bb28ff6c1b2"
   },
@@ -16095,7 +16695,7 @@
    "lon": 3.1240887,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "d640b03b36b76ee9"
   },
@@ -16120,7 +16720,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "d17e938c9b6380b3"
   },
@@ -16145,7 +16745,7 @@
    "lon": 3.6159525821691765,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "cc9416781b19de4e"
   },
@@ -16170,7 +16770,7 @@
    "lon": 3.717156891896634,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "ca547b7b7a445856"
   },
@@ -16195,7 +16795,7 @@
    "lon": 2.63275059226203,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "ca1325c63aa47ad6"
   },
@@ -16220,7 +16820,7 @@
    "lon": 3.1206001,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c9170a6de88101f8"
   },
@@ -16247,7 +16847,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c78d0fc56d223d6b"
   },
@@ -16272,7 +16872,7 @@
    "lon": 3.21366,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c0350b606d58ed71"
   },
@@ -16297,7 +16897,7 @@
    "lon": 3.7410581725842507,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "be3247a62b361a1a"
   },
@@ -16322,7 +16922,7 @@
    "lon": 3.7074589377175666,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b9717ea77d9012d8"
   },
@@ -16347,7 +16947,7 @@
    "lon": 3.9467752,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b4344305300ce506"
   },
@@ -16372,7 +16972,7 @@
    "lon": 3.2780244,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b38142d22a96658a"
   },
@@ -16397,7 +16997,7 @@
    "lon": 4.06404,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "aff6caafbcaef908"
   },
@@ -16422,7 +17022,7 @@
    "lon": 4.330239047750279,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a96b47f97a4e6b9c"
   },
@@ -16447,7 +17047,7 @@
    "lon": 3.2832841,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a4c5e1edbf09faac"
   },
@@ -16472,7 +17072,7 @@
    "lon": 3.2490242,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a1878c0c5e8888a7"
   },
@@ -16497,7 +17097,7 @@
    "lon": 3.7133,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "974cddc9fed1b906"
   },
@@ -16522,7 +17122,7 @@
    "lon": 2.749189426821436,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "96ffe465b060b80e"
   },
@@ -16547,7 +17147,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "95bd1bf329bc2206"
   },
@@ -16572,7 +17172,7 @@
    "lon": 3.2133478020812785,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "91b7b1cfc8250a10"
   },
@@ -16597,7 +17197,7 @@
    "lon": 3.64878,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "90d0f7d40fe3ca49"
   },
@@ -16622,7 +17222,7 @@
    "lon": 3.3872825,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8ef6b98bb9c8d9eb"
   },
@@ -16647,7 +17247,7 @@
    "lon": 3.7126965547404387,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8d63ab3918196433"
   },
@@ -16672,7 +17272,7 @@
    "lon": 3.2103780142360065,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "899bc6345dfca7d8"
   },
@@ -16697,7 +17297,7 @@
    "lon": 3.4106641,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8905ef266b5239fe"
   },
@@ -16722,7 +17322,7 @@
    "lon": 3.6556617358001113,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "84dabdf9727e99ad"
   },
@@ -16747,7 +17347,7 @@
    "lon": 3.7372186570807187,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "843f5bd77abf9bc6"
   },
@@ -16772,7 +17372,7 @@
    "lon": 3.143780682466897,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8383dce1e860d958"
   },
@@ -16797,7 +17397,7 @@
    "lon": 3.71564727022175,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "80ab8c946cfec337"
   },
@@ -16822,7 +17422,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8076f1074979fdbf"
   },
@@ -16847,7 +17447,7 @@
    "lon": 3.5246667,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "7e633d5a4c370ed5"
   },
@@ -16872,7 +17472,7 @@
    "lon": 3.444123849137397,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "75d785a3913ffa01"
   },
@@ -16897,7 +17497,7 @@
    "lon": 3.2916804977564023,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "74e00efcfbaa745a"
   },
@@ -16922,7 +17522,7 @@
    "lon": 4.1668,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "6f45cbe908d9b6d3"
   },
@@ -16947,7 +17547,7 @@
    "lon": 3.720603235564797,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "6bfa5a649135ac9c"
   },
@@ -16972,7 +17572,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "68b5ecf52c69a99c"
   },
@@ -16997,7 +17597,7 @@
    "lon": 3.26732,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "6283f0ed6347fb66"
   },
@@ -17022,7 +17622,7 @@
    "lon": 2.5947874,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "604b2d8d68fc3dfa"
   },
@@ -17047,7 +17647,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5e59c5c02891a866"
   },
@@ -17071,8 +17671,8 @@
    "lat": 50.8127,
    "lon": 3.3385,
    "geo": "postcode",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5cdb072e2af2413c"
   },
@@ -17097,7 +17697,7 @@
    "lon": 3.716400073140798,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "53f3a3e6ab58a9fe"
   },
@@ -17122,7 +17722,7 @@
    "lon": 3.4238654,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "53cc68cabc406443"
   },
@@ -17147,7 +17747,7 @@
    "lon": 3.2490218,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "512f9b3b9c7ab35c"
   },
@@ -17172,7 +17772,7 @@
    "lon": 3.9943587689417743,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4c0df937511b20ca"
   },
@@ -17196,8 +17796,8 @@
    "lat": 50.8127,
    "lon": 3.3385,
    "geo": "postcode",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "452080454730daa6"
   },
@@ -17222,7 +17822,7 @@
    "lon": 3.4459059,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4413209ddea52f91"
   },
@@ -17247,7 +17847,7 @@
    "lon": 3.30931,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3b3d7d2cb69ecc08"
   },
@@ -17272,7 +17872,7 @@
    "lon": 3.712154,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "39f63e1263c38577"
   },
@@ -17297,7 +17897,7 @@
    "lon": 3.8241328,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2eb4158b910c4fb1"
   },
@@ -17322,7 +17922,7 @@
    "lon": 3.2490242,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "28a2edf18f93d1d0"
   },
@@ -17347,7 +17947,7 @@
    "lon": 3.718422648957317,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "246df4aa305f39b5"
   },
@@ -17372,7 +17972,7 @@
    "lon": 3.759124642432877,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "239db62e6ab23208"
   },
@@ -17396,8 +17996,8 @@
    "lat": 50.8127,
    "lon": 3.3385,
    "geo": "postcode",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1443c2033e2d6618"
   },
@@ -17422,7 +18022,7 @@
    "lon": 3.7566688,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0ffd630abf89bfbe"
   },
@@ -17447,7 +18047,7 @@
    "lon": 3.4367021,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0a220357b6114bd4"
   },
@@ -17497,7 +18097,7 @@
    "lon": 3.90182630084784,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "021a26127537eb4b"
   },
@@ -25436,7 +26036,7 @@
    "lon": 3.71148978874237,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "f2008f6ad321eac2"
   },
@@ -25461,7 +26061,7 @@
    "lon": 4.0364236298194,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "f12f8414755ad2da"
   },
@@ -25486,7 +26086,7 @@
    "lon": 3.7167,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "ef0b7bc065fc104d"
   },
@@ -25536,7 +26136,7 @@
    "lon": 2.9885926225845316,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "edad86a0bf93e719"
   },
@@ -25561,7 +26161,7 @@
    "lon": 3.438189032991298,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "eadee9de8893b986"
   },
@@ -25611,7 +26211,7 @@
    "lon": 2.8927746,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "e943cafc9eca1a02"
   },
@@ -25636,7 +26236,7 @@
    "lon": 3.231176447960846,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "e7d6bf5a42bdab46"
   },
@@ -25713,7 +26313,7 @@
    "lon": 3.3282565,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "e4fcdf86641ab8b1"
   },
@@ -25738,7 +26338,7 @@
    "lon": 3.7702584053741464,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "e4640ac515c3160a"
   },
@@ -25762,8 +26362,8 @@
    "lat": 50.828,
    "lon": 3.2649,
    "geo": "city",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "dcf74c1d84ee516b"
   },
@@ -25788,7 +26388,7 @@
    "lon": 3.7095183,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "d7e644f7e90e8167"
   },
@@ -25813,7 +26413,7 @@
    "lon": 3.2082856164818727,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "d7e025951c29bdfc"
   },
@@ -25838,7 +26438,7 @@
    "lon": 5.4666474841663435,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "d6e2606c07f198bf"
   },
@@ -25862,8 +26462,8 @@
    "lat": 50.91370098057512,
    "lon": 3.9620900307214053,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "d6bf830bef252efd"
   },
@@ -25887,8 +26487,8 @@
    "lat": 50.85776046629359,
    "lon": 3.3223531729500717,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "d4271c98d196cb6c"
   },
@@ -25913,7 +26513,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "d302dfcd01419399"
   },
@@ -25988,7 +26588,7 @@
    "lon": 3.379726974389974,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "ce3fc232ea7e4c36"
   },
@@ -26012,8 +26612,8 @@
    "lat": null,
    "lon": null,
    "geo": "",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "sold",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "cb5254a7ff7c93ac"
   },
@@ -26038,7 +26638,7 @@
    "lon": 3.365564365335805,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "ca5822c3effb3653"
   },
@@ -26063,7 +26663,7 @@
    "lon": 3.3645657464474783,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c92f36f8786dd14c"
   },
@@ -26088,7 +26688,7 @@
    "lon": 3.744858,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c90ff3787abc8d77"
   },
@@ -26113,7 +26713,7 @@
    "lon": 3.7325382872224466,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c672971a35281b20"
   },
@@ -26138,7 +26738,7 @@
    "lon": 3.7264956207946,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c44320bcd25e81ac"
   },
@@ -26163,7 +26763,7 @@
    "lon": 3.102629027522953,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c430b8f23497f5a1"
   },
@@ -26213,7 +26813,7 @@
    "lon": 3.6089789291499508,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c33656365db36780"
   },
@@ -26238,7 +26838,7 @@
    "lon": 3.370262687643792,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c15c4949474f53d9"
   },
@@ -26263,7 +26863,7 @@
    "lon": 3.731160172806817,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c0ed8e686a1767e8"
   },
@@ -26288,7 +26888,7 @@
    "lon": 3.1833963910632894,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "c042bbb6324b23ee"
   },
@@ -26313,7 +26913,7 @@
    "lon": 3.265164398774872,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "bf3200b0952e952f"
   },
@@ -26338,7 +26938,7 @@
    "lon": 3.2747432,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b964098baf4ba994"
   },
@@ -26362,8 +26962,8 @@
    "lat": 50.87868161828194,
    "lon": 3.656110864595645,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b909b41718a90114"
   },
@@ -26388,7 +26988,7 @@
    "lon": 3.306346,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b5a918ed899dbbaf"
   },
@@ -26413,7 +27013,7 @@
    "lon": 2.963429424109066,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b510a958d99334d2"
   },
@@ -26438,7 +27038,7 @@
    "lon": 2.9233,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b382507adbebd975"
   },
@@ -26463,7 +27063,7 @@
    "lon": 3.129437884604024,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "b31f98dfc499549a"
   },
@@ -26488,7 +27088,7 @@
    "lon": 3.6266,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "ae1cedf9652ce56c"
   },
@@ -26513,7 +27113,7 @@
    "lon": 3.7167,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "ad75d97747e6dd2e"
   },
@@ -26538,7 +27138,7 @@
    "lon": 3.717316745412171,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "ac2409293a9dcc77"
   },
@@ -26588,7 +27188,7 @@
    "lon": 3.2000026507917885,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a72d1c3402e3e020"
   },
@@ -26637,8 +27237,8 @@
    "lat": 50.91822069434716,
    "lon": 3.2151549911665898,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "sold",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a3aaa9a78786c613"
   },
@@ -26663,7 +27263,7 @@
    "lon": 4.084920674858952,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a39940bbda7fcaa4"
   },
@@ -26688,7 +27288,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a1dd467551e967d2"
   },
@@ -26713,7 +27313,7 @@
    "lon": 3.102629027522953,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a15a33ef55b2ad90"
   },
@@ -26738,7 +27338,7 @@
    "lon": 4.146723646613524,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "a07ec106a0f2e6f6"
   },
@@ -26788,7 +27388,7 @@
    "lon": 2.7195019,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "991c4f64bae9cf87"
   },
@@ -26813,7 +27413,7 @@
    "lon": 2.9425225145783123,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "97a5098edf2ed8bd"
   },
@@ -26913,7 +27513,7 @@
    "lon": 3.695775573283133,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8f68f96b7249caae"
   },
@@ -26963,7 +27563,7 @@
    "lon": 3.4166147,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8e44108efc659208"
   },
@@ -26988,7 +27588,7 @@
    "lon": 3.59066594316275,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8db01414ee3af2ce"
   },
@@ -27038,7 +27638,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8ba5278fa43e8836"
   },
@@ -27063,7 +27663,7 @@
    "lon": 4.13295,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8755635e641384ff"
   },
@@ -27113,7 +27713,7 @@
    "lon": 3.8112874236660517,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "8537e238465ca21f"
   },
@@ -27138,7 +27738,7 @@
    "lon": 3.2589880695205564,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "846028175524d4eb"
   },
@@ -27163,7 +27763,7 @@
    "lon": 3.727154000311269,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "841606afbdf88145"
   },
@@ -27188,7 +27788,7 @@
    "lon": 2.9104010745655233,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "836febe55005751f"
   },
@@ -27213,7 +27813,7 @@
    "lon": 3.8198173707330865,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "7aeabd26a583b05a"
   },
@@ -27238,7 +27838,7 @@
    "lon": 3.4159539,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "7ad10423816ca70c"
   },
@@ -27263,7 +27863,7 @@
    "lon": 3.4230893,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "78337aeaade8480d"
   },
@@ -27288,7 +27888,7 @@
    "lon": 2.92192,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "76b14e0c7942acb2"
   },
@@ -27313,7 +27913,7 @@
    "lon": 3.70068351529413,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "75e4760d58ff857c"
   },
@@ -27363,7 +27963,7 @@
    "lon": 3.4610478,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "7132ed69325f05bc"
   },
@@ -27388,7 +27988,7 @@
    "lon": 3.3654158,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "6fba1a4f221409e1"
   },
@@ -27438,7 +28038,7 @@
    "lon": 3.595354538181912,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "6c2c3bf164db9900"
   },
@@ -27463,7 +28063,7 @@
    "lon": 3.2138359,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "6b2745166d8966fe"
   },
@@ -27487,8 +28087,8 @@
    "lat": 50.74907351502341,
    "lon": 3.5869627356670573,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "6ae500dca20acf17"
   },
@@ -27513,7 +28113,7 @@
    "lon": 4.219559837809963,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "663e6ecec5aefa32"
   },
@@ -27538,7 +28138,7 @@
    "lon": 3.3389406069622485,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "65ebbbf511da36eb"
   },
@@ -27563,7 +28163,7 @@
    "lon": 3.57898,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "631663b8115682b6"
   },
@@ -27588,7 +28188,7 @@
    "lon": 3.7031648,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "6222d826a824049f"
   },
@@ -27638,7 +28238,7 @@
    "lon": 3.3147665247294316,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5d2942d0e5dc6a71"
   },
@@ -27663,7 +28263,7 @@
    "lon": 2.643520069973533,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5d276709022b34a3"
   },
@@ -27688,7 +28288,7 @@
    "lon": 4.1592967,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "58a7761ac9f9bb3f"
   },
@@ -27713,7 +28313,7 @@
    "lon": 3.606531960792016,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "55e1e062ce3fe3fc"
   },
@@ -27738,7 +28338,7 @@
    "lon": 3.0298769,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "49d68e5dcc94c868"
   },
@@ -27763,7 +28363,7 @@
    "lon": 3.7254139,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "482f5cd220dc37ad"
   },
@@ -27838,7 +28438,7 @@
    "lon": 3.1232180355711425,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "41372951dc4d2143"
   },
@@ -27863,7 +28463,7 @@
    "lon": 3.7234492267605965,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3ff9c75ccc156793"
   },
@@ -27887,8 +28487,8 @@
    "lat": 50.81721204132093,
    "lon": 3.0832985625539204,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3b8e4e5769c52d67"
   },
@@ -27913,7 +28513,7 @@
    "lon": 4.069074252654904,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3b038586d9bf3d0e"
   },
@@ -27938,7 +28538,7 @@
    "lon": 2.907933262318256,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "386a0fb7190a910b"
   },
@@ -27963,7 +28563,7 @@
    "lon": 3.2671049237251,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "347cdd0e7572f9a0"
   },
@@ -27988,7 +28588,7 @@
    "lon": 3.541698666098697,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3443a42b8d2b94b0"
   },
@@ -28013,7 +28613,7 @@
    "lon": 3.265838903464646,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "329f543a1e08aa36"
   },
@@ -28037,8 +28637,8 @@
    "lat": 50.85865391157035,
    "lon": 2.87671683787567,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2ef84a89e3a66ab7"
   },
@@ -28063,7 +28663,7 @@
    "lon": 3.7515954,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2debe3064c26fc18"
   },
@@ -28088,7 +28688,7 @@
    "lon": 3.71014,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2bba97ec94b4f481"
   },
@@ -28113,7 +28713,7 @@
    "lon": 3.6945387,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2a2480ea66d993e8"
   },
@@ -28163,7 +28763,7 @@
    "lon": 3.2081345141391173,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "298d115c8ee5a31b"
   },
@@ -28188,7 +28788,7 @@
    "lon": 3.4046954175806534,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "24ee827545a8d498"
   },
@@ -28238,7 +28838,7 @@
    "lon": 3.281318226271386,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "24162e2e5f4e4afc"
   },
@@ -28288,7 +28888,7 @@
    "lon": 3.2258514418326527,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1af1be536204e288"
   },
@@ -28313,7 +28913,7 @@
    "lon": 3.4495000646578733,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "196524b5b5da9196"
   },
@@ -28338,7 +28938,7 @@
    "lon": 3.239068,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "167f65b7bfb5cedc"
   },
@@ -28363,7 +28963,7 @@
    "lon": 2.9543656,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "140f186594332f04"
   },
@@ -28413,7 +29013,7 @@
    "lon": 3.2649,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "12b311c5196d2449"
   },
@@ -28438,7 +29038,7 @@
    "lon": 3.7759528,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "09a66fb725046f06"
   },
@@ -28488,7 +29088,7 @@
    "lon": 2.9186923012995725,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0961c9834ea1f82e"
   },
@@ -28513,7 +29113,7 @@
    "lon": 3.2198653618313187,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0912594962452eae"
   },
@@ -28538,7 +29138,7 @@
    "lon": 3.349865,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "08bd16a8bc10e75b"
   },
@@ -28563,7 +29163,7 @@
    "lon": 3.206016352661249,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "08851b47d6afa090"
   },
@@ -28588,7 +29188,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0812a7b26e7a6a9f"
   },
@@ -28613,7 +29213,7 @@
    "lon": 3.716146222103723,
    "geo": "approx",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "075d72e5cf87261f"
   },
@@ -28663,7 +29263,7 @@
    "lon": 3.1224,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "020c526f07548a5a"
   },
@@ -28688,7 +29288,7 @@
    "lon": 3.66448,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0188a66cd0ea321c"
   },
@@ -30065,7 +30665,7 @@
    "lon": 3.5834100361974732,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "6146686e72a435c8"
   },
@@ -39501,7 +40101,7 @@
    "lon": 3.6741999549860243,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "cf8defa22e4bd5a0"
   },
@@ -68572,7 +69172,7 @@
    "lon": 3.631266262576097,
    "geo": "approx",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1df152dc826cdd37"
   },
@@ -68625,7 +69225,7 @@
    "lon": 4.107431092943123,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1d4f0528b16997ec"
   },
@@ -68674,8 +69274,8 @@
    "lat": 50.8197314,
    "lon": 3.3256042,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1b42f1a5460490c5"
   },
@@ -68700,7 +69300,7 @@
    "lon": 3.3286495686336073,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1ae1813ba85228bb"
   },
@@ -68725,7 +69325,7 @@
    "lon": 3.11479510253785,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1ad4c1838c786ee1"
   },
@@ -68750,7 +69350,7 @@
    "lon": 3.1185330999999987,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "19895d8bcdfdbd06"
   },
@@ -68775,7 +69375,7 @@
    "lon": 4.058150427409588,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1987c794df020edb"
   },
@@ -68877,7 +69477,7 @@
    "lon": 3.527664490547972,
    "geo": "approx",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "187325862a363f97"
   },
@@ -68902,7 +69502,7 @@
    "lon": 3.0126729,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "182dd033aede553a"
   },
@@ -68927,7 +69527,7 @@
    "lon": 3.1568,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1754259d46a71cec"
   },
@@ -68954,7 +69554,7 @@
    "lon": 3.6355292,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "170cbe3baff6436c"
   },
@@ -68979,7 +69579,7 @@
    "lon": 3.1465043,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "16e9f2c7dfdc4ce0"
   },
@@ -69079,7 +69679,7 @@
    "lon": 2.9158807,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1566dfbfeba868ba"
   },
@@ -69104,7 +69704,7 @@
    "lon": 3.1185330999999987,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "145ebe2ed0aa454e"
   },
@@ -69129,7 +69729,7 @@
    "lon": 3.1066623210322892,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "134cec7cb522ead2"
   },
@@ -69154,7 +69754,7 @@
    "lon": 3.1185330999999987,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "11a3bad150987308"
   },
@@ -69254,7 +69854,7 @@
    "lon": 3.11479510253785,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0f1a802fde5929a2"
   },
@@ -69329,7 +69929,7 @@
    "lon": 3.710562352272484,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0e604face0a37365"
   },
@@ -69354,7 +69954,7 @@
    "lon": 3.2905028,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0d5572bedec29c74"
   },
@@ -69431,7 +70031,7 @@
    "lon": 2.6092303101402705,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0abd9a82f7e126a5"
   },
@@ -69481,7 +70081,7 @@
    "lon": 3.288946,
    "geo": "approx",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "09d6f3eba9057c58"
   },
@@ -69530,8 +70130,8 @@
    "lat": 50.840252,
    "lon": 3.232502,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "sold",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0958412f6d0868c3"
   },
@@ -69556,7 +70156,7 @@
    "lon": 3.7281201,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "08387561be75321e"
   },
@@ -69581,7 +70181,7 @@
    "lon": 3.11479510253785,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0809d4f93ff42471"
   },
@@ -69605,8 +70205,8 @@
    "lat": 50.874295122319765,
    "lon": 3.418626221257879,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "07a89051ad1a4401"
   },
@@ -69656,7 +70256,7 @@
    "lon": 4.0369540228248635,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0712e1f58c3ec420"
   },
@@ -69681,7 +70281,7 @@
    "lon": 3.8751185,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "06e1625a9b338eef"
   },
@@ -69706,7 +70306,7 @@
    "lon": 3.4057729924098,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "068d88bb535fee3b"
   },
@@ -69733,7 +70333,7 @@
    "lon": 3.770537,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "066cfe91900cebe7"
   },
@@ -69758,7 +70358,7 @@
    "lon": 3.718449630945369,
    "geo": "approx",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "05c4ef52463e59c6"
   },
@@ -69783,7 +70383,7 @@
    "lon": 3.278567152354498,
    "geo": "approx",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "05b01ed3a6d4cab9"
   },
@@ -69883,7 +70483,7 @@
    "lon": 3.1185330999999987,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "04885bf5d61bb088"
   },
@@ -69933,7 +70533,7 @@
    "lon": 3.7307,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "03b7c7b8a5b640a3"
   },
@@ -69958,7 +70558,7 @@
    "lon": 4.03572894948787,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "03aac873980e385e"
   },
@@ -69983,7 +70583,7 @@
    "lon": 2.5792864,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "036414831939991b"
   },
@@ -70058,7 +70658,7 @@
    "lon": 3.1185330999999987,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "024dcbe8f843f307"
   },
@@ -70086,7 +70686,7 @@
    "lon": 3.7752032958632773,
    "geo": "approx",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0235c7c6baf584dd"
   },
@@ -70135,8 +70735,8 @@
    "lat": 50.9179,
    "lon": 3.1568,
    "geo": "postcode",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "01881d4a4310302b"
   },
@@ -70213,7 +70813,7 @@
    "lon": 2.915878083340701,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "ff13a1080546107e"
   },
@@ -70265,7 +70865,7 @@
    "lon": 2.888224152482749,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "feaeb0122c5476c5"
   },
@@ -70292,7 +70892,7 @@
    "lon": 3.8536,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fe92573ceb0d403c"
   },
@@ -70317,7 +70917,7 @@
    "lon": 4.0569056,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fe7a8ff2b93f465d"
   },
@@ -70341,8 +70941,8 @@
    "lat": 50.9179,
    "lon": 3.1568,
    "geo": "postcode",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fe5df0e1bf2bd3f0"
   },
@@ -70367,7 +70967,7 @@
    "lon": 3.3344325757010576,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fe264e9512eacef0"
   },
@@ -70391,8 +70991,8 @@
    "lat": 51.059691481701584,
    "lon": 3.7448853714399117,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-15",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fd7f2f8794824a4a"
   },
@@ -70417,7 +71017,7 @@
    "lon": 3.0153136420995,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fd2e930ba616091c"
   },
@@ -70444,7 +71044,7 @@
    "lon": 3.1062293120151145,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fd11d4c257aba4b4"
   },
@@ -70471,7 +71071,7 @@
    "lon": 3.8141720933660874,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fc8e55e4a97ff96a"
   },
@@ -70546,7 +71146,7 @@
    "lon": 3.3603855766058457,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fa7cd8f5ddddd5fc"
   },
@@ -70571,7 +71171,7 @@
    "lon": 3.6999269090693274,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fa37443d96219e72"
   },
@@ -70596,7 +71196,7 @@
    "lon": 3.6594764023800113,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "fa305a97eaf0910b"
   },
@@ -79190,7 +79790,7 @@
    "lon": 4.562438476482873,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-15",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "81021251c9e22122"
   },
@@ -163393,7 +163993,7 @@
    "lon": 3.5919855,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5c47f01fa93caf40"
   },
@@ -163443,7 +164043,7 @@
    "lon": 3.46681,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5ba9e13ae47b82e7"
   },
@@ -163468,7 +164068,7 @@
    "lon": 3.1953553125206167,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5b8be88ec6c75c29"
   },
@@ -163493,7 +164093,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5b892e60b7c444af"
   },
@@ -163520,7 +164120,7 @@
    "lon": 3.2334,
    "geo": "city",
    "status": "option",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5b506f453bae45e6"
   },
@@ -163545,7 +164145,7 @@
    "lon": 3.4779,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5b0c3edb93914d67"
   },
@@ -163570,7 +164170,7 @@
    "lon": 3.701152149173034,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5b04bd2e46d82f46"
   },
@@ -163595,7 +164195,7 @@
    "lon": 4.239719886704106,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5a7bca32558445d7"
   },
@@ -163620,7 +164220,7 @@
    "lon": 3.5802769,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5a4da59a574f921b"
   },
@@ -163644,8 +164244,8 @@
    "lat": 50.91033436846188,
    "lon": 3.3918988411742905,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-16",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "59f588d4ac92cf1e"
   },
@@ -163670,7 +164270,7 @@
    "lon": 3.2530875906270267,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "59e00e4d748527a0"
   },
@@ -163745,7 +164345,7 @@
    "lon": 3.8584457969699333,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "58e1b054a9679f5a"
   },
@@ -163770,7 +164370,7 @@
    "lon": 3.3021224598016814,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "588de77d55d9e9d9"
   },
@@ -163795,7 +164395,7 @@
    "lon": 3.2649,
    "geo": "city",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "58837b9c2170a861"
   },
@@ -163820,7 +164420,7 @@
    "lon": 4.1771,
    "geo": "postcode",
    "status": "option",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5878a25be0e46064"
   },
@@ -163845,7 +164445,7 @@
    "lon": 3.2305761147616363,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "586dfff6c97946b9"
   },
@@ -163870,7 +164470,7 @@
    "lon": 3.4428643117307485,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "581c6f9a298614f6"
   },
@@ -163895,7 +164495,7 @@
    "lon": 3.7494,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "57b9e5a2de391671"
   },
@@ -163922,7 +164522,7 @@
    "lon": 3.2411783616220617,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "567c1ecb1e4eec2b"
   },
@@ -163947,7 +164547,7 @@
    "lon": 4.0355,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5623508d4b837e6c"
   },
@@ -163975,7 +164575,7 @@
    "lon": 3.7994863687544216,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5601b85438f01c81"
   },
@@ -164000,7 +164600,7 @@
    "lon": 3.3542,
    "geo": "city",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "55d88949a304fb64"
   },
@@ -164025,7 +164625,7 @@
    "lon": 3.3876722238685297,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "55cd843266f18860"
   },
@@ -164050,7 +164650,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "55a4a354cc3dedee"
   },
@@ -164100,7 +164700,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "548c181d373db7bf"
   },
@@ -164125,7 +164725,7 @@
    "lon": 3.1131907954699307,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "547da1def8ea022c"
   },
@@ -164175,7 +164775,7 @@
    "lon": 3.728162902295855,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5445d37ee05d1876"
   },
@@ -164200,7 +164800,7 @@
    "lon": 5.6068,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "54305c4de11d9ea8"
   },
@@ -164225,7 +164825,7 @@
    "lon": 3.673581419511882,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "541ef24a9d239ffe"
   },
@@ -164275,7 +164875,7 @@
    "lon": 3.6984512300609373,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "53323c2457abc25b"
   },
@@ -164325,7 +164925,7 @@
    "lon": 3.1824426985202954,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "530ff28acbb886e3"
   },
@@ -164375,7 +164975,7 @@
    "lon": 3.7209413110879757,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5274197636f17c16"
   },
@@ -164400,7 +165000,7 @@
    "lon": 3.732056,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5254b6887d2c8282"
   },
@@ -164450,7 +165050,7 @@
    "lon": 3.132202937996405,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "5206359aab2198d6"
   },
@@ -164502,7 +165102,7 @@
    "lon": 4.360964150673511,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "512fc9993e3e116e"
   },
@@ -164552,7 +165152,7 @@
    "lon": 3.2571073676381617,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "50e19c842908f69a"
   },
@@ -164627,7 +165227,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4f9cd9c4c9e6eecf"
   },
@@ -164677,7 +165277,7 @@
    "lon": 3.3167291578477784,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4f74ae9cbfc59ea2"
   },
@@ -164702,7 +165302,7 @@
    "lon": 3.5844665770510016,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4ee1bbaf0756d984"
   },
@@ -164777,7 +165377,7 @@
    "lon": 3.4823499157291815,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4e51d3003bf9ec08"
   },
@@ -164801,8 +165401,8 @@
    "lat": 51.05862563960259,
    "lon": 3.744343977825575,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-16",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4cfb0125d6a4a6ee"
   },
@@ -164852,7 +165452,7 @@
    "lon": 3.280617,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4bd11b870d70da27"
   },
@@ -164877,7 +165477,7 @@
    "lon": 4.4519,
    "geo": "postcode",
    "status": "option",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4bc74b6b704ed054"
   },
@@ -164902,7 +165502,7 @@
    "lon": 3.4779,
    "geo": "city",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4b5659001370d661"
   },
@@ -164929,7 +165529,7 @@
    "lon": 3.4633607931988766,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4b1c677c2e10213e"
   },
@@ -165004,7 +165604,7 @@
    "lon": 4.0355,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4ad5321742a32a2b"
   },
@@ -165029,7 +165629,7 @@
    "lon": 3.7244584189591414,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4abb3ff92c57060a"
   },
@@ -165054,7 +165654,7 @@
    "lon": 3.3385,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "49e5bb6e334868e7"
   },
@@ -165081,7 +165681,7 @@
    "lon": 2.9756,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "49df7585df3040b8"
   },
@@ -165131,7 +165731,7 @@
    "lon": 3.227823546554816,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "492ebf358af28b6a"
   },
@@ -165181,7 +165781,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "490038e99637cd2b"
   },
@@ -165231,7 +165831,7 @@
    "lon": 2.878049768769183,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "48054e46f1d3a063"
   },
@@ -165255,8 +165855,8 @@
    "lat": 51.02067634016599,
    "lon": 3.6778810930622807,
    "geo": "address",
-   "status": "option",
-   "checked": "2026-11-16",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4781f3102417a3ea"
   },
@@ -165331,7 +165931,7 @@
    "lon": 3.7244584189591414,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "46e1449b271f460a"
   },
@@ -165356,7 +165956,7 @@
    "lon": 3.7815505892337,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "46232bd704a6d40f"
   },
@@ -165406,7 +166006,7 @@
    "lon": 3.517712536090026,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "45365c21a9dbfa14"
   },
@@ -165431,7 +166031,7 @@
    "lon": 3.2644759462638944,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4477091587efa0ba"
   },
@@ -165456,7 +166056,7 @@
    "lon": 3.3385,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "44387beac5abe3e2"
   },
@@ -165508,7 +166108,7 @@
    "lon": 3.525810948729344,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "44219182003997f4"
   },
@@ -165533,7 +166133,7 @@
    "lon": 3.2096690067323395,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "43595a7549f04d0e"
   },
@@ -165585,7 +166185,7 @@
    "lon": 3.7470793416976784,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "42740e1e0449cdf4"
   },
@@ -165610,7 +166210,7 @@
    "lon": 4.3114133,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "4271772e1f526864"
   },
@@ -165635,7 +166235,7 @@
    "lon": 4.0355,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "42633a2eb5060d20"
   },
@@ -165713,7 +166313,7 @@
    "lon": 3.4779,
    "geo": "city",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "420089761c88f6a6"
   },
@@ -165738,7 +166338,7 @@
    "lon": 3.734130312236353,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "41ac8fe85c52e5ce"
   },
@@ -165763,7 +166363,7 @@
    "lon": 3.8130422559791715,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "417f47d32ca4d403"
   },
@@ -165815,7 +166415,7 @@
    "lon": 3.204080064898519,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "40f94c1028c647cd"
   },
@@ -165840,7 +166440,7 @@
    "lon": 3.5304430539181912,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "40c6a21f72868ad5"
   },
@@ -165869,7 +166469,7 @@
    "lon": 3.214606537564667,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "408032d1dc3e9c43"
   },
@@ -165894,7 +166494,7 @@
    "lon": 3.375695901427661,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3fa87e187078dd28"
   },
@@ -165944,7 +166544,7 @@
    "lon": 3.679749538727112,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3f670df3af35aded"
   },
@@ -165994,7 +166594,7 @@
    "lon": 3.3044397074846725,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3eee21516feec7dc"
   },
@@ -166019,7 +166619,7 @@
    "lon": 3.269946967260031,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3eae5f8c6a73ee02"
   },
@@ -166096,7 +166696,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3cac95e8e94b51a7"
   },
@@ -166173,7 +166773,7 @@
    "lon": 3.4331011643417315,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3c1b743db58d5efa"
   },
@@ -166223,7 +166823,7 @@
    "lon": 3.6862640496373675,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3b69665672133753"
   },
@@ -166248,7 +166848,7 @@
    "lon": 3.5565,
    "geo": "city",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3b3925d45577b0af"
   },
@@ -166273,7 +166873,7 @@
    "lon": 4.395520525116847,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3b1475afffd0df12"
   },
@@ -166327,7 +166927,7 @@
    "lon": 3.3307640615019802,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3a15adecb55bbb67"
   },
@@ -166352,7 +166952,7 @@
    "lon": 3.136052728047451,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "399da3b95e62ea33"
   },
@@ -166377,7 +166977,7 @@
    "lon": 3.272434817689194,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "395882d82351559d"
   },
@@ -166402,7 +167002,7 @@
    "lon": 3.1667,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3935fd0072cc9b46"
   },
@@ -166427,7 +167027,7 @@
    "lon": 3.2641644,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "38ed0dc2242a2e4e"
   },
@@ -166451,8 +167051,8 @@
    "lat": 51.0397604,
    "lon": 3.6199776,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-16",
+   "status": "option",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "38e8f3dafa089f34"
   },
@@ -166477,7 +167077,7 @@
    "lon": 3.2649,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "38e2a0e2dd340839"
   },
@@ -166529,7 +167129,7 @@
    "lon": 4.038132918337619,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "377216230f551cc7"
   },
@@ -166555,8 +167155,8 @@
    "lat": 50.837,
    "lon": 3.4779,
    "geo": "city",
-   "status": "available",
-   "checked": "2026-11-16",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "37306f1dd979fe1e"
   },
@@ -166581,7 +167181,7 @@
    "lon": 3.449590229039699,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "36ac8fe27543f452"
   },
@@ -166631,7 +167231,7 @@
    "lon": 3.447487475746281,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "35b353e29d3b6e63"
   },
@@ -166656,7 +167256,7 @@
    "lon": 3.7017102032165194,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "34c9315d36b1e2c9"
   },
@@ -166681,7 +167281,7 @@
    "lon": 3.732139968614355,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "34ba6a645af6c0c4"
   },
@@ -166731,7 +167331,7 @@
    "lon": 3.3076222961827977,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "343d3eef88690031"
   },
@@ -166756,7 +167356,7 @@
    "lon": 3.7624948,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3438452a81e469e6"
   },
@@ -166784,7 +167384,7 @@
    "lon": 3.6112991832300443,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "343738c11adb65fe"
   },
@@ -166836,7 +167436,7 @@
    "lon": 3.3501834713387715,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "33069fba3f58d047"
   },
@@ -166861,7 +167461,7 @@
    "lon": 3.8621431780089073,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3291bd4b31dde736"
   },
@@ -166886,7 +167486,7 @@
    "lon": 3.862398907619708,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "328cd65b36457713"
   },
@@ -166911,7 +167511,7 @@
    "lon": 3.734950042367438,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "325ebab8597e1494"
   },
@@ -166936,7 +167536,7 @@
    "lon": 3.2253,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "3240bf166041569d"
   },
@@ -167011,7 +167611,7 @@
    "lon": 4.0226939,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "30cf03c008be1516"
   },
@@ -167036,7 +167636,7 @@
    "lon": 3.720095906598427,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "309fe4da4d874739"
   },
@@ -167088,7 +167688,7 @@
    "lon": 3.289765249359033,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2fb907f708cbca5c"
   },
@@ -167113,7 +167713,7 @@
    "lon": 3.2607110880441956,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2fad2e1db6d388d5"
   },
@@ -167190,7 +167790,7 @@
    "lon": 3.332375117675973,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2ed6fb7556e5c974"
   },
@@ -167215,7 +167815,7 @@
    "lon": 3.366766180548167,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2ec46f41342445d2"
   },
@@ -167242,7 +167842,7 @@
    "lon": 4.038132918337619,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2e5c272bbf346e36"
   },
@@ -167267,7 +167867,7 @@
    "lon": 3.6256983687427895,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2d6f232787f4249e"
   },
@@ -167292,7 +167892,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2d4da90ac73e4055"
   },
@@ -167392,7 +167992,7 @@
    "lon": 3.6042103,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2b57c5f0107bb6af"
   },
@@ -167417,7 +168017,7 @@
    "lon": 3.7526350502935255,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2b5657d2b5e1dc90"
   },
@@ -167442,7 +168042,7 @@
    "lon": 3.679749538727112,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2ab45471ef629863"
   },
@@ -167567,7 +168167,7 @@
    "lon": 3.347532,
    "geo": "street",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "29b7a0918dfa807b"
   },
@@ -167591,8 +168191,8 @@
    "lat": 51.199888590677574,
    "lon": 3.795304712726602,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-16",
+   "status": "option",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "296b589c993f8bb6"
   },
@@ -167642,7 +168242,7 @@
    "lon": 3.5496394869123713,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "28ef151e44812ef9"
   },
@@ -167719,7 +168319,7 @@
    "lon": 3.4204,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "27f796c6a6d3b9f6"
   },
@@ -167796,7 +168396,7 @@
    "lon": 3.7543505481480355,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "26b4cfcab8804c2c"
   },
@@ -167850,7 +168450,7 @@
    "lon": 3.395929,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "26637b67f86736ec"
   },
@@ -167925,7 +168525,7 @@
    "lon": 3.6994788,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "25acc10b76147d59"
   },
@@ -167952,7 +168552,7 @@
    "lon": 3.396293,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2587be10845f53a1"
   },
@@ -167977,7 +168577,7 @@
    "lon": 3.46681,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "251a78df3c3058d2"
   },
@@ -168002,7 +168602,7 @@
    "lon": 3.133007,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "24adc71709e0313b"
   },
@@ -168029,7 +168629,7 @@
    "lon": 3.680180869605545,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "24ac633aa4eb682c"
   },
@@ -168104,7 +168704,7 @@
    "lon": 3.336955479225556,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "243abeaa0ecaed75"
   },
@@ -168231,7 +168831,7 @@
    "lon": 3.689150346695255,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "239adfe212b1c433"
   },
@@ -168258,7 +168858,7 @@
    "lon": 3.396293,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "22ecf2a598bf48f3"
   },
@@ -168308,7 +168908,7 @@
    "lon": 3.5985784,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "2178864984003f22"
   },
@@ -168358,7 +168958,7 @@
    "lon": 4.0211401,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "20fb2cb0913cf024"
   },
@@ -168435,7 +169035,7 @@
    "lon": null,
    "geo": "",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "203a7fda272d3167"
   },
@@ -168539,7 +169139,7 @@
    "lon": 3.2404970253459955,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1d84e59e794b5ea4"
   },
@@ -168589,7 +169189,7 @@
    "lon": 4.1469170975222225,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1c2c6d89eebd6d5d"
   },
@@ -168616,7 +169216,7 @@
    "lon": 3.132202937996405,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1c04e95d8a0c1e00"
   },
@@ -168641,7 +169241,7 @@
    "lon": 3.259961118810494,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1bb35df13bbfb37d"
   },
@@ -168770,7 +169370,7 @@
    "lon": 3.7526350502935255,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "1a9d9d5a55ad3b40"
   },
@@ -168822,7 +169422,7 @@
    "lon": 3.7459006862212587,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "19d53de523f40961"
   },
@@ -168999,7 +169599,7 @@
    "lon": 3.680196550295227,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "17724a4fa95a232c"
   },
@@ -169049,7 +169649,7 @@
    "lon": 3.2649,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "173cde5a17fc62aa"
   },
@@ -169176,7 +169776,7 @@
    "lon": 3.1233714,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "14ed77fdd14762f6"
   },
@@ -169228,7 +169828,7 @@
    "lon": 3.39376,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "13ea3bd83fbb6c5c"
   },
@@ -169332,7 +169932,7 @@
    "lon": 3.2535312541468424,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "117f48fcd7d502b4"
   },
@@ -169383,8 +169983,8 @@
    "lat": 50.859161989303225,
    "lon": 3.3159599232639265,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-16",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "110af469af60dcdb"
   },
@@ -169461,7 +170061,7 @@
    "lon": 3.351684975486486,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "101fdd52ede819be"
   },
@@ -169511,7 +170111,7 @@
    "lon": 3.404638,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0f6464603551a5db"
   },
@@ -169536,7 +170136,7 @@
    "lon": 3.2719938385662726,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0edf9be532848920"
   },
@@ -169636,7 +170236,7 @@
    "lon": 3.3667,
    "geo": "postcode",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0dafee04b36e7004"
   },
@@ -169736,7 +170336,7 @@
    "lon": 4.000198638479551,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0cce69501a91d7a6"
   },
@@ -169811,7 +170411,7 @@
    "lon": 3.7073312922869257,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0b2e49a01ffa1232"
   },
@@ -169938,7 +170538,7 @@
    "lon": 3.5000512,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0a7cefe8e454c7c6"
   },
@@ -170220,7 +170820,7 @@
    "lon": 3.51117,
    "geo": "address",
    "status": "option",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "079015bb92a5e532"
   },
@@ -170244,8 +170844,8 @@
    "lat": 50.83676965367318,
    "lon": 3.3497251342805607,
    "geo": "address",
-   "status": "available",
-   "checked": "2026-11-16",
+   "status": "gone",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0741ecccc69af815"
   },
@@ -170374,7 +170974,7 @@
    "lon": 3.3584602392707663,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "053c6c0c5ba4b027"
   },
@@ -170426,7 +171026,7 @@
    "lon": 3.274784707269155,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "04caa29bb7bd5bed"
   },
@@ -170476,7 +171076,7 @@
    "lon": 3.7440679065979308,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "0456b983fd418700"
   },
@@ -170603,7 +171203,7 @@
    "lon": 3.075043790431333,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "02b8e815b515f91b"
   },
@@ -170813,7 +171413,7 @@
    "lon": 3.3358901574889024,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "00b2cb8bf1c12cd0"
   },
@@ -170863,7 +171463,7 @@
    "lon": 3.332375117675973,
    "geo": "address",
    "status": "available",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "mailed": true,
    "id": "009f950b2dbf8821"
   },

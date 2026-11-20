@@ -385,6 +385,11 @@
    "level": "address",
    "lon": 3.752333399066315
   },
+  "antwerpsesteenweg 61|9000|gent": {
+   "lat": 51.05864583592342,
+   "level": "address",
+   "lon": 3.7436086768576105
+  },
   "antwerpsestraat 57|2845|niel": {
    "lat": 51.10863523907262,
    "level": "address",
@@ -3344,6 +3349,11 @@
    "level": "address",
    "lon": 3.482558779020003
   },
+  "engelsenlaan 70|9600|ronse": {
+   "lat": 50.74422868424319,
+   "level": "address",
+   "lon": 3.588083369605399
+  },
   "epc jan breydelstraat 115|8530|harelbeke": {
    "level": "none"
   },
@@ -4224,6 +4234,11 @@
    "level": "address",
    "lon": 4.0364236298194
   },
+  "groenstraat 124|1800|vilvoorde": {
+   "lat": 50.93285304473598,
+   "level": "address",
+   "lon": 4.432114596246698
+  },
   "groenstraat 2|8551|heestert": {
    "lat": 50.78223209708247,
    "level": "address",
@@ -4611,6 +4626,11 @@
    "lat": 51.029314760012035,
    "level": "address",
    "lon": 3.036144058095904
+  },
+  "hansbekedorp 40|9850|deinze": {
+   "lat": 51.07580156913724,
+   "level": "address",
+   "lon": 3.5356318084973024
   },
   "hanzestraat 13|8370|blankenberge": {
    "lat": 51.29889476595688,
@@ -10380,6 +10400,11 @@
    "level": "address",
    "lon": 3.746586402895909
   },
+  "oude heirbaan 10|9800|grammene": {
+   "lat": 50.97888946409625,
+   "level": "address",
+   "lon": 3.474174401955231
+  },
   "oude holstraat 8|9041|oostakker": {
    "lat": 51.101380309696474,
    "level": "address",
@@ -11495,6 +11520,11 @@
    "level": "address",
    "lon": 3.7121128322015084
   },
+  "raketstraat 9|9000|gent": {
+   "lat": 51.04028271361408,
+   "level": "address",
+   "lon": 3.711585182786714
+  },
   "rampelberg 153||baardegem": {
    "lat": 50.9609365,
    "level": "address",
@@ -11770,6 +11800,11 @@
    "lat": 50.79469282811107,
    "level": "address",
    "lon": 3.1220928048430996
+  },
+  "rijsenbergstraat 145|9000|gent": {
+   "lat": 51.041675452173706,
+   "level": "address",
+   "lon": 3.702443998326238
   },
   "rijsenbergstraat 400|9000|gent": {
    "lat": 51.042718359839355,
@@ -12891,6 +12926,11 @@
    "level": "address",
    "lon": 4.44389382255513
   },
+  "sint-michielsstraat 13/a|9000|gent": {
+   "lat": 51.053933777670366,
+   "level": "street",
+   "lon": 3.7180516840972615
+  },
   "sint-michielsstraat 13a/102|9000|gent": {
    "lat": 51.0539988,
    "lon": 3.7179235
@@ -12954,6 +12994,11 @@
    "lat": 51.06609466143914,
    "level": "address",
    "lon": 3.728903277544031
+  },
+  "sint-salvatorstraat 83|9000|gent": {
+   "lat": 51.06512106284965,
+   "level": "address",
+   "lon": 3.728858229751899
   },
   "sint-tillostraat 7|8870|izegem": {
    "lat": 50.916967594662374,
@@ -13908,6 +13953,11 @@
    "level": "address",
    "lon": 3.529146842697144
   },
+  "tolpoortstraat 40|9800|deinze": {
+   "lat": 50.980100777930794,
+   "level": "street",
+   "lon": 3.529926202854661
+  },
   "tolpoortstraat 68|9800|deinze": {
    "lat": 50.98047250283231,
    "level": "address",
@@ -13952,6 +14002,11 @@
    "lat": 50.85099927351246,
    "level": "address",
    "lon": 3.3044397074846725
+  },
+  "tramstraat 32/0001|9070|destelbergen": {
+   "lat": 51.03029155159478,
+   "level": "street",
+   "lon": 3.801664040298122
   },
   "tramstraat 84|9070|heusden": {
    "lat": 51.03208627609314,
@@ -14651,6 +14706,11 @@
    "level": "address",
    "lon": 3.7285937622329803
   },
+  "voormuide 79|9000|gent": {
+   "lat": 51.069109158050566,
+   "level": "address",
+   "lon": 3.729442916119435
+  },
   "voorstraat 10|9970|kaprijke": {
    "lat": 51.218227755814546,
    "level": "address",
@@ -15002,6 +15062,11 @@
    "level": "address",
    "lon": 3.2669402369097735
   },
+  "wellingstraat 109b|8730|beernem": {
+   "lat": 51.125814552989,
+   "level": "address",
+   "lon": 3.29879195298863
+  },
   "wellingstraat 137|9070|heusden": {
    "lat": 51.00723589414721,
    "level": "address",
@@ -15298,6 +15363,16 @@
    "lat": 50.73722395378327,
    "level": "address",
    "lon": 3.622875692468116
+  },
+  "woeker 10|9700|oudenaarde": {
+   "lat": 50.84532920742292,
+   "level": "address",
+   "lon": 3.60594124211217
+  },
+  "woeker 8|9700|oudenaarde": {
+   "lat": 50.84544712903258,
+   "level": "address",
+   "lon": 3.6057987532039926
   },
   "woestenseweg 2a|8970|poperinge": {
    "lat": 50.87099215168757,
@@ -15609,6 +15684,11 @@
    "lat": 51.052272766671564,
    "level": "address",
    "lon": 3.719198334933453
+  },
+  "zwartkloosterstraat 1|2800|mechelen": {
+   "lat": 51.00896990803481,
+   "level": "address",
+   "lon": 4.473089160669901
   },
   "zwevegemsestraat 20|8500|kortrijk": {
    "lat": 50.825748957466345,

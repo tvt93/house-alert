@@ -2858,6 +2858,11 @@
    "lat": 50.9343252,
    "lon": 3.9747733
   },
+  "dorpsstraat 28||zwijnaarde": {
+   "lat": 51.0024334,
+   "level": "address",
+   "lon": 3.7151132
+  },
   "dorpsstraat 7a|8840|westrozebeke": {
    "lat": 50.92890613495644,
    "level": "address",
@@ -10584,6 +10589,11 @@
    "level": "address",
    "lon": 3.590516583216318
   },
+  "oudestraat 9|9600|ronse": {
+   "lat": 50.75404029196907,
+   "level": "address",
+   "lon": 3.5935152156612853
+  },
   "oudevest 59|9000|gent": {
    "lat": 51.05954447787752,
    "level": "address",
@@ -12072,6 +12082,11 @@
    "lat": 50.91400596387653,
    "level": "address",
    "lon": 3.245659816334528
+  },
+  "rubbrechtstraat 64|8972|roesbrugge-haringe": {
+   "lat": 50.91739,
+   "level": "address",
+   "lon": 2.6268314
   },
   "rue beaureux 29|7910|frasnes-lez-anvaing": {
    "lat": 50.71076677001376,
@@ -14622,6 +14637,11 @@
    "lat": 51.19721385658387,
    "level": "address",
    "lon": 4.069074252654904
+  },
+  "vleeshouwersstraat 4|8630|veurne": {
+   "lat": 51.071805698356854,
+   "level": "address",
+   "lon": 2.6611424010307854
   },
   "vlierlaan 8|8500|kortrijk": {
    "lat": 50.82430987095439,

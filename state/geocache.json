@@ -1463,6 +1463,11 @@
    "level": "address",
    "lon": 4.304649368811344
   },
+  "broekstraat 149|9700|oudenaarde": {
+   "lat": 50.8539545528167,
+   "level": "address",
+   "lon": 3.6077005050431357
+  },
   "broekstraat 29|9420|mere": {
    "lat": 50.91370098057512,
    "level": "address",
@@ -12626,6 +12631,11 @@
    "lat": 50.847076272403086,
    "level": "address",
    "lon": 2.885319538470207
+  },
+  "schutterijstraat 13|9800|deinze": {
+   "lat": 50.985270713514964,
+   "level": "address",
+   "lon": 3.528280202978788
   },
   "schuttershoflaan 60|8560|gullegem": {
    "lat": 50.84278768415531,

@@ -1334,6 +1334,11 @@
    "level": "address",
    "lon": 3.477873273941998
   },
+  "boterpotstraat 23|8530|harelbeke": {
+   "lat": 50.8583421825194,
+   "level": "address",
+   "lon": 3.3162135002684177
+  },
   "boterpotstraat 9|8530|harelbeke": {
    "lat": 50.85853946618542,
    "level": "address",
@@ -1381,6 +1386,11 @@
    "lat": 50.72277402455312,
    "level": "address",
    "lon": 3.7384910119371733
+  },
+  "bradericplein 11|8340|damme": {
+   "lat": 51.23164236591286,
+   "level": "address",
+   "lon": 3.306502200897129
   },
   "brakelmeersstraat 14|9830|sint-martens-latem": {
    "lat": 51.02517078129946,
@@ -2714,6 +2724,11 @@
    "level": "address",
    "lon": 3.584358796653743
   },
+  "doornikserijksweg 64|8510|bellegem": {
+   "lat": 50.78438696181965,
+   "level": "address",
+   "lon": 3.297764675030503
+  },
   "doornikserijksweg 77|8500|kortrijk": {
    "lat": 50.7928067,
    "lon": 3.29084
@@ -3465,6 +3480,11 @@
    "level": "address",
    "lon": 3.2260654139694327
   },
+  "ferdinand vervaeckestraat 7|8870|izegem": {
+   "lat": 50.93047300780986,
+   "level": "address",
+   "lon": 3.214113443546784
+  },
   "filaturestraat 32|9000|gent": {
    "lat": 51.066940696975095,
    "level": "address",
@@ -3594,6 +3614,11 @@
   "frans desmidtplein 12|8300|knokke-heist": {
    "lat": 51.3469325,
    "lon": 3.2889206
+  },
+  "frans van ryhovelaan 126|9000|gent": {
+   "lat": 51.070552422256306,
+   "level": "address",
+   "lon": 3.7089608715916675
   },
   "frans van ryhovelaan 132|9000|gent": {
    "lat": 51.07063174259214,
@@ -4335,6 +4360,11 @@
   "grote markt 13|8800|roeselare": {
    "lat": 50.9450028,
    "lon": 3.123618
+  },
+  "grote markt 1|8870|izegem": {
+   "lat": 50.91939460421006,
+   "level": "address",
+   "lon": 3.2157171201832964
   },
   "grote markt 28|9600|ronse": {
    "lat": 50.74714112699682,
@@ -5280,6 +5310,11 @@
    "level": "address",
    "lon": 3.0932388588915107
   },
+  "honzebroekstraat 123|8800|roeselare": {
+   "lat": 50.96616132645274,
+   "level": "address",
+   "lon": 3.110922435461232
+  },
   "honzebroekstraat 15|8800|roeselare": {
    "lat": 50.95938193976876,
    "level": "address",
@@ -5468,6 +5503,11 @@
    "lat": 51.05550642441494,
    "level": "address",
    "lon": 3.729569932058161
+  },
+  "houtbriel 3|9000|gent": {
+   "lat": 51.055556929108185,
+   "level": "address",
+   "lon": 3.7299985662915076
   },
   "houtmarkt 11|9300|aalst": {
    "lat": 50.93431903498763,
@@ -6214,6 +6254,11 @@
    "level": "address",
    "lon": 4.391664923914893
   },
+  "kapelstraat 86|8540|deerlijk": {
+   "lat": 50.81928508913458,
+   "level": "address",
+   "lon": 3.3764489804310123
+  },
   "kapitteldreef 51|9830|sint-martens-latem": {
    "lat": 51.0080489594857,
    "level": "address",
@@ -6332,6 +6377,11 @@
    "lat": 50.9918272700557,
    "level": "address",
    "lon": 3.3193443717607622
+  },
+  "kasteelstraat 16a|9190|stekene": {
+   "lat": 51.18578591122046,
+   "level": "address",
+   "lon": 3.9876989748033354
   },
   "kasteelstraat 18|8500|kortrijk": {
    "lat": 50.828462786191196,
@@ -6553,6 +6603,11 @@
    "level": "address",
    "lon": 3.381784302207628
   },
+  "kerkstraat 1a|8460|oudenburg": {
+   "lat": 51.18427303326401,
+   "level": "address",
+   "lon": 3.0046659847600177
+  },
   "kerkstraat 1b|8587|spiere-helkijn": {
    "lat": 50.732128452352235,
    "level": "address",
@@ -6665,6 +6720,16 @@
    "lat": 50.89261746521687,
    "level": "address",
    "lon": 3.1705430856350243
+  },
+  "kerzelaarstraat 33|9970|kaprijke": {
+   "lat": 51.246690746238116,
+   "level": "address",
+   "lon": 3.6046622030273148
+  },
+  "kerzelaarstraat 35|9970|kaprijke": {
+   "lat": 51.246687793228574,
+   "level": "address",
+   "lon": 3.6045528316412265
   },
   "ketelpoort 34|9000|gent": {
    "lat": 51.0486505286269,
@@ -6989,6 +7054,11 @@
    "lat": 51.06123230887135,
    "level": "address",
    "lon": 3.732795989517692
+  },
+  "kongostraat 5|8520|kuurne": {
+   "lat": 50.850798013986946,
+   "level": "address",
+   "lon": 3.268959227309109
   },
   "konijnenweg 2|8660|de panne": {
    "lat": 51.09993352338224,
@@ -7676,6 +7746,11 @@
    "level": "address",
    "lon": 3.790335772910916
   },
+  "kruisstraat 132|8560|wevelgem": {
+   "lat": 50.812326208178575,
+   "level": "address",
+   "lon": 3.156224717890381
+  },
   "kruisstraat 18|9600|ronse": {
    "lat": 50.75069415468149,
    "level": "address",
@@ -8031,6 +8106,11 @@
    "lat": 51.22683190146683,
    "level": "address",
    "lon": 3.5844665770510016
+  },
+  "leiepark 13|9051|afsnee": {
+   "lat": 51.030052871510264,
+   "level": "address",
+   "lon": 3.671764521300091
   },
   "leiestraat 13|8500|kortrijk": {
    "lat": 50.828446469715416,
@@ -8434,6 +8514,11 @@
    "lat": 51.031450718551824,
    "level": "address",
    "lon": 3.8285400849829747
+  },
+  "loverstraat 2d|8710|sint-baafs-vijve": {
+   "lat": 50.911070744229505,
+   "level": "address",
+   "lon": 3.3987252093600397
   },
   "lozevisserstraat 3|9000|gent": {
    "lat": 51.04453880142386,
@@ -9634,6 +9719,11 @@
    "level": "address",
    "lon": 2.909124170659172
   },
+  "nieuwpoortlaan 142|8660|de panne": {
+   "lat": 51.1050279,
+   "level": "address",
+   "lon": 2.5990206
+  },
   "nieuwpoortse steenweg 147|8470|gistel": {
    "lat": 51.14431351568574,
    "level": "address",
@@ -9909,6 +9999,11 @@
    "lat": 51.01978347092867,
    "level": "address",
    "lon": 3.67617455365354
+  },
+  "octaaf van dammestraat 45|9030|mariakerke": {
+   "lat": 51.06874854223944,
+   "level": "address",
+   "lon": 3.6821028146362407
   },
   "odiel spruyttestraat 18|8870|izegem": {
    "lat": 50.9101052527624,
@@ -15176,6 +15271,11 @@
    "level": "address",
    "lon": 3.861774584286204
   },
+  "weststraat 37|8770|ingelmunster": {
+   "lat": 50.92114634784381,
+   "level": "address",
+   "lon": 3.2503712493406396
+  },
   "weststraat 39|8770|ingelmunster": {
    "lat": 50.92120075338355,
    "level": "address",
@@ -15622,6 +15722,11 @@
    "lat": 51.06269000173097,
    "level": "address",
    "lon": 3.699092232784683
+  },
+  "zomerstraat 11|2340|beerse": {
+   "lat": 51.30842403431448,
+   "level": "address",
+   "lon": 4.839382866059373
   },
   "zomertij 31|8501|heule": {
    "lat": 50.83778539135298,

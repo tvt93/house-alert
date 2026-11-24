@@ -1176,6 +1176,11 @@
    "level": "address",
    "lon": 4.328025792405856
   },
+  "blauwersstraat 3|9930|lievegem": {
+   "lat": 51.115871538036984,
+   "level": "address",
+   "lon": 3.5604122726708844
+  },
   "blauwesteen 209|9600|ronse": {
    "lat": 50.74374021098626,
    "level": "address",
@@ -11648,6 +11653,11 @@
    "lat": 50.833862281811385,
    "level": "address",
    "lon": 3.2621762563099375
+  },
+  "provinciebaan 140||kalken": {
+   "lat": 51.0259496,
+   "level": "address",
+   "lon": 3.889263
   },
   "provincieweg 111/201|9552|herzele borsbeke": {
    "lat": 50.9065138,

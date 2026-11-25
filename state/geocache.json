@@ -3163,6 +3163,11 @@
    "level": "address",
    "lon": 3.3261901442801625
   },
+  "eedverbondkaai 102|9000|gent": {
+   "lat": 51.041331590117224,
+   "level": "address",
+   "lon": 3.7155162030882214
+  },
   "eedverbondkaai 12|9000|gent": {
    "lat": 51.04232791016046,
    "level": "address",
@@ -3187,6 +3192,11 @@
    "lat": 51.04214815155205,
    "level": "address",
    "lon": 3.7215748044197494
+  },
+  "eekhoutdriesstraat 6|9041|oostakker": {
+   "lat": 51.10134423404477,
+   "level": "address",
+   "lon": 3.762448424825353
   },
   "eeklostraat 200a|9030|mariakerke": {
    "lat": 51.078951827575615,
@@ -5358,6 +5368,11 @@
    "level": "address",
    "lon": 3.115899561968046
   },
+  "honzebroekstraat 21b|8800|roeselare": {
+   "lat": 50.96018903807328,
+   "level": "address",
+   "lon": 3.115074686392986
+  },
   "hoogkamerstraat 243|9140|temse": {
    "lat": 51.13157399560893,
    "level": "address",
@@ -5471,6 +5486,11 @@
    "lat": 50.998900230157055,
    "level": "address",
    "lon": 3.3314451920908508
+  },
+  "hoogstraat 64|8780|oostrozebeke": {
+   "lat": 50.9206405306486,
+   "level": "address",
+   "lon": 3.3294111293669366
   },
   "hoogstraat 69|9000|gent": {
    "lat": 51.05501563388952,
@@ -6710,6 +6730,11 @@
    "lat": 51.31759973187598,
    "level": "address",
    "lon": 5.086870068628767
+  },
+  "kerkstraat 59|8520|kuurne": {
+   "lat": 50.85427503150686,
+   "level": "address",
+   "lon": 3.287063632128047
   },
   "kerkstraat 62|8570|anzegem": {
    "lat": 50.83694431225611,
@@ -8754,6 +8779,11 @@
    "level": "address",
    "lon": 3.2007458647945177
   },
+  "mandelstraat 73|8870|izegem": {
+   "lat": 50.9242957630434,
+   "level": "address",
+   "lon": 3.2012854450917714
+  },
   "mandelvijver 20a|8720|wakken": {
    "lat": 50.929144364477224,
    "level": "address",
@@ -9062,6 +9092,16 @@
    "lat": 51.09934500165943,
    "level": "address",
    "lon": 2.593131316924679
+  },
+  "meibosstraat 4|8780|oostrozebeke": {
+   "lat": 50.925796901617716,
+   "level": "address",
+   "lon": 3.3448753961098427
+  },
+  "meibosstraat 6|8780|oostrozebeke": {
+   "lat": 50.925740555903964,
+   "level": "address",
+   "lon": 3.344939924189322
   },
   "meidoornlaan 53|9230|wetteren": {
    "lat": 50.99221280805966,
@@ -10337,6 +10377,11 @@
    "level": "address",
    "lon": 3.2817697517213316
   },
+  "oostrozebekestraat 71|8770|ingelmunster": {
+   "lat": 50.919652369250095,
+   "level": "address",
+   "lon": 3.259863420925198
+  },
   "oostrozebekestraat 74|8770|ingelmunster": {
    "lat": 50.919178263066286,
    "level": "address",
@@ -10805,6 +10850,11 @@
    "lat": 51.01565791188678,
    "level": "street",
    "lon": 4.020146647668161
+  },
+  "overleiestraat 140|8530|harelbeke": {
+   "lat": 50.861655002781305,
+   "level": "address",
+   "lon": 3.3026985744316426
   },
   "overleiestraat 56|8530|harelbeke": {
    "lat": 50.85972008005478,
@@ -12167,6 +12217,11 @@
    "lat": 50.9835027,
    "level": "address",
    "lon": 4.0580497
+  },
+  "romestraat 33|8400|oostende": {
+   "lat": 51.22500102954354,
+   "level": "address",
+   "lon": 2.9152999014491088
   },
   "ronsevaalstraat 33|9320|erembodegem": {
    "lat": 50.922693339634804,
@@ -14742,6 +14797,11 @@
   },
   "vijverstraat 38|9300|aalst": {
    "level": "none"
+  },
+  "vijverstraat 38||wetteren": {
+   "lat": 51.00479821648626,
+   "level": "address",
+   "lon": 3.8781979974640994
   },
   "vijverwegel 93|9090|melle": {
    "lat": 51.0146649,

@@ -63,6 +63,11 @@
    "level": "address",
    "lon": 3.7134122407738968
   },
+  "abeelseweg 32|8970|poperinge": {
+   "lat": 50.845113494992226,
+   "level": "address",
+   "lon": 2.715106963637213
+  },
   "abraham voortmanstraat 4|9000|gent": {
    "lat": 51.06536647278639,
    "level": "address",
@@ -200,6 +205,11 @@
    "lat": 51.144742992221836,
    "level": "address",
    "lon": 2.730595893948969
+  },
+  "albert i laan 6|8620|nieuwpoort": {
+   "lat": 51.13939644931668,
+   "level": "address",
+   "lon": 2.7392526473897183
   },
   "albert i promenade 25|8400|oostende": {
    "lat": 51.2351216,
@@ -2401,6 +2411,11 @@
    "lat": 51.009640041281585,
    "level": "address",
    "lon": 3.872747974626257
+  },
+  "de spiegels 2||wetteren": {
+   "lat": 51.009109854717686,
+   "level": "address",
+   "lon": 3.8717025832345926
   },
   "de stip 10|8530|harelbeke": {
    "lat": 50.860391777400096,
@@ -6009,6 +6024,11 @@
    "level": "address",
    "lon": 3.7484211374290397
   },
+  "jean jaurèsplein 4|8930|menen": {
+   "lat": 50.805654162392635,
+   "level": "address",
+   "lon": 3.109264986393923
+  },
   "jean-baptiste de ghellincklaan 0|9051|sint-denijs-westrem": {
    "lat": 51.02225082318271,
    "level": "street",
@@ -8180,6 +8200,11 @@
    "lat": 51.0049038,
    "lon": 3.5659351
   },
+  "leernsesteenweg 150|9800|deinze": {
+   "lat": 51.00907401784775,
+   "level": "address",
+   "lon": 3.577546005670896
+  },
   "leeweg 22|9270|laarne": {
    "lat": 51.03033721318481,
    "level": "address",
@@ -8889,6 +8914,11 @@
    "level": "address",
    "lon": 3.335137720836657
   },
+  "markt 5|9230|wetteren": {
+   "lat": 51.00640157907435,
+   "level": "address",
+   "lon": 3.88512302187411
+  },
   "markt 60|9800|deinze": {
    "lat": 50.98485485551461,
    "level": "address",
@@ -9216,6 +9246,11 @@
    "lat": 50.95576596169671,
    "level": "address",
    "lon": 3.1136565537191583
+  },
+  "merelstraat 17|9200|dendermonde": {
+   "lat": 51.0237278765589,
+   "level": "address",
+   "lon": 4.118344196155958
   },
   "merelstraat 44|9000|gent": {
    "lat": 51.03519248845882,
@@ -11866,6 +11901,11 @@
    "level": "address",
    "lon": 3.6114762291740687
   },
+  "rendekensstraat 11|9070|heusden": {
+   "lat": 51.03601739658353,
+   "level": "address",
+   "lon": 3.8135733467550104
+  },
   "reningelstseweg 2|8970|poperinge": {
    "lat": 50.84571710405614,
    "level": "address",
@@ -14266,6 +14306,11 @@
    "level": "address",
    "lon": 3.529875694146129
   },
+  "tolpoortstraat 82|9800|deinze": {
+   "lat": 50.98007081806721,
+   "level": "address",
+   "lon": 3.5302256497175257
+  },
   "tolpoortstraat 93|9800|deinze": {
    "lat": 50.9795738700356,
    "level": "address",
@@ -14500,6 +14545,11 @@
    "lat": 51.00718548466894,
    "level": "address",
    "lon": 3.883143690556697
+  },
+  "van den hautelei 11|2100|deurne": {
+   "lat": 51.205876545789856,
+   "level": "address",
+   "lon": 4.467986197519608
   },
   "van iseghemlaan 49|8400|oostende": {
    "lat": 51.23333103725286,
@@ -14806,6 +14856,11 @@
   "vijverwegel 93|9090|melle": {
    "lat": 51.0146649,
    "lon": 3.7745094
+  },
+  "vinkenlaan 10|8870|emelgem": {
+   "lat": 50.92658551248281,
+   "level": "address",
+   "lon": 3.2377346662285023
   },
   "vinkenlaan 25|8870|izegem": {
    "lat": 50.92675503609616,

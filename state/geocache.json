@@ -3583,6 +3583,11 @@
    "level": "address",
    "lon": 3.7104986765329686
   },
+  "filaturestraat 6/202|9000|gent": {
+   "lat": 51.06695641783136,
+   "level": "street",
+   "lon": 3.7094205606806536
+  },
   "filips benthuysstraat 10|9040|sint-amandsberg": {
    "lat": 51.05892055094533,
    "level": "address",
@@ -6410,6 +6415,11 @@
    "level": "address",
    "lon": 3.3764489804310123
   },
+  "kapiteinstraat 13|9000|gent": {
+   "lat": 51.087551955945614,
+   "level": "address",
+   "lon": 3.7252799652052637
+  },
   "kapitteldreef 51|9830|sint-martens-latem": {
    "lat": 51.0080489594857,
    "level": "address",
@@ -7906,6 +7916,11 @@
    "lat": 51.05446153972657,
    "level": "address",
    "lon": 3.7310362942637494
+  },
+  "kruissteenweg 32|3700|tongeren-borgloon": {
+   "lat": 50.77920114780634,
+   "level": "address",
+   "lon": 5.457515103679559
   },
   "kruisstraat 129|9090|melle": {
    "lat": 51.00560596536507,
@@ -14037,6 +14052,11 @@
    "lat": 51.0356495,
    "level": "address",
    "lon": 3.7537948
+  },
+  "steenweg 144|9810|eke": {
+   "lat": 50.960337894310825,
+   "level": "address",
+   "lon": 3.6433665620528264
   },
   "steenweg 63|9810|nazareth-de pinte": {
    "lat": 50.95290282182579,

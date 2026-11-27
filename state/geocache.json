@@ -885,6 +885,11 @@
    "level": "address",
    "lon": 3.671045154685954
   },
+  "belgradostraat 72|9000|gent": {
+   "lat": 51.05120311123305,
+   "level": "address",
+   "lon": 3.7327179136840685
+  },
   "belleboslaan 58|8480|ichtegem": {
    "lat": 51.13266410471675,
    "level": "address",
@@ -1890,6 +1895,11 @@
    "level": "address",
    "lon": 3.6594889864288627
   },
+  "burg. van gansberghelaan 67|9820|merelbeke": {
+   "lat": 50.97625996604824,
+   "level": "address",
+   "lon": 3.7710883206957004
+  },
   "burgemeester achiel heymanstraat 85|9140|tielrode": {
    "lat": 51.1152703,
    "lon": 4.1816564
@@ -2722,6 +2732,11 @@
    "level": "address",
    "lon": 3.2411783616220617
   },
+  "don boscolaan 4||kortrijk": {
+   "lat": 50.793647655587144,
+   "level": "address",
+   "lon": 3.2411783616220617
+  },
   "donkerstraat 13||de klinge": {
    "lat": 51.2529726,
    "level": "address",
@@ -2886,6 +2901,11 @@
    "lat": 50.93298126352799,
    "level": "address",
    "lon": 3.0125254309095224
+  },
+  "dorpsstraat 10|3690|zutendaal": {
+   "lat": 50.93142077635087,
+   "level": "address",
+   "lon": 5.572959843217619
   },
   "dorpsstraat 127|9190|stekene": {
    "lat": 51.201900004429476,
@@ -3135,6 +3155,11 @@
    "level": "address",
    "lon": 3.73685946314119
   },
+  "echel 17|9401|pollare": {
+   "lat": 50.81723046870805,
+   "level": "address",
+   "lon": 4.003038721741452
+  },
   "edelareberg 22|9700|oudenaarde": {
    "lat": 50.837359372205874,
    "level": "address",
@@ -3242,6 +3267,11 @@
    "lat": 51.094344143037034,
    "level": "address",
    "lon": 2.5804120066312755
+  },
+  "egelare 12|9850|nevele": {
+   "lat": 51.03528553496261,
+   "level": "address",
+   "lon": 3.5579680300592433
   },
   "eikenlaan 40|8553|otegem": {
    "lat": 50.80855312249153,
@@ -4107,6 +4137,11 @@
    "level": "address",
    "lon": 4.035803770550058
   },
+  "geraardsbergsestraat 236|9300|aalst": {
+   "lat": 50.928229735761484,
+   "level": "address",
+   "lon": 4.035066817414752
+  },
   "geraardsbergsestraat 262|9300|aalst": {
    "lat": 50.92660318217432,
    "level": "address",
@@ -4361,6 +4396,11 @@
    "level": "address",
    "lon": 4.294325048584415
   },
+  "grote baan 70a|9310|herdersem": {
+   "lat": 50.96440450018402,
+   "level": "address",
+   "lon": 4.062561544995873
+  },
   "grote ganzeplas 32|9880|aalter": {
    "lat": 51.07056915833533,
    "level": "address",
@@ -4448,6 +4488,11 @@
    "lat": 51.19936604930701,
    "level": "address",
    "lon": 3.8112874236660517
+  },
+  "grote peperstraat 37||sint-niklaas": {
+   "lat": 51.163323654085154,
+   "level": "address",
+   "lon": 4.143745816539905
   },
   "grote steenweg 105b|9840|nazareth-de": {
    "lat": 50.9867226,
@@ -5027,6 +5072,11 @@
    "level": "address",
    "lon": 4.0786488
   },
+  "hellegat 13|9230|wetteren": {
+   "lat": 50.987508419183456,
+   "level": "address",
+   "lon": 3.852647687230309
+  },
   "hellestraat 43|9800|astene": {
    "lat": 50.991093779990926,
    "level": "address",
@@ -5387,6 +5437,11 @@
    "lat": 50.96018903807328,
    "level": "address",
    "lon": 3.115074686392986
+  },
+  "hoogkamerstraat 144|9140|temse": {
+   "lat": 51.12875776477601,
+   "level": "address",
+   "lon": 4.196350239711343
   },
   "hoogkamerstraat 243|9140|temse": {
    "lat": 51.13157399560893,
@@ -5903,6 +5958,9 @@
    "lat": 50.849760474635914,
    "level": "address",
    "lon": 3.252151183762518
+  },
+  "izegemsestraat 333|8870|izegem": {
+   "level": "none"
   },
   "izegemsestraat 33|8501|heule": {
    "lat": 50.85273062148215,
@@ -8718,6 +8776,11 @@
    "level": "address",
    "lon": 3.7108003757014236
   },
+  "maaltemeers 12|9052|zwijnaarde": {
+   "lat": 51.01675888127347,
+   "level": "address",
+   "lon": 3.705837525859918
+  },
   "maaltemeers 62|9052|zwijnaarde": {
    "lat": 51.01747358745951,
    "level": "address",
@@ -8727,6 +8790,11 @@
    "lat": 51.04176274609447,
    "level": "address",
    "lon": 4.479117807565657
+  },
+  "maelbroekstraat 48|9230|wetteren": {
+   "lat": 50.98951022204458,
+   "level": "address",
+   "lon": 3.887509871804789
   },
   "maenhoutstraat 80|9830|sint-martens-latem": {
    "lat": 51.01470232045363,
@@ -8803,6 +8871,11 @@
    "lat": 50.95431224040918,
    "level": "address",
    "lon": 3.7174083285469695
+  },
+  "mandellaan 67|8800|roeselare": {
+   "lat": 50.95668723680056,
+   "level": "address",
+   "lon": 3.133419051388142
   },
   "mandelstraat 14|8870|izegem": {
    "lat": 50.922141690807756,
@@ -9242,6 +9315,11 @@
    "level": "address",
    "lon": 4.094611268720274
   },
+  "merellaan 25|9060|zelzate": {
+   "lat": 51.201653301412655,
+   "level": "address",
+   "lon": 3.790198766385605
+  },
   "merellaan 56|9060|zelzate": {
    "lat": 51.200857372335044,
    "level": "address",
@@ -9261,6 +9339,11 @@
    "lat": 51.03519248845882,
    "level": "address",
    "lon": 3.7245465012579904
+  },
+  "merestraat 83||erpe": {
+   "lat": 50.926718040882854,
+   "level": "address",
+   "lon": 3.9837845581256817
   },
   "merkemveldweg 22|8210|loppem": {
    "lat": 51.12671848254928,
@@ -9777,6 +9860,11 @@
    "lat": 51.02137653659543,
    "level": "address",
    "lon": 3.620527388164161
+  },
+  "neptunusstraat 7|8870|izegem": {
+   "lat": 50.90822893699702,
+   "level": "address",
+   "lon": 3.2284847354905915
   },
   "nestevoorde 2|9930|lievegem": {
    "lat": 51.11929180072259,
@@ -12229,6 +12317,11 @@
    "level": "address",
    "lon": 3.1959938637032748
   },
+  "roeselaarsestraat 63|8501|heule": {
+   "lat": 50.8470995297842,
+   "level": "address",
+   "lon": 3.2218251280142107
+  },
   "roeselaarsestraat 78|8850|ardooie": {
    "lat": 50.9617737,
    "lon": 3.164941
@@ -13808,6 +13901,11 @@
    "level": "address",
    "lon": 3.136052728047451
   },
+  "stationsstraat 75|8780|oostrozebeke": {
+   "lat": 50.91664042320962,
+   "level": "address",
+   "lon": 3.3342814738175455
+  },
   "stationsstraat 86|8551|zwevegem": {
    "lat": 50.77843902881397,
    "level": "address",
@@ -13997,6 +14095,11 @@
    "level": "street",
    "lon": 3.304771425948084
   },
+  "stijn streuvelsstraat 1|8870|izegem": {
+   "lat": 50.923108866956866,
+   "level": "address",
+   "lon": 3.230453161939339
+  },
   "stijn streuvelsstraat 1|9600|ronse": {
    "lat": 50.752270144085024,
    "level": "address",
@@ -14062,6 +14165,11 @@
    "lat": 51.2158115107754,
    "level": "address",
    "lon": 2.907332777999475
+  },
+  "sweetstraat 10|3870|heers": {
+   "lat": 50.72798330253409,
+   "level": "address",
+   "lon": 5.252715150411499
   },
   "swolfsstraat 9|8300|knokke": {
    "lat": 51.35406387401733,
@@ -14196,6 +14304,11 @@
    "lat": 50.79167541542243,
    "level": "address",
    "lon": 4.103275749368972
+  },
+  "terluchtestraat 27|8020|oostkamp": {
+   "lat": 51.09888367798152,
+   "level": "address",
+   "lon": 3.211044016975318
   },
   "terluchtestraat 33|8020|oostkamp": {
    "lat": 51.099538173238585,
@@ -14546,6 +14659,11 @@
    "level": "address",
    "lon": 2.751291779169489
   },
+  "van bunnenlaan 41||knokke-heist": {
+   "lat": 51.35082832115082,
+   "level": "address",
+   "lon": 3.2930302042088164
+  },
   "van cromphoutstraat 27|9230|wetteren": {
    "lat": 51.00718548466894,
    "level": "address",
@@ -14872,6 +14990,11 @@
    "level": "address",
    "lon": 3.237348066764348
   },
+  "vinkenlaan 6|8870|izegem": {
+   "lat": 50.926357012734535,
+   "level": "address",
+   "lon": 3.23767288579162
+  },
   "vinkenlaan 7|8470|gistel": {
    "lat": 51.155641490351236,
    "level": "address",
@@ -14906,6 +15029,11 @@
    "lat": 51.31488342318611,
    "level": "address",
    "lon": 3.1265778294821516
+  },
+  "vissersstraat 18|8450|bredene": {
+   "lat": 51.22945093561842,
+   "level": "address",
+   "lon": 2.962729474723825
   },
   "vlaaienpad 3|9041|oostakker": {
    "lat": 51.09789551479674,
@@ -15109,6 +15237,11 @@
    "level": "address",
    "lon": 3.272434817689194
   },
+  "vooruitgangsstraat 4|8530|harelbeke": {
+   "lat": 50.853489587211,
+   "level": "address",
+   "lon": 3.31274697132226
+  },
   "vorkstraat 78|9000|gent": {
    "lat": 51.07534264886757,
    "level": "address",
@@ -15197,6 +15330,11 @@
    "lat": 51.0003838,
    "level": "address",
    "lon": 3.4180784
+  },
+  "waalstraat 94|9870|zulte": {
+   "lat": 50.91898479600341,
+   "level": "address",
+   "lon": 3.4502809144096367
   },
   "waalvest 53|8930|menen": {
    "lat": 50.7927323339412,
@@ -15439,6 +15577,11 @@
    "lat": 51.00732640688007,
    "level": "address",
    "lon": 3.8886437940518426
+  },
+  "weidenstraat 8|8520|kuurne": {
+   "lat": 50.85183587586473,
+   "level": "address",
+   "lon": 3.292387965959369
   },
   "weidestraat 458|8310|assebroek": {
    "lat": 51.19276712297243,
@@ -15965,6 +16108,11 @@
    "lat": 51.05926814705923,
    "level": "address",
    "lon": 3.717864321827685
+  },
+  "zink 57|9820|munte": {
+   "lat": 50.95672223051744,
+   "level": "address",
+   "lon": 3.7451356952521544
   },
   "zinniastraat 5|9000|gent": {
    "lat": 51.06269000173097,
